@@ -10,8 +10,8 @@ Build-Depends: qt4-qmake, debhelper (>= 7.0.50~), libqtwebkit-dev
 Package-List: 
  mx-packageinstaller deb admin optional
 Checksums-Sha1: 
- 5c7ac78a57ea507dfc3b47d952f05a0f02a17853 59938 mx-packageinstaller_15.3mx14.tar.gz
+ ea7031e06bfebd16e0e16a99759af4e848577d4b 59759 mx-packageinstaller_15.3mx14.tar.gz
 Checksums-Sha256: 
- 6908fe292e4bc1c5dc3f063dad000b66208ef73a51af4bbeb05bbe9b976987a9 59938 mx-packageinstaller_15.3mx14.tar.gz
+ 960be8f26fd47d2a130259a1364483beff7ed78401db2e8a68712081c8b56689 59759 mx-packageinstaller_15.3mx14.tar.gz
 Files: 
- 51918ca7f87c534bf71ad7095dbbe6a1 59938 mx-packageinstaller_15.3mx14.tar.gz
+ a2b00943a3a71b5fdfae95ec35420fb7 59759 mx-packageinstaller_15.3mx14.tar.gz
