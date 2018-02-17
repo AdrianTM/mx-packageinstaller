@@ -13,20 +13,20 @@ Build-Depends: qt5-qmake, debhelper (>= 7.0.50~)
 Package-List:
  mx-packageinstaller deb admin optional arch=any
 Checksums-Sha1:
- ad86c395553852cfdd54576f120a5861d94cb987 70212 mx-packageinstaller_18.2.tar.xz
+ 7059f17f8586894e8cc8af81f6a8cc97b84a56bd 70256 mx-packageinstaller_18.2.tar.xz
 Checksums-Sha256:
- 9ab2e05b6d0b210691a00d6ba44fbf7e3b13fb8f930ec27bdfed9e1edecaf25a 70212 mx-packageinstaller_18.2.tar.xz
+ ea369328470bc97176b02ffd988e5d495f02b1f9dbfbe13ff325b7af62e66d3d 70256 mx-packageinstaller_18.2.tar.xz
 Files:
- c9873f9399f90a7b409a46beb1f7d996 70212 mx-packageinstaller_18.2.tar.xz
+ a98966a98d06515f31dfe78d05da1404 70256 mx-packageinstaller_18.2.tar.xz
 
 -----BEGIN PGP SIGNATURE-----
 Version: GnuPG v1
 
-iQEcBAEBAgAGBQJaiJHbAAoJEHCTjHgGee6YNYoH+wadUT9DIUe92uUEt97rJnxf
-xB5cGPVq567c/WN+b79C94jsdh2pdJTy9gBF5IzZ0o8JtplGfN2NYmUzILgsFYmb
-BNm4OymCbJrHSEc2mDm9X4YJYZltd4Km1r9XCJ5wcMhMbTiV8EyaQqVFRMdEuVl5
-6eXqZf5gQYGdM0M/n8j75/mQCfxkUjZWsdbBdWdqLv7MWn+sUjk2G60ktpIW8F1R
-XIJmnyKvAvAfkABnxkejFHYpyFlozBsjJvg6EHd2XU1hakSIAVnzsSK/3jX7vNh5
-P97CJIOPHhMAWY4wB8KmC76C3RxBqh9hSVf0ObsUs5pig4+KczQf+17kvbm+LU0=
-=YBq+
+iQEcBAEBAgAGBQJaiKVJAAoJEHCTjHgGee6YqVkIAMIqbqoLpeJMedeHrEdUf+p7
++Q0398xBNLSU6TTnh6tVO9lgg7V67XQ1sK/n/Qb4qBV7MAuYtgQmhTiOWngShS0V
+RuaTULw3mCbf3dGP2OZTQUgTMSh/pmbPAf8ssR6RGbE7QIYXhcwruP786Vowi8ls
+O1oM7CgM3fdOjvnNDFJxViF1c9jGHg5Vv3AW2nvCcQJWtUjfoSapjvymx9q1s2Zd
+22LsDxI+eeApZn/uWQf8rY6EJGRzMSUMhz4zdqBlq9xBRSr9Mnx7ExYu9FmFhj0G
+CY5PrRD03w3RgWeVwsP41BPDk5+pPnHlnNMasttdqPQJlEd43SsDvChKiULuAKk=
+=JvQC
 -----END PGP SIGNATURE-----
