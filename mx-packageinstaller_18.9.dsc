@@ -13,20 +13,20 @@ Build-Depends: qt5-qmake, qt5-default, qttools5-dev-tools, debhelper (>= 9), lib
 Package-List:
  mx-packageinstaller deb admin optional arch=any
 Checksums-Sha1:
- 64f92f25264d8d2f95cd7c68d382ffa8245117ae 83068 mx-packageinstaller_18.9.tar.xz
+ 3a2c84501b7f2288d4d258661de889bd27c43323 83016 mx-packageinstaller_18.9.tar.xz
 Checksums-Sha256:
- 7b8b439260aa2824383f25c0f086e5c3fa9db7e883aa3699581bf05778ade8da 83068 mx-packageinstaller_18.9.tar.xz
+ 9bc576ff1f7fdc9e76663d75d9b1b2f0522e0aa202393750c1ceac8d801258fc 83016 mx-packageinstaller_18.9.tar.xz
 Files:
- 1ffaac7501b24a60a47cadd3be4a383b 83068 mx-packageinstaller_18.9.tar.xz
+ ec19ea59c782fe7294d10f17aef65926 83016 mx-packageinstaller_18.9.tar.xz
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCAAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAluNX3wTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumEhvCACNnegW6sG7C4wvcVZOQpqlHKaNj7FQ
-K06cqSkgHexKEoem2k3Jf4z5JCl7wflKyVzsAAXJP+0oSvgHJnOCTNohtADRgpPG
-i23Gj3XAZvnJiYiS9V1AQ0lS3XCKTAyuPntMY7C+58RAq0H1jf6+d2xRK5otHrSv
-nF/u9ZH0bVHfguNMNUwSjHhaU3KfDTRSAKGuYbBalODAGe2xGjrObFALAXkUSyEA
-cbly8OpDXUK9V5Qe8MeRIZ+aSTBXT3KwSK3gxj4ZTdIZWfjMWDxlwFLzyrRWl7UZ
-uXxSJ5Ngfh5Mujahufrl4kf4ANPEu/kVdM0h5OXZ4cCGBiqEr8DL9WYU
-=5LZN
+iQFHBAEBCAAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAluNbIgTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumH4jCAC2MHst3z0Wo73wq6ToPLavgqDiOqBF
+rJD78BJLaScs20hmwRl94KpeW1LqXoKgKBlyrF7Q10sZa4r3R5v/erBN+nd1GJ59
+CAu0hD18kgjAdkASOvqSAD5NLXPMHIZRhZ0ZwblD5EX0qQXB9i/ChsVGauQFWFtj
+bTavCMplnd1JTHZ0iY+n+uQo6mj7oLH6HQ3Y0eVE/M2f8sXncnm+CKeRXkUsmhd7
+LjXEVL3kHiGM2Ths0TGU9kRYml6pc8Gf3O9LvMrRVMRtslV455pse2dwVD1EaxmT
+hBwqhnTzBCiS0Px7Ds+kFWKI0nvRY/64obXBvT1/kLucJxjFsczn0DfS
+=OIbu
 -----END PGP SIGNATURE-----
