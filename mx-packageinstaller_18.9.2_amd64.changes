@@ -18,29 +18,29 @@ Changes:
  .
    * fix version check for other locales
 Checksums-Sha1:
- b142b6197d8de77f21077feb763e7e92c066ebb4 1243 mx-packageinstaller_18.9.2.dsc
- 5e6d2e2f3ca6a587f140eb6c6ae277d6fddee498 86048 mx-packageinstaller_18.9.2.tar.xz
- 8904a72c7f3106668ca3ad27971e7880d214ab98 11283 mx-packageinstaller_18.9.2_amd64.buildinfo
- f9543ce361f1f28c8bfb0773d4bf94523b377443 156526 mx-packageinstaller_18.9.2_amd64.deb
+ 911e23477165a47a04625f3865a1f4b1c28eec95 1243 mx-packageinstaller_18.9.2.dsc
+ 8cc686067929ee403671c20c677900a82b88f17f 86016 mx-packageinstaller_18.9.2.tar.xz
+ b37b34d58a39d53529281a90c023a997cb5a10d2 11283 mx-packageinstaller_18.9.2_amd64.buildinfo
+ a7ca70e748430881dadeaa13e6743e7446e940c2 156516 mx-packageinstaller_18.9.2_amd64.deb
 Checksums-Sha256:
- bc83c12a2246e39c02e96a4c509b45cc0f3b95a18db0b88299fb4ae5c4fd2d1d 1243 mx-packageinstaller_18.9.2.dsc
- 010080a91507e3bc7c64e86d5b76657ea1bd22cbcd727c8bb78fd954f41ec2b4 86048 mx-packageinstaller_18.9.2.tar.xz
- 19d6494e7a76739991ee63f051b93dc2ad91d749a14b258ffa95a6510d86dffa 11283 mx-packageinstaller_18.9.2_amd64.buildinfo
- 1354bea05ad4fdd5d736804f7642683474b5276c7b5eb30e00adbbc7b7264a14 156526 mx-packageinstaller_18.9.2_amd64.deb
+ a0ba0646de50a77e89accaeb5ed768f5e946e3f67672af39b75c0d74172558b2 1243 mx-packageinstaller_18.9.2.dsc
+ 1ba71146e8041da7796ef7c171882b86934cb853b9a639a30837dc64d5efbfa3 86016 mx-packageinstaller_18.9.2.tar.xz
+ d8fabd492aacfe73a4e8b02dfc7ba0f42a0862620a87f9285f801e2f60e7e98b 11283 mx-packageinstaller_18.9.2_amd64.buildinfo
+ 49d9b5ea78b6b92e34d2d31d8b5cf86bd947176bda116750c5dadde1f686534d 156516 mx-packageinstaller_18.9.2_amd64.deb
 Files:
- ae58a57bacadec2a8e79174af5952e43 1243 admin optional mx-packageinstaller_18.9.2.dsc
- 2c662a5d8b8a852948b0fdc743818d94 86048 admin optional mx-packageinstaller_18.9.2.tar.xz
- eee73c562395d5ccdc423932ad114db4 11283 admin optional mx-packageinstaller_18.9.2_amd64.buildinfo
- c5158b7ed5864d98d0ac9c682f3a4414 156526 admin optional mx-packageinstaller_18.9.2_amd64.deb
+ 761bb94b0d4e93033228ea8a2a93f0db 1243 admin optional mx-packageinstaller_18.9.2.dsc
+ d9ea790e68c221fc136565ccd28f6021 86016 admin optional mx-packageinstaller_18.9.2.tar.xz
+ 2b4d3959653eef6f1847d72c6f4711a2 11283 admin optional mx-packageinstaller_18.9.2_amd64.buildinfo
+ 366228662199960758a285e0a9ad1ac6 156516 admin optional mx-packageinstaller_18.9.2_amd64.deb
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCAAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAlubqycTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumO0SCACtEgf2e/a+isRoFaafB5LUPMUfFkrs
-7TtvuhDDq0LjhtBRDDcxQtgKEJNMRcsSzmEDObVYmLPX1HcxrSSOlGlLsz4KGTpD
-lRvVZPn/YPWfE196LuVFWpyu23xeWC3bEp7IDhYmj4Q6Or5skobuD9KfXfa4J/l+
-kDRXc9NCn6pI2JWYQ9rJb0zFNsynvhZWMcp2YIqclfL7D5RmpSAZDisTrVRgNUIL
-tzhw4fqkba4V3wLIAUip40oixiII008AThriBtAP0yYF2jkNRPD+9XMuGwMZzT3X
-2tWXF6ArGI0VRqM8n6CGd+hiBTK9ZxWpiY/6CFAuBLSlKEfJml9MV14z
-=CCIy
+iQFHBAEBCAAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAlubrUUTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumI9rB/9RRjlFj9h7GNFpAr0SAfp2Od4g9Wn4
+j/xstkvH3nnP5MQj7dyRx8dIucvr4IuLgEwo/dSwAw/uilkBvcJUBK57Qw1hd7k8
+HGr+xuIf7GNWb6RuBIhJ4Sg3vZNxmeAOpE4PjhgRMzat0TE90IxgW+WfbpRcBeXr
+TFJPyDV092JairoqjXRMm6phK4rs4ovCsVLvUqhDZtQRHBJSGTpIf8BX71FXIGlu
+s4kDAhsrnCY88XmI1riEiK0wr29lPwgcf//8aULM3fmMK8QWNpk9o1bg+gQU/GF8
+irsegdEze5i6pkJlu73tUbnUpZabwEy/pu2ZFf7f40UIVN9ef/iqlIbt
+=cxBz
 -----END PGP SIGNATURE-----
