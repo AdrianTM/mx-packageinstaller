@@ -578,6 +578,23 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="1879"/>
+        <source>We encountered a problem uninstalling the program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <location filename="../mainwindow.cpp" line="1959"/>
+        <source>Flatpak not installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <source>Flatpak is not currently installed.
+OK to go ahead and install it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="1959"/>
         <source>Flatpak was not installed</source>
         <translation type="unfinished"></translation>
@@ -605,28 +622,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1879"/>
-        <source>We encountered a problem uninstalling the program</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <location filename="../mainwindow.cpp" line="1959"/>
-        <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <source>Flatpak is not currently installed.
-OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2164"/>
         <source>Upgrade</source>
         <translation type="unfinished"></translation>
@@ -634,6 +629,11 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2279"/>
         <source>Quit?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2280"/>
+        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -697,7 +697,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="59"/>
         <source>Close</source>
-        <translation type="unfinished">Bezár</translation>
+        <translation>Bezárás</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>

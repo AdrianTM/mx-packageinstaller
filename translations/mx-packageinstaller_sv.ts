@@ -118,10 +118,6 @@
         <translation>Version</translation>
     </message>
     <message>
-        <source>Displayed</source>
-        <translation type="vanished">Visad</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="271"/>
         <location filename="../mainwindow.ui" line="688"/>
         <location filename="../mainwindow.ui" line="1017"/>
@@ -190,90 +186,90 @@
     <message>
         <location filename="../mainwindow.ui" line="1144"/>
         <source>Flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpaks</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1168"/>
         <location filename="../mainwindow.ui" line="1172"/>
         <location filename="../mainwindow.cpp" line="2032"/>
         <source>All apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla program</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1177"/>
         <location filename="../mainwindow.cpp" line="2037"/>
         <source>All runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>All runtimes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1182"/>
         <location filename="../mainwindow.cpp" line="2042"/>
         <source>All available</source>
-        <translation type="unfinished"></translation>
+        <translation>Alla tillgängliga</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1187"/>
         <location filename="../mainwindow.cpp" line="2030"/>
         <location filename="../mainwindow.cpp" line="2172"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Installerade program</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1192"/>
         <location filename="../mainwindow.cpp" line="2028"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Installerade runtimes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1242"/>
         <source>Short Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kort Namn</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1247"/>
         <source>Full Package Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Fullt Paketnamn</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1257"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Storlek</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1301"/>
         <source>Total items </source>
-        <translation type="unfinished"></translation>
+        <translation>Alla poster</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1315"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"></translation>
+        <translation>Installerade program:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1368"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Avancerat</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Total storlek installerad:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1415"/>
         <location filename="../mainwindow.ui" line="1419"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>För alla användare</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1424"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>För nuvarande användare</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1455"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"></translation>
+        <translation>Fjärr (förråd):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1495"/>
@@ -574,44 +570,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1859"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"></translation>
+        <translation>Vi mötte ett problem vid avinstallering, var vänlig kolla output</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1872"/>
         <source>Success</source>
         <translation>Det lyckades</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1959"/>
-        <source>Flatpak was not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1979"/>
-        <location filename="../mainwindow.cpp" line="1997"/>
-        <source>Flathub remote failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1979"/>
-        <location filename="../mainwindow.cpp" line="1997"/>
-        <source>Flathub remote could not be added</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1987"/>
-        <source>Needs re-login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1987"/>
-        <source>You might need to logout/login to see installed items in the menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1879"/>
@@ -622,13 +586,41 @@
         <location filename="../mainwindow.cpp" line="1948"/>
         <location filename="../mainwindow.cpp" line="1959"/>
         <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak ej installerad</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1948"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak är ej installerad.
+OK att fortsätta och installera det?</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1959"/>
+        <source>Flatpak was not installed</source>
+        <translation>Flatpak blev ej installerad</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1979"/>
+        <location filename="../mainwindow.cpp" line="1997"/>
+        <source>Flathub remote failed</source>
+        <translation>Flathub fjärr misslyckades</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1979"/>
+        <location filename="../mainwindow.cpp" line="1997"/>
+        <source>Flathub remote could not be added</source>
+        <translation>Flathub fjärr kunde inte läggas till</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1987"/>
+        <source>Needs re-login</source>
+        <translation>Behöver logga in igen</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1987"/>
+        <source>You might need to logout/login to see installed items in the menu</source>
+        <translation>Du kan behöva logga ut/logga in för att se installerade poster i menyn</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2164"/>
@@ -641,8 +633,9 @@ OK to go ahead and install it?</source>
         <translation>Avsluta?</translation>
     </message>
     <message>
-        <source>Process still running, quiting might leave the system in an instable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="vanished">Processen körs fortfarande, att avsluta kan lämna systemet i ett instabilt tillstånd.&lt;p&gt;&lt;b&gt;Är du säker på att du vill lämna MX Paket-Installerare?&lt;/b&gt;</translation>
+        <location filename="../mainwindow.cpp" line="2280"/>
+        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
+        <translation>Process körs fortfarande, att avsluta kan lämna systemet i ett instabilt tillstånd.&lt;p&gt;&lt;b&gt;Är du säker att du vill avsluta MX Paket-installerare?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2281"/>
@@ -660,82 +653,82 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="14"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Hantera Flatpak Fjärr</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>För alla användare</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>För nuvarande användare</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="30"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Skriv in Flatpak fjärr URL</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="33"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"></translation>
+        <translation>skriv in Flatpakref belägenhet för att installera program</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="35"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till eller ta bort flatpak fjärr (förråd), eller installera program med flatpakref URL eller sökväg</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="44"/>
         <source>Remove remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Ta bort fjärr</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="49"/>
         <source>Add remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Lägg till fjärr</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="54"/>
         <source>Install app</source>
-        <translation type="unfinished"></translation>
+        <translation>Installera program</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="59"/>
         <source>Close</source>
-        <translation type="unfinished">Stäng</translation>
+        <translation>Stäng</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
         <source>Not removable</source>
-        <translation type="unfinished"></translation>
+        <translation>Går ej att ta bort</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub är den huvudsakliga Flatpak fjärr och kommer inte att tas bort</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Fel vid tillägg av fjärr</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"></translation>
+        <translation>Kunde inte lägga till fjärr - kommandot gav ett fel. Var vänlig dubbelkolla fjärr-adressen och försök igen</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation type="unfinished">Det lyckades</translation>
+        <translation>Det lyckades</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Tillägg av fjärr lyckades</translation>
     </message>
 </context>
 <context>

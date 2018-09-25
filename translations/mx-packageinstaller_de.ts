@@ -118,10 +118,6 @@
         <translation>Version</translation>
     </message>
     <message>
-        <source>Displayed</source>
-        <translation type="vanished">Angezeigt</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="271"/>
         <location filename="../mainwindow.ui" line="688"/>
         <location filename="../mainwindow.ui" line="1017"/>
@@ -190,90 +186,90 @@
     <message>
         <location filename="../mainwindow.ui" line="1144"/>
         <source>Flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpaks</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1168"/>
         <location filename="../mainwindow.ui" line="1172"/>
         <location filename="../mainwindow.cpp" line="2032"/>
         <source>All apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Apps</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1177"/>
         <location filename="../mainwindow.cpp" line="2037"/>
         <source>All runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle Runtimes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1182"/>
         <location filename="../mainwindow.cpp" line="2042"/>
         <source>All available</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle verfügbaren</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1187"/>
         <location filename="../mainwindow.cpp" line="2030"/>
         <location filename="../mainwindow.cpp" line="2172"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Installierte Apps</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1192"/>
         <location filename="../mainwindow.cpp" line="2028"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Installierte Runtimes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1242"/>
         <source>Short Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Kurzname</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1247"/>
         <source>Full Package Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Völlständiger Paketname</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1257"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Größe</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1301"/>
         <source>Total items </source>
-        <translation type="unfinished"></translation>
+        <translation>Gesamtanzahl</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1315"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"></translation>
+        <translation>Installierte Apps:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1368"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Fortgeschritten</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Gesamte Installationsgröße:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1415"/>
         <location filename="../mainwindow.ui" line="1419"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Für alle Benutzer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1424"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>Für aktuellen Benutzer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1455"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak-Repository:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1495"/>
@@ -574,44 +570,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1859"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"></translation>
+        <translation>Es gab ein Problem beim Deinstallieren. Bitte die Ausgabe überprüfen.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1872"/>
         <source>Success</source>
         <translation>Erfolg</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1959"/>
-        <source>Flatpak was not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1979"/>
-        <location filename="../mainwindow.cpp" line="1997"/>
-        <source>Flathub remote failed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1979"/>
-        <location filename="../mainwindow.cpp" line="1997"/>
-        <source>Flathub remote could not be added</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1987"/>
-        <source>Needs re-login</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1987"/>
-        <source>You might need to logout/login to see installed items in the menu</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1879"/>
@@ -622,13 +586,41 @@
         <location filename="../mainwindow.cpp" line="1948"/>
         <location filename="../mainwindow.cpp" line="1959"/>
         <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak nicht installiert</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1948"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak ist nocht nickt installiert.
+Mit OK die Installation bestätigen?</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1959"/>
+        <source>Flatpak was not installed</source>
+        <translation>Flatpak wurde nicht installiert</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1979"/>
+        <location filename="../mainwindow.cpp" line="1997"/>
+        <source>Flathub remote failed</source>
+        <translation>Flathub repo fehlgeschlagen</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1979"/>
+        <location filename="../mainwindow.cpp" line="1997"/>
+        <source>Flathub remote could not be added</source>
+        <translation>Flathub Repository konnte nicht hinzugefügt werden</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1987"/>
+        <source>Needs re-login</source>
+        <translation>Re-login erforderlich</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1987"/>
+        <source>You might need to logout/login to see installed items in the menu</source>
+        <translation>Erst nach dem Ab- und wieder Anmelden werden installierte Anwendungen im Menu sichtbar.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2164"/>
@@ -641,8 +633,9 @@ OK to go ahead and install it?</source>
         <translation>Beenden? </translation>
     </message>
     <message>
-        <source>Process still running, quiting might leave the system in an instable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="vanished">Ein Prozess ist noch aktiv; das Beenden könnte das System in einem instabilen Zustand zurücklassen. &lt;p&gt;&lt;b&gt;Sind Sie sicher, den  MX Package Installer zu beenden?&lt;/b&gt;</translation>
+        <location filename="../mainwindow.cpp" line="2280"/>
+        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
+        <translation>Der Prozeß läuft noch. Ein Abbrechen könnte das System in einen instabilen Zustand bringen.&lt;p&gt;&lt;b&gt;Sind Sie sicher, MX Package Installer zu beenden?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2281"/>
@@ -660,82 +653,82 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="14"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwalten von Flatpak Repositorien.</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Für alle Benutzer</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>Für aktuellen Benutzer</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="30"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak Repository URL eingeben</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="33"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpakref Pfad/URL zur Installation eingeben</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="35"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen und Entfernen von Flatpak Repos, oder Installation von Flatpak-Apps mit Flatpakref (Pfad/URL)</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="44"/>
         <source>Remove remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Entfernen des Flatpak-Repos</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="49"/>
         <source>Add remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Hinzufügen des Flatpak-Repos</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="54"/>
         <source>Install app</source>
-        <translation type="unfinished"></translation>
+        <translation>Anwendung installieren</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="59"/>
         <source>Close</source>
-        <translation type="unfinished">Schließen</translation>
+        <translation>Schließen</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
         <source>Not removable</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht entfernbar</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub ist das Flatpak Haupt-Repositorium und kann nicht entfernt werden</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Fehler beim Hinzufügen des Repos</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"></translation>
+        <translation>Konnte das Repository nicht hinzufügen - der Befehl endete mit einem Fehler. Bitte die Repository-URL überprüfen und nochmal versuchen.</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation type="unfinished">Erfolg</translation>
+        <translation>Erfolg</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak Repository erfolgreich hinzugefügt.</translation>
     </message>
 </context>
 <context>

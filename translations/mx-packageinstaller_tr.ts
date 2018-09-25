@@ -14,13 +14,13 @@
     <message>
         <location filename="../mainwindow.ui" line="51"/>
         <source>Popular Applications</source>
-        <translation type="unfinished"></translation>
+        <translation>Gözde Uygulamalar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="77"/>
         <location filename="../mainwindow.cpp" line="85"/>
         <source>Package</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="82"/>
@@ -54,7 +54,7 @@
     <message>
         <location filename="../mainwindow.ui" line="147"/>
         <source>Stable Repo</source>
-        <translation type="unfinished"></translation>
+        <translation>Kararlı depo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="168"/>
@@ -62,7 +62,7 @@
         <location filename="../mainwindow.ui" line="904"/>
         <location filename="../mainwindow.ui" line="1165"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Paketleri durumlarına göre süzün.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="171"/>
@@ -118,49 +118,45 @@
         <translation>Sürüm</translation>
     </message>
     <message>
-        <source>Displayed</source>
-        <translation type="vanished">Gösterilen</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="271"/>
         <location filename="../mainwindow.ui" line="688"/>
         <location filename="../mainwindow.ui" line="1017"/>
         <source>Total packages:</source>
-        <translation type="unfinished"></translation>
+        <translation>Toplam paketler:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="301"/>
         <location filename="../mainwindow.ui" line="718"/>
         <location filename="../mainwindow.ui" line="1047"/>
         <source>Installed:</source>
-        <translation type="unfinished"></translation>
+        <translation>Kurulu:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="331"/>
         <location filename="../mainwindow.ui" line="748"/>
         <location filename="../mainwindow.ui" line="1077"/>
         <source>Upgradable:</source>
-        <translation type="unfinished"></translation>
+        <translation>Yükseltilebilir:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="345"/>
         <location filename="../mainwindow.ui" line="1322"/>
         <source>Upgrade All</source>
-        <translation type="unfinished"></translation>
+        <translation>Hepsini Yükselt</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="372"/>
         <location filename="../mainwindow.ui" line="775"/>
         <location filename="../mainwindow.ui" line="1104"/>
         <source>Hide library and developer packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Kütüphane ve geliştirici paketlerini gizle</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="394"/>
         <location filename="../mainwindow.ui" line="797"/>
         <location filename="../mainwindow.ui" line="1126"/>
         <source>Refresh list</source>
-        <translation type="unfinished"></translation>
+        <translation>Listeyi tazele</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="411"/>
@@ -175,12 +171,12 @@
         <location filename="../mainwindow.ui" line="531"/>
         <location filename="../mainwindow.ui" line="858"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Upgradable package. Newer version available in selected repository.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;=Yükseltilebilir paket. Seçili depoda daha yeni sürüm var.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="488"/>
         <source>MX Test Repo</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Test Deposu</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="815"/>
@@ -237,7 +233,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1257"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Boyut</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1301"/>
@@ -252,7 +248,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1368"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Gelişmiş</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
@@ -295,7 +291,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1556"/>
         <source>Uninstall</source>
-        <translation type="unfinished"></translation>
+        <translation>Kaldır</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1563"/>
@@ -363,7 +359,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="131"/>
         <source>Uninstalling packages...</source>
-        <translation type="unfinished"></translation>
+        <translation>Paketleri kaldırma...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="148"/>
@@ -416,7 +412,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="711"/>
         <source>Not available in stable repo</source>
-        <translation type="unfinished"></translation>
+        <translation>Kararlı depo mevcut değil</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="721"/>
@@ -448,7 +444,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="841"/>
         <source>Do not show this message again</source>
-        <translation type="unfinished"></translation>
+        <translation>Bu iletiyi tekrar gösterme</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="876"/>
@@ -460,7 +456,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="881"/>
         <source>Installing packages...</source>
-        <translation type="unfinished"></translation>
+        <translation>Paketler kuruluyor...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="919"/>
@@ -485,17 +481,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="1120"/>
         <source>Downloading package info...</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket bilgisi indiriliyor...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1514"/>
         <source>Packages to be installed: </source>
-        <translation type="unfinished"></translation>
+        <translation>Yüklenecek paketler:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1551"/>
         <source>Package info</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket bilgisi</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1669"/>
@@ -559,7 +555,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1714"/>
         <source>Changelog</source>
-        <translation type="unfinished"></translation>
+        <translation>Değişim günlüğü</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1736"/>
@@ -580,6 +576,23 @@
         <location filename="../mainwindow.cpp" line="1872"/>
         <source>Success</source>
         <translation>Başarılı</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1879"/>
+        <source>We encountered a problem uninstalling the program</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <location filename="../mainwindow.cpp" line="1959"/>
+        <source>Flatpak not installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <source>Flatpak is not currently installed.
+OK to go ahead and install it?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1959"/>
@@ -609,35 +622,18 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1879"/>
-        <source>We encountered a problem uninstalling the program</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <location filename="../mainwindow.cpp" line="1959"/>
-        <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <source>Flatpak is not currently installed.
-OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2164"/>
         <source>Upgrade</source>
-        <translation type="unfinished"></translation>
+        <translation>Yükseltme</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2279"/>
         <source>Quit?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="2280"/>
+        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
@@ -701,7 +697,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="59"/>
         <source>Close</source>
-        <translation type="unfinished">Kapat</translation>
+        <translation>Kapat</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
@@ -726,7 +722,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation type="unfinished">Başarılı</translation>
+        <translation>Başarılı</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
@@ -739,7 +735,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../main.cpp" line="58"/>
         <source>Unable to get exclusive lock</source>
-        <translation type="unfinished"></translation>
+        <translation>Özel kilit alınamadı</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="59"/>

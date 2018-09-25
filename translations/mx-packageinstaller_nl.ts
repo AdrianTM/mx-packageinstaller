@@ -118,10 +118,6 @@
         <translation>Versie</translation>
     </message>
     <message>
-        <source>Displayed</source>
-        <translation type="vanished">Afgebeeld</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="271"/>
         <location filename="../mainwindow.ui" line="688"/>
         <location filename="../mainwindow.ui" line="1017"/>
@@ -190,90 +186,90 @@
     <message>
         <location filename="../mainwindow.ui" line="1144"/>
         <source>Flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpaks</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1168"/>
         <location filename="../mainwindow.ui" line="1172"/>
         <location filename="../mainwindow.cpp" line="2032"/>
         <source>All apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle apps</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1177"/>
         <location filename="../mainwindow.cpp" line="2037"/>
         <source>All runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle runtimes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1182"/>
         <location filename="../mainwindow.cpp" line="2042"/>
         <source>All available</source>
-        <translation type="unfinished"></translation>
+        <translation>Alle beschikbare</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1187"/>
         <location filename="../mainwindow.cpp" line="2030"/>
         <location filename="../mainwindow.cpp" line="2172"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Geïnstalleerde apps</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1192"/>
         <location filename="../mainwindow.cpp" line="2028"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Geïnstalleerde runtimes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1242"/>
         <source>Short Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Korte Naam</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1247"/>
         <source>Full Package Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Volledige Pakket Naam</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1257"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Grootte</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1301"/>
         <source>Total items </source>
-        <translation type="unfinished"></translation>
+        <translation>Totale items</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1315"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"></translation>
+        <translation>Geïnstalleerde apps:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1368"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Geavanceerd</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"></translation>
+        <translation>totaal geïnstalleerd afmeting:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1415"/>
         <location filename="../mainwindow.ui" line="1419"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor alle gebruikers</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1424"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor huidige gebruiker</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1455"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"></translation>
+        <translation>Afstand (pakketbron):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1495"/>
@@ -574,12 +570,29 @@
     <message>
         <location filename="../mainwindow.cpp" line="1859"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"></translation>
+        <translation>We kwamen een probleem tegen tijdens het deïnstalleren , controleer aub de output</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1872"/>
         <source>Success</source>
         <translation>Gelukt</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1879"/>
+        <source>We encountered a problem uninstalling the program</source>
+        <translation>We kwamen een probleem tegen tijdens het deïnstalleren van het programma</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <location filename="../mainwindow.cpp" line="1959"/>
+        <source>Flatpak not installed</source>
+        <translation>Flatpaklniet geïnstalleerd</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <source>Flatpak is not currently installed.
+OK to go ahead and install it?</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1959"/>
@@ -609,28 +622,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1879"/>
-        <source>We encountered a problem uninstalling the program</source>
-        <translation>We kwamen een probleem tegen tijdens het deïnstalleren van het programma</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <location filename="../mainwindow.cpp" line="1959"/>
-        <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <source>Flatpak is not currently installed.
-OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2164"/>
         <source>Upgrade</source>
         <translation>Opwaarderen</translation>
@@ -641,8 +632,9 @@ OK to go ahead and install it?</source>
         <translation>Stoppen?</translation>
     </message>
     <message>
-        <source>Process still running, quiting might leave the system in an instable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="vanished">Proces loopt nog, stoppen kan het systeem instabiel achter laten.&lt;p&gt;&lt;b&gt;Weet u zeker dat u MX Pakketinstalleerder wilt afsluiten?&lt;/b&gt;</translation>
+        <location filename="../mainwindow.cpp" line="2280"/>
+        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2281"/>
@@ -665,12 +657,12 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor alle gebruikers</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>Voor huidige gebruiker</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="30"/>
@@ -705,7 +697,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="59"/>
         <source>Close</source>
-        <translation type="unfinished">Sluiten</translation>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
@@ -730,7 +722,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation type="unfinished">Gelukt</translation>
+        <translation>Gelukt</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>

@@ -118,10 +118,6 @@
         <translation>Версия</translation>
     </message>
     <message>
-        <source>Displayed</source>
-        <translation type="vanished">Показано</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.ui" line="271"/>
         <location filename="../mainwindow.ui" line="688"/>
         <location filename="../mainwindow.ui" line="1017"/>
@@ -237,7 +233,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1257"/>
         <source>Size</source>
-        <translation type="unfinished"></translation>
+        <translation>Размер</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1301"/>
@@ -252,7 +248,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1368"/>
         <source>Advanced</source>
-        <translation type="unfinished"></translation>
+        <translation>Расширенный</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
@@ -582,6 +578,23 @@
         <translation>Успешно</translation>
     </message>
     <message>
+        <location filename="../mainwindow.cpp" line="1879"/>
+        <source>We encountered a problem uninstalling the program</source>
+        <translation>Возникла проблема при деинсталляции приложения</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <location filename="../mainwindow.cpp" line="1959"/>
+        <source>Flatpak not installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1948"/>
+        <source>Flatpak is not currently installed.
+OK to go ahead and install it?</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
         <location filename="../mainwindow.cpp" line="1959"/>
         <source>Flatpak was not installed</source>
         <translation type="unfinished"></translation>
@@ -609,28 +622,6 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1879"/>
-        <source>We encountered a problem uninstalling the program</source>
-        <translation>Возникла проблема при деинсталляции приложения</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <location filename="../mainwindow.cpp" line="1959"/>
-        <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1948"/>
-        <source>Flatpak is not currently installed.
-OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2164"/>
         <source>Upgrade</source>
         <translation>Обновление</translation>
@@ -641,8 +632,9 @@ OK to go ahead and install it?</source>
         <translation>Выйти?</translation>
     </message>
     <message>
-        <source>Process still running, quiting might leave the system in an instable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="vanished">Процесс еще выполняется, выход может оставить систему в нестабильном виде.&lt;p&gt;&lt;b&gt;Вы уверены, что хотите завершить MX Установщик пакетов?</translation>
+        <location filename="../mainwindow.cpp" line="2280"/>
+        <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2281"/>
@@ -705,7 +697,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="59"/>
         <source>Close</source>
-        <translation type="unfinished">Закрыть</translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
@@ -730,7 +722,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation type="unfinished">Успешно</translation>
+        <translation>Успешно</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>

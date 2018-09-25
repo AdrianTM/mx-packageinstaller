@@ -1,8 +1,8 @@
 mx-packageinstaller (18.9.3mx15) mx; urgency=medium
 
-  * version bump for mx15/16
+  * new translations
 
- -- Adrian <adrian@mxlinux.org>  Fri, 14 Sep 2018 12:07:06 -0400
+ -- Adrian <adrian@mxlinux.org>  Mon, 24 Sep 2018 22:32:22 -0400
 
 mx-packageinstaller (18.9.2) mx; urgency=medium
 
