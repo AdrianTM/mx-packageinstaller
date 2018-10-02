@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Tue, 02 Oct 2018 11:09:48 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 18.10mx15
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (18.10mx15) mx; urgency=medium
+ .
+   * make sure test and backports don't remain enabled if exiting before done
+Checksums-Sha1:
+ c88b91e5e0c4b2d804c429cab5c8851cda3c317b 1255 mx-packageinstaller_18.10mx15.dsc
+ ce13415210cfae179c0a152ab5491733ce86482e 92580 mx-packageinstaller_18.10mx15.tar.xz
+ 812829829985addf2f7d2411aef847e6486fe12b 11307 mx-packageinstaller_18.10mx15_amd64.buildinfo
+ 2373335d887846b93d46c04a6c5721bcce6e40d7 164386 mx-packageinstaller_18.10mx15_amd64.deb
+Checksums-Sha256:
+ ad3c95249642879e9917e97bd284ad85ad74b44c021f1706ebdf26e198277f45 1255 mx-packageinstaller_18.10mx15.dsc
+ c32d518c7a4ce069a4709a5dc7b33e0a7e2f067bfef108b38e621fb395744635 92580 mx-packageinstaller_18.10mx15.tar.xz
+ e603e02c49f97149893b6d0956f9a312ba486e8407f94fc547d30d743406d59e 11307 mx-packageinstaller_18.10mx15_amd64.buildinfo
+ 0a4e08a86c99df212a90a2735fe8496bbc2ff917ad62bcab9d8b3483d690f72d 164386 mx-packageinstaller_18.10mx15_amd64.deb
+Files:
+ a7b7865bc0079d6f57699ea723a662ca 1255 admin optional mx-packageinstaller_18.10mx15.dsc
+ f3b1b1ed1fb8fb1d3f39b130433d4085 92580 admin optional mx-packageinstaller_18.10mx15.tar.xz
+ 9dd178f7e6affe9bec4f6150f1330184 11307 admin optional mx-packageinstaller_18.10mx15_amd64.buildinfo
+ 26b46c77827e0bb4b9fdb96a0d95d64b 164386 admin optional mx-packageinstaller_18.10mx15_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCAAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAluzjh8THGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumGkRCACOyIoJ0CG/cmAb5P1GmSyD5X/4Y24d
++uGLxZgiuI/LrWGgjLzWyxz38KhZG7IdIoRQhe3ORcEU/hdzL93jnQWo5PuvZeT5
+mKOZRX1tXacye6Fh16hjGg9MzNoKx9XAPIE4oQzaMQWocoyZSeqODpsvpWOZ0+jc
+3dZZ1k4zsmr5nAsQyzvmiTbNnGdYMvlodZN9/HbBXHrWa3IgMDZd7n4SCkpfro2W
+U21UjWcawXscbxIeXVndzqGju3C6q4Lx8YRuFKnuqTD9kHvVad3kjuUNXEu0auV1
+NWdpkX5aBJHU4Jk7sMaHsFTFORgPvVBRRkpwi9/O9u+ZkH00GU2s9Ump
+=Mfru
+-----END PGP SIGNATURE-----
