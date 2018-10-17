@@ -171,7 +171,7 @@
         <location filename="../mainwindow.ui" line="531"/>
         <location filename="../mainwindow.ui" line="858"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Upgradable package. Newer version available in selected repository.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Naujintinas paketas. Pasirinktoje saugykloje yra prieinama naujesnė versija.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="488"/>
@@ -193,7 +193,7 @@
         <location filename="../mainwindow.ui" line="1172"/>
         <location filename="../mainwindow.cpp" line="2043"/>
         <source>All apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Visos programos</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1177"/>
@@ -212,7 +212,7 @@
         <location filename="../mainwindow.cpp" line="2041"/>
         <location filename="../mainwindow.cpp" line="2183"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Įdiegtos programos</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1192"/>

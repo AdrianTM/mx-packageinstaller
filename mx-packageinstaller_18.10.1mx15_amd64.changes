@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA256
+
+Format: 1.8
+Date: Sun, 14 Oct 2018 19:32:58 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 18.10.1mx15
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (18.10.1mx15) mx; urgency=medium
+ .
+   * updated translations
+Checksums-Sha1:
+ 02ae618820b77189b8f9b9dbabf0fde86753ed4e 1263 mx-packageinstaller_18.10.1mx15.dsc
+ 204cbf6c0ba83d0dc7b004375d8c04e0ffc4063c 93352 mx-packageinstaller_18.10.1mx15.tar.xz
+ b42059db9a3441e00be665d6042a3afe886a3213 11323 mx-packageinstaller_18.10.1mx15_amd64.buildinfo
+ b093601e8010b5e981ffde48c08b643d2cf9dc8a 165672 mx-packageinstaller_18.10.1mx15_amd64.deb
+Checksums-Sha256:
+ da5679e401187e88139e576e01e3bb6d5bb2c289f6becbf414251db5c9be04f5 1263 mx-packageinstaller_18.10.1mx15.dsc
+ eaf8dfdc8f90e7faf3e4840edb4b4370621a8ac4828118e91ea1333760f219e3 93352 mx-packageinstaller_18.10.1mx15.tar.xz
+ 93d749606c4e3e9e4ec913a38cfd9fbcce0b47a559d06da7be9ef135d4dfa137 11323 mx-packageinstaller_18.10.1mx15_amd64.buildinfo
+ 036bac8836e9aa3b9bce942d03b977edf237315800f4d51a634033a6877833bf 165672 mx-packageinstaller_18.10.1mx15_amd64.deb
+Files:
+ 13219455be9faf569476ba14ffe789b8 1263 admin optional mx-packageinstaller_18.10.1mx15.dsc
+ fc2b3b2088cc4da7703cd69fe5c63650 93352 admin optional mx-packageinstaller_18.10.1mx15.tar.xz
+ 0676ecf8184d4e301902dcef4108044b 11323 admin optional mx-packageinstaller_18.10.1mx15_amd64.buildinfo
+ d082f8189ac723131f6c25a8a0b0d0a9 165672 admin optional mx-packageinstaller_18.10.1mx15_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCAAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAlvHVRkTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNd+B/9grwrYw74HAk5a+g5MDu6631jqep4h
+WmBXH3gIS5vQjhzU/bhgK1f+J0F99oh1txHkRIiwR7aTKvOuur2ORV3N077V9WtU
+0Go8+MPDC8pF+1d7gnPG4buby9LExQklmGVd6qI3P1egLRJCrCL8vXTvTX/zzE+F
+cCRe8RuodO47Aj4yTXw2hXGOBw1nub/G2s4caTZRX/1ArJqERCpRerLdsMEy5i/f
+b8s8R4/Y0YS7v2E7lFzFW2AIAy0LJgj95KLqKkrzTpaAo34cM4eq6H3pjDPaJzPf
+32/CwdGXoukRpxexbsAClB8Sg+XhTfQtipdjAloazFhbLQg0I1sAD0uE
+=d4vn
+-----END PGP SIGNATURE-----

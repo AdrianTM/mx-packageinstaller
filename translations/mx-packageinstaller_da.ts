@@ -171,7 +171,7 @@
         <location filename="../mainwindow.ui" line="531"/>
         <location filename="../mainwindow.ui" line="858"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Upgradable package. Newer version available in selected repository.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Pakke som kan opgraderes. Nyere version tilgængelig i valgte softwarekilde.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="488"/>
@@ -451,7 +451,7 @@
         <location filename="../mainwindow.cpp" line="992"/>
         <location filename="../mainwindow.cpp" line="1108"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Internettet er ikke tilgængeligt, vil ikke være i stand til at downloade listen over pakkerne</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="882"/>

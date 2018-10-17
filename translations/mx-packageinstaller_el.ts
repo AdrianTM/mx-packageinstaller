@@ -186,49 +186,49 @@
     <message>
         <location filename="../mainwindow.ui" line="1144"/>
         <source>Flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpaks</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1168"/>
         <location filename="../mainwindow.ui" line="1172"/>
         <location filename="../mainwindow.cpp" line="2043"/>
         <source>All apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Όλες οι εφαρμογές</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1177"/>
         <location filename="../mainwindow.cpp" line="2048"/>
         <source>All runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Όλες οι ώρες εκτέλεσης</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1182"/>
         <location filename="../mainwindow.cpp" line="2053"/>
         <source>All available</source>
-        <translation type="unfinished"></translation>
+        <translation>Όλα διαθέσιμα</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1187"/>
         <location filename="../mainwindow.cpp" line="2041"/>
         <location filename="../mainwindow.cpp" line="2183"/>
         <source>Installed apps</source>
-        <translation type="unfinished"></translation>
+        <translation>Εγκατεστημένες εφαρμογές</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1192"/>
         <location filename="../mainwindow.cpp" line="2039"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Εγκατεστημένες ώρες εκτέλεσης</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1242"/>
         <source>Short Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Μικρό όνομα</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1247"/>
         <source>Full Package Name</source>
-        <translation type="unfinished"></translation>
+        <translation>Πλήρες Όνομα Πακέτου</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1257"/>
@@ -238,12 +238,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1301"/>
         <source>Total items </source>
-        <translation type="unfinished"></translation>
+        <translation>Συνολικά στοιχεία</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1315"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"></translation>
+        <translation>Εγκατεστημένες εφαρμογές:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1368"/>
@@ -253,23 +253,23 @@
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"></translation>
+        <translation>Συνολικό εγκατεστημένο μέγεθος:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1415"/>
         <location filename="../mainwindow.ui" line="1419"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Για όλους τους χρήστες</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1424"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>Για τον τρέχοντα χρήστη</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1455"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"></translation>
+        <translation>Απομακρυσμένο (αποθετήριο):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1495"/>
@@ -570,7 +570,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1870"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"></translation>
+        <translation>Παρουσιάστηκε πρόβλημα κατά την απεγκατάσταση, ελέγξτε το αρχείο εξόδου</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1883"/>
@@ -586,40 +586,41 @@
         <location filename="../mainwindow.cpp" line="1959"/>
         <location filename="../mainwindow.cpp" line="1970"/>
         <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Το Flatpak δεν είναι εγκατεστημένο </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1959"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Το Flatpak δεν είναι εγκατεστημένο.
+Εντάξει για να προχωρήσει και να το εγκαταστήσετε;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1970"/>
         <source>Flatpak was not installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Το Flatpak δεν εγκαταστάθηκε</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1990"/>
         <location filename="../mainwindow.cpp" line="2008"/>
         <source>Flathub remote failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Το Flathub απέτυχε</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1990"/>
         <location filename="../mainwindow.cpp" line="2008"/>
         <source>Flathub remote could not be added</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η προσθήκη Flathub</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1998"/>
         <source>Needs re-login</source>
-        <translation type="unfinished"></translation>
+        <translation>Χρειάζεστε ξανά σύνδεση</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1998"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Ίσως χρειαστεί να αποσυνδεθείτε/συνδεθείτε για να δείτε τα εγκατεστημένα στοιχεία στο μενού</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2175"/>
@@ -634,7 +635,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2292"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>Η διαδικασία εκτελείται ακόμα και η διακοπή μπορεί να αφήσει το σύστημα σε ασταθή κατάσταση. &lt;p&gt;&lt;b&gt;Είστε βέβαιοι ότι θέλετε να βγείτε από το MX Package Installer;&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2293"/>
@@ -652,47 +653,47 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="14"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Διαχείριση Flatpak Remotes</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For all users</source>
-        <translation type="unfinished"></translation>
+        <translation>Για όλους τους χρήστες</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation type="unfinished"></translation>
+        <translation>Για τον τρέχοντα χρήστη</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="30"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"></translation>
+        <translation>εισάγετε απομακρυσμένη διεύθυνση URL Flatpak</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="33"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"></translation>
+        <translation>εισάγετε την τοποθεσία Flatpakref για να εγκαταστήσετε την εφαρμογή</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="35"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθέστε ή αφαιρέστε απομακρυσμένα flatpak (repos) ή εγκαταστήστε εφαρμογές χρησιμοποιώντας URL ή διαδρομή flatpakref</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="44"/>
         <source>Remove remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Αφαίρεση remote</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="49"/>
         <source>Add remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Προσθήκη remote</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="54"/>
         <source>Install app</source>
-        <translation type="unfinished"></translation>
+        <translation>Εγκαταστήστε την εφαρμογή</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="59"/>
@@ -702,22 +703,22 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="81"/>
         <source>Not removable</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν είναι αφαιρούμενο</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="81"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Το Flathub είναι το κύριο remote Flatpak και δε θα αφαιρεθεί</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Σφάλμα κατά την προσθήκη remote</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"></translation>
+        <translation>Δεν ήταν δυνατή η προσθήκη remote - η εντολή επέστρεψε ένα σφάλμα. Ελέγξτε ξανά τη διεύθυνση απομακρυσμένης σύνδεσης και δοκιμάστε ξανά</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
@@ -727,7 +728,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Remote προστέθηκε με επιτυχία</translation>
     </message>
 </context>
 <context>

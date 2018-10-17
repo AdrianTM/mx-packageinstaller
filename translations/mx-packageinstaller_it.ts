@@ -653,7 +653,7 @@ OK per procedere ad installarlo?</translation>
     <message>
         <location filename="../remotes.cpp" line="14"/>
         <source>Manage Flatpak Remotes</source>
-        <translation>Gestisci i telecomandi (remotes) dei flatpak</translation>
+        <translation>Gestisci i remotes (repo) dei flatpak</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
