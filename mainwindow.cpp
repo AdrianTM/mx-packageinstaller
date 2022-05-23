@@ -251,7 +251,7 @@ void MainWindow::listSizeInstalledFP()
         if (!runtimes.isEmpty())
             list << runtimes;
         for (QTreeWidgetItemIterator it(ui->treeFlatpak); *it; ++it) {
-            for (const QString &item : list) {
+            for (const QString &item : qAsConst(list)) {
                 name = item.section(" ", 0, 0);
                 size = item.section(" ", 1);
                 if (name == (*it)->text(FlatCol::FullName)) {
@@ -265,7 +265,7 @@ void MainWindow::listSizeInstalledFP()
     else
         list = cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak list " + user + "--columns app,size\"").split("\n");
 
-    for (const QString &item : list)
+    for (const QString &item : qAsConst(list))
         total = addSizes(total, item.section("\t", 1));
 
     ui->labelNumSize->setText(total);
@@ -837,8 +837,8 @@ void MainWindow::displayFlatpaks(bool force_update)
     int total_count = 0;
     QTreeWidgetItem *widget_item;
 
-    QString short_name, long_name, arch, version, size;
-    for (QString item : flatpaks) {
+    QString short_name, long_name, version, size;
+    for (QString item : qAsConst(flatpaks)) {
         if (fp_ver < VersionNumber("1.2.4")) {
             size = item.section("\t", 1, 1);
             item = item.section("\t", 0, 0); // strip size
@@ -1111,7 +1111,7 @@ bool MainWindow::installBatch(const QStringList &name_list)
 
     // load all the
     for (const QString &name : name_list) {
-        for (const QStringList &list : popular_apps) {
+        for (const QStringList &list : qAsConst(popular_apps)) {
             if (list.at(Popular::Name) == name) {
                 postinstall += list.at(Popular::Postinstall) + QStringLiteral("\n");
                 install_names += list.at(Popular::InstallNames) + QStringLiteral(" ");
@@ -1145,7 +1145,7 @@ bool MainWindow::installPopularApp(const QString &name)
     QString install_names;
 
     // get all the app info
-    for (const QStringList &list : popular_apps) {
+    for (const QStringList &list : qAsConst(popular_apps)) {
         if (list.at(Popular::Name) == name) {
             preinstall = list.at(Popular::Preinstall);
             postinstall = list.at(Popular::Postinstall);
@@ -1203,7 +1203,7 @@ bool MainWindow::installPopularApps()
     for (QTreeWidgetItemIterator it(ui->treePopularApps); *it; ++it) {
         if ((*it)->checkState(PopCol::Check) == Qt::Checked) {
             QString name = (*it)->text(2);
-            for (const QStringList &list : popular_apps) {
+            for (const QStringList &list : qAsConst(popular_apps)) {
                 if (list.at(Popular::Name) == name) {
                     QString preinstall = list.at(Popular::Preinstall);
                     if (preinstall.isEmpty()) {  // add to batch processing if there is not preinstall command
@@ -1697,8 +1697,7 @@ QStringList MainWindow::listFlatpaks(const QString remote, const QString type)
             success = cmd.run("runuser -s /bin/bash -l $(logname) -c \"flatpak update --appstream\"");
             updated = true;
         }
-        // list version too
-        QString process_string; // unfortunatelly the resulting string structure is different depending on type option
+        // list version too, unfortunatelly the resulting string structure is different depending on type option
         if (type == "--app" || type.isEmpty()) {
             success = cmd.run("runuser -s /bin/bash -l $(logname) -c \"set -o pipefail; flatpak remote-ls " + user
                               + remote + " " + arch_fp + "--app --columns=ver,ref,installed-size 2>/dev/null\"", out);
@@ -1919,7 +1918,7 @@ void MainWindow::findPopular() const
     }
 
     // process found items
-    for (auto item : found_items) {
+    for (auto item : qAsConst(found_items)) {
         if (item->childCount() == 0) { // if child, expand parent
             item->parent()->setExpanded(true);
             item->parent()->setHidden(false);
@@ -2099,7 +2098,6 @@ void MainWindow::on_pushUninstall_clicked()
             }
         }
     } else if (tree == ui->treeFlatpak) {
-        QString cmd_str{};
         bool success = true;
 
         // new version of flatpak takes a "-y" confirmation
@@ -2123,7 +2121,7 @@ void MainWindow::on_pushUninstall_clicked()
         }
 
         setCursor(QCursor(Qt::BusyCursor));
-        for (const QString &app : change_list) {
+        for (const QString &app : qAsConst(change_list)) {
             displayOutput();
             if (!cmd.run("runuser -s /bin/bash -l $(logname) -c \"socat SYSTEM:'flatpak uninstall " + conf + user
                          + app + "',stderr STDIO\"")) // success if all processed successfuly, failure if one failed

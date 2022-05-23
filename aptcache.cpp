@@ -46,7 +46,7 @@ void AptCache::loadCacheFiles()
         }
     }
 
-    for (const QString &file_name : files)
+    for (const QString &file_name : qAsConst(files))
         if(!readFile(file_name))
             qDebug() << "error reading a cache file";
     parseContent();
