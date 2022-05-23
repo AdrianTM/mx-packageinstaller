@@ -21,10 +21,8 @@
 # * along with mx-packageinstaller.  If not, see <http://www.gnu.org/licenses/>.
 # **********************************************************************/
 
-QT       += core gui xml network
-CONFIG   += c++11
-
-greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
+QT       += core gui xml network widgets
+CONFIG   += c++17
 
 TARGET = mx-packageinstaller
 TEMPLATE = app

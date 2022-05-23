@@ -149,7 +149,7 @@ void MainWindow::setup()
     QShortcut *shortcutToggle = new QShortcut(Qt::Key_Space, this);
     connect(shortcutToggle, &QShortcut::activated, this, &MainWindow::checkUnckeckItem);
 
-    QList<QTreeWidget *> list_tree {ui->treePopularApps, ui->treeStable, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak};
+    QList list_tree{ui->treePopularApps, ui->treeStable, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak};
     for (const auto &tree : list_tree) {
         if (tree == ui->treePopularApps || tree == ui->treeStable) tree->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(tree, &QTreeWidget::itemDoubleClicked, [tree] (QTreeWidgetItem *item) { tree->setCurrentItem(item); });
@@ -1014,8 +1014,7 @@ bool MainWindow::confirmActions(QString names, QString action)
     qDebug() << "detailed installed names sorted " << detailed_installed_names;
     QStringListIterator iterator(detailed_installed_names);
 
-    QString value;
-    if (tree != ui->treeFlatpak) {
+    if (QString value; tree != ui->treeFlatpak) {
         while (iterator.hasNext()) {
             value = iterator.next();
             if (value.contains(QLatin1String("Remv"))) {
@@ -1741,7 +1740,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString type)
 void MainWindow::setCurrentTree()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    const QList<QTreeWidget *> list({ui->treePopularApps, ui->treeStable, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak});
+    const QList list({ui->treePopularApps, ui->treeStable, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak});
 
     for (auto item : list) {
         if (item->isVisible()) {
@@ -2201,8 +2200,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         search_str = ui->searchBoxFlatpak->text();
     }
 
-    bool success = false;
-    switch (index) {
+    switch (bool success = false; index) {
     case Tab::Popular:
         ui->searchPopular->setText(search_str);
         enableTabs(true);
