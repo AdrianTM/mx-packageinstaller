@@ -937,7 +937,7 @@ void MainWindow::displayWarning(QString repo)
     QCheckBox *cb = new QCheckBox();
     msgBox.setCheckBox(cb);
     cb->setText(tr("Do not show this message again"));
-    connect(cb, &QCheckBox::clicked, [this, &file, &cb] () {disableWarning(cb->isChecked(), file);});
+    connect(cb, &QCheckBox::clicked, this, [this, file, cb] () {disableWarning(cb->isChecked(), file);});
     msgBox.exec();
     *displayed = true;
 }

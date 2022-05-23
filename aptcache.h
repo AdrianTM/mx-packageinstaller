@@ -8,7 +8,7 @@
 #include "versionnumber.h"
 
 // Pair of arch names returned by "uname" and corresponding DEB_BUILD_ARCH formats
-const QHash<QString, QString> arch_names {
+static const QHash<QString, QString> arch_names {
     { "x86_64", "amd64" },
     { "i686", "i386" },
     { "armv7l", "armhf" }
