@@ -6,20 +6,10 @@
 Cmd::Cmd(QObject *parent)
     : QProcess(parent)
 {
-    connect(this, &Cmd::readyReadStandardOutput, [=]() { emit outputAvailable(readAllStandardOutput()); });
-    connect(this, &Cmd::readyReadStandardError, [=]() { emit errorAvailable(readAllStandardError()); });
-    connect(this, &Cmd::outputAvailable, [=](const QString &out) { out_buffer += out; });
-    connect(this, &Cmd::errorAvailable, [=](const QString &out) { out_buffer += out; });
-}
-
-void Cmd::halt()
-{
-    if (state() != QProcess::NotRunning) {
-        terminate();
-        waitForFinished(5000);
-        kill();
-        waitForFinished(1000);
-    }
+    connect(this, &Cmd::readyReadStandardOutput, [this]() { emit outputAvailable(readAllStandardOutput()); });
+    connect(this, &Cmd::readyReadStandardError, [this]() { emit errorAvailable(readAllStandardError()); });
+    connect(this, &Cmd::outputAvailable, [this](const QString &out) { out_buffer += out; });
+    connect(this, &Cmd::errorAvailable, [this](const QString &out) { out_buffer += out; });
 }
 
 bool Cmd::run(const QString &cmd, bool quiet)
@@ -29,7 +19,6 @@ bool Cmd::run(const QString &cmd, bool quiet)
     return run(cmd, output, quiet);
 }
 
-// util function for getting bash command output
 QString Cmd::getCmdOut(const QString &cmd, bool quiet)
 {
     out_buffer.clear();
@@ -48,8 +37,8 @@ bool Cmd::run(const QString &cmd, QString &output, bool quiet)
     }
     if (!quiet) qDebug().noquote() << cmd;
     QEventLoop loop;
-    connect(this, &Cmd::finished, &loop, &QEventLoop::quit);
-    start("/bin/bash", QStringList() << "-c" << cmd);
+    connect(this, &Cmd::finished, &loop, &QEventLoop::quit);    
+    start(QStringLiteral("/bin/bash"), QStringList() << QStringLiteral("-c") << cmd);
     loop.exec();
     output = out_buffer.trimmed();
     return (exitStatus() == QProcess::NormalExit && exitCode() == 0);

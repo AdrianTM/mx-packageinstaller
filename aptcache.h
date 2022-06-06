@@ -20,13 +20,13 @@ public:
     AptCache();
 
     void loadCacheFiles();
-    const QMap<QString, QStringList> getCandidates();
-    static const QString getArch();
+    QMap<QString, QStringList> getCandidates();
+    static QString getArch();
 
 private:
     QMap<QString, QStringList> candidates;
     QString files_content;
-    const QString dir_name = "/var/lib/apt/lists/";
+    const QString dir_name = QStringLiteral("/var/lib/apt/lists/");
 
     void parseContent();
     bool readFile(const QString &file_name);

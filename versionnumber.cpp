@@ -21,28 +21,10 @@
 
 #include "versionnumber.h"
 
-VersionNumber::VersionNumber()
-{
-}
-
-
-VersionNumber::VersionNumber(const QString& value)
+VersionNumber::VersionNumber(const QString &value)
 {
     setStrings(value);
 }
-
-VersionNumber::VersionNumber(const VersionNumber& value)
-{
-    str = value.str;
-    epoch = value.epoch;
-    upstream_version = value.upstream_version;
-    debian_revision = value.debian_revision;
-}
-
-VersionNumber::~VersionNumber()
-{
-}
-
 
 QString VersionNumber::toString() const
 {
@@ -50,10 +32,11 @@ QString VersionNumber::toString() const
 }
 
 
-void VersionNumber::setStrings(const QString& value)
+void VersionNumber::setStrings(const QString &value)
 {
     str = value;
-    QString upstream_str, debian_str;
+    QString upstream_str;
+    QString debian_str;
 
     if (value.contains(QLatin1Char(':'))) {
         epoch = value.section(QLatin1Char(':'), 0, 0).toInt();
@@ -71,56 +54,47 @@ void VersionNumber::setStrings(const QString& value)
     debian_revision = groupDigits(debian_str);
 }
 
-VersionNumber VersionNumber::operator=(const VersionNumber& value)
-{
-    str = value.str;
-    epoch = value.epoch;
-    upstream_version = value.upstream_version;
-    debian_revision = value.debian_revision;
-    return *this;
-}
-
-VersionNumber VersionNumber::operator=(const QString& value)
+VersionNumber& VersionNumber::operator=(const QString &value)
 {
     setStrings(value);
     return *this;
 }
 
-bool VersionNumber::operator<(const VersionNumber& value) const
+bool VersionNumber::operator<(const VersionNumber &value) const
 {
     return (compare(*this, value) == 1);
 }
 
-bool VersionNumber::operator<=(const VersionNumber& value) const
+bool VersionNumber::operator<=(const VersionNumber &value) const
 {
     return !(*this > value);
 }
 
-bool VersionNumber::operator>(const VersionNumber& value) const
+bool VersionNumber::operator>(const VersionNumber &value) const
 {
     return (compare(*this, value) == -1);
 }
 
-bool VersionNumber::operator>=(const VersionNumber& value) const
+bool VersionNumber::operator>=(const VersionNumber &value) const
 {
     return !(*this < value);
 }
 
-bool VersionNumber::operator==(const VersionNumber& value) const
+bool VersionNumber::operator==(const VersionNumber &value) const
 {
     return (this->str == value.str);
 }
 
-bool VersionNumber::operator!=(const VersionNumber& value) const
+bool VersionNumber::operator!=(const VersionNumber &value) const
 {
     return !(*this == value);
 }
 
 // transform QString into QStringList with digits grouped together
-QStringList VersionNumber::groupDigits(QString value)
+QStringList VersionNumber::groupDigits(const QString &value)
 {
     QStringList result = QStringList();
-    QString cache = "";
+    QString cache = QLatin1String("");
 
     for (int i = 0; i < value.length(); ++i) {
         if (value.at(i).isDigit()) {
@@ -140,7 +114,7 @@ QStringList VersionNumber::groupDigits(QString value)
 }
 
 // return 1 if second > first, -1 if second < first, 0 if equal
-int VersionNumber::compare(const VersionNumber& first, const VersionNumber& second) const
+int VersionNumber::compare(const VersionNumber &first, const VersionNumber &second) const
 {
     if (second.epoch > first.epoch)
         return 1;
@@ -157,7 +131,7 @@ int VersionNumber::compare(const VersionNumber& first, const VersionNumber& seco
 }
 
 // return 1 if second > first, -1 if second < first, 0 if equal
-int VersionNumber::compare(const QStringList &first, const QStringList &second) const
+int VersionNumber::compare(const QStringList &first, const QStringList &second)
 {
     for (int i = 0; i < first.length() && i < second.length(); ++i) {
         // check if equal
@@ -194,12 +168,12 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second) 
     // if equal till the end of one of the lists, compare list size
     // if the larger list doesn't have "~" it's the bigger version
     if (second.length() > first.length()) {
-        if (second.at(first.length()) != "~")
+        if (second.at(first.length()) != QLatin1String("~"))
             return 1;
         else
             return -1;
     } else if (second.length() < first.length()) {
-        if (first.at(second.length()) != "~")
+        if (first.at(second.length()) != QLatin1String("~"))
             return -1;
         else
             return 1;
@@ -209,7 +183,7 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second) 
 
 // return 1 if second > first, -1 if second < first, 0 if equal
 // letters and number sort before special chars
-int VersionNumber::compare(const QChar& first, const QChar& second) const
+int VersionNumber::compare(QChar first, QChar second)
 {
     if (first == second)
         return 0;

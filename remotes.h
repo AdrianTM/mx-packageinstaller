@@ -23,7 +23,7 @@ public slots:
     void removeItem();
     void addItem();
     void setInstall();
-    void userSelected(int selected);
+    void userSelected(int index);
 
 private:
     bool changed;

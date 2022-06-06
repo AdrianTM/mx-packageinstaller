@@ -75,35 +75,35 @@ class VersionNumber
 {
 
   public:
-    VersionNumber();
-    VersionNumber(const VersionNumber& value); // copy constructor
-    VersionNumber(const QString& value);
-    ~VersionNumber();
+    VersionNumber() = default;
+    VersionNumber(const VersionNumber &value) = default;
+    VersionNumber(const QString &value);
+    ~VersionNumber() = default;
 
     QString toString() const;
 
-    VersionNumber operator=(const VersionNumber& value);
-    VersionNumber operator=(const QString& value);
+    VersionNumber &operator=(const VersionNumber &value) = default;
+    VersionNumber &operator=(const QString &value);
 
-    bool operator<(const VersionNumber& value) const;
-    bool operator<=(const VersionNumber& value) const;
-    bool operator>(const VersionNumber& value) const;
-    bool operator>=(const VersionNumber& value) const;
-    bool operator==(const VersionNumber& value) const;
-    bool operator!=(const VersionNumber& value) const;
+    bool operator<(const VersionNumber &value) const;
+    bool operator<=(const VersionNumber &value) const;
+    bool operator>(const VersionNumber &value) const;
+    bool operator>=(const VersionNumber &value) const;
+    bool operator==(const VersionNumber &value) const;
+    bool operator!=(const VersionNumber &value) const;
 
   private:
     QString str;                    // full version string
-    int epoch;
+    int epoch {};
     QStringList upstream_version;   // a string list of characters, numbers are grouped together
     QStringList debian_revision;
 
-    QStringList groupDigits(QString value); // add characters to separate elements, groups digits together
-    void setStrings(const QString& value);
+    static QStringList groupDigits(const QString &value); // add characters to separate elements, groups digits together
+    void setStrings(const QString &value);
 
-    int compare(const VersionNumber& first, const VersionNumber& second) const; // 1 for >second, -1 for <second, 0 for equal
-    int compare(const QStringList& first, const QStringList& second) const;
-    int compare(const QChar& first, const QChar& second) const;
+    int compare(const VersionNumber &first, const VersionNumber &second) const; // 1 for >second, -1 for <second, 0 for equal
+    static int compare(const QStringList &first, const QStringList &second);
+    static int compare(QChar first, QChar second);
 
 };
 

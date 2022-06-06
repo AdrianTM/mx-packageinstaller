@@ -14,19 +14,19 @@ void AptCache::loadCacheFiles()
 {
     QDir dir(dir_name);
     // include all _Packages list files
-    const QString packages_filter = "*_Packages";
+    const QString packages_filter = QStringLiteral("*_Packages");
 
     // some regexp's
     // to include those which match architecure in filename
     const QRegularExpression re_binary_arch(".*binary-" + getArch() + "_Packages");
     // to include those flat-repos's which do not have 'binary' within the name
-    const QRegularExpression re_binary_other(".*binary-.*_Packages");
+    const QRegularExpression re_binary_other(QStringLiteral(".*binary-.*_Packages"));
     // to exclude debian backports
-    const QRegularExpression re_backports(".*debian_.*-backports_.*_Packages");
+    const QRegularExpression re_backports(QStringLiteral(".*debian_.*-backports_.*_Packages"));
     // to exclude mx testrepo
-    const QRegularExpression re_testrepo(".*mx_testrepo.*_test_.*_Packages");
+    const QRegularExpression re_testrepo(QStringLiteral(".*mx_testrepo.*_test_.*_Packages"));
     // to exclude devoloper's mx temp repo
-    const QRegularExpression re_temprepo(".*mx_repo.*_temp_.*_Packages");
+    const QRegularExpression re_temprepo(QStringLiteral(".*mx_repo.*_temp_.*_Packages"));
 
     const QStringList packages_files = dir.entryList(QStringList() << packages_filter, QDir::Files, QDir::Unsorted);
     QStringList files;
@@ -52,24 +52,27 @@ void AptCache::loadCacheFiles()
     parseContent();
 }
 
-const QMap<QString, QStringList> AptCache::getCandidates()
+QMap<QString, QStringList> AptCache::getCandidates()
 {
     return candidates;
 }
 
 // return DEB_BUILD_ARCH format which differs from what 'arch' returns
-const QString AptCache::getArch()
+QString AptCache::getArch()
 {
     Cmd cmd;
-    return arch_names.value(cmd.getCmdOut("arch", true));
+    return arch_names.value(cmd.getCmdOut(QStringLiteral("arch"), true));
 }
 
 void AptCache::parseContent()
 {
+    const QStringList list = files_content.split(QStringLiteral("\n"));
     QStringList package_list;
     QStringList version_list;
     QStringList description_list;
-    const QStringList list = files_content.split("\n");
+    package_list.reserve(list.size());
+    version_list.reserve(list.size());
+    description_list.reserve(list.size());
 
     QString package;
     QString version;
@@ -100,10 +103,10 @@ void AptCache::parseContent()
             package_list     << package;
             version_list     << version;
             description_list << description;
-            package = "";
-            version = "";
-            description = "";
-            architecture = "";
+            package = QLatin1String("");
+            version = QLatin1String("");
+            description = QLatin1String("");
+            architecture = QLatin1String("");
             add_package = false;
             match_arch = false;
         }

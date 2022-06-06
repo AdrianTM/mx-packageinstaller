@@ -44,10 +44,10 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
     app.setWindowIcon(QIcon::fromTheme(app.applicationName()));
-    app.setOrganizationName("MX-Linux");
+    app.setOrganizationName(QStringLiteral("MX-Linux"));
 
     QTranslator qtTran;
-    if (qtTran.load(QLocale::system(), "qt", "_", QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+    if (qtTran.load(QLocale::system(), QStringLiteral("qt_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         app.installTranslator(&qtTran);
 
     QTranslator qtBaseTran;
@@ -67,7 +67,7 @@ int main(int argc, char *argv[])
 
     if (getuid() == 0) {
         // Don't start app if Synaptic/apt-get is running, lock dpkg otherwise while the program runs
-        LockFile lock_file("/var/lib/dpkg/lock");
+        LockFile lock_file(QStringLiteral("/var/lib/dpkg/lock"));
         if (lock_file.isLocked()) {
             QApplication::beep();
             QMessageBox::critical(nullptr, QObject::tr("Unable to get exclusive lock"),
@@ -77,7 +77,7 @@ int main(int argc, char *argv[])
         } else {
             lock_file.lock();
         }
-        QString log_name = "/var/log/mxpi.log";
+        QString log_name = QStringLiteral("/var/log/mxpi.log");
         if (QFile::exists(log_name)) {
             system("echo '-----------------------------------------------------------\nMXPI SESSION\
                    \n-----------------------------------------------------------' >> " + log_name.toUtf8() + ".old");
@@ -104,7 +104,7 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
     term_out << msg << QStringLiteral("\n");
 
     QTextStream out(&logFile);
-    out << QDateTime::currentDateTime().toString("yyyy-MM-dd hh:mm:ss.zzz ");
+    out << QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss.zzz "));
     switch (type)
     {
     case QtInfoMsg:     out << QStringLiteral("INF "); break;

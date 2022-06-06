@@ -27,8 +27,8 @@
 #include <unistd.h>
 #include <sys/file.h>
 
-LockFile::LockFile(QString file_name)
-    : file_name(file_name)
+LockFile::LockFile(const QString &file_name) :
+    file_name(file_name)
 {
 
 }
