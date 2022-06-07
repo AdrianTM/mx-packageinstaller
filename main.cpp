@@ -59,7 +59,7 @@ int main(int argc, char *argv[])
         app.installTranslator(&appTran);
 
     // Root guard
-    if (system("logname |grep -q ^root$") == 0) {
+    if (QProcess::execute("/bin/bash", {"-c", "logname |grep -q ^root$"}) == 0) {
         QMessageBox::critical(nullptr, QObject::tr("Error"),
                               QObject::tr("You seem to be logged in as root, please log out and log in as normal user to use this program."));
         exit(EXIT_FAILURE);
@@ -73,15 +73,15 @@ int main(int argc, char *argv[])
             QMessageBox::critical(nullptr, QObject::tr("Unable to get exclusive lock"),
                                   QObject::tr("Another package management application (like Synaptic or apt-get), "\
                                                    "is already running. Please close that application first"));
-            return EXIT_FAILURE;
+            exit(EXIT_FAILURE);
         } else {
             lock_file.lock();
         }
         QString log_name = QStringLiteral("/var/log/mxpi.log");
         if (QFile::exists(log_name)) {
-            system("echo '-----------------------------------------------------------\nMXPI SESSION\
-                   \n-----------------------------------------------------------' >> " + log_name.toUtf8() + ".old");
-            system("cat " + log_name.toUtf8() + " >> " + log_name.toUtf8() + ".old");
+            QProcess::execute("/bin/bash", {"-c", "echo '-----------------------------------------------------------\nMXPI SESSION\
+                   \n-----------------------------------------------------------' >> " + log_name.toUtf8() + ".old"});
+            QProcess::execute("/bin/bash", {"-c", "cat " + log_name + " >> " + log_name + ".old"});
             QFile::remove(log_name);
         }
         logFile.setFileName(log_name);
@@ -92,7 +92,8 @@ int main(int argc, char *argv[])
         w.show();
         return app.exec();
     } else {
-        system("su-to-root -X -c " + QApplication::applicationFilePath().toUtf8() + "&");
+        QProcess::startDetached("su-to-root", {"-X", "-c", QApplication::applicationFilePath()});
+        exit(EXIT_FAILURE);
     }
 }
 
