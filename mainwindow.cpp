@@ -1609,7 +1609,7 @@ void MainWindow::cleanup()
     if (QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list")))
         changed = true;
 
-    if (!test_initially_enabled && (system("grep -q '^\\s*deb.* test' /etc/apt/sources.list.d/mx.list") == 0)) {
+    if (!test_initially_enabled && (system(R"(grep -q '^\s*deb.* test' /etc/apt/sources.list.d/mx.list)") == 0)) {
         system("sed -i 's/.* test/#&/'  /etc/apt/sources.list.d/mx.list");  // comment out the line
         changed = true;
     }
@@ -2230,7 +2230,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     case Tab::Stable:
         ui->searchBoxStable->setText(search_str);
-        ui->pushRemoveOrphan->setVisible(system("test -n \"$(apt-get --dry-run autoremove |grep -Po '^Remv \\K[^ ]+' )\"") == 0);
+        ui->pushRemoveOrphan->setVisible(system(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit") == 0);
         enableTabs(true);
         setCurrentTree();
         change_list.clear();
@@ -2777,7 +2777,7 @@ void MainWindow::on_pushRemoveUnused_clicked()
 
 void MainWindow::on_pushRemoveOrphan_clicked()
 {
-    QString names = cmd.getCmdOut(QStringLiteral("apt-get --dry-run autoremove |grep -Po '^Remv \\K[^ ]+' |tr '\n' ' '"));
+    QString names = cmd.getCmdOut(QStringLiteral(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')"));
     QMessageBox::warning(this, tr("Warning"), tr("Potentially dangerous operation.\nPlease make sure you check carefully the list of packages to be removed."));
     showOutput();
     if (uninstall(names)) {

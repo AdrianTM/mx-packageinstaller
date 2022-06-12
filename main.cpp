@@ -93,7 +93,6 @@ int main(int argc, char *argv[])
         return app.exec();
     } else {
         QProcess::startDetached("su-to-root", {"-X", "-c", QApplication::applicationFilePath()});
-        exit(EXIT_FAILURE);
     }
 }
 
