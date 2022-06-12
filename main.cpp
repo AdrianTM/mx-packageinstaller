@@ -42,9 +42,10 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
 int main(int argc, char *argv[])
 {
-    qputenv("HOME", "/root");
     qputenv("XDG_RUNTIME_DIR", "/run/user/0");
     QApplication app(argc, argv);
+    qputenv("HOME", "/root");
+
     app.setWindowIcon(QIcon::fromTheme(app.applicationName()));
     app.setOrganizationName(QStringLiteral("MX-Linux"));
 
