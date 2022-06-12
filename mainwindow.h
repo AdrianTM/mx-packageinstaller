@@ -91,7 +91,7 @@ public:
     static bool isFilteredName(const QString &name);
     bool readPackageList(bool force_download = false);
     bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""), const QString &postuninstall = QLatin1String(""));
-    bool update();
+    bool updateApt();
 
     static double convert(double number, const QString &unit);
 
