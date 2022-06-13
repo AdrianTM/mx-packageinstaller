@@ -35,8 +35,8 @@
 #include "mainwindow.h"
 #include <unistd.h>
 
-
 static QFile logFile;
+QString starting_home = qEnvironmentVariable("HOME");
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 {
     qputenv("XDG_RUNTIME_DIR", "/run/user/0");
     QApplication app(argc, argv);
+    qputenv("HOME", "/root");
 
     app.setWindowIcon(QIcon::fromTheme(app.applicationName()));
     app.setOrganizationName(QStringLiteral("MX-Linux"));
@@ -81,8 +82,10 @@ int main(int argc, char *argv[])
         }
         QString log_name = QStringLiteral("/var/log/mxpi.log");
         if (QFile::exists(log_name)) {
-            QProcess::execute("/bin/bash", {"-c", "echo '-----------------------------------------------------------\nMXPI SESSION\
-                   \n-----------------------------------------------------------' >> " + log_name.toUtf8() + ".old"});
+            QProcess::execute("/bin/bash",
+                              {"-c", "echo '-----------------------------------------------------------\n"
+                               "MXPI SESSION\n-----------------------------------------------------------' >> " +
+                               log_name.toUtf8() + ".old"});
             QProcess::execute("/bin/bash", {"-c", "cat " + log_name + " >> " + log_name + ".old"});
             QFile::remove(log_name);
         }
@@ -90,12 +93,11 @@ int main(int argc, char *argv[])
         logFile.open(QFile::Append | QFile::Text);
         qInstallMessageHandler(messageHandler);
 
-        qputenv("HOME", "/root");
         MainWindow w;
         w.show();
         return app.exec();
     } else {
-            QProcess::startDetached("/usr/bin/mxpi-launcher", {});
+        QProcess::startDetached("/usr/bin/mxpi-launcher", {});
     }
 }
 

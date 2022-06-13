@@ -9,9 +9,12 @@
 #include "about.h"
 #include "version.h"
 
+extern const QString starting_home;
+
 // display doc as nomal user when run as root
 void displayDoc(const QString &url, const QString &title, bool runned_as_root)
 {
+    qputenv("HOME", starting_home.toUtf8());
     // prefer mx-viewer otherwise use xdg-open (use runuser to run that as logname user)
     if (QFile::exists(QStringLiteral("/usr/bin/mx-viewer"))) {
         QProcess::execute(QStringLiteral("mx-viewer"), {url, title});
@@ -27,6 +30,7 @@ void displayDoc(const QString &url, const QString &title, bool runned_as_root)
                                     {QStringLiteral("-u"), user, QStringLiteral("--"), QStringLiteral("xdg-open"), url});
         }
     }
+    qputenv("HOME", "/root");
 }
 
 void displayAboutMsgBox(const QString &title, const QString &message, const QString &licence_url, const QString &license_title, bool runned_as_root)
@@ -51,10 +55,12 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
         auto *text = new QTextEdit(changelog);
         text->setReadOnly(true);
         QProcess proc;
+        qputenv("HOME", starting_home.toUtf8());
         proc.start(QStringLiteral("zless"), {QStringLiteral("/usr/share/doc/") +
                                              QFileInfo(QCoreApplication::applicationFilePath()).fileName() +
                                              QStringLiteral("/changelog.gz")}, QIODevice::ReadOnly);
         proc.waitForFinished();
+        qputenv("HOME", "/root");
         text->setText(QString::fromLatin1(proc.readAllStandardOutput()));
 
         auto *btnClose = new QPushButton(QObject::tr("&Close"), changelog);
