@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 
 #include "about.h"
+#include "version.h"
 
 // display doc as nomal user when run as root
 void displayDoc(const QString &url, const QString &title, bool runned_as_root)
@@ -54,7 +55,7 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
                                              QFileInfo(QCoreApplication::applicationFilePath()).fileName() +
                                              QStringLiteral("/changelog.gz")}, QIODevice::ReadOnly);
         proc.waitForFinished();
-        text->setText(proc.readAllStandardOutput());
+        text->setText(QString::fromLatin1(proc.readAllStandardOutput()));
 
         auto *btnClose = new QPushButton(QObject::tr("&Close"), changelog);
         btnClose->setIcon(QIcon::fromTheme(QStringLiteral("window-close")));
