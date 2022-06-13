@@ -15,14 +15,14 @@ Changes:
    * Display info about MX Test and Backport packages
    * Update package lists (Stable, MX Test, Backports) when packages are installed/removed from another tab
 Checksums-Sha1:
- 96b7781a4f2db209525260edba6fe9f3dc14bfde 658 mx-packageinstaller_22.6.dsc
- 255555249bf15db8466ebd03197e7d967e779f35 296568 mx-packageinstaller_22.6.tar.xz
- 2b847fcdd16ed0df904682aa7b2853fbda976641 10081 mx-packageinstaller_22.6_i386.buildinfo
+ b56dad8c20a651119f450355b3dee449cb790611 658 mx-packageinstaller_22.6.dsc
+ 0b8a751b9ea1e6025d212c946452f6067ffca06d 296576 mx-packageinstaller_22.6.tar.xz
+ eb424d42b16b1a74d9173d1a0d1fd8ba444dadc8 10081 mx-packageinstaller_22.6_i386.buildinfo
 Checksums-Sha256:
- a2548dc736dcf384effdfdc793ecd516ded5599fedb6f36a11ec9268a7012315 658 mx-packageinstaller_22.6.dsc
- da4cec89fabed99c9069a1a7a2b2d44051eb58dad3f91518c197bfd821b40a3b 296568 mx-packageinstaller_22.6.tar.xz
- 2b2f75c01a71311ba563821771f1ca0234ae6b460233bd21956fc07e6b45cc46 10081 mx-packageinstaller_22.6_i386.buildinfo
+ d349a0f35c207bfb7edb069b8a8ccadbbd25c45871196dc3592690d1f39cd186 658 mx-packageinstaller_22.6.dsc
+ d3b106f80440c8c196a40d60ca1a96ebca6541bd0b9576994b3e3e343809a2c7 296576 mx-packageinstaller_22.6.tar.xz
+ e2dbc3c77dea25f94df62ed36f44dd73c5445223d5598d450023262f8b4d97b5 10081 mx-packageinstaller_22.6_i386.buildinfo
 Files:
- fe83da3e17e81ccdbeeb5d11d68731c5 658 admin optional mx-packageinstaller_22.6.dsc
- 9886ce831e4d039c7e65d61b361a37b0 296568 admin optional mx-packageinstaller_22.6.tar.xz
- 810c9bf21aa1670462312ddb02dcd7e5 10081 admin optional mx-packageinstaller_22.6_i386.buildinfo
+ 669f0b303ccab04fc6ceb2f072f284e9 658 admin optional mx-packageinstaller_22.6.dsc
+ fc5e564aa02cc381515b3a5593272be7 296576 admin optional mx-packageinstaller_22.6.tar.xz
+ 5ceecd8038bc42e56e7738ea234fae2b 10081 admin optional mx-packageinstaller_22.6_i386.buildinfo
