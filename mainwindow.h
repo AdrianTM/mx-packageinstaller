@@ -136,12 +136,12 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private slots:
-    static void disableWarning(bool checked, const QString &file_name);
     void checkUnckeckItem();
     void cleanup();
     void cmdDone();
     void cmdStart();
     void disableOutput();
+    void disableWarning(bool checked, const QString &key);
     void displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeWidgetItem *item);
     void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
     void displayPackageInfo(const QTreeWidgetItem *item);

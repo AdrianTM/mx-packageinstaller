@@ -899,11 +899,11 @@ void MainWindow::displayWarning(const QString &repo)
 
     bool *displayed = nullptr;
     QString msg;
-    QString file;
+    QString key;
 
     if (repo == QLatin1String("test")) {
         displayed = &warning_test;
-        file = QDir::homePath() + "/.config/" + qApp->organizationName() + "/mxpi_nowarning_test";
+        key = "NoWarningTest";
         msg = tr("You are about to use the MX Test repository, whose packages are provided for "\
                  "testing purposes only. It is possible that they might break your system, so it "\
                  "is suggested that you back up your system and install or update only one package "\
@@ -912,7 +912,7 @@ void MainWindow::displayWarning(const QString &repo)
 
     } else if (repo == QLatin1String("backports")) {
         displayed = &warning_backports;
-        file = QDir::homePath() + "/.config/" + qApp->organizationName() + "/mxpi_nowarning_backports";
+        key = "NoWarningBackports";
         msg = tr("You are about to use Debian Backports, which contains packages taken from the next "\
                  "Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable. "\
                  "They cannot be tested as extensively as in the stable releases of Debian and MX Linux, "\
@@ -920,12 +920,12 @@ void MainWindow::displayWarning(const QString &repo)
                  "in Debian stable. Use with care!");
     } else if (repo == QLatin1String("flatpaks")) {
         displayed = &warning_flatpaks;
-        file = QDir::homePath() + "/.config/" + qApp->organizationName() + "/mxpi_nowarning_flatpaks";
+        key = "NoWarningFlatpaks";
         msg = tr("MX Linux includes this repository of flatpaks for the users' convenience only, and "\
                  "is not responsible for the functionality of the individual flatpaks themselves. "\
                  "For more, consult flatpaks in the Wiki.");
     }
-    if ((displayed == nullptr) || *displayed || QFileInfo::exists(file))
+    if ((displayed == nullptr) || *displayed || settings.value(key, false).toBool())
         return;
 
     QMessageBox msgBox(QMessageBox::Warning, tr("Warning"), msg);
@@ -933,7 +933,7 @@ void MainWindow::displayWarning(const QString &repo)
     auto *cb = new QCheckBox();
     msgBox.setCheckBox(cb);
     cb->setText(tr("Do not show this message again"));
-    connect(cb, &QCheckBox::clicked, this, [file, cb]() {disableWarning(cb->isChecked(), file);});
+    connect(cb, &QCheckBox::clicked, this, [this, key, cb]() { settings.setValue(key, cb->isChecked()); });
     msgBox.exec();
     *displayed = true;
 }
@@ -1828,11 +1828,9 @@ void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeW
     info.exec();
 }
 
-void MainWindow::disableWarning(bool checked, const QString &file_name)
+void MainWindow::disableWarning(bool enabled, const QString &key)
 {
-    QFile file(file_name);
-    checked ? file.open(QIODevice::WriteOnly)
-            : file.remove();
+    settings.setValue(key, enabled);
 }
 
 void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
