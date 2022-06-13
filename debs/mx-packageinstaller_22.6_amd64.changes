@@ -1,0 +1,49 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Mon, 13 Jun 2022 01:11:31 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 22.6
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.6) mx; urgency=medium
+ .
+   * Add mxpi-launcher to preserve env variables needed to follow USER theme
+   * Set HOME to /root, XDG_RUNTIME_DIR to /run/user/0 to make sure if started with sudo -E things go to the right place
+   * Display info about MX Test and Backport packages
+   * Update package lists (Stable, MX Test, Backports) when packages are installed/removed from another tab
+Checksums-Sha1:
+ f0b0504a70a9dd3564cae36746f7b851763835d9 1220 mx-packageinstaller_22.6.dsc
+ 4ac96dcea80f250a45883c0c0c44e8b0aaf6cc9b 294380 mx-packageinstaller_22.6.tar.xz
+ 4ca14f6177cd646f52e23b5748aafffc0f5fb79e 10947 mx-packageinstaller_22.6_amd64.buildinfo
+ 0b7f4829cf57882bf7c56b4fa0f225904d8b3ebc 372748 mx-packageinstaller_22.6_amd64.deb
+Checksums-Sha256:
+ 59e283c5af5aeda03345e3ed3772e35da82ef76639d7b0a48029e8807f9e2f1e 1220 mx-packageinstaller_22.6.dsc
+ f828bb12332a310450f5338a69c36f2b1ae50ec2349e3707078d480c7edf603a 294380 mx-packageinstaller_22.6.tar.xz
+ 6be40dcd9876ee4433d4a74fe7e0538083cee816315cb969e3d387cf02ffb603 10947 mx-packageinstaller_22.6_amd64.buildinfo
+ 2eefd8a96367125f63aae6a06ae7997f403265fa633856b7401dd92da27b0ce5 372748 mx-packageinstaller_22.6_amd64.deb
+Files:
+ 554eb3fc59ed2e4d2aefba1c7018acbe 1220 admin optional mx-packageinstaller_22.6.dsc
+ 8a3ac6aa7aee374480bb90bcbc293b0b 294380 admin optional mx-packageinstaller_22.6.tar.xz
+ 776aaf453f865c281fa47ad58949185b 10947 admin optional mx-packageinstaller_22.6_amd64.buildinfo
+ 6dea4d2f1f8427a56d8443f1393110d2 372748 admin optional mx-packageinstaller_22.6_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmKmx/ITHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNRNCADU7Ik9BTlXBYVZe+11UFR24lMDdc0D
+9neoW8daFF4J9rG80K3fhNYYZfancd8fDxudesqrE3hbj65t94KC1d9UfHTtHpzh
+MpTwDrxigkTCih0N9fsM9rzAyEOZ0iDrV7dguJEJ3RF4Ej49yDmg9pO+qx1FBjzw
+RC96hn/nmePXZDDMorzW2nHEyaIJWsLLJD9xj0qnf/RK/msDrZoCz0vK75TBM+lc
+ku5+nkaV5J5UfwU3nmAsV7/GrOHKQmt6wJTEjX+FgFyyrwFSGHABUZIxdml4HdZ2
+WBxQ1abYW9jhUmfqWL+bv+If4tKSTvfeP9TIj9AOrs8JU5f424Ca7S4c
+=6r87
+-----END PGP SIGNATURE-----

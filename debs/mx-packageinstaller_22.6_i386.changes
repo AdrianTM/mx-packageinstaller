@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Mon, 13 Jun 2022 01:11:31 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 22.6
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.6) mx; urgency=medium
+ .
+   * Add mxpi-launcher to preserve env variables needed to follow USER theme
+   * Set HOME to /root, XDG_RUNTIME_DIR to /run/user/0 to make sure if started with sudo -E things go to the right place
+   * Display info about MX Test and Backport packages
+   * Update package lists (Stable, MX Test, Backports) when packages are installed/removed from another tab
+Checksums-Sha1:
+ 17c4ae0a2404c18f38c7e429308c168497a80077 10081 mx-packageinstaller_22.6_i386.buildinfo
+ 4498a134587e4fb0e04e1bc227eae28b903acb5b 381404 mx-packageinstaller_22.6_i386.deb
+Checksums-Sha256:
+ d2834c23a9333281441328f43be2dc34544f319ecfde2b6dd70e073070e5be74 10081 mx-packageinstaller_22.6_i386.buildinfo
+ 95068b12e5f467ba9f97c1eb641567f7d46540cc848d31232148380d8801de07 381404 mx-packageinstaller_22.6_i386.deb
+Files:
+ 3cdf39fb6221c838acfba7bed53fc440 10081 admin optional mx-packageinstaller_22.6_i386.buildinfo
+ 1398f6242ad0ebb2091a76348717503c 381404 admin optional mx-packageinstaller_22.6_i386.deb

@@ -1,3 +1,12 @@
+mx-packageinstaller (22.6) mx; urgency=medium
+
+  * Add mxpi-launcher to preserve env variables needed to follow USER theme
+  * Set HOME to /root, XDG_RUNTIME_DIR to /run/user/0 to make sure if started with sudo -E things go to the right place
+  * Display info about MX Test and Backport packages
+  * Update package lists (Stable, MX Test, Backports) when packages are installed/removed from another tab
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 13 Jun 2022 01:11:31 -0400
+
 mx-packageinstaller (22.4.3) mx; urgency=medium
 
   * Make sure text is added at end of output box (clicking inside the output box should not move cursor around)
