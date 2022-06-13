@@ -125,7 +125,7 @@ public:
     static QString addSizes(const QString &arg1, const QString &arg2);
     QString getDebianVerName();
     QString getLocalizedName(const QDomElement &element) const;
-    QString getTranslation(const QString &item);
+    QString categoryTranslation(const QString &item);
     QString getVersion(const QString &name);
     QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String(""));
     QStringList listInstalled();
@@ -227,7 +227,7 @@ private:
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
-    bool checkOnline();
+    bool isOnline();
     bool downloadAndUnzip(const QString &url, QFile &file);
     bool downloadAndUnzip(const QString &url, const QString &repo_name, const QString &branch, const QString &format, QFile &file);
     bool downloadFile(const QString &url, QFile &file);

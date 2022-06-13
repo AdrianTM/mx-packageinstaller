@@ -1,12 +1,11 @@
 #include "remotes.h"
 
-#include <QLayout>
+#include <QDebug>
 #include <QLabel>
+#include <QLayout>
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
-
-#include <QDebug>
 
 ManageRemotes::ManageRemotes(QWidget *parent) :
     QDialog(parent)

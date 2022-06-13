@@ -41,8 +41,8 @@
 
 #include "about.h"
 #include "aptcache.h"
-#include "versionnumber.h"
 #include "version.h"
+#include "versionnumber.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -1812,7 +1812,7 @@ void MainWindow::displayInfo(const QTreeWidgetItem *item, int column)
         loop.exec();
         ui->treePopularApps->blockSignals(false);
 
-        if (reply->error() != 0u)
+        if (reply->error() != 0)
             qDebug() << "Download of " << url.url() << " failed: " << qPrintable(reply->errorString());
         else {
             QImage image;
@@ -1820,7 +1820,7 @@ void MainWindow::displayInfo(const QTreeWidgetItem *item, int column)
             QBuffer buffer(&data);
             QImageReader imageReader(reply);
             image = imageReader.read();
-            if (imageReader.error() != 0u) {
+            if (imageReader.error() != 0) {
                 qDebug() << "loading screenshot: " << imageReader.errorString();
             } else {
                 image = image.scaled(QSize(200, 300), Qt::KeepAspectRatioByExpanding);
@@ -2636,7 +2636,7 @@ void MainWindow::on_comboUser_activated(int index)
 void MainWindow::on_treePopularApps_customContextMenuRequested(QPoint pos)
 {
     auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
-    if (t_widget->currentItem()->childCount() > 0)
+    if (t_widget->currentItem()->childCount() > 0) // skip categories
         return;
     auto *action = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("More &info..."), this);
     QMenu menu(this);

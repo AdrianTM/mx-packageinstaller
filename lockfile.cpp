@@ -24,8 +24,8 @@
 
 
 #include "lockfile.h"
-#include <unistd.h>
 #include <sys/file.h>
+#include <unistd.h>
 
 LockFile::LockFile(const QString &file_name) :
     file_name(file_name)

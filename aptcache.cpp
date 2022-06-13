@@ -1,5 +1,5 @@
-#include <QDir>
 #include <QDebug>
+#include <QDir>
 #include <QRegularExpression>
 
 #include "aptcache.h"
