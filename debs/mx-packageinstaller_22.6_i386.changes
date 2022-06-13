@@ -18,11 +18,11 @@ Changes:
    * Display info about MX Test and Backport packages
    * Update package lists (Stable, MX Test, Backports) when packages are installed/removed from another tab
 Checksums-Sha1:
- 17c4ae0a2404c18f38c7e429308c168497a80077 10081 mx-packageinstaller_22.6_i386.buildinfo
- 4498a134587e4fb0e04e1bc227eae28b903acb5b 381404 mx-packageinstaller_22.6_i386.deb
+ 2b847fcdd16ed0df904682aa7b2853fbda976641 10081 mx-packageinstaller_22.6_i386.buildinfo
+ d6c37ca79ad201b7852c9f9ca3d57e6bfad4515d 381276 mx-packageinstaller_22.6_i386.deb
 Checksums-Sha256:
- d2834c23a9333281441328f43be2dc34544f319ecfde2b6dd70e073070e5be74 10081 mx-packageinstaller_22.6_i386.buildinfo
- 95068b12e5f467ba9f97c1eb641567f7d46540cc848d31232148380d8801de07 381404 mx-packageinstaller_22.6_i386.deb
+ 2b2f75c01a71311ba563821771f1ca0234ae6b460233bd21956fc07e6b45cc46 10081 mx-packageinstaller_22.6_i386.buildinfo
+ ae2f9f76298d2846ebbc164e55028128b5c3fe72228e88d0c10dc9074d5fb655 381276 mx-packageinstaller_22.6_i386.deb
 Files:
- 3cdf39fb6221c838acfba7bed53fc440 10081 admin optional mx-packageinstaller_22.6_i386.buildinfo
- 1398f6242ad0ebb2091a76348717503c 381404 admin optional mx-packageinstaller_22.6_i386.deb
+ 810c9bf21aa1670462312ddb02dcd7e5 10081 admin optional mx-packageinstaller_22.6_i386.buildinfo
+ c3d3a8276151c30ef550564b3eaf8cec 381276 admin optional mx-packageinstaller_22.6_i386.deb

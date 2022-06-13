@@ -21,29 +21,29 @@ Changes:
    * Display info about MX Test and Backport packages
    * Update package lists (Stable, MX Test, Backports) when packages are installed/removed from another tab
 Checksums-Sha1:
- f0b0504a70a9dd3564cae36746f7b851763835d9 1220 mx-packageinstaller_22.6.dsc
- 4ac96dcea80f250a45883c0c0c44e8b0aaf6cc9b 294380 mx-packageinstaller_22.6.tar.xz
- 4ca14f6177cd646f52e23b5748aafffc0f5fb79e 10947 mx-packageinstaller_22.6_amd64.buildinfo
- 0b7f4829cf57882bf7c56b4fa0f225904d8b3ebc 372748 mx-packageinstaller_22.6_amd64.deb
+ 7844d713927037fefc258ae23fffc4008107a0a9 1220 mx-packageinstaller_22.6.dsc
+ 76bb01b42d12e382665d7eb0f7c0621859a3238b 296512 mx-packageinstaller_22.6.tar.xz
+ d4d5e5d64a82dcecd3a695648b9f6dfb5e1bffcd 10947 mx-packageinstaller_22.6_amd64.buildinfo
+ d1a1cedffe33022181b9bae10ccdc1ece9df10a9 373036 mx-packageinstaller_22.6_amd64.deb
 Checksums-Sha256:
- 59e283c5af5aeda03345e3ed3772e35da82ef76639d7b0a48029e8807f9e2f1e 1220 mx-packageinstaller_22.6.dsc
- f828bb12332a310450f5338a69c36f2b1ae50ec2349e3707078d480c7edf603a 294380 mx-packageinstaller_22.6.tar.xz
- 6be40dcd9876ee4433d4a74fe7e0538083cee816315cb969e3d387cf02ffb603 10947 mx-packageinstaller_22.6_amd64.buildinfo
- 2eefd8a96367125f63aae6a06ae7997f403265fa633856b7401dd92da27b0ce5 372748 mx-packageinstaller_22.6_amd64.deb
+ 9c47817db61e3611ad206bd8796806132fdd611a1314f0814c1d9bdf9afdc5e1 1220 mx-packageinstaller_22.6.dsc
+ c893afde1336a5dd191ee3f9a99adfa7d3d8931e0049f2abae3fc4bd3e332fda 296512 mx-packageinstaller_22.6.tar.xz
+ 0adc243f59572b2105427c93fe9138d13b5bf1dcdb84c19da991e2a7f9e24409 10947 mx-packageinstaller_22.6_amd64.buildinfo
+ c51a370c644eb93ba20032300fe29f64e137feb242ebf782b5f0d97278dc26be 373036 mx-packageinstaller_22.6_amd64.deb
 Files:
- 554eb3fc59ed2e4d2aefba1c7018acbe 1220 admin optional mx-packageinstaller_22.6.dsc
- 8a3ac6aa7aee374480bb90bcbc293b0b 294380 admin optional mx-packageinstaller_22.6.tar.xz
- 776aaf453f865c281fa47ad58949185b 10947 admin optional mx-packageinstaller_22.6_amd64.buildinfo
- 6dea4d2f1f8427a56d8443f1393110d2 372748 admin optional mx-packageinstaller_22.6_amd64.deb
+ 614c9e7b8b9233e9942b7483e6889714 1220 admin optional mx-packageinstaller_22.6.dsc
+ 97bc2e9bf48b6095a95aef5114dc674b 296512 admin optional mx-packageinstaller_22.6.tar.xz
+ 28fa117491a8f7b37b0026228a8c8a69 10947 admin optional mx-packageinstaller_22.6_amd64.buildinfo
+ efa393ca4b6982fd5659bcec36f17491 373036 admin optional mx-packageinstaller_22.6_amd64.deb
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmKmx/ITHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNRNCADU7Ik9BTlXBYVZe+11UFR24lMDdc0D
-9neoW8daFF4J9rG80K3fhNYYZfancd8fDxudesqrE3hbj65t94KC1d9UfHTtHpzh
-MpTwDrxigkTCih0N9fsM9rzAyEOZ0iDrV7dguJEJ3RF4Ej49yDmg9pO+qx1FBjzw
-RC96hn/nmePXZDDMorzW2nHEyaIJWsLLJD9xj0qnf/RK/msDrZoCz0vK75TBM+lc
-ku5+nkaV5J5UfwU3nmAsV7/GrOHKQmt6wJTEjX+FgFyyrwFSGHABUZIxdml4HdZ2
-WBxQ1abYW9jhUmfqWL+bv+If4tKSTvfeP9TIj9AOrs8JU5f424Ca7S4c
-=6r87
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmKnQEETHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumEU8CADIg8CArJkCnNcQ/ibLzp4GCvANgM9l
+PQG1XkAHZ6jQfxKG5AHF5nOXVCZjlgh6QVv+3FnxnX5AJPOqjVrIH+HfsX+UepLJ
+qyff9Dv7AtWZJV0lTcPd8l8y+KX+4a8G01RZwWBKVwEtgkWsxIHpbQva9xle6dg9
+lR+e2tbNbjuTLzLDjAsf1Q12Db282WOYgJ7kZdAfN75bj+XGgdaRst7Pbr58IkE4
+uDeguThOCfE3pJiWMeMq0O39b6XDewHufdARJ2KK34gbW1+Lbux7I9CXAfUjwnyk
+d40HxQ2hlowIAU95vOwDvZ4vVljzxcGVOhCkAmR6SH4hvhIOWt2CoXNj
+=/vHg
 -----END PGP SIGNATURE-----
