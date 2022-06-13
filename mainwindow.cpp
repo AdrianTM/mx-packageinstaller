@@ -1282,7 +1282,7 @@ bool MainWindow::isOnline()
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
         connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
-                [error](QNetworkReply::NetworkError err) mutable {error = err;} ); // errorOccured only in Qt >= 5.15
+                [&error](QNetworkReply::NetworkError err) {error = err;} ); // errorOccured only in Qt >= 5.15
         connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
                 &loop, &QEventLoop::quit);
         auto timeout = settings.value(QStringLiteral("timeout"), 5000).toInt();
