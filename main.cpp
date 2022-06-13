@@ -44,7 +44,6 @@ int main(int argc, char *argv[])
 {
     qputenv("XDG_RUNTIME_DIR", "/run/user/0");
     QApplication app(argc, argv);
-    qputenv("HOME", "/root");
 
     app.setWindowIcon(QIcon::fromTheme(app.applicationName()));
     app.setOrganizationName(QStringLiteral("MX-Linux"));
@@ -91,11 +90,12 @@ int main(int argc, char *argv[])
         logFile.open(QFile::Append | QFile::Text);
         qInstallMessageHandler(messageHandler);
 
+        qputenv("HOME", "/root");
         MainWindow w;
         w.show();
         return app.exec();
     } else {
-        QProcess::startDetached("su-to-root", {"-X", "-c", QApplication::applicationFilePath()});
+            QProcess::startDetached("/usr/bin/mxpi-launcher", {});
     }
 }
 

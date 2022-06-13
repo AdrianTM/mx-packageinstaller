@@ -24,7 +24,6 @@
  **********************************************************************/
 
 #include <QDebug>
-#include <QFileDialog>
 #include <QImageReader>
 #include <QMenu>
 #include <QNetworkAccessManager>
