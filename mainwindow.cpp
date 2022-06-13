@@ -903,7 +903,7 @@ void MainWindow::displayWarning(const QString &repo)
 
     if (repo == QLatin1String("test")) {
         displayed = &warning_test;
-        file = QDir::homePath() + "/.config/mx-test-installer";
+        file = QDir::homePath() + "/.config/" + qApp->organizationName() + "/mxpi_nowarning_test";
         msg = tr("You are about to use the MX Test repository, whose packages are provided for "\
                  "testing purposes only. It is possible that they might break your system, so it "\
                  "is suggested that you back up your system and install or update only one package "\
@@ -912,7 +912,7 @@ void MainWindow::displayWarning(const QString &repo)
 
     } else if (repo == QLatin1String("backports")) {
         displayed = &warning_backports;
-        file = QDir::homePath() + "/.config/mx-debian-backports-installer";
+        file = QDir::homePath() + "/.config/" + qApp->organizationName() + "/mxpi_nowarning_backports";
         msg = tr("You are about to use Debian Backports, which contains packages taken from the next "\
                  "Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable. "\
                  "They cannot be tested as extensively as in the stable releases of Debian and MX Linux, "\
@@ -920,7 +920,7 @@ void MainWindow::displayWarning(const QString &repo)
                  "in Debian stable. Use with care!");
     } else if (repo == QLatin1String("flatpaks")) {
         displayed = &warning_flatpaks;
-        file = QDir::homePath() + "/.config/mxpi_nowarning_flatpaks";
+        file = QDir::homePath() + "/.config/" + qApp->organizationName() + "/mxpi_nowarning_flatpaks";
         msg = tr("MX Linux includes this repository of flatpaks for the users' convenience only, and "\
                  "is not responsible for the functionality of the individual flatpaks themselves. "\
                  "For more, consult flatpaks in the Wiki.");
