@@ -141,6 +141,7 @@ private slots:
     void cmdDone();
     void cmdStart();
     void disableOutput();
+    void displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeWidgetItem *item);
     void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
     void displayPackageInfo(const QTreeWidgetItem *item);
     void displayPopularInfo(const QTreeWidgetItem *item, int column);

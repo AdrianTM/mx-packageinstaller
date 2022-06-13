@@ -1780,6 +1780,47 @@ void MainWindow::disableOutput()
     disconnect(&cmd, &Cmd::errorAvailable, this, &MainWindow::outputAvailable);
 }
 
+void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeWidgetItem *item)
+{
+    QString file_name = (tree == ui->treeMXtest) ? tmp_dir.path() + "/mxPackages"
+                                                 : tmp_dir.path() + "/allPackages";
+
+    QFile file(file_name);
+    if (!file.open(QFile::ReadOnly | QFile::Text)) {
+        qDebug() << "Could not open: " << file.fileName();
+        return;
+    }
+    QString msg;
+    QString item_name = item->text(TreeCol::Name);
+    QTextStream in(&file);
+    while (!in.atEnd()) {
+        QString line = in.readLine();
+        if (line == QStringLiteral("Package: ") + item_name) {
+            msg += line + QStringLiteral("\n");
+            line.clear();
+            while (!in.atEnd()) {
+                line = in.readLine();
+                if (line.startsWith(QLatin1String("Package: ")))
+                    break;
+                msg += line + QStringLiteral("\n");
+            }
+        }
+    }
+    auto msg_list = msg.split(QStringLiteral("\n"));
+    auto max_no_chars = 2000; // around 15-17 lines
+    auto max_no_lines = 20;   // cut message after these many lines
+    if (msg.size() > max_no_chars) // split msg into details if too large
+        msg = msg_list.mid(0, max_no_lines).join(QStringLiteral("\n"));
+
+    QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg, QMessageBox::Close);
+
+    // make it wider
+    auto *horizontalSpacer = new QSpacerItem(this->width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    auto *layout = qobject_cast<QGridLayout *>(info.layout());
+    layout->addItem(horizontalSpacer, 0, 1);
+    info.exec();
+}
+
 void MainWindow::disableWarning(bool checked, const QString &file_name)
 {
     QFile file(file_name);
@@ -1800,7 +1841,10 @@ void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
     }
     QMenu menu(this);
     menu.addAction(action);
-    connect(action, &QAction::triggered, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
+    if (tree == ui->treeStable)
+        connect(action, &QAction::triggered, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
+    else
+        connect(action, &QAction::triggered, [this, tree, t_widget] { displayInfoTestOrBackport(tree, t_widget->currentItem()); });
     menu.exec(t_widget->mapToGlobal(pos));
     action->deleteLater();
 }
@@ -1855,9 +1899,11 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
 
 void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
 {
-    QString msg = cmd.getCmdOut("aptitude show " + item->text(2));
+    QString msg = cmd.getCmdOut("aptitude show " + item->text(TreeCol::Name));
     // remove first 5 lines from aptitude output "Reading package..."
-    QString details = cmd.getCmdOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde || echo gnome) aptitude -sy -V -o=Dpkg::Use-Pty=0 install " + item->text(2) + " |tail -5");
+    QString details = cmd.getCmdOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null "
+"| grep -sq ^i && echo kde || echo gnome) aptitude -sy -V -o=Dpkg::Use-Pty=0 install " +
+                                    item->text(TreeCol::Name) + " |tail -5");
 
     auto detail_list = details.split(QStringLiteral("\n"));
     auto msg_list = msg.split(QStringLiteral("\n"));
