@@ -31,8 +31,8 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "mainwindow.h"
 #include "lockfile.h"
+#include "mainwindow.h"
 #include <unistd.h>
 
 

@@ -117,6 +117,7 @@ public:
     void refreshPopularApps();
     void removeDuplicatesFP();
     void setCurrentTree();
+    void setDirty();
     void setProgressDialog();
     void setSearchFocus();
     void setup();
@@ -188,6 +189,9 @@ private:
     Ui::MainWindow *ui;
 
     QString indexFilterFP;
+    bool dirtyBackports = true;
+    bool dirtyStable = true;
+    bool dirtyTest = true;
     bool test_initially_enabled{};
     bool updated_once{};
     bool warning_backports{};

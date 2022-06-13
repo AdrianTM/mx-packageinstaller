@@ -728,12 +728,15 @@ void MainWindow::displayPackages()
     if (tree == ui->treeMXtest) {
         list = mx_list;
         newtree = ui->treeMXtest;
+        dirtyTest = false;
     } else if (tree == ui->treeBackports) {
         list = backports_list;
         newtree = ui->treeBackports;
+        dirtyBackports = false;
     } else { // for ui-treeStable, ui->treePopularApps, ui->treeFlatpak
         list = stable_list;
         newtree = ui->treeStable;
+        dirtyStable = false;
     }
 
     newtree->blockSignals(true);
@@ -1729,6 +1732,11 @@ void MainWindow::setCurrentTree()
     }
 }
 
+void MainWindow::setDirty()
+{
+    dirtyBackports = dirtyStable = dirtyTest = true;
+}
+
 QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -2017,6 +2025,7 @@ void MainWindow::on_pushInstall_clicked()
         if (!stable_list.isEmpty()) // clear cache to update list if it already exists
             buildPackageLists();
         if (success) {
+            setDirty();
             refreshPopularApps();
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(tree->parentWidget());
@@ -2054,6 +2063,7 @@ void MainWindow::on_pushInstall_clicked()
         }
     } else {
         bool success = installSelected();
+        setDirty();
         buildPackageLists();
         refreshPopularApps();
         if (success) {
@@ -2179,6 +2189,7 @@ void MainWindow::on_pushUninstall_clicked()
         names = change_list.join(QStringLiteral(" "));
     }
 
+    setDirty();
     if (uninstall(names, preuninstall, postuninstall)) {
         if (!stable_list.isEmpty()) // update list if it already exists
             buildPackageLists();
@@ -2243,7 +2254,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         enableTabs(true);
         setCurrentTree();
         change_list.clear();
-        if (tree->topLevelItemCount() == 0)
+        if (tree->topLevelItemCount() == 0 || dirtyStable)
             buildPackageLists();
         ui->comboFilterStable->setCurrentIndex(filter_idx);
         findPackageOther();
@@ -2255,7 +2266,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         setCurrentTree();
         displayWarning(QStringLiteral("test"));
         change_list.clear();
-        if (tree->topLevelItemCount() == 0)
+        if (tree->topLevelItemCount() == 0 || dirtyTest)
             buildPackageLists();
         ui->comboFilterMX->setCurrentIndex(filter_idx);
         findPackageOther();
@@ -2267,7 +2278,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         setCurrentTree();
         displayWarning(QStringLiteral("backports"));
         change_list.clear();
-        if (tree->topLevelItemCount() == 0)
+        if (tree->topLevelItemCount() == 0 || dirtyBackports)
             buildPackageLists();
         ui->comboFilterBP->setCurrentIndex(filter_idx);
         findPackageOther();
