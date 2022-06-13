@@ -153,9 +153,12 @@ void MainWindow::setup()
 
     QList list_tree{ui->treePopularApps, ui->treeStable, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak};
     for (const auto &tree : list_tree) {
-        if (tree == ui->treePopularApps || tree == ui->treeStable) tree->setContextMenuPolicy(Qt::CustomContextMenu);
-        connect(tree, &QTreeWidget::itemDoubleClicked, [tree] (QTreeWidgetItem *item) { tree->setCurrentItem(item); });
+        if (tree != ui->treeFlatpak)
+            tree->setContextMenuPolicy(Qt::CustomContextMenu);
+        connect(tree, &QTreeWidget::itemDoubleClicked, [tree](QTreeWidgetItem *item) { tree->setCurrentItem(item); });
         connect(tree, &QTreeWidget::itemDoubleClicked, this, &MainWindow::checkUnckeckItem);
+        connect(tree, &QTreeWidget::customContextMenuRequested, [this, tree](QPoint pos) {
+            displayPackageInfo(tree, pos); });
     }
 }
 
@@ -667,7 +670,7 @@ void MainWindow::displayPopularApps() const
         ui->treePopularApps->resizeColumnToContents(i);
 
     ui->treePopularApps->sortItems(2, Qt::AscendingOrder);
-    connect(ui->treePopularApps, &QTreeWidget::itemClicked, this, &MainWindow::displayInfo, Qt::UniqueConnection);
+    connect(ui->treePopularApps, &QTreeWidget::itemClicked, this, &MainWindow::displayPopularInfo, Qt::UniqueConnection);
 }
 
 void MainWindow::displayFilteredFP(QStringList list, bool raw)
@@ -1784,8 +1787,25 @@ void MainWindow::disableWarning(bool checked, const QString &file_name)
             : file.remove();
 }
 
-// Display info when clicking the "info" icon of the package
-void MainWindow::displayInfo(const QTreeWidgetItem *item, int column)
+void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
+{
+    auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
+    auto *action = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("More &info..."), this);
+    if (tree == ui->treePopularApps) {
+        if (t_widget->currentItem()->childCount() > 0) {// skip categories
+            action->deleteLater();
+            return;
+        }
+        connect(action, &QAction::triggered, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
+    }
+    QMenu menu(this);
+    menu.addAction(action);
+    connect(action, &QAction::triggered, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
+    menu.exec(t_widget->mapToGlobal(pos));
+    action->deleteLater();
+}
+
+void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
 {
     if (column != PopCol::Info || item->childCount() > 0)
         return;
@@ -2641,18 +2661,7 @@ void MainWindow::on_treePopularApps_customContextMenuRequested(QPoint pos)
     auto *action = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("More &info..."), this);
     QMenu menu(this);
     menu.addAction(action);
-    connect(action, &QAction::triggered, [this, t_widget] { displayInfo(t_widget->currentItem(), 3); });
-    menu.exec(ui->treePopularApps->mapToGlobal(pos));
-    action->deleteLater();
-}
-
-void MainWindow::on_treeStable_customContextMenuRequested(QPoint pos)
-{
-    auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
-    auto *action = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("More &info..."), this);
-    QMenu menu(this);
-    menu.addAction(action);
-    connect(action, &QAction::triggered, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
+    connect(action, &QAction::triggered, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
     menu.exec(ui->treePopularApps->mapToGlobal(pos));
     action->deleteLater();
 }

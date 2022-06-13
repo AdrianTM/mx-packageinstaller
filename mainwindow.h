@@ -135,15 +135,16 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private slots:
+    static void disableWarning(bool checked, const QString &file_name);
     void checkUnckeckItem();
     void cleanup();
     void cmdDone();
     void cmdStart();
     void disableOutput();
-    static void disableWarning(bool checked, const QString &file_name);
-    void displayInfo(const QTreeWidgetItem *item, int column);
-    void enableOutput();
+    void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
     void displayPackageInfo(const QTreeWidgetItem *item);
+    void displayPopularInfo(const QTreeWidgetItem *item, int column);
+    void enableOutput();
     void filterChanged(const QString &arg1);
     void findPackageOther();
     void findPopular() const;
@@ -180,7 +181,6 @@ private slots:
     void on_treePopularApps_itemChanged(QTreeWidgetItem *item);
     void on_treePopularApps_itemCollapsed(QTreeWidgetItem *item);
     void on_treePopularApps_itemExpanded(QTreeWidgetItem *item);
-    void on_treeStable_customContextMenuRequested(QPoint pos);
     void on_treeStable_itemChanged(QTreeWidgetItem *item);
 
 private:
