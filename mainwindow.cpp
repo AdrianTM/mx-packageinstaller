@@ -1249,10 +1249,7 @@ bool MainWindow::installSelected()
     }
     getDebianVerNum();
     bool result = install(names);
-    if (tree == ui->treeBackports) {
-        if (QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list")))
-            updateApt();
-    } else if (tree == ui->treeMXtest && !test_initially_enabled) {
+    if (tree == ui->treeBackports || (tree == ui->treeMXtest && !test_initially_enabled)) {
         if (QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list")))
             updateApt();
     }
