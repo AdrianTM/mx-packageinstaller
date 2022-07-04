@@ -1,3 +1,9 @@
+mx-packageinstaller (22.7) mx; urgency=medium
+
+  * Adjust pkexec/sudo environment parameter for HOME, XDG_RUNTIME_DIR and SESSION_MANAGER
+
+ -- fehlix <fehlix@mxlinux.org>  Mon, 04 Jul 2022 06:28:54 -0400
+
 mx-packageinstaller (22.6) mx; urgency=medium
 
   * Add mxpi-launcher to preserve env variables needed to follow USER theme
