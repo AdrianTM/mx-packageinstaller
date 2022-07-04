@@ -36,7 +36,7 @@
 #include <unistd.h>
 
 static QFile logFile;
-QString starting_home = qEnvironmentVariable("HOME");
+extern const QString starting_home = qEnvironmentVariable("HOME");
 
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
 
@@ -65,7 +65,7 @@ int main(int argc, char *argv[])
         app.installTranslator(&appTran);
 
     // Root guard
-    if (QProcess::execute("/bin/bash", {"-c", "logname |grep -q ^root$"}) == 0) {
+    if (QProcess::execute(QStringLiteral("/bin/bash"), {"-c", "logname |grep -q ^root$"}) == 0) {
         QMessageBox::critical(nullptr, QObject::tr("Error"),
                               QObject::tr("You seem to be logged in as root, please log out and log in as normal user to use this program."));
         exit(EXIT_FAILURE);
@@ -85,11 +85,11 @@ int main(int argc, char *argv[])
         }
         QString log_name = QStringLiteral("/var/log/mxpi.log");
         if (QFile::exists(log_name)) {
-            QProcess::execute("/bin/bash",
+            QProcess::execute(QStringLiteral("/bin/bash"),
                               {"-c", "echo '-----------------------------------------------------------\n"
                                "MXPI SESSION\n-----------------------------------------------------------' >> " +
                                log_name.toUtf8() + ".old"});
-            QProcess::execute("/bin/bash", {"-c", "cat " + log_name + " >> " + log_name + ".old"});
+            QProcess::execute(QStringLiteral("/bin/bash"), {"-c", "cat " + log_name + " >> " + log_name + ".old"});
             QFile::remove(log_name);
         }
         logFile.setFileName(log_name);
@@ -100,7 +100,7 @@ int main(int argc, char *argv[])
         w.show();
         return app.exec();
     } else {
-        QProcess::startDetached("/usr/bin/mxpi-launcher", {});
+        QProcess::startDetached(QStringLiteral("/usr/bin/mxpi-launcher"), {});
     }
 }
 
