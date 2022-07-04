@@ -89,8 +89,9 @@ void MainWindow::setup()
 
     lock_file = new LockFile(QStringLiteral("/var/lib/dpkg/lock"));
     connect(qApp, &QApplication::aboutToQuit, this, &MainWindow::cleanup, Qt::QueuedConnection);
-    test_initially_enabled = cmd.run("grep -q -E '^[[:space:]]*deb[[:space:]][^#]*/mx/testrepo/?[^#]*[[:space:]]+test\\b' "
-                                     "$(ls /etc/apt/sources.list  /etc/apt/sources.list.d/*.list 2>/dev/null)");
+
+    test_initially_enabled = cmd.run("apt-get update --print-uris | grep -m1 -qE '/mx/testrepo/dists/" + ver_name + "/test/'");
+
     this->setWindowTitle(tr("MX Package Installer"));
     ui->tabWidget->setCurrentIndex(Tab::Popular);
     QStringList column_names;
@@ -1236,13 +1237,10 @@ bool MainWindow::installSelected()
     if (tree == ui->treeMXtest) {
         // add testrepo unless already enabled
         if (!test_initially_enabled) {
-            // commented out line
-            if (cmd.run(QStringLiteral("grep -q -E  '^[[:space:]]*#[#[:space:]]*deb[[:space:]][^#]*/mx/testrepo/?[^#]*[[:space:]]+test\\b' /etc/apt/sources.list.d/mx.list")))
-                cmd.run(R"(sed -i -r '0,\|^[[:space:]]*#[#[:space:]]*(deb[[:space:]][^#]*/mx/testrepo/?[^#]*[[:space:]]+test\b.*)|s||\1|' /etc/apt/sources.list.d/mx.list)"); // uncomment
-            else if (ver_name == QLatin1String("jessie"))  // use 'mx15' for Stretch based MX, user version name for newer versions
-                cmd.run(QStringLiteral("echo -e '\ndeb http://mxrepo.com/mx/testrepo/ mx15 test' >> /etc/apt/sources.list.d/mx.list"));
-            else
-                cmd.run("echo -e '\ndeb http://mxrepo.com/mx/testrepo/ " + ver_name + " test' >> /etc/apt/sources.list.d/mx.list");
+            QString suite = ver_name;
+            if (ver_name == QLatin1String("jessie"))  // use 'mx15' for Stretch based MX, user version name for newer versions
+                suite = "mx15";
+            cmd.run("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + suite + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > /etc/apt/sources.list.d/mxpm-temp.list");
         }
         updateApt();
     } else if (tree == ui->treeBackports) {
@@ -1252,12 +1250,11 @@ bool MainWindow::installSelected()
     getDebianVerNum();
     bool result = install(names);
     if (tree == ui->treeBackports) {
-        QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list"));
-        updateApt();
+        if (QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list")))
+            updateApt();
     } else if (tree == ui->treeMXtest && !test_initially_enabled) {
-        // comment out the line
-        cmd.run(R"(sed  -i -r '\|^[[:space:]]*(deb[[:space:]][^#]*/mx/testrepo/?[^#]*[[:space:]]+test\b.*)|s||#\1|' /etc/apt/sources.list.d/mx.list)");
-        updateApt();
+        if (QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list")))
+            updateApt();
     }
     change_list.clear();
     installed_packages = listInstalled();
@@ -1303,6 +1300,7 @@ bool MainWindow::isOnline()
 
 bool MainWindow::downloadFile(const QString &url, QFile &file)
 {
+    qDebug() << "... downloading: " << url;
     if (!file.open(QIODevice::WriteOnly)) {
         qDebug() << "Could not open file:" << file.fileName();
         return false;
@@ -1413,6 +1411,13 @@ bool MainWindow::downloadPackageList(bool force_download)
             repo_name = (ver_name == QLatin1String("jessie")) ? QStringLiteral("mx15") : ver_name;  // repo name is 'mx15' for Strech, use Debian version name for later versions
             QFile file(tmp_dir.path() + "/mxPackages.gz");
             QString url = QStringLiteral("http://mxrepo.com/mx/testrepo/dists/");
+            QString testrepo_url = url;
+            if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oP 'https?://.*/mx/testrepo/dists/(?=" + repo_name + "/test/)'", testrepo_url)) {
+                url = testrepo_url;
+            } else if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + repo_name + "/main/' | sed -e 's:/mx/repo/dists/" + repo_name + "/main/:/mx/testrepo/dists/:' | grep -oE 'https?://.*/mx/testrepo/dists/'", testrepo_url)) {
+                url = testrepo_url;
+            }
+
             QString branch = QStringLiteral("/test");
             QString format = QStringLiteral("gz");
             if (!downloadAndUnzip(url, repo_name, branch, format, file))
@@ -1578,10 +1583,6 @@ void MainWindow::cleanup()
     if (QFile::remove(QStringLiteral("/etc/apt/sources.list.d/mxpm-temp.list")))
         changed = true;
 
-    if (!test_initially_enabled && (system(R"(grep -q '^\s*deb.* test' /etc/apt/sources.list.d/mx.list)") == 0)) {
-        system("sed -i 's/.* test/#&/'  /etc/apt/sources.list.d/mx.list");  // comment out the line
-        changed = true;
-    }
     if (changed) system("nohup apt-get update&");
 
     lock_file->unlock();

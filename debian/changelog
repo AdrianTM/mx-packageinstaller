@@ -1,6 +1,8 @@
 mx-packageinstaller (22.7) mx; urgency=medium
 
   * Adjust pkexec/sudo environment parameter for HOME, XDG_RUNTIME_DIR and SESSION_MANAGER
+  * Rework testrepo handling
+  * Enable deb-822 sourcelists format and multi-repo setup
 
  -- fehlix <fehlix@mxlinux.org>  Mon, 04 Jul 2022 06:28:54 -0400
 
