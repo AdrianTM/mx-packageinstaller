@@ -1,0 +1,27 @@
+Format: 1.8
+Date: Mon, 04 Jul 2022 06:28:54 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 22.7
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: fehlix <fehlix@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.7) mx; urgency=medium
+ .
+   * Adjust pkexec/sudo environment parameter for HOME, XDG_RUNTIME_DIR and SESSION_MANAGER
+   * Rework testrepo handling
+   * Enable deb-822 sourcelists format and multi-repo setup
+Checksums-Sha1:
+ bdce6be8cead9e90197779ee4ee2898ccc5694ab 10081 mx-packageinstaller_22.7_i386.buildinfo
+ be74ff82183fa0daf0811ad11462bd4e915111dd 381952 mx-packageinstaller_22.7_i386.deb
+Checksums-Sha256:
+ 85264ecbd4ecec7988004145dc4914bc795a83a575a23ba6b3fce2c440a51cf7 10081 mx-packageinstaller_22.7_i386.buildinfo
+ 472002c3afcda71137f8a8ebc89cf8013ecfb7f6b29172771ca0c46b9b2a3ca1 381952 mx-packageinstaller_22.7_i386.deb
+Files:
+ efb402094c884a8c020fdf4e9d9c5df4 10081 admin optional mx-packageinstaller_22.7_i386.buildinfo
+ c74109bbe88be8f6ff7ddd8a07824875 381952 admin optional mx-packageinstaller_22.7_i386.deb

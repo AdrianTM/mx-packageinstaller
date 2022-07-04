@@ -1,0 +1,48 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Mon, 04 Jul 2022 06:28:54 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 22.7
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: fehlix <fehlix@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.7) mx; urgency=medium
+ .
+   * Adjust pkexec/sudo environment parameter for HOME, XDG_RUNTIME_DIR and SESSION_MANAGER
+   * Rework testrepo handling
+   * Enable deb-822 sourcelists format and multi-repo setup
+Checksums-Sha1:
+ a339a339ff1ee4222cedb8ef1bd5e17cc2107b3f 1220 mx-packageinstaller_22.7.dsc
+ edaefae8a955b65a8b004280f1519d1d54e65765 297576 mx-packageinstaller_22.7.tar.xz
+ 599096f65790f6d1417307fd86c9b1fd50830f8a 10803 mx-packageinstaller_22.7_amd64.buildinfo
+ 8bfa509da1c61309b93b9fb8db3e44689b765ce3 373064 mx-packageinstaller_22.7_amd64.deb
+Checksums-Sha256:
+ 6d3c37b7c7c0831ab310fb118e4ac6806f3a40d8c8b17933c229e0626ae3fa77 1220 mx-packageinstaller_22.7.dsc
+ ad1873242ef55149f14b6d3c0359564013594fb3a5f49e0f11fa07f2ff1eafdf 297576 mx-packageinstaller_22.7.tar.xz
+ ec8a9fa4761bcdd4f3f9f555a074c89b8ae6e06009665ce74c220d6b4dfb3a25 10803 mx-packageinstaller_22.7_amd64.buildinfo
+ 692f92ca88233baa53e97c44a3bb44362b45fdb9bfd066c5daa89827789e7f95 373064 mx-packageinstaller_22.7_amd64.deb
+Files:
+ 7734e23b2efa792d608103c25f310d32 1220 admin optional mx-packageinstaller_22.7.dsc
+ c9158cc7dd65bb50c8257f91fc2782df 297576 admin optional mx-packageinstaller_22.7.tar.xz
+ 67caa82447203204136af27ae7b8e14e 10803 admin optional mx-packageinstaller_22.7_amd64.buildinfo
+ 429851549de5cf497dee34986dd32d94 373064 admin optional mx-packageinstaller_22.7_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmLC71MTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumKv1CACAktwK2xRheucXlAMpNhEB+B1q7JKR
+N4EnkUdE/3Tx8QR36pIpEznihihSG12PGvy6ShKJ7wQaiZ9Kx6KdrR1WjKggPLQU
+rQUB+R0EDfNq3ILZm5utS/asuhuP4vnFZwjMgw5tYbzSZbSYAG0VnmABDLWJDpRL
+UfgRWXR4Esyo3PCmlUYrL6vL74tTEHCStMkKfECDRjc753YsG5EBhi0SXB2XdeNq
+QCkTSbCFIeiGdjGnC61mIrf7xCZuweUTET7dzoy5QSZ35cK4L69AbTe98coSjV1T
+STepG1fDkUwe/mGMevN6WHl8YAQoBWUYoSaj1tzrcvxBeUBA6jMFo9L6
+=dYYh
+-----END PGP SIGNATURE-----
