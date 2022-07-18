@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="cs">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="cs">
 <context>
     <name>MainWindow</name>
     <message>
@@ -156,12 +154,12 @@
         <location filename="../mainwindow.ui" line="791"/>
         <location filename="../mainwindow.ui" line="1083"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Nainstalovat taky &quot;Doporučené&quot; balíky</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="394"/>
         <source>Remove orphan packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrat osirocené balíky</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="404"/>
@@ -175,7 +173,7 @@
         <location filename="../mainwindow.ui" line="930"/>
         <location filename="../mainwindow.ui" line="1497"/>
         <source>Greyed out items have already been installed.</source>
-        <translation>Zešednuté položky již byly nainstalovány.</translation>
+        <translation>Šedé položky již byly nainstalovány.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="477"/>
@@ -192,12 +190,12 @@
     <message>
         <location filename="../mainwindow.ui" line="824"/>
         <source>Debian Backports</source>
-        <translation type="unfinished"></translation>
+        <translation>Debian Backports</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1157"/>
         <source>Flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpaky</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1181"/>
@@ -210,7 +208,7 @@
         <location filename="../mainwindow.ui" line="1190"/>
         <location filename="../mainwindow.cpp" line="2380"/>
         <source>All runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Všechny runtimy</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1195"/>
@@ -228,7 +226,7 @@
         <location filename="../mainwindow.ui" line="1205"/>
         <location filename="../mainwindow.cpp" line="2372"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Nainstalované runtimy</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1210"/>
@@ -236,12 +234,12 @@
         <location filename="../mainwindow.cpp" line="2505"/>
         <location filename="../mainwindow.cpp" line="2506"/>
         <source>All installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Všechny nainstalované</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1260"/>
         <source>Short Name</source>
-        <translation>Krátké jméno</translation>
+        <translation>Zkrácené jméno</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1265"/>
@@ -276,7 +274,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrat nevyužité runtimy</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1447"/>
@@ -292,24 +290,24 @@
     <message>
         <location filename="../mainwindow.ui" line="1474"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"></translation>
+        <translation>Remote (repo):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1517"/>
         <location filename="../mainwindow.cpp" line="2206"/>
         <location filename="../mainwindow.cpp" line="2334"/>
         <source>Console Output</source>
-        <translation>Výstup na konzoli</translation>
+        <translation>Konzole</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1523"/>
         <source>Enter</source>
-        <translation>Zadat</translation>
+        <translation>Vložit</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1534"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Odpovězte zde, nebo stiskněte Enter</translation>
+        <translation>Odpovězte zde, nebo stiskněte Vložit</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1590"/>
@@ -388,12 +386,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"></translation>
+        <translation>Spouštění před-odinstalačních operací...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
         <source>Running post-uninstall operations...</source>
-        <translation>Spouštění po-instalačních činností...</translation>
+        <translation>Spouštění post-odinstalačních operací...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="209"/>
@@ -422,7 +420,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="224"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation type="unfinished"></translation>
+        <translation>Při aktualizaci zdrojů se vyskytla chyba. Některé zdroje nemuseli být zaktualizované. Pro víc informací zkontrolujte:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="599"/>
@@ -460,17 +458,17 @@
         <location filename="../mainwindow.cpp" line="791"/>
         <location filename="../mainwindow.cpp" line="2314"/>
         <source> already installed</source>
-        <translation>Nainstalováno</translation>
+        <translation>již nainstalováno</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="798"/>
         <source> installed</source>
-        <translation>Nainstalováno</translation>
+        <translation>nainstalováno</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="908"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation type="unfinished"></translation>
+        <translation>Chystáte se použít zdroj Testovací repozitář, který obsahuje softvérové balíky určené pouze pro jejich testování. Je možné, že tyto ovlivní stabilitu vášho systému. Je proto doporučeno zazálohovat systémová nastavení a instalovat nebo aktualizovat balíky jenotlivě.  Prosíme o poskytnutí zpětné vazby ve fóru aby mohli být jednotlivé balíky správně vyhodnocené před jejich přesunem do Hlavního repozitáře.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="917"/>
@@ -480,7 +478,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="925"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation type="unfinished"></translation>
+        <translation>Repozitář flatpaků je zde pouze pro vaše pohodlí a vývojáři MX Linux nezodpovídají za funkčnost jednotlivých flatpaků. Pro další informace si můžete dohledat flatpaky třeba ve Wiki.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="932"/>
@@ -501,7 +499,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Byly vybrány nasledující balíky. Seznam změn zobrazíte kliknutím na Ukázat podrobnosti.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1070"/>
@@ -538,17 +536,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation type="unfinished"></translation>
+        <translation>Při pokusu o zápis souboru: %1 se vyskytla chyba. Prosím zkontrolujte zda máte dostatek místa na disku.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
         <source>Downloading package info...</source>
-        <translation>Stahuji infrmace o balících...</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>Balíky k instalaci:</translation>
+        <translation>Stahuji informace o balících...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1820"/>
@@ -556,6 +549,17 @@
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>Informace o balíku</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>Vic info...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>Balíky k instalaci:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -600,7 +604,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="2077"/>
         <source>About %1</source>
-        <translation>O %1</translation>
+        <translation>O programu %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2079"/>
@@ -648,40 +652,41 @@
         <location filename="../mainwindow.cpp" line="2290"/>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>Flatpak not installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak není nainstalován</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2290"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak zatím není nainstalován.
+Chcete pokračovat k instalaci?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>Flatpak was not installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak nebyl nainstalován</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2322"/>
         <location filename="../mainwindow.cpp" line="2341"/>
         <source>Flathub remote failed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub remote selhal</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2322"/>
         <location filename="../mainwindow.cpp" line="2341"/>
         <source>Flathub remote could not be added</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub remote nemohl být přidán</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2330"/>
         <source>Needs re-login</source>
-        <translation type="unfinished"></translation>
+        <translation>Nutné nové přihlášení</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2330"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation type="unfinished"></translation>
+        <translation>Pro zobrazení nově nainstalovaných položek v menu bude asi zapotřebí se odhlásit a pak znovu přihlásit.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2501"/>
@@ -696,13 +701,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2608"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation type="unfinished"></translation>
+        <translation>Proces je pořád spuštěn, ukončení může zanechat systém v nestabilním stavu.&lt;p&gt;&lt;b&gt;Opravdu chcete aplikaci ukončit?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2744"/>
@@ -712,13 +711,14 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2768"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"></translation>
+        <translation>Během poslední operace se vyskytl problém, prohlédněte Konzoli.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Potencionálně nebezpečná operace.
+Prosíme pozorně si zkontrolujte seznam aplikací k odinstalaci.</translation>
     </message>
 </context>
 <context>
@@ -726,7 +726,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="13"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"></translation>
+        <translation>Nastavit Flatpak Remotes</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="22"/>
@@ -741,27 +741,27 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="29"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"></translation>
+        <translation>zadejte Flatpak remote URL sem</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="32"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"></translation>
+        <translation>zadejte Flatpakref lokaci pro instalaci aplikace sem</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"></translation>
+        <translation>Zde můžete přidat nebo odebrat flatpak remote (repozitáře), nebo nainstalovat aplikace použitím flatpakref URL nebo přímé cesty</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
         <source>Remove remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Odebrat remote</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="48"/>
         <source>Add remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Přidat remote</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="53"/>
@@ -781,17 +781,17 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"></translation>
+        <translation>Flathub je hlavním Flatpak repozitářem a nemůže být odstraněn</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="91"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"></translation>
+        <translation>Chyba při přidání remote</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="91"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"></translation>
+        <translation>Remote nebyl přidán - příkaz skončil chybou. Zkontrolujte prosím adresu remote a zkuste to znovu.</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="95"/>
@@ -801,7 +801,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="95"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"></translation>
+        <translation>Remote byl přidán</translation>
     </message>
 </context>
 <context>
@@ -840,7 +840,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../main.cpp" line="79"/>
         <source>Unable to get exclusive lock</source>
-        <translation>Nebylo možné zamknout soubor</translation>
+        <translation>Nebylo možné uzamknout soubor</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="80"/>

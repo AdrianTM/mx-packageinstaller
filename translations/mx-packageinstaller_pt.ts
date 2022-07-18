@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="pt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="pt">
 <context>
     <name>MainWindow</name>
     <message>
@@ -546,16 +544,22 @@
         <translation>A descarregar informação do pacote...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>Pacotes a instalar: </translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>Informação do pacote</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>Mais &amp;informação...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>Pacotes a instalar: </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -698,12 +702,6 @@ Continuar e instalar o pacote?</translation>
         <location filename="../mainwindow.cpp" line="2608"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Processo ainda em execução. Sair pode deixar o sistema num estado instável.&lt;p&gt;&lt;b&gt;Sair realmente do MX Instalador de Pacotes?&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation>Mais &amp;informação...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2744"/>

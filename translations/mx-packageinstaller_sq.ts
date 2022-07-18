@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sq">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
 <context>
     <name>MainWindow</name>
     <message>
@@ -324,12 +322,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1613"/>
         <source>About this application</source>
-        <translation>Rreth këtij aplikacioni</translation>
+        <translation>Mbi këtë aplikacion</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1616"/>
         <source>About...</source>
-        <translation>Rreth…</translation>
+        <translation>Mbi…</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1623"/>
@@ -546,16 +544,22 @@
         <translation>Po shkarkohen hollësi pakete…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>Paketa për t’u instaluar: </translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>Hollësi pakete</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>Më tepër &amp;hollësi…</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>Paketa për t’u instaluar: </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -605,7 +609,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="2079"/>
         <source>Version: </source>
-        <translation>Versioni: </translation>
+        <translation>Version: </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2080"/>
@@ -698,12 +702,6 @@ OK të ecet më tej dhe të instalohet?</translation>
         <location filename="../mainwindow.cpp" line="2608"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Proces ende në xhirim, dalja mund ta lërë sistemin në një gjendje të paqëndrueshme.&lt;p&gt;&lt;b&gt;Jeni i sigurt se doni të dilet nga Instaluesi MX i Paketave?&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation>Më tepër &amp;hollësi…</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2744"/>

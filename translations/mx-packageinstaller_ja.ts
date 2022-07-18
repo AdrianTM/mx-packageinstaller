@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ja">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ja">
 <context>
     <name>MainWindow</name>
     <message>
@@ -156,12 +154,12 @@
         <location filename="../mainwindow.ui" line="791"/>
         <location filename="../mainwindow.ui" line="1083"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"></translation>
+        <translation>「推奨」パッケージもインストールします</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="394"/>
         <source>Remove orphan packages</source>
-        <translation type="unfinished"></translation>
+        <translation>未使用のパッケージを削除します</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="404"/>
@@ -236,7 +234,7 @@
         <location filename="../mainwindow.cpp" line="2505"/>
         <location filename="../mainwindow.cpp" line="2506"/>
         <source>All installed</source>
-        <translation type="unfinished"></translation>
+        <translation>すべてインストールします</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1260"/>
@@ -276,7 +274,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>未使用のランタイムを削除</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1447"/>
@@ -388,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"></translation>
+        <translation>アンインストール前の操作を実行中です...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
@@ -501,7 +499,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>以下のパッケージが選択されました。リストの変更を表示するには「詳細の表示」をクリックしてください。</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1070"/>
@@ -538,7 +536,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation type="unfinished"></translation>
+        <translation>ファイル %1 の書き込み中にエラー発生。ドライブに十分な空き領域があるか確認してください。</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
@@ -546,16 +544,22 @@
         <translation>パッケージ情報をダウンロード中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>インストールするパッケージ: </translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>パッケージ情報</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>詳細情報...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>インストールするパッケージ: </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -700,12 +704,6 @@ OKでインストールを実行しますか？</translation>
         <translation>プロセスが実行中の場合、終了するとシステムが不安定な状態になる可能性があります。&lt;p&gt;&lt;b&gt;本当に MXパッケージインストーラを終了しますか？&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2744"/>
         <source>Reinstall</source>
         <translation>再インストール</translation>
@@ -713,13 +711,14 @@ OKでインストールを実行しますか？</translation>
     <message>
         <location filename="../mainwindow.cpp" line="2768"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"></translation>
+        <translation>直前の操作中に問題が検出されました。端末の出力を点検してください。</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>潜在的に危険な操作。
+削除されるパッケージのリストを十分確認してください。</translation>
     </message>
 </context>
 <context>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="de">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="de">
 <context>
     <name>MainWindow</name>
     <message>
@@ -156,12 +154,12 @@
         <location filename="../mainwindow.ui" line="791"/>
         <location filename="../mainwindow.ui" line="1083"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Auch »empfohlene« Pakete installieren</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="394"/>
         <source>Remove orphan packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Verwaiste Pakete entfernen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="404"/>
@@ -236,7 +234,7 @@
         <location filename="../mainwindow.cpp" line="2505"/>
         <location filename="../mainwindow.cpp" line="2506"/>
         <source>All installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Es wurde alles installiert</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1260"/>
@@ -276,7 +274,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Nicht benötigte Laufzeitbibliotheken entfernen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1447"/>
@@ -388,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"></translation>
+        <translation>Deinstallation wird vorbereitet...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
@@ -501,7 +499,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die folgenden Pakete wurden ausgewählt. Zur Anzeige einer Übersicht aller Änderungen klicken Sie bitte auf »Details anzeigen«.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1070"/>
@@ -538,7 +536,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation type="unfinished"></translation>
+        <translation>Beim Schreiben der Datei %1 gab es einen Fehler. Bitte prüfen Sie, ob genügend freier Speicherplatz auf dem Laufwerk vorhanden ist</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
@@ -546,16 +544,22 @@
         <translation>Lade Paketinformationen herunter...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>Zu installierende Pakete:</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>Paketinformationen</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>Weitere &amp;Informationen...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>Zu installierende Pakete:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -700,12 +704,6 @@ Mit OK die Installation bestätigen?</translation>
         <translation>Der Prozeß läuft noch. Ein Abbrechen könnte das System in einen instabilen Zustand bringen.&lt;p&gt;&lt;b&gt;Sind Sie sicher, MX Package Installer zu beenden?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2744"/>
         <source>Reinstall</source>
         <translation>Erneut installieren</translation>
@@ -713,13 +711,14 @@ Mit OK die Installation bestätigen?</translation>
     <message>
         <location filename="../mainwindow.cpp" line="2768"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"></translation>
+        <translation>Während des letzten Vorgangs wurde ein Problem festgestellt. Bitte sehen Sie sich die Konsolenausgabe an.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Der Vorgang ist potentiell gefährlich
+Bitte überprüfen Sie sorgfältig die Liste der zur Entfernung vorgesehenen Pakete.</translation>
     </message>
 </context>
 <context>

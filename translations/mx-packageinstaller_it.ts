@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="it">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="it">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
         <location filename="../mainwindow.cpp" line="95"/>
         <source>MX Package Installer</source>
-        <translation>MX Installa Pacchetti</translation>
+        <translation>MX Installa Programmi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
@@ -388,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
         <source>Running pre-uninstall operations...</source>
-        <translation>Operazioni di pre-installazione in esecuzione...</translation>
+        <translation>Operazioni pre-disinstallazione in esecuzione...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
@@ -538,7 +536,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation>Si é verificato un errore nella scrittura del file 1%.Controlla di avere abbastanza spazio su disco</translation>
+        <translation>Si è verificato un errore nella scrittura del file 1%. Controlla di avere abbastanza spazio su disco</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
@@ -546,16 +544,22 @@
         <translation>Scaricamento informazioni pacchetto in corso..</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>Pacchetti da installare:</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>Info Pacchetto</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>Altro &amp; info...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>Pacchetti da installare:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -698,12 +702,6 @@ OK per procedere ad installarlo?</translation>
         <location filename="../mainwindow.cpp" line="2608"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Il processo è ancora in corso, uscire ora potrebbe lasciare il sistema in uno stato instabile.&lt;p&gt;&lt;b&gt;Sei sicuro di voler uscire da MX Installa Programmi?&lt;/b&gt;</translation>
-    </message>
-    <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation>Altro &amp; info...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2744"/>

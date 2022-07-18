@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ru">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ru">
 <context>
     <name>MainWindow</name>
     <message>
@@ -87,7 +85,7 @@
         <location filename="../mainwindow.ui" line="917"/>
         <location filename="../mainwindow.cpp" line="2420"/>
         <source>Upgradable</source>
-        <translation>Доступно для обновления</translation>
+        <translation>Доступно обновление</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="196"/>
@@ -149,19 +147,19 @@
         <location filename="../mainwindow.ui" line="764"/>
         <location filename="../mainwindow.ui" line="1015"/>
         <source>Upgradable:</source>
-        <translation>Доступно для обновления:</translation>
+        <translation>Доступно обновление:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="387"/>
         <location filename="../mainwindow.ui" line="791"/>
         <location filename="../mainwindow.ui" line="1083"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Устанавливать рекомендованные пакеты</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="394"/>
         <source>Remove orphan packages</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить лишние пакеты</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="404"/>
@@ -197,7 +195,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1157"/>
         <source>Flatpaks</source>
-        <translation>Флэтпэк</translation>
+        <translation>Флатпак</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1181"/>
@@ -236,7 +234,7 @@
         <location filename="../mainwindow.cpp" line="2505"/>
         <location filename="../mainwindow.cpp" line="2506"/>
         <source>All installed</source>
-        <translation type="unfinished"></translation>
+        <translation>Все установленные</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1260"/>
@@ -276,7 +274,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"></translation>
+        <translation>Удалить ненужные среды выполнения</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1447"/>
@@ -292,14 +290,14 @@
     <message>
         <location filename="../mainwindow.ui" line="1474"/>
         <source>Remote (repo):</source>
-        <translation>Удаленный (репозиторий):</translation>
+        <translation>Удалённый (репозиторий):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1517"/>
         <location filename="../mainwindow.cpp" line="2206"/>
         <location filename="../mainwindow.cpp" line="2334"/>
         <source>Console Output</source>
-        <translation>Консольный вывод</translation>
+        <translation>Вывод консоли</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1523"/>
@@ -309,12 +307,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1534"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Укажите свой ответ или нажмите Ввод</translation>
+        <translation>Ответьте здесь или просто нажмите Enter</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1590"/>
         <source>Uninstall</source>
-        <translation>Деинсталлировать</translation>
+        <translation>Удалить</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1597"/>
@@ -329,7 +327,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1616"/>
         <source>About...</source>
-        <translation>O...</translation>
+        <translation>О программе...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1623"/>
@@ -388,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"></translation>
+        <translation>Выполняются предварительные действия удаления...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
@@ -438,7 +436,7 @@
         <location filename="../mainwindow.cpp" line="780"/>
         <location filename="../mainwindow.cpp" line="798"/>
         <source>Version </source>
-        <translation>Версия</translation>
+        <translation>Версия </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="780"/>
@@ -460,17 +458,17 @@
         <location filename="../mainwindow.cpp" line="791"/>
         <location filename="../mainwindow.cpp" line="2314"/>
         <source> already installed</source>
-        <translation>уже установлено</translation>
+        <translation> уже установлено</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="798"/>
         <source> installed</source>
-        <translation>установлено</translation>
+        <translation> установлена</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="908"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Вы хотите подключить репозиторий MX Test, пакеты которого представлены для целей тестирования. Они могут нарушить работу вашей системы, поэтому рекомендуется сделать бэкап системы и устанавливать по одному пакету за раз. Пожалуйста, оставьте отчет на Форуме для того, чтобы пакет был дополнительно оценен до переноса в основной репозиторий.</translation>
+        <translation>Вы собираетесь подключить репозиторий MX Test, пакеты которого представлены только для тестирования. Они могут нарушить работу вашей системы, поэтому рекомендуется сделать резервную копию системы и устанавливать по одному пакету за раз. Пожалуйста, оставьте отчёт на Форуме для того, чтобы пакет был дополнительно оценён до переноса в основной репозиторий.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="917"/>
@@ -480,7 +478,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="925"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux включает этот репозиторий flatpack только для удобства пользователей, и не несёт ответственности за функционирование самих flatpack. Для большей информации, смотри flatpack в Вики.</translation>
+        <translation>MX Linux включает этот репозиторий флатпак только для удобства пользователей, и не несёт ответственности за функционирование самих флатпаков. Подробнее о флатпаках в Вики.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="932"/>
@@ -501,7 +499,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"></translation>
+        <translation>Следующие пакеты были выбраны. Щёлкните на &quot;Показать подробности&quot; для просмотра списка изменений.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1070"/>
@@ -538,7 +536,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка при записи файла: %1. Проверьте наличие свободного места на диске.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
@@ -546,16 +544,22 @@
         <translation>Загрузка информации о пакетах...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
-        <source>Packages to be installed: </source>
-        <translation>Пакеты, которые будут установлены:</translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
         <translation>Информация о пакете</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1837"/>
+        <location filename="../mainwindow.cpp" line="2713"/>
+        <source>More &amp;info...</source>
+        <translation>Подро&amp;бности...</translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="1865"/>
+        <source>Packages to be installed: </source>
+        <translation>Пакеты, которые будут установлены:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -595,7 +599,7 @@
         <location filename="../mainwindow.cpp" line="2651"/>
         <location filename="../mainwindow.cpp" line="2679"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation>Возникла проблема при инсталляции, проверьте консольный вывод.</translation>
+        <translation>Обнаружена проблема при установке, пожалуйста, проверьте консольный вывод.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2077"/>
@@ -642,24 +646,25 @@
         <location filename="../mainwindow.cpp" line="2198"/>
         <location filename="../mainwindow.cpp" line="2788"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation>Возникла проблема при деинсталляции приложения</translation>
+        <translation>Возникла проблема при удалении приложения</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2290"/>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>Flatpak not installed</source>
-        <translation>Флэтпэк не установлен</translation>
+        <translation>Флатпак не установлен</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2290"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>В настоящий момент флэтпэк не установлен. Начать его установку?</translation>
+        <translation>В настоящий момент флатпак не установлен.
+Начать его установку?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>Flatpak was not installed</source>
-        <translation>Флэтпэк не был установлен</translation>
+        <translation>Флатпак не был установлен</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2322"/>
@@ -699,12 +704,6 @@ OK to go ahead and install it?</source>
         <translation>Процесс еще выполняется, выход может оставить систему в нестабильном состоянии.&lt;p&gt;&lt;b&gt;Вы уверены, что хотите выйти из MX Установщика пакетов?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
-        <source>More &amp;info...</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../mainwindow.cpp" line="2744"/>
         <source>Reinstall</source>
         <translation>Переустановить</translation>
@@ -712,13 +711,14 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2768"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"></translation>
+        <translation>Обнаружена проблема во время последней операции, пожалуйста, проверьте вывод консоли.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"></translation>
+        <translation>Опасная операция.
+Убедитесь, что вы внимательно проверили список удаляемых пакетов.</translation>
     </message>
 </context>
 <context>
@@ -726,7 +726,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="13"/>
         <source>Manage Flatpak Remotes</source>
-        <translation>Управлять дистанционными флэтпэк</translation>
+        <translation>Управлять дистанционными флатпак</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="22"/>
@@ -741,17 +741,17 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="29"/>
         <source>enter Flatpak remote URL</source>
-        <translation>введите удаленный URL для флэтпэка</translation>
+        <translation>введите дистанционный адрес флатпака</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="32"/>
         <source>enter Flatpakref location to install app</source>
-        <translation>Введите местоположение флэтпэкреф чтобы установить приложение</translation>
+        <translation>Введите местоположение Flatpakref, чтобы установить приложение</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Добавить или удалить дистанционные флэтпэк (репозитории), или установить приложения используя флэтпэкреф URL или путь</translation>
+        <translation>Добавить или удалить дистанционные флатпак (репозитории), или установить приложения, используя адрес или путь flatpakref</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
@@ -781,7 +781,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation>Флэтхаб является основным дистанционным для Флэтпэк и не может быть удалён</translation>
+        <translation>Флатхаб является основным дистанционным для флатпака и не может быть удалён</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="91"/>
@@ -835,7 +835,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../main.cpp" line="70"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"></translation>
+        <translation>Программа запущена суперпользователем. Для использования программы войдите в систему как обычный пользователь.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="79"/>

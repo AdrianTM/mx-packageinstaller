@@ -1,28 +1,28 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="lt">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="gl_ES">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
         <location filename="../mainwindow.cpp" line="95"/>
         <source>MX Package Installer</source>
-        <translation>MX paketų diegimo programa</translation>
+        <translation>MX Instalador de paquetes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
         <source>Popular Applications</source>
-        <translation>Populiarios programos</translation>
+        <translation>Aplicativos</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="83"/>
         <location filename="../mainwindow.cpp" line="98"/>
         <source>Package</source>
-        <translation>Paketas</translation>
+        <translation>Paquetes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
         <location filename="../mainwindow.cpp" line="98"/>
         <source>Info</source>
-        <translation>Informacija</translation>
+        <translation>Información</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>
@@ -31,7 +31,7 @@
         <location filename="../mainwindow.ui" line="986"/>
         <location filename="../mainwindow.cpp" line="98"/>
         <source>Description</source>
-        <translation>Aprašas</translation>
+        <translation>Descrición</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="113"/>
@@ -40,17 +40,17 @@
         <location filename="../mainwindow.ui" line="955"/>
         <location filename="../mainwindow.ui" line="1235"/>
         <source>search</source>
-        <translation>ieškoti</translation>
+        <translation>busca</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="123"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Greyed out items have already been installed.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Tvarkyti populiarius paketus&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Pilka spalva atvaizduojami elementai jau yra įdiegti.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;&lt;html&gt;Xestionar paquetes populares&lt;/span&gt;&lt;/p&gt;&lt;p&gt;Os items sombreados xa están instalados.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="153"/>
         <source>Stable Repo</source>
-        <translation type="unfinished"/>
+        <translation>Repositio estable de Debian</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="174"/>
@@ -58,7 +58,7 @@
         <location filename="../mainwindow.ui" line="900"/>
         <location filename="../mainwindow.ui" line="1178"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filtruoti paketus atitinkamai pagal jų būseną.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filtrar paquetes polo estado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="177"/>
@@ -69,7 +69,7 @@
         <location filename="../mainwindow.ui" line="907"/>
         <location filename="../mainwindow.cpp" line="2409"/>
         <source>All packages</source>
-        <translation>Visi paketai</translation>
+        <translation>Todos os paquetes</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="186"/>
@@ -77,7 +77,7 @@
         <location filename="../mainwindow.ui" line="912"/>
         <location filename="../mainwindow.cpp" line="2422"/>
         <source>Installed</source>
-        <translation>Įdiegti</translation>
+        <translation>Instalado</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="191"/>
@@ -85,7 +85,7 @@
         <location filename="../mainwindow.ui" line="917"/>
         <location filename="../mainwindow.cpp" line="2420"/>
         <source>Upgradable</source>
-        <translation>Naujintini</translation>
+        <translation>Actualizables</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="196"/>
@@ -97,14 +97,14 @@
         <location filename="../mainwindow.cpp" line="2510"/>
         <location filename="../mainwindow.cpp" line="2511"/>
         <source>Not installed</source>
-        <translation>Neįdiegti</translation>
+        <translation>Non instalados</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="240"/>
         <location filename="../mainwindow.ui" line="647"/>
         <location filename="../mainwindow.ui" line="976"/>
         <source>Package Name</source>
-        <translation>Paketo pavadinimas</translation>
+        <translation>Nome do paquete</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="245"/>
@@ -112,60 +112,60 @@
         <location filename="../mainwindow.ui" line="981"/>
         <location filename="../mainwindow.ui" line="1270"/>
         <source>Version</source>
-        <translation>Versija</translation>
+        <translation>Versión</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="277"/>
         <location filename="../mainwindow.ui" line="684"/>
         <location filename="../mainwindow.ui" line="1043"/>
         <source>Total packages:</source>
-        <translation>Viso paketų:</translation>
+        <translation>Total de paquetes:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="291"/>
         <location filename="../mainwindow.ui" line="698"/>
         <location filename="../mainwindow.ui" line="1050"/>
         <source>Hide library and developer packages</source>
-        <translation>Slėpti bibliotekas ir plėtotojų paketus</translation>
+        <translation>Agochar paquetes de bibliotecas e de desenvolvedor</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="313"/>
         <location filename="../mainwindow.ui" line="720"/>
         <location filename="../mainwindow.ui" line="1102"/>
         <source>Refresh list</source>
-        <translation>Įkelti sąrašą iš naujo</translation>
+        <translation>Recargar a lista</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="327"/>
         <location filename="../mainwindow.ui" line="734"/>
         <location filename="../mainwindow.ui" line="1022"/>
         <source>Installed:</source>
-        <translation type="unfinished"/>
+        <translation>Instalados:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="357"/>
         <location filename="../mainwindow.ui" line="764"/>
         <location filename="../mainwindow.ui" line="1015"/>
         <source>Upgradable:</source>
-        <translation type="unfinished"/>
+        <translation>Actualizables:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="387"/>
         <location filename="../mainwindow.ui" line="791"/>
         <location filename="../mainwindow.ui" line="1083"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"/>
+        <translation>Tamén instale os paquetes &quot;Recomendados&quot;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="394"/>
         <source>Remove orphan packages</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar paquetes orfos</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="404"/>
         <location filename="../mainwindow.ui" line="1340"/>
         <source>Upgrade All</source>
-        <translation>Naujinti visus</translation>
+        <translation>Actualizar todos</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="421"/>
@@ -173,60 +173,60 @@
         <location filename="../mainwindow.ui" line="930"/>
         <location filename="../mainwindow.ui" line="1497"/>
         <source>Greyed out items have already been installed.</source>
-        <translation>Pilka spalva pažymėti elementai jau yra įdiegti.</translation>
+        <translation>Os items sombreados xa están instalados.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="477"/>
         <location filename="../mainwindow.ui" line="540"/>
         <location filename="../mainwindow.ui" line="867"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Upgradable package. Newer version available in selected repository.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Naujintinas paketas. Pasirinktoje saugykloje yra prieinama naujesnė versija.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;= Paquete actualizable. Hai unha versión máis recente dispoñible nos repositorios.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="497"/>
         <source>MX Test Repo</source>
-        <translation type="unfinished"/>
+        <translation>Repositorio de proba de MX</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="824"/>
         <source>Debian Backports</source>
-        <translation type="unfinished"/>
+        <translation>Debian Backports</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1157"/>
         <source>Flatpaks</source>
-        <translation>Flatpak paketai</translation>
+        <translation>Paquetes flatpak</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1181"/>
         <location filename="../mainwindow.ui" line="1185"/>
         <location filename="../mainwindow.cpp" line="2376"/>
         <source>All apps</source>
-        <translation>Visos programos</translation>
+        <translation>Aplicativos</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1190"/>
         <location filename="../mainwindow.cpp" line="2380"/>
         <source>All runtimes</source>
-        <translation type="unfinished"/>
+        <translation>Software &apos;runtime&apos;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1195"/>
         <location filename="../mainwindow.cpp" line="2384"/>
         <source>All available</source>
-        <translation type="unfinished"/>
+        <translation>Todo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.cpp" line="2374"/>
         <source>Installed apps</source>
-        <translation>Įdiegtos programos</translation>
+        <translation>Aplicativos instaladas</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1205"/>
         <location filename="../mainwindow.cpp" line="2372"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"/>
+        <translation>Software &apos;runtime&apos; instalado</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1210"/>
@@ -234,85 +234,85 @@
         <location filename="../mainwindow.cpp" line="2505"/>
         <location filename="../mainwindow.cpp" line="2506"/>
         <source>All installed</source>
-        <translation type="unfinished"/>
+        <translation>Todos instalados</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1260"/>
         <source>Short Name</source>
-        <translation>Trumpasis pavadinimas</translation>
+        <translation>Nome curto</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1265"/>
         <source>Full Package Name</source>
-        <translation>Pilnas paketo pavadinimas</translation>
+        <translation>Nome completo do paquete</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1275"/>
         <source>Size</source>
-        <translation>Dydis</translation>
+        <translation>Tamaño</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1319"/>
         <source>Total items </source>
-        <translation type="unfinished"/>
+        <translation>Total de items</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1333"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"/>
+        <translation>Aplicativos instalados:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1386"/>
         <source>Advanced</source>
-        <translation>Išplėstiniai</translation>
+        <translation>Avanzado</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1416"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"/>
+        <translation>Total instalado:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"/>
+        <translation>Elimina os tempos de execución non utilizados</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1447"/>
         <location filename="../mainwindow.ui" line="1451"/>
         <source>For all users</source>
-        <translation type="unfinished"/>
+        <translation>Para todos os usuarios</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1456"/>
         <source>For current user</source>
-        <translation type="unfinished"/>
+        <translation>Para o actual usuario</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1474"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"/>
+        <translation>(Repositorio) remoto:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1517"/>
         <location filename="../mainwindow.cpp" line="2206"/>
         <location filename="../mainwindow.cpp" line="2334"/>
         <source>Console Output</source>
-        <translation>Pulto išvestis</translation>
+        <translation>Procesamento en consola</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1523"/>
         <source>Enter</source>
-        <translation>Enter (Įvedimas)</translation>
+        <translation>Enter</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1534"/>
         <source>Respond here, or just press Enter</source>
-        <translation type="unfinished"/>
+        <translation>Responder aquí ou premer enter</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1590"/>
         <source>Uninstall</source>
-        <translation>Šalinti</translation>
+        <translation>Desinstalar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1597"/>
@@ -322,12 +322,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1613"/>
         <source>About this application</source>
-        <translation>Apie šią programą</translation>
+        <translation>Sobre esta aplicación</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1616"/>
         <source>About...</source>
-        <translation>Apie...</translation>
+        <translation>Sobre...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1623"/>
@@ -337,12 +337,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1671"/>
         <source>Display help </source>
-        <translation>Rodyti žinyną</translation>
+        <translation>Amosar axuda</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1674"/>
         <source>Help</source>
-        <translation>Žinynas</translation>
+        <translation>Axuda</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1681"/>
@@ -356,7 +356,7 @@
         <location filename="../mainwindow.cpp" line="2503"/>
         <location filename="../mainwindow.cpp" line="2746"/>
         <source>Install</source>
-        <translation>Įdiegti</translation>
+        <translation>Instalar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1704"/>
@@ -366,12 +366,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1723"/>
         <source>Quit application</source>
-        <translation>Išeiti iš programos</translation>
+        <translation>Saír do aplicativo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1726"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1733"/>
@@ -381,22 +381,22 @@
     <message>
         <location filename="../mainwindow.cpp" line="177"/>
         <source>Uninstalling packages...</source>
-        <translation>Šalinami paketai...</translation>
+        <translation>Desinstalando paquetes...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"/>
+        <translation>Realizando operacións previas á desinstalación...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
         <source>Running post-uninstall operations...</source>
-        <translation type="unfinished"/>
+        <translation>Executando operacions despois de desinstalar...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="209"/>
         <source>Refreshing sources...</source>
-        <translation>Iš naujo įkeliami šaltiniai...</translation>
+        <translation>Actualizando as orixes...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="224"/>
@@ -415,151 +415,151 @@
         <location filename="../mainwindow.cpp" line="2768"/>
         <location filename="../mainwindow.cpp" line="2788"/>
         <source>Error</source>
-        <translation>Klaida</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="224"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation>Atnaujinant šaltinius, atsirado problemų. Gali būti, kad kai kurie šaltiniai nėra pateikę atnaujinimų. Išsamesnei informacijai, žiūrėkite: </translation>
+        <translation>Houbo un problema ao actualizar as orixes. Algunhas orixes poden non ter fornecido actualizacións. Para máis información, ver:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="599"/>
         <source>Cancel</source>
-        <translation>Atsisakyti</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="606"/>
         <source>Please wait...</source>
-        <translation>Prašome palaukti...</translation>
+        <translation>Agarda...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="780"/>
         <location filename="../mainwindow.cpp" line="798"/>
         <source>Version </source>
-        <translation>Versija </translation>
+        <translation>Versión </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="780"/>
         <source> in stable repo</source>
-        <translation> stabilioje saugykloje</translation>
+        <translation>no repositorio estable</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="782"/>
         <source>Not available in stable repo</source>
-        <translation>Neprieinama stabilioje saugykloje</translation>
+        <translation>Non dispoñible no repositorio estalbe</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="791"/>
         <location filename="../mainwindow.cpp" line="2314"/>
         <source>Latest version </source>
-        <translation>Naujausia versija </translation>
+        <translation>última versión</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="791"/>
         <location filename="../mainwindow.cpp" line="2314"/>
         <source> already installed</source>
-        <translation> jau įdiegta</translation>
+        <translation>Xa está instalado</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="798"/>
         <source> installed</source>
-        <translation> įdiegta</translation>
+        <translation>instalado</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="908"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation type="unfinished"/>
+        <translation>O repositório MX Test, cuxos paquetes son dispoñibilizados só para efecto de probar, está para ser usado. Os paquetes deste repositorio poden damnificar o sistema, polo que se suxire que sexa feita unha copia de seguranza do mesmo e que sexa instalado ou actualizado só un paquete de cada vez. Agradécese que os resultados sexan comunicados no foro, para que haxa unha avalición dos paquetes antes de seren movidos para o repositorio principal.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="917"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Jūs ketinate naudoti Debian naujų versijų paketus, kurie yra paimti iš kitos Debian laidos (pavadinimu &quot;testing&quot;), suderinti ir iš naujo sukompiliuoti naudojimui Debian stabiliose sistemose. Šie paketai negali būti taip plačiai išbandyti kaip stabiliose Debian ir MX Linux laidose, ir yra pateikiami esamu pavidalu, su nesuderinamumo su kitais Debian &quot;stable&quot; komponentais rizika. Naudokite atsargiai!</translation>
+        <translation>Será usado o repositorio &apos;Debian Backports&apos;, que contén paquetes retirados da versión (chamada &apos;testing&apos;) de Debian, adaptados e recompilados para uso na actual versión estable de Debian, sendo por isto designados paquetes retro-portados. Estes paquetes non foron tan extensivamente probados como os das versións estables de Debian e de MX; son dispoñibilizados &apos;como están&apos;, co risco de incompatibilidades con outros compoñentes de Debian &apos;estable&apos;. Usar con coidado!</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="925"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation type="unfinished"/>
+        <translation>O MX inclúe este repositorio de paquetes flatpak só para conveniencia dos usuarios, non sendo responsable polo funcionamento dos propios paquetes flatpak. Para máis información, consultar &apos;flatpaks&apos; na Wiki.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="932"/>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Warning</source>
-        <translation>Įspėjimas</translation>
+        <translation>Aviso</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="936"/>
         <source>Do not show this message again</source>
-        <translation>Daugiau neberodyti šio pranešimo</translation>
+        <translation>Non amosar esta mensaxe de novo</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1030"/>
         <source>Remove</source>
-        <translation>Šalinti</translation>
+        <translation>Eliminar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"/>
+        <translation>Seleccionáronse os seguintes paquetes. Preme en Amosar detalles para ver a lista de cambios.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1070"/>
         <location filename="../mainwindow.cpp" line="1196"/>
         <location filename="../mainwindow.cpp" line="1377"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation>Internetas neprieinamas, nepavyks atsisiųsti paketų sąrašo</translation>
+        <translation>Sen conexión a Internet; non é posible descargar a lista de paquetes</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1075"/>
         <source>Installing packages...</source>
-        <translation>Įdiegiami paketai...</translation>
+        <translation>Instalando paquetes...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1130"/>
         <source>Post-processing...</source>
-        <translation>Po-apdorojimas...</translation>
+        <translation>Posprocesando...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1160"/>
         <source>Pre-processing for </source>
-        <translation>Prieš-apdorojimas, skirtas </translation>
+        <translation>Prepocesando para</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1173"/>
         <source>Installing </source>
-        <translation>Įdiegiama </translation>
+        <translation>Instalando</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1180"/>
         <source>Post-processing for </source>
-        <translation>Po-apdorojimas, skirtas </translation>
+        <translation>Posprocesando para</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation type="unfinished"/>
+        <translation>Produciuse un erro ao escribir o ficheiro: %1. Comproba se tes espazo libre suficiente na túa unidade</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
         <source>Downloading package info...</source>
-        <translation>Atsiunčiama paketo informacija...</translation>
+        <translation>Descargando información do paquete...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1820"/>
         <location filename="../mainwindow.cpp" line="1899"/>
         <location filename="../mainwindow.cpp" line="1922"/>
         <source>Package info</source>
-        <translation>Paketo informacija</translation>
+        <translation>Información do paquete</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1837"/>
         <location filename="../mainwindow.cpp" line="2713"/>
         <source>More &amp;info...</source>
-        <translation type="unfinished"/>
+        <translation>Máis &amp;información...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1865"/>
         <source>Packages to be installed: </source>
-        <translation>Paketai, kurie bus įdiegti: </translation>
+        <translation>Paquetes instalándose:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -573,7 +573,7 @@
         <location filename="../mainwindow.cpp" line="2673"/>
         <location filename="../mainwindow.cpp" line="2762"/>
         <source>Done</source>
-        <translation>Atlikta</translation>
+        <translation>Feito</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -589,7 +589,7 @@
         <location filename="../mainwindow.cpp" line="2762"/>
         <location filename="../mainwindow.cpp" line="2782"/>
         <source>Processing finished successfully.</source>
-        <translation>Apdorojimas sėkmingai užbaigtas.</translation>
+        <translation>Procesamento rematado con éxito.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2029"/>
@@ -599,125 +599,126 @@
         <location filename="../mainwindow.cpp" line="2651"/>
         <location filename="../mainwindow.cpp" line="2679"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation>Įdiegiant, aptikta problema, prašome panagrinėti pulto išvestį.</translation>
+        <translation>Detectado problema ao instalar; verificar información na consola. </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2077"/>
         <source>About %1</source>
-        <translation>Apie %1</translation>
+        <translation>Sobre %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2079"/>
         <source>Version: </source>
-        <translation>Versija: </translation>
+        <translation>Versión</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2080"/>
         <source>Package Installer for MX Linux</source>
-        <translation>Paketų diegimo programa, skirta MX Linux</translation>
+        <translation>Xestor de paquetes de MX Linux</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2082"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>Autorių teisės (c) MX Linux</translation>
+        <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2083"/>
         <source>%1 License</source>
-        <translation>%1 licencija</translation>
+        <translation>Licenza de %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2096"/>
         <source>%1 Help</source>
-        <translation>%1 žinynas</translation>
+        <translation>Axuda para %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2179"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"/>
+        <translation>Foi atopado un problema ao desinstalar. Verificar os resultados.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2192"/>
         <location filename="../mainwindow.cpp" line="2782"/>
         <source>Success</source>
-        <translation>Pavyko</translation>
+        <translation>Con éxito</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2198"/>
         <location filename="../mainwindow.cpp" line="2788"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation>Šalinant programą, susidurta su problema</translation>
+        <translation>Houbo un problema ao desinstalar o programa</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2290"/>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>Flatpak not installed</source>
-        <translation>Flatpak neįdiegtas</translation>
+        <translation>Paquete flatpak non instalado</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2290"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>Šiuo metu Flatpak nėra įdiegtas.
-Galima pradėti ir įdiegti?</translation>
+        <translation>O paquete flatpak non está instalado.
+Continuar e instalar o paquete?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>Flatpak was not installed</source>
-        <translation>Flatpak nebuvo įdiegtas</translation>
+        <translation>O paquete flatpak non estaba instalado</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2322"/>
         <location filename="../mainwindow.cpp" line="2341"/>
         <source>Flathub remote failed</source>
-        <translation type="unfinished"/>
+        <translation>Fallo no repositotio remoto Flathub</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2322"/>
         <location filename="../mainwindow.cpp" line="2341"/>
         <source>Flathub remote could not be added</source>
-        <translation type="unfinished"/>
+        <translation>Non foi posible engadir o repositorio remoto Flathub</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2330"/>
         <source>Needs re-login</source>
-        <translation type="unfinished"/>
+        <translation>É necesario volver a iniciar sesió</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2330"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation>Jums gali tekti atsijungti/prisijungti, kad pamatytumėte meniu punktus</translation>
+        <translation>Poderá ser necesario saír e volver a iniciar sesión para ue os items queden visibles no menú</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2501"/>
         <source>Upgrade</source>
-        <translation>Naujinti</translation>
+        <translation>Actualizar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2607"/>
         <source>Quit?</source>
-        <translation>Išeiti?</translation>
+        <translation>Saír?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2608"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>O proceso aínda está en execución. Saír pode deixar o sistema nun estado instable.&lt;p&gt;&lt;b&gt;Saír realmente do MX instalador de paquetes?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2744"/>
         <source>Reinstall</source>
-        <translation>Įdiegti iš naujo</translation>
+        <translation>Reinstalar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2768"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"/>
+        <translation>Detectouse un problema durante a última operación. Inspeccione a saída da consola.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Operación potencialmente perigosa.
+Asegúrate de comprobar coidadosamente a lista de paquetes a eliminar.</translation>
     </message>
 </context>
 <context>
@@ -725,82 +726,82 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="13"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"/>
+        <translation>Xestionar repositorios remotos flatpak</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="22"/>
         <source>For all users</source>
-        <translation type="unfinished"/>
+        <translation>Para todos os usuarios</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For current user</source>
-        <translation type="unfinished"/>
+        <translation>Para o actual usuario</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="29"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"/>
+        <translation>introducir o URL do repositorio remoto flatpak</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="32"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"/>
+        <translation>para instalar un aplicativo, introducir a localización do respectivo ficheiro .flatpakref</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"/>
+        <translation>Engadir ou eliminar repositorios remotos flatpak ou instalr aplicativos usando o URL ou o camiño para o respectivo ficheiro .flatpakref</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
         <source>Remove remote</source>
-        <translation type="unfinished"/>
+        <translation>Eliminar repositorio remoto</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="48"/>
         <source>Add remote</source>
-        <translation type="unfinished"/>
+        <translation>Engadir repositorio remoto</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="53"/>
         <source>Install app</source>
-        <translation type="unfinished"/>
+        <translation>Instalar aplicativo</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="58"/>
         <source>Close</source>
-        <translation>Užverti</translation>
+        <translation>Cerrar</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Not removable</source>
-        <translation type="unfinished"/>
+        <translation>Non se pode eliminar</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"/>
+        <translation>O Flathub é o principal repositorio remoto flatpak e non será eliminado</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="91"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"/>
+        <translation>Erro ao engadir o repositorio remoto</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="91"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"/>
+        <translation>Non é posible engadir o repositorio remoto - o comando resultou un erro. Verificar o enderezo do repositorio remoto e volver a intentar</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="95"/>
         <source>Success</source>
-        <translation>Pavyko</translation>
+        <translation>Con éxito</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="95"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"/>
+        <translation>Repositorio remoto engadido con éxito</translation>
     </message>
 </context>
 <context>
@@ -808,43 +809,43 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../about.cpp" line="41"/>
         <source>License</source>
-        <translation>Licencija</translation>
+        <translation>Licenza</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="42"/>
         <location filename="../about.cpp" line="52"/>
         <source>Changelog</source>
-        <translation>Keitinių žurnalas</translation>
+        <translation>Rexistro dos cambios</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="43"/>
         <source>Cancel</source>
-        <translation>Atsisakyti</translation>
+        <translation>Cancelar</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="66"/>
         <source>&amp;Close</source>
-        <translation>&amp;Užverti</translation>
+        <translation>&amp;Cerrar</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="69"/>
         <source>Error</source>
-        <translation>Klaida</translation>
+        <translation>Erro</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="70"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"/>
+        <translation>O usuario parece ser root; para usar este programa, pechar a sesión e iniciar sesión como usuario normal.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="79"/>
         <source>Unable to get exclusive lock</source>
-        <translation>Nepavyko gauti išskirtinio užrakto</translation>
+        <translation>Non foi posible obter o bloqueo exclusivo</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="80"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
-        <translation>Jau yra vykdoma kita (tokia kaip Synaptic ar apt-get) paketų tvarkymo programa. Prašome, iš pradžių, užverti tą programą</translation>
+        <translation>Está en execución outro aplicativo de xestión de paquetes (p. ex. Synaptic ou apt-get). Pechar primeiro o aplicativo.</translation>
     </message>
 </context>
 </TS>
