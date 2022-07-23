@@ -1,3 +1,9 @@
+mx-packageinstaller (22.7.01) mx; urgency=medium
+
+  * translation refresh 
+
+ -- Dolphin Oracle <dolphinoracle@gmail.com>  Sat, 23 Jul 2022 11:32:15 -0400
+
 mx-packageinstaller (22.7) mx; urgency=medium
 
   * Adjust pkexec/sudo environment parameter for HOME, XDG_RUNTIME_DIR and SESSION_MANAGER
