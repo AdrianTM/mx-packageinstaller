@@ -15,11 +15,11 @@ Changes:
  .
    * Allow http->https redirects
 Checksums-Sha1:
- 297d56755ad7643f5e0380a16a6af8645113e9fe 10017 mx-packageinstaller_22.8_i386.buildinfo
- cb06e048d7d8632a88cfd46d5dc5cae82c4f227f 382084 mx-packageinstaller_22.8_i386.deb
+ b3c6034b44aca9b88d79fbe319fe945c20b62c8e 10017 mx-packageinstaller_22.8_i386.buildinfo
+ 6c4037bfcf5f97ad4dddb05855b823f7a5ed3116 388472 mx-packageinstaller_22.8_i386.deb
 Checksums-Sha256:
- f1b7b24627e3b5b3777ac7ab276d00c4cc8b815d802543af5a0ada37e5778a58 10017 mx-packageinstaller_22.8_i386.buildinfo
- 5174f4c332c73154fd47e9b83893d1e9b11f84867fe189f20af156dcaf9a2409 382084 mx-packageinstaller_22.8_i386.deb
+ 1d1071931b94d9616001c09923460044250697de6b9ae6b096f7e011af4ac6ff 10017 mx-packageinstaller_22.8_i386.buildinfo
+ 4aeedcea036a958534624c90c64f5ea1b00b5b272a02a6fe01d3588d794af778 388472 mx-packageinstaller_22.8_i386.deb
 Files:
- 32bd33a33c5936e6d1d7a372a220e4fb 10017 admin optional mx-packageinstaller_22.8_i386.buildinfo
- de99aedc1e4af6abe87ab34524376696 382084 admin optional mx-packageinstaller_22.8_i386.deb
+ 170234deeb21d94edaed11148e7707ee 10017 admin optional mx-packageinstaller_22.8_i386.buildinfo
+ 0b7bc481cfc2c5968e801f7e261d57f4 388472 admin optional mx-packageinstaller_22.8_i386.deb

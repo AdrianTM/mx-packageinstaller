@@ -15,26 +15,26 @@ Changes:
  .
    * Allow http->https redirects
 Checksums-Sha1:
- fd4452f124ff42e74a65b570eed125b772a339b6 1220 mx-packageinstaller_22.8.dsc
- fa824448a42b4519acd3b9d833fbed7bd7a6d64c 297928 mx-packageinstaller_22.8.tar.xz
- 7448b91f8ed274857a79915b213d0528206f9d22 10883 mx-packageinstaller_22.8_amd64.buildinfo
+ b49b04786a121d9b45c69234228c81eb4ee0be05 1220 mx-packageinstaller_22.8.dsc
+ 58f7426707d445fad9171f679cf9ad516e84bc74 305004 mx-packageinstaller_22.8.tar.xz
+ 552f4bd025983b8919c5dabd3789383028af0cfe 10883 mx-packageinstaller_22.8_amd64.buildinfo
 Checksums-Sha256:
- 3b08fff7b1d7b060844f773fe924c15fab03b372fca5f3d90e88e0b5e70b8b66 1220 mx-packageinstaller_22.8.dsc
- 34313195e0772a06f14064bd53ad0512cf7c88d2128e405628191c11ffe64c04 297928 mx-packageinstaller_22.8.tar.xz
- 119f98dc3424223535151e7a3715e7a368601f94eaa7f9181ddbd84e2e1749fe 10883 mx-packageinstaller_22.8_amd64.buildinfo
+ 3136cb5bb9287377832ca6280a7a955c96d7884594d50a5d6ff84fb65cef94aa 1220 mx-packageinstaller_22.8.dsc
+ 8deda44031cdf716ac37411b9b2b7f0c6ddb02c0ddef9da3ba872b092c0f5421 305004 mx-packageinstaller_22.8.tar.xz
+ b4d50d7fd96a836f0c2f709a8e2e3b3a841381d372dfd8d7e2461671946d441f 10883 mx-packageinstaller_22.8_amd64.buildinfo
 Files:
- 541f7ffdac4ac11dde3bf7c2c8346638 1220 admin optional mx-packageinstaller_22.8.dsc
- ce62850bdd6b8173b0e833e6397ed281 297928 admin optional mx-packageinstaller_22.8.tar.xz
- 05ce1a2a95db6c7e652a8b7d79f17cff 10883 admin optional mx-packageinstaller_22.8_amd64.buildinfo
+ 48e1c2943bcbeacfe36824b7c7815224 1220 admin optional mx-packageinstaller_22.8.dsc
+ d76ebfb3784c641c37a8cdd332ffeaec 305004 admin optional mx-packageinstaller_22.8.tar.xz
+ c3f2803099f629d19990c35d78823724 10883 admin optional mx-packageinstaller_22.8_amd64.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmLsGLwTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNTPB/0WsaOMJXNPkygZt9pW+z1fCtRZ580p
-5MDtngkNVaJasIh5Qi0VBYLEudOqE/yuhRiSpn4d6jFlbyOMgqUrGiYTaOghZ4gp
-s9ukMUETY1/Bcwn1dSg0PaAW7Y0sjOO213p44HO10C+IEB0Ecd30WoffL3qfptH5
-2hEZVLM1DvciZKz8t4cs31vfeE60N1DZ+etAjaWaKTqrxu6tjUonLGwuypl/gXtC
-6V/eVc1NKlAY94wtQKLfKS+VX81cmthrQ9zYOp04RQAHhLvv45ON/zEvY2YC12Hl
-TFifp4+PlCQB6bW3fG55YomeMaLJIjXIk063hfJSTxgHQ7KLTFzvxy8m
-=HhIb
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmLsLaUTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumJy4CACPB1E7G609vJ7/rYQGZZ5VZLj27Lr1
+Ql6+AV7dW/GfTzdMIMpqLlzH03wAWU5dkfVoLyAvrAimdbgrolOnuVUFnFDZsxzj
+rs/Qh2wBqmWCOA3Kb2uSU3on/DRxcIhmYys1q2bxRSlSkL7mSpVVSYUiDCbclVPX
+EDSdHX/2199ran+6m2GeeFBuxvSfSAwL6Mwy7U0nB9NG9NE4awal6b7LSUGfxjpl
+caytfw3YtngvpEweDw+XvVlYuzdB6Cb6M0lmXYis8e6zaWQd+T8BItdGfnPcxfj+
+i4xs0nIXs2VdqcQvMKMT/xh8LxvBzKyztDpEqxvKuoExiNFDzKBelfxO
+=1NS3
 -----END PGP SIGNATURE-----

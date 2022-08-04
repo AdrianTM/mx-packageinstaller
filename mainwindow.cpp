@@ -1270,6 +1270,7 @@ bool MainWindow::isOnline()
         return true;
 
     QNetworkRequest request;
+    request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setRawHeader("User-Agent", qApp->applicationName().toUtf8() + "/" +
                          qApp->applicationVersion().toUtf8() + " (linux-gnu)");
 
