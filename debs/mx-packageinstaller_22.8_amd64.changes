@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Thu, 04 Aug 2022 15:04:50 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 22.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.8) mx; urgency=medium
+ .
+   * Allow http->https redirects
+Checksums-Sha1:
+ fd4452f124ff42e74a65b570eed125b772a339b6 1220 mx-packageinstaller_22.8.dsc
+ fa824448a42b4519acd3b9d833fbed7bd7a6d64c 297928 mx-packageinstaller_22.8.tar.xz
+ 7448b91f8ed274857a79915b213d0528206f9d22 10883 mx-packageinstaller_22.8_amd64.buildinfo
+ 891126b447037706934c9bb7e0371c8c2d319d74 373100 mx-packageinstaller_22.8_amd64.deb
+Checksums-Sha256:
+ 3b08fff7b1d7b060844f773fe924c15fab03b372fca5f3d90e88e0b5e70b8b66 1220 mx-packageinstaller_22.8.dsc
+ 34313195e0772a06f14064bd53ad0512cf7c88d2128e405628191c11ffe64c04 297928 mx-packageinstaller_22.8.tar.xz
+ 119f98dc3424223535151e7a3715e7a368601f94eaa7f9181ddbd84e2e1749fe 10883 mx-packageinstaller_22.8_amd64.buildinfo
+ 665ef6f0bdee4daa097e3ee060ba5e776ae00c524a3e7677ac67548059395f06 373100 mx-packageinstaller_22.8_amd64.deb
+Files:
+ 541f7ffdac4ac11dde3bf7c2c8346638 1220 admin optional mx-packageinstaller_22.8.dsc
+ ce62850bdd6b8173b0e833e6397ed281 297928 admin optional mx-packageinstaller_22.8.tar.xz
+ 05ce1a2a95db6c7e652a8b7d79f17cff 10883 admin optional mx-packageinstaller_22.8_amd64.buildinfo
+ 5f59742221127e8d8e1f981681bd434f 373100 admin optional mx-packageinstaller_22.8_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmLsGLwTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumLF7B/4jXKZzOWrh7s2FXT672fgwp7ljiuVI
+bmyLw56lj1W7ot3iS/aRzkb4/P3jJc+tocdCqkE1AXHYhOHQphtbbzciK+0X1R3a
+/0DO1KxABo/Yc9CGATKiKXSwtfk4x2b/RVAuyYWufsC2okS8kz9SOj2aipalnO6s
+rIcANmtfyJtiTKd5GM99x2MWqz00j/I/iw6D9IjPNmzWkr0s1+yDwcFjQQhjdNsQ
+PCbyn5oFuzJVFnyA+BnXFu8mar2cIe4rP8dr1zeSBAlDwdpcHD7rMM1XYbHLfWmP
+a5VXWqDe5pIvX+mCYPLA8EqAiMdjRBp94IJQrgf7kRfsldWdI+9UNFsr
+=RUrb
+-----END PGP SIGNATURE-----

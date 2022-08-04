@@ -1,0 +1,40 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Thu, 04 Aug 2022 15:04:50 -0400
+Source: mx-packageinstaller
+Architecture: source
+Version: 22.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (22.8) mx; urgency=medium
+ .
+   * Allow http->https redirects
+Checksums-Sha1:
+ fd4452f124ff42e74a65b570eed125b772a339b6 1220 mx-packageinstaller_22.8.dsc
+ fa824448a42b4519acd3b9d833fbed7bd7a6d64c 297928 mx-packageinstaller_22.8.tar.xz
+ 7448b91f8ed274857a79915b213d0528206f9d22 10883 mx-packageinstaller_22.8_amd64.buildinfo
+Checksums-Sha256:
+ 3b08fff7b1d7b060844f773fe924c15fab03b372fca5f3d90e88e0b5e70b8b66 1220 mx-packageinstaller_22.8.dsc
+ 34313195e0772a06f14064bd53ad0512cf7c88d2128e405628191c11ffe64c04 297928 mx-packageinstaller_22.8.tar.xz
+ 119f98dc3424223535151e7a3715e7a368601f94eaa7f9181ddbd84e2e1749fe 10883 mx-packageinstaller_22.8_amd64.buildinfo
+Files:
+ 541f7ffdac4ac11dde3bf7c2c8346638 1220 admin optional mx-packageinstaller_22.8.dsc
+ ce62850bdd6b8173b0e833e6397ed281 297928 admin optional mx-packageinstaller_22.8.tar.xz
+ 05ce1a2a95db6c7e652a8b7d79f17cff 10883 admin optional mx-packageinstaller_22.8_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmLsGLwTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNTPB/0WsaOMJXNPkygZt9pW+z1fCtRZ580p
+5MDtngkNVaJasIh5Qi0VBYLEudOqE/yuhRiSpn4d6jFlbyOMgqUrGiYTaOghZ4gp
+s9ukMUETY1/Bcwn1dSg0PaAW7Y0sjOO213p44HO10C+IEB0Ecd30WoffL3qfptH5
+2hEZVLM1DvciZKz8t4cs31vfeE60N1DZ+etAjaWaKTqrxu6tjUonLGwuypl/gXtC
+6V/eVc1NKlAY94wtQKLfKS+VX81cmthrQ9zYOp04RQAHhLvv45ON/zEvY2YC12Hl
+TFifp4+PlCQB6bW3fG55YomeMaLJIjXIk063hfJSTxgHQ7KLTFzvxy8m
+=HhIb
+-----END PGP SIGNATURE-----

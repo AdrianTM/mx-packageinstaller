@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Thu, 04 Aug 2022 15:04:50 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 22.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.8) mx; urgency=medium
+ .
+   * Allow http->https redirects
+Checksums-Sha1:
+ 297d56755ad7643f5e0380a16a6af8645113e9fe 10017 mx-packageinstaller_22.8_i386.buildinfo
+ cb06e048d7d8632a88cfd46d5dc5cae82c4f227f 382084 mx-packageinstaller_22.8_i386.deb
+Checksums-Sha256:
+ f1b7b24627e3b5b3777ac7ab276d00c4cc8b815d802543af5a0ada37e5778a58 10017 mx-packageinstaller_22.8_i386.buildinfo
+ 5174f4c332c73154fd47e9b83893d1e9b11f84867fe189f20af156dcaf9a2409 382084 mx-packageinstaller_22.8_i386.deb
+Files:
+ 32bd33a33c5936e6d1d7a372a220e4fb 10017 admin optional mx-packageinstaller_22.8_i386.buildinfo
+ de99aedc1e4af6abe87ab34524376696 382084 admin optional mx-packageinstaller_22.8_i386.deb
