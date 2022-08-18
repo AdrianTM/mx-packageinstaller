@@ -1,3 +1,9 @@
+mx-packageinstaller (22.8.01) mx; urgency=medium
+
+  * Fix: launching Firefox from Help
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 17 Aug 2022 21:57:04 -0400
+
 mx-packageinstaller (22.8) mx; urgency=medium
 
   * Allow http->https redirects
