@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Wed, 17 Aug 2022 21:57:04 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 22.8.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.8.01) mx; urgency=medium
+ .
+   * Fix: launching Firefox from Help
+Checksums-Sha1:
+ e761b8979a60faa54dd79577bdeaa208a6721f77 10096 mx-packageinstaller_22.8.01_i386.buildinfo
+ f85751addd7a40058281eb8b642710859cd35db7 388484 mx-packageinstaller_22.8.01_i386.deb
+Checksums-Sha256:
+ 10395d02512b61dac312f89b0acfa176842fb6bb23796786ee316d044d79903b 10096 mx-packageinstaller_22.8.01_i386.buildinfo
+ 3571280aa4dd1d5a057bac692134a0fdb908ec2b24e5c55aef27e280d25e4575 388484 mx-packageinstaller_22.8.01_i386.deb
+Files:
+ d97806bee1ed0e958eed879987db7d5f 10096 admin optional mx-packageinstaller_22.8.01_i386.buildinfo
+ 28586ceb8554552a0bf9551b29574567 388484 admin optional mx-packageinstaller_22.8.01_i386.deb

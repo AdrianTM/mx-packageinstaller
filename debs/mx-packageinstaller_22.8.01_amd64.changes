@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Wed, 17 Aug 2022 21:57:04 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 22.8.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.8.01) mx; urgency=medium
+ .
+   * Fix: launching Firefox from Help
+Checksums-Sha1:
+ 1d828917c1d71eb729096d2436ee8573a2bb1ef7 1232 mx-packageinstaller_22.8.01.dsc
+ 219f8ea4135ceea5818344818a8ef5be3647bef7 305148 mx-packageinstaller_22.8.01.tar.xz
+ fb4066a4751b6180ed02a8b4f04a2a24a6f35395 10827 mx-packageinstaller_22.8.01_amd64.buildinfo
+ 23ba207795befafc7ed688bfe9c6151accc3b9c0 379812 mx-packageinstaller_22.8.01_amd64.deb
+Checksums-Sha256:
+ 43422ea752ecebac186fd747c57939c57c755aadde1d2921258a2522ca39b042 1232 mx-packageinstaller_22.8.01.dsc
+ 19d5e7a22de9ed8e719afdc5bf43a0d6f9d8f40089b591594bc0fa7d1e1f7d4d 305148 mx-packageinstaller_22.8.01.tar.xz
+ 557c89aa60a7407c2b27b481da4c9550dfb20f1b2f68f96e82eba6684e2b6e28 10827 mx-packageinstaller_22.8.01_amd64.buildinfo
+ 62bf642fe778c9f044e448b1f2916211c6532f41809dafbfd9665544da31d7a7 379812 mx-packageinstaller_22.8.01_amd64.deb
+Files:
+ 4aeab66e13e5098ecac1ab2bd7dda3b0 1232 admin optional mx-packageinstaller_22.8.01.dsc
+ f08a4e09c624925794748d462ccfa034 305148 admin optional mx-packageinstaller_22.8.01.tar.xz
+ c42bdee054ed5e8052d3a6ab48dc01e9 10827 admin optional mx-packageinstaller_22.8.01_amd64.buildinfo
+ f61d4e1cc40bfe73ba12be45355d5ecb 379812 admin optional mx-packageinstaller_22.8.01_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmL9nLMTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumLY+CACXhBQF0r1J1nYFIvUgexnEvB8y3X26
+26u8BL6QMFLoCYmbW4FbDDeRFL+e4jp7TTafI7Op4EFPBup0iLYktb9NCMhdGouG
+NImxps8xVEhFjS05F933cqjutqhJ8MAbyKGSxHJAC+mXgx9kcIIyEfn0DZ1o6nlE
+wNeYaN3smwIUHCg34LcknN4eNr/AIUFHdXikOvEQUcts67t2E97wc7uXOtqX/Q8X
+MGDlain5cZuaU8dFp3KVG7NuEcK0BfU8kW1DnUbEmZN4IoBNBBJr6EDLzVyAR13e
+XlFf1AxBmHoJ8JbbYP7twLvgyZQJXaTLyqhw7c5zyROVuT/C0nv8SluX
+=K39v
+-----END PGP SIGNATURE-----
