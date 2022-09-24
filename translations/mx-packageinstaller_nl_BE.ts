@@ -5,7 +5,7 @@
         <location filename="../mainwindow.ui" line="20"/>
         <location filename="../mainwindow.cpp" line="95"/>
         <source>MX Package Installer</source>
-        <translation type="unfinished"/>
+        <translation>MX Pakket Installeerder</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
@@ -16,7 +16,7 @@
         <location filename="../mainwindow.ui" line="83"/>
         <location filename="../mainwindow.cpp" line="98"/>
         <source>Package</source>
-        <translation type="unfinished"/>
+        <translation>Pakket</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
@@ -31,7 +31,7 @@
         <location filename="../mainwindow.ui" line="986"/>
         <location filename="../mainwindow.cpp" line="98"/>
         <source>Description</source>
-        <translation type="unfinished"/>
+        <translation>Beschrijving</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="113"/>
@@ -40,7 +40,7 @@
         <location filename="../mainwindow.ui" line="955"/>
         <location filename="../mainwindow.ui" line="1235"/>
         <source>search</source>
-        <translation type="unfinished"/>
+        <translation>zoeken</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="123"/>
@@ -249,7 +249,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1275"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Grootte</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1319"/>
@@ -264,7 +264,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1386"/>
         <source>Advanced</source>
-        <translation type="unfinished"/>
+        <translation>Geavanceerd</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1416"/>
@@ -322,22 +322,22 @@
     <message>
         <location filename="../mainwindow.ui" line="1613"/>
         <source>About this application</source>
-        <translation type="unfinished"/>
+        <translation>Over deze applicatie</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1616"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>Over...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1623"/>
         <source>Alt+B</source>
-        <translation type="unfinished"/>
+        <translation>Alt+B</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1671"/>
         <source>Display help </source>
-        <translation type="unfinished"/>
+        <translation>Toon help</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1674"/>
@@ -347,7 +347,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1681"/>
         <source>Alt+H</source>
-        <translation type="unfinished"/>
+        <translation>Alt+H</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1697"/>
@@ -356,7 +356,7 @@
         <location filename="../mainwindow.cpp" line="2503"/>
         <location filename="../mainwindow.cpp" line="2746"/>
         <source>Install</source>
-        <translation type="unfinished"/>
+        <translation>Installeer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1704"/>
@@ -366,12 +366,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1723"/>
         <source>Quit application</source>
-        <translation type="unfinished"/>
+        <translation>Verlaat de applicatie</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1726"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1733"/>
@@ -415,7 +415,7 @@
         <location filename="../mainwindow.cpp" line="2768"/>
         <location filename="../mainwindow.cpp" line="2788"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Foutmelding</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="224"/>
@@ -430,7 +430,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="606"/>
         <source>Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>Even wachten aub...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="780"/>
@@ -484,7 +484,7 @@
         <location filename="../mainwindow.cpp" line="932"/>
         <location filename="../mainwindow.cpp" line="2776"/>
         <source>Warning</source>
-        <translation type="unfinished"/>
+        <translation>Waarschuwing</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="936"/>
@@ -494,7 +494,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1030"/>
         <source>Remove</source>
-        <translation type="unfinished"/>
+        <translation>Verwijderen</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
@@ -526,7 +526,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1173"/>
         <source>Installing </source>
-        <translation type="unfinished"/>
+        <translation>Installeren</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1180"/>
@@ -536,7 +536,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1320"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation type="unfinished"/>
+        <translation>Er is een fout opgetreden bij het schrijven van bestand: %1. Controleer of u voldoende vrije ruimte op uw schijf heeft</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1385"/>
@@ -573,7 +573,7 @@
         <location filename="../mainwindow.cpp" line="2673"/>
         <location filename="../mainwindow.cpp" line="2762"/>
         <source>Done</source>
-        <translation type="unfinished"/>
+        <translation>Klaar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2025"/>
@@ -604,12 +604,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="2077"/>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>Over %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2079"/>
         <source>Version: </source>
-        <translation type="unfinished"/>
+        <translation>Versie:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2080"/>
@@ -619,17 +619,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="2082"/>
         <source>Copyright (c) MX Linux</source>
-        <translation type="unfinished"/>
+        <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2083"/>
         <source>%1 License</source>
-        <translation type="unfinished"/>
+        <translation>%1 Licentie</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2096"/>
         <source>%1 Help</source>
-        <translation type="unfinished"/>
+        <translation>%1 Help</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2179"/>
@@ -640,7 +640,7 @@
         <location filename="../mainwindow.cpp" line="2192"/>
         <location filename="../mainwindow.cpp" line="2782"/>
         <source>Success</source>
-        <translation type="unfinished"/>
+        <translation>Gelukt</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2198"/>
@@ -705,7 +705,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2744"/>
         <source>Reinstall</source>
-        <translation type="unfinished"/>
+        <translation>Opnieuw installeren</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2768"/>
@@ -769,7 +769,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"/>
+        <translation>Sluiten</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
@@ -794,7 +794,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="95"/>
         <source>Success</source>
-        <translation type="unfinished"/>
+        <translation>Gelukt</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="95"/>
@@ -807,13 +807,13 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../about.cpp" line="41"/>
         <source>License</source>
-        <translation type="unfinished"/>
+        <translation>Licentie</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="42"/>
         <location filename="../about.cpp" line="52"/>
         <source>Changelog</source>
-        <translation type="unfinished"/>
+        <translation>Changelog</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="43"/>
@@ -823,27 +823,27 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../about.cpp" line="66"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>&amp;Sluiten</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="69"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>Foutmelding</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="70"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"/>
+        <translation>U lijkt ingelogd te zijn als root, gelieve uit te loggen en in te loggen als normale gebruiker om dit programma te gebruiken.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="79"/>
         <source>Unable to get exclusive lock</source>
-        <translation type="unfinished"/>
+        <translation>Niet in staat om exclusief slot te verkrijgen</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="80"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
-        <translation type="unfinished"/>
+        <translation>Een ander pakketbeheerprogramma (zoals Synaptic of apt-get) is reeds in gebruik. Sluit aub eerst dat programma</translation>
     </message>
 </context>
 </TS>
