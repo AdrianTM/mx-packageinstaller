@@ -274,7 +274,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"/>
+        <translation>Ongebruikte looptijden verwijderen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1447"/>
