@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Wed, 26 Oct 2022 20:04:24 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: armhf
+Version: 22.10.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Dolphin Oracle <dolphinoracle@gmail.com>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.10.01) mx; urgency=medium
+ .
+   * update translations
+Checksums-Sha1:
+ 55d6375dc70d14eec8b59cc747dfc8a5a96da677 9913 mx-packageinstaller_22.10.01_armhf.buildinfo
+ 68257005011d770acb74b1d2aa0733d52ca6c42c 361700 mx-packageinstaller_22.10.01_armhf.deb
+Checksums-Sha256:
+ bec56b6f9fe36f2c37a2f60d26f7914465c1f5b41be9e21e4979abe7ac408acd 9913 mx-packageinstaller_22.10.01_armhf.buildinfo
+ dd376d5f012f0b9c31e54b3e17c05fb5756572bfeba2112dad810ee9d3c981a5 361700 mx-packageinstaller_22.10.01_armhf.deb
+Files:
+ 9363802a0e70707a58c8ab55515917c7 9913 admin optional mx-packageinstaller_22.10.01_armhf.buildinfo
+ e4a1c4748c7959b16821537f3a7bbdbb 361700 admin optional mx-packageinstaller_22.10.01_armhf.deb
