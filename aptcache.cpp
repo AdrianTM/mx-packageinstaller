@@ -1,14 +1,12 @@
+#include "aptcache.h"
+
 #include <QDebug>
 #include <QDir>
 #include <QRegularExpression>
 
-#include "aptcache.h"
 #include "cmd.h"
 
-AptCache::AptCache()
-{
-    loadCacheFiles();
-}
+AptCache::AptCache() { loadCacheFiles(); }
 
 void AptCache::loadCacheFiles()
 {
@@ -30,9 +28,8 @@ void AptCache::loadCacheFiles()
 
     const QStringList packages_files = dir.entryList(QStringList() << packages_filter, QDir::Files, QDir::Unsorted);
     QStringList files;
-    for (const QString &file_name : packages_files)  {
-        if (re_backports.match(file_name).hasMatch()
-            || re_testrepo.match(file_name).hasMatch()
+    for (const QString &file_name : packages_files) {
+        if (re_backports.match(file_name).hasMatch() || re_testrepo.match(file_name).hasMatch()
             || re_temprepo.match(file_name).hasMatch()) {
             continue;
         }
@@ -47,15 +44,12 @@ void AptCache::loadCacheFiles()
     }
 
     for (const QString &file_name : qAsConst(files))
-        if(!readFile(file_name))
+        if (!readFile(file_name))
             qDebug() << "error reading a cache file";
     parseContent();
 }
 
-QMap<QString, QStringList> AptCache::getCandidates()
-{
-    return candidates;
-}
+QMap<QString, QStringList> AptCache::getCandidates() { return candidates; }
 
 // return DEB_BUILD_ARCH format which differs from what 'arch' returns
 QString AptCache::getArch()
@@ -80,7 +74,7 @@ void AptCache::parseContent()
     QString architecture;
 
     const QRegularExpression re_arch(".*(" + getArch() + "|all).*");
-    bool match_arch  = false;
+    bool match_arch = false;
     bool add_package = false;
 
     // FIXME: add deb822-format handling
@@ -93,15 +87,16 @@ void AptCache::parseContent()
             match_arch = re_arch.match(architecture).hasMatch();
         } else if (line.startsWith(QLatin1String("Version: "))) {
             version = line.remove(QLatin1String("Version: "));
-        } else if (line.startsWith(QLatin1String("Description:"))) { // not "Description: " because some people don't add description to their packages
+        } else if (line.startsWith(QLatin1String("Description:"))) { // not "Description: " because some people don't
+                                                                     // add description to their packages
             description = line.remove(QLatin1String("Description:")).trimmed();
             if (match_arch)
                 add_package = true;
         }
         // add only packages with correct architecure
         if (add_package && match_arch) {
-            package_list     << package;
-            version_list     << version;
+            package_list << package;
+            version_list << version;
             description_list << description;
             package = QLatin1String("");
             version = QLatin1String("");
@@ -112,7 +107,8 @@ void AptCache::parseContent()
         }
     }
     for (int i = 0; i < package_list.size(); ++i) {
-        if (candidates.contains(package_list.at(i)) && (VersionNumber(version_list.at(i)) <= VersionNumber(candidates.value(package_list.at(i)).at(0))))
+        if (candidates.contains(package_list.at(i))
+            && (VersionNumber(version_list.at(i)) <= VersionNumber(candidates.value(package_list.at(i)).at(0))))
             continue;
         candidates.insert(package_list.at(i), QStringList() << version_list.at(i) << description_list.at(i));
     }

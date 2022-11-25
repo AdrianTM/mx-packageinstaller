@@ -23,7 +23,6 @@
  * along with mx-packageinstaller.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 
-
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
@@ -40,32 +39,50 @@
 #include <QTreeWidgetItem>
 
 #include "cmd.h"
-#include "remotes.h"
 #include "lockfile.h"
+#include "remotes.h"
 #include "versionnumber.h"
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
-namespace Tab {
-enum {Popular, Stable, Test, Backports, Flatpak, Output};
+namespace Tab
+{
+enum { Popular, Stable, Test, Backports, Flatpak, Output };
 }
-namespace PopCol {
-enum {Icon, Check, Name, Info, Description, InstallNames, UninstallNames, Screenshot, PostUninstall, PreUninstall};
+namespace PopCol
+{
+enum { Icon, Check, Name, Info, Description, InstallNames, UninstallNames, Screenshot, PostUninstall, PreUninstall };
 }
-namespace TreeCol {
-enum {Check, UpdateIcon, Name, Version, Description, Status, Displayed};
+namespace TreeCol
+{
+enum { Check, UpdateIcon, Name, Version, Description, Status, Displayed };
 }
-namespace FlatCol {
-enum {Check, ShortName, LongName, Version, Size, Status, Displayed, Duplicate, FullName};
+namespace FlatCol
+{
+enum { Check, ShortName, LongName, Version, Size, Status, Displayed, Duplicate, FullName };
 }
-namespace Popular {
-enum {Category, Name, Description, Installable, Screenshot, Preinstall, Postinstall, InstallNames, UninstallNames,
-      PostUninstall, PreUninstall};
+namespace Popular
+{
+enum {
+    Category,
+    Name,
+    Description,
+    Installable,
+    Screenshot,
+    Preinstall,
+    Postinstall,
+    InstallNames,
+    UninstallNames,
+    PostUninstall,
+    PreUninstall
+};
 }
-namespace Release {
-enum {Jessie = 8, Stretch, Buster, Bullseye, Bookworm};
+namespace Release
+{
+enum { Jessie = 8, Stretch, Buster, Bullseye, Bookworm };
 }
 
 class MainWindow : public QDialog
@@ -90,7 +107,8 @@ public:
     bool installSelected();
     static bool isFilteredName(const QString &name);
     bool readPackageList(bool force_download = false);
-    bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""), const QString &postuninstall = QLatin1String(""));
+    bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""),
+                   const QString &postuninstall = QLatin1String(""));
     bool updateApt();
 
     static double convert(double number, const QString &unit);
@@ -192,15 +210,15 @@ private:
     bool dirtyBackports = true;
     bool dirtyStable = true;
     bool dirtyTest = true;
-    bool test_initially_enabled{};
-    bool updated_once{};
-    bool warning_backports{};
-    bool warning_flatpaks{};
-    bool warning_test{};
-    int height_app{};
+    bool test_initially_enabled {};
+    bool updated_once {};
+    bool warning_backports {};
+    bool warning_flatpaks {};
+    bool warning_test {};
+    int height_app {};
 
     Cmd cmd;
-    LockFile *lock_file{};
+    LockFile *lock_file {};
     QHash<QString, VersionNumber> listInstalledVersions();
     QList<QStringList> popular_apps;
     QLocale locale;
@@ -208,9 +226,9 @@ private:
     QMap<QString, QStringList> mx_list;
     QMap<QString, QStringList> stable_list;
     QMetaObject::Connection conn;
-    QProgressBar *bar{};
-    QProgressDialog *progress{};
-    QPushButton *pushCancel{};
+    QProgressBar *bar {};
+    QProgressDialog *progress {};
+    QPushButton *pushCancel {};
     QSettings dictionary;
     QSettings settings;
     QString arch;
@@ -226,7 +244,7 @@ private:
     QStringList installed_runtimes_fp;
     QTemporaryDir tmp_dir;
     QTimer timer;
-    QTreeWidget *tree{}; // current/calling tree
+    QTreeWidget *tree {}; // current/calling tree
     VersionNumber fp_ver;
 
     QNetworkAccessManager manager;
@@ -234,12 +252,9 @@ private:
 
     bool isOnline();
     bool downloadAndUnzip(const QString &url, QFile &file);
-    bool downloadAndUnzip(const QString &url, const QString &repo_name, const QString &branch, const QString &format, QFile &file);
+    bool downloadAndUnzip(const QString &url, const QString &repo_name, const QString &branch, const QString &format,
+                          QFile &file);
     bool downloadFile(const QString &url, QFile &file);
-
 };
 
-
 #endif
-
-

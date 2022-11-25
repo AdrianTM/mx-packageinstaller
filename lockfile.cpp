@@ -22,21 +22,15 @@
  * along with mx-packageinstaller.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
 
-
 #include "lockfile.h"
+
 #include <sys/file.h>
 #include <unistd.h>
-
-LockFile::LockFile(const QString &file_name) :
-    file_name(file_name)
-{
-
-}
 
 // Checks if file is locked by another process (if locked by the same process returns false)
 bool LockFile::isLocked()
 {
-    fd = open(file_name.toUtf8(), O_RDONLY);
+    int fd = open(file_name.toUtf8(), O_RDONLY);
     if (fd < -1) {
         perror("open");
         return false;
@@ -46,18 +40,17 @@ bool LockFile::isLocked()
 
 bool LockFile::lock()
 {
-    fd = open(file_name.toUtf8(), O_WRONLY);
+    int fd = open(file_name.toUtf8(), O_WRONLY);
     if (fd < -1) {
         perror("open");
         return false;
     }
-    // Create a file lock
-    return(lockf(fd, F_LOCK, 0) == 0);
+    return (lockf(fd, F_LOCK, 0) == 0);
 }
 
 bool LockFile::unlock()
 {
-    fd = open(file_name.toUtf8(), O_WRONLY);
+    int fd = open(file_name.toUtf8(), O_WRONLY);
     close(fd);
     return true;
 }

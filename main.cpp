@@ -22,6 +22,7 @@
  * You should have received a copy of the GNU General Public License
  * along with mx-packageinstaller.  If not, see <http://www.gnu.org/licenses/>.
  **********************************************************************/
+#include "lockfile.h"
 
 #include <QApplication>
 #include <QDate>
@@ -31,7 +32,6 @@
 #include <QLocale>
 #include <QTranslator>
 
-#include "lockfile.h"
 #include "mainwindow.h"
 #include <unistd.h>
 
@@ -47,27 +47,32 @@ int main(int argc, char *argv[])
         qunsetenv("SESSION_MANAGER");
     }
     QApplication app(argc, argv);
-    if (getuid() == 0) qputenv("HOME", "/root");
+    if (getuid() == 0)
+        qputenv("HOME", "/root");
 
-    app.setWindowIcon(QIcon::fromTheme(app.applicationName()));
-    app.setOrganizationName(QStringLiteral("MX-Linux"));
+    QApplication::setWindowIcon(QIcon::fromTheme(QApplication::applicationName()));
+    QApplication::setOrganizationName(QStringLiteral("MX-Linux"));
 
     QTranslator qtTran;
-    if (qtTran.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-        app.installTranslator(&qtTran);
+    if (qtTran.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"),
+                    QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+        QApplication::installTranslator(&qtTran);
 
     QTranslator qtBaseTran;
     if (qtBaseTran.load("qtbase_" + QLocale().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
-        app.installTranslator(&qtBaseTran);
+        QApplication::installTranslator(&qtBaseTran);
 
     QTranslator appTran;
-    if (appTran.load(app.applicationName() + "_" + QLocale().name(), "/usr/share/" + app.applicationName() + "/locale"))
-        app.installTranslator(&appTran);
+    if (appTran.load(QApplication::applicationName() + "_" + QLocale().name(),
+                     "/usr/share/" + QApplication::applicationName() + "/locale"))
+        QApplication::installTranslator(&appTran);
 
     // Root guard
     if (QProcess::execute(QStringLiteral("/bin/bash"), {"-c", "logname |grep -q ^root$"}) == 0) {
-        QMessageBox::critical(nullptr, QObject::tr("Error"),
-                              QObject::tr("You seem to be logged in as root, please log out and log in as normal user to use this program."));
+        QMessageBox::critical(
+            nullptr, QObject::tr("Error"),
+            QObject::tr(
+                "You seem to be logged in as root, please log out and log in as normal user to use this program."));
         exit(EXIT_FAILURE);
     }
 
@@ -77,8 +82,8 @@ int main(int argc, char *argv[])
         if (lock_file.isLocked()) {
             QApplication::beep();
             QMessageBox::critical(nullptr, QObject::tr("Unable to get exclusive lock"),
-                                  QObject::tr("Another package management application (like Synaptic or apt-get), "\
-                                                   "is already running. Please close that application first"));
+                                  QObject::tr("Another package management application (like Synaptic or apt-get), "
+                                              "is already running. Please close that application first"));
             exit(EXIT_FAILURE);
         } else {
             lock_file.lock();
@@ -87,8 +92,8 @@ int main(int argc, char *argv[])
         if (QFile::exists(log_name)) {
             QProcess::execute(QStringLiteral("/bin/bash"),
                               {"-c", "echo '-----------------------------------------------------------\n"
-                               "MXPI SESSION\n-----------------------------------------------------------' >> " +
-                               log_name.toUtf8() + ".old"});
+                                     "MXPI SESSION\n-----------------------------------------------------------' >> "
+                                         + log_name.toUtf8() + ".old"});
             QProcess::execute(QStringLiteral("/bin/bash"), {"-c", "cat " + log_name + " >> " + log_name + ".old"});
             QFile::remove(log_name);
         }
@@ -98,12 +103,11 @@ int main(int argc, char *argv[])
 
         MainWindow w;
         w.show();
-        return app.exec();
+        return QApplication::exec();
     } else {
         QProcess::startDetached(QStringLiteral("/usr/bin/mxpi-launcher"), {});
     }
 }
-
 
 // The implementation of the handler
 void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
@@ -113,13 +117,22 @@ void messageHandler(QtMsgType type, const QMessageLogContext &context, const QSt
 
     QTextStream out(&logFile);
     out << QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss.zzz "));
-    switch (type)
-    {
-    case QtInfoMsg:     out << QStringLiteral("INF "); break;
-    case QtDebugMsg:    out << QStringLiteral("DBG "); break;
-    case QtWarningMsg:  out << QStringLiteral("WRN "); break;
-    case QtCriticalMsg: out << QStringLiteral("CRT "); break;
-    case QtFatalMsg:    out << QStringLiteral("FTL "); break;
+    switch (type) {
+    case QtInfoMsg:
+        out << QStringLiteral("INF ");
+        break;
+    case QtDebugMsg:
+        out << QStringLiteral("DBG ");
+        break;
+    case QtWarningMsg:
+        out << QStringLiteral("WRN ");
+        break;
+    case QtCriticalMsg:
+        out << QStringLiteral("CRT ");
+        break;
+    case QtFatalMsg:
+        out << QStringLiteral("FTL ");
+        break;
     }
     out << context.category << QStringLiteral(": ") << msg << QStringLiteral("\n");
 }

@@ -21,16 +21,9 @@
 
 #include "versionnumber.h"
 
-VersionNumber::VersionNumber(const QString &value)
-{
-    setStrings(value);
-}
+VersionNumber::VersionNumber(const QString &value) { setStrings(value); }
 
-QString VersionNumber::toString() const
-{
-    return str;
-}
-
+QString VersionNumber::toString() const { return str; }
 
 void VersionNumber::setStrings(const QString &value)
 {
@@ -54,41 +47,23 @@ void VersionNumber::setStrings(const QString &value)
     debian_revision = groupDigits(debian_str);
 }
 
-VersionNumber& VersionNumber::operator=(const QString &value)
+VersionNumber &VersionNumber::operator=(const QString &value)
 {
     setStrings(value);
     return *this;
 }
 
-bool VersionNumber::operator<(const VersionNumber &value) const
-{
-    return (compare(*this, value) == 1);
-}
+bool VersionNumber::operator<(const VersionNumber &value) const { return (compare(*this, value) == 1); }
 
-bool VersionNumber::operator<=(const VersionNumber &value) const
-{
-    return !(*this > value);
-}
+bool VersionNumber::operator<=(const VersionNumber &value) const { return !(*this > value); }
 
-bool VersionNumber::operator>(const VersionNumber &value) const
-{
-    return (compare(*this, value) == -1);
-}
+bool VersionNumber::operator>(const VersionNumber &value) const { return (compare(*this, value) == -1); }
 
-bool VersionNumber::operator>=(const VersionNumber &value) const
-{
-    return !(*this < value);
-}
+bool VersionNumber::operator>=(const VersionNumber &value) const { return !(*this < value); }
 
-bool VersionNumber::operator==(const VersionNumber &value) const
-{
-    return (this->str == value.str);
-}
+bool VersionNumber::operator==(const VersionNumber &value) const { return (this->str == value.str); }
 
-bool VersionNumber::operator!=(const VersionNumber &value) const
-{
-    return !(*this == value);
-}
+bool VersionNumber::operator!=(const VersionNumber &value) const { return !(*this == value); }
 
 // transform QString into QStringList with digits grouped together
 QStringList VersionNumber::groupDigits(const QString &value)
@@ -109,7 +84,6 @@ QStringList VersionNumber::groupDigits(const QString &value)
             result.append(value.at(i));
         }
     }
-
     return result;
 }
 
