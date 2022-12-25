@@ -36,6 +36,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QTextStream>
+#include <QtGlobal>
 #include <QtXml/QtXml>
 
 #include "about.h"
@@ -1091,11 +1092,21 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     else
         msgBox.setDetailedText(detailed_removed_names + "\n" + detailed_to_install);
 
+    // find Detailed Info box and set heigth, set box height between 100 - 400 depending on length of content
+    const auto min = 100;
+    const auto max = 400;
+    const auto textBoxes = msgBox.findChildren<QTextEdit *>();
+    if (!textBoxes.isEmpty()) {
+        const auto recommended = qMax(msgBox.detailedText().length() / 2, min); // half of length is just guesswork
+        const auto height = qMin(recommended, max);
+        textBoxes.at(0)->setFixedHeight(height);
+    }
+
     msgBox.addButton(QMessageBox::Ok);
     msgBox.addButton(QMessageBox::Cancel);
 
-    // make it wider
-    auto *horizontalSpacer = new QSpacerItem(600, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    const auto width = 600;
+    auto *horizontalSpacer = new QSpacerItem(width, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(msgBox.layout());
     layout->addItem(horizontalSpacer, 0, 1);
     return msgBox.exec() == QMessageBox::Ok;
