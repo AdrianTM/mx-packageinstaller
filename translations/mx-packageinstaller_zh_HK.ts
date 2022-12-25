@@ -322,32 +322,32 @@
     <message>
         <location filename="../mainwindow.ui" line="1613"/>
         <source>About this application</source>
-        <translation type="unfinished"/>
+        <translation>關於本程式</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1616"/>
         <source>About...</source>
-        <translation type="unfinished"/>
+        <translation>關於……</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1623"/>
         <source>Alt+B</source>
-        <translation type="unfinished"/>
+        <translation>Alt+B</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1671"/>
         <source>Display help </source>
-        <translation type="unfinished"/>
+        <translation>顯示說明</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1674"/>
         <source>Help</source>
-        <translation type="unfinished"/>
+        <translation>說明</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1681"/>
         <source>Alt+H</source>
-        <translation type="unfinished"/>
+        <translation>Alt+H</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1697"/>
@@ -415,7 +415,7 @@
         <location filename="../mainwindow.cpp" line="2768"/>
         <location filename="../mainwindow.cpp" line="2788"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="224"/>
@@ -425,7 +425,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="599"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="606"/>
@@ -609,7 +609,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="2079"/>
         <source>Version: </source>
-        <translation type="unfinished"/>
+        <translation>版本：</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2080"/>
@@ -619,7 +619,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="2082"/>
         <source>Copyright (c) MX Linux</source>
-        <translation type="unfinished"/>
+        <translation>MX Linux 版權所有 (c)</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2083"/>
@@ -807,28 +807,28 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../about.cpp" line="41"/>
         <source>License</source>
-        <translation type="unfinished"/>
+        <translation>授權條款</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="42"/>
         <location filename="../about.cpp" line="52"/>
         <source>Changelog</source>
-        <translation type="unfinished"/>
+        <translation>變更紀錄</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="43"/>
         <source>Cancel</source>
-        <translation type="unfinished"/>
+        <translation>取消</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="66"/>
         <source>&amp;Close</source>
-        <translation type="unfinished"/>
+        <translation>關閉（&amp;C）</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="69"/>
         <source>Error</source>
-        <translation type="unfinished"/>
+        <translation>錯誤</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="70"/>
@@ -838,12 +838,12 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../main.cpp" line="79"/>
         <source>Unable to get exclusive lock</source>
-        <translation type="unfinished"/>
+        <translation>無法獨佔鎖定</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="80"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
-        <translation type="unfinished"/>
+        <translation>系統上已經有別的軟體套件管理程式（例如 Synaptic 或 apt-get）在運作，請先關閉該程式。</translation>
     </message>
 </context>
 </TS>

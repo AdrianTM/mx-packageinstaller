@@ -1,11 +1,13 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ja">
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE TS>
+<TS version="2.1" language="ja">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="95"/>
+        <location filename="../mainwindow.cpp" line="94"/>
         <source>MX Package Installer</source>
-        <translation>MX パッケージ・インストーラー</translation>
+        <translation>MX パッケージインストーラ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
@@ -14,13 +16,13 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="83"/>
-        <location filename="../mainwindow.cpp" line="98"/>
+        <location filename="../mainwindow.cpp" line="97"/>
         <source>Package</source>
         <translation>パッケージ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
-        <location filename="../mainwindow.cpp" line="98"/>
+        <location filename="../mainwindow.cpp" line="97"/>
         <source>Info</source>
         <translation>情報</translation>
     </message>
@@ -29,7 +31,7 @@
         <location filename="../mainwindow.ui" line="250"/>
         <location filename="../mainwindow.ui" line="657"/>
         <location filename="../mainwindow.ui" line="986"/>
-        <location filename="../mainwindow.cpp" line="98"/>
+        <location filename="../mainwindow.cpp" line="97"/>
         <source>Description</source>
         <translation>説明</translation>
     </message>
@@ -67,7 +69,7 @@
         <location filename="../mainwindow.ui" line="575"/>
         <location filename="../mainwindow.ui" line="903"/>
         <location filename="../mainwindow.ui" line="907"/>
-        <location filename="../mainwindow.cpp" line="2409"/>
+        <location filename="../mainwindow.cpp" line="2513"/>
         <source>All packages</source>
         <translation>全てのパッケージ</translation>
     </message>
@@ -75,7 +77,7 @@
         <location filename="../mainwindow.ui" line="186"/>
         <location filename="../mainwindow.ui" line="580"/>
         <location filename="../mainwindow.ui" line="912"/>
-        <location filename="../mainwindow.cpp" line="2422"/>
+        <location filename="../mainwindow.cpp" line="2526"/>
         <source>Installed</source>
         <translation>インストール済み</translation>
     </message>
@@ -83,7 +85,7 @@
         <location filename="../mainwindow.ui" line="191"/>
         <location filename="../mainwindow.ui" line="585"/>
         <location filename="../mainwindow.ui" line="917"/>
-        <location filename="../mainwindow.cpp" line="2420"/>
+        <location filename="../mainwindow.cpp" line="2524"/>
         <source>Upgradable</source>
         <translation>アップグレード可能</translation>
     </message>
@@ -92,10 +94,10 @@
         <location filename="../mainwindow.ui" line="590"/>
         <location filename="../mainwindow.ui" line="922"/>
         <location filename="../mainwindow.ui" line="1215"/>
-        <location filename="../mainwindow.cpp" line="2394"/>
-        <location filename="../mainwindow.cpp" line="2424"/>
-        <location filename="../mainwindow.cpp" line="2510"/>
-        <location filename="../mainwindow.cpp" line="2511"/>
+        <location filename="../mainwindow.cpp" line="2498"/>
+        <location filename="../mainwindow.cpp" line="2528"/>
+        <location filename="../mainwindow.cpp" line="2619"/>
+        <location filename="../mainwindow.cpp" line="2620"/>
         <source>Not installed</source>
         <translation>未インストール</translation>
     </message>
@@ -200,39 +202,39 @@
     <message>
         <location filename="../mainwindow.ui" line="1181"/>
         <location filename="../mainwindow.ui" line="1185"/>
-        <location filename="../mainwindow.cpp" line="2376"/>
+        <location filename="../mainwindow.cpp" line="2480"/>
         <source>All apps</source>
         <translation>全てのアプリ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1190"/>
-        <location filename="../mainwindow.cpp" line="2380"/>
+        <location filename="../mainwindow.cpp" line="2484"/>
         <source>All runtimes</source>
         <translation>全てのランタイム</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1195"/>
-        <location filename="../mainwindow.cpp" line="2384"/>
+        <location filename="../mainwindow.cpp" line="2488"/>
         <source>All available</source>
         <translation>全ての利用可能</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
-        <location filename="../mainwindow.cpp" line="2374"/>
+        <location filename="../mainwindow.cpp" line="2478"/>
         <source>Installed apps</source>
         <translation>インストール済みのアプリ</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1205"/>
-        <location filename="../mainwindow.cpp" line="2372"/>
+        <location filename="../mainwindow.cpp" line="2476"/>
         <source>Installed runtimes</source>
         <translation>インストール済みランタイム</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1210"/>
-        <location filename="../mainwindow.cpp" line="2392"/>
-        <location filename="../mainwindow.cpp" line="2505"/>
-        <location filename="../mainwindow.cpp" line="2506"/>
+        <location filename="../mainwindow.cpp" line="2496"/>
+        <location filename="../mainwindow.cpp" line="2613"/>
+        <location filename="../mainwindow.cpp" line="2614"/>
         <source>All installed</source>
         <translation>すべてインストールします</translation>
     </message>
@@ -294,8 +296,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1517"/>
-        <location filename="../mainwindow.cpp" line="2206"/>
-        <location filename="../mainwindow.cpp" line="2334"/>
+        <location filename="../mainwindow.cpp" line="2302"/>
+        <location filename="../mainwindow.cpp" line="2436"/>
         <source>Console Output</source>
         <translation>コンソールの出力</translation>
     </message>
@@ -351,10 +353,10 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1697"/>
-        <location filename="../mainwindow.cpp" line="1032"/>
-        <location filename="../mainwindow.cpp" line="2501"/>
-        <location filename="../mainwindow.cpp" line="2503"/>
-        <location filename="../mainwindow.cpp" line="2746"/>
+        <location filename="../mainwindow.cpp" line="1072"/>
+        <location filename="../mainwindow.cpp" line="2606"/>
+        <location filename="../mainwindow.cpp" line="2610"/>
+        <location filename="../mainwindow.cpp" line="2865"/>
         <source>Install</source>
         <translation>インストール</translation>
     </message>
@@ -379,342 +381,342 @@
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="177"/>
+        <location filename="../mainwindow.cpp" line="176"/>
         <source>Uninstalling packages...</source>
         <translation>パッケージを削除中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="182"/>
+        <location filename="../mainwindow.cpp" line="181"/>
         <source>Running pre-uninstall operations...</source>
         <translation>アンインストール前の操作を実行中です...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="195"/>
+        <location filename="../mainwindow.cpp" line="196"/>
         <source>Running post-uninstall operations...</source>
         <translation>削除後の作業を実行中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="209"/>
+        <location filename="../mainwindow.cpp" line="210"/>
         <source>Refreshing sources...</source>
         <translation>ソースを更新中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
-        <location filename="../mainwindow.cpp" line="1070"/>
-        <location filename="../mainwindow.cpp" line="1196"/>
-        <location filename="../mainwindow.cpp" line="1320"/>
-        <location filename="../mainwindow.cpp" line="1377"/>
-        <location filename="../mainwindow.cpp" line="2029"/>
-        <location filename="../mainwindow.cpp" line="2057"/>
-        <location filename="../mainwindow.cpp" line="2068"/>
-        <location filename="../mainwindow.cpp" line="2179"/>
-        <location filename="../mainwindow.cpp" line="2198"/>
-        <location filename="../mainwindow.cpp" line="2580"/>
-        <location filename="../mainwindow.cpp" line="2651"/>
-        <location filename="../mainwindow.cpp" line="2679"/>
-        <location filename="../mainwindow.cpp" line="2768"/>
-        <location filename="../mainwindow.cpp" line="2788"/>
+        <location filename="../mainwindow.cpp" line="226"/>
+        <location filename="../mainwindow.cpp" line="1120"/>
+        <location filename="../mainwindow.cpp" line="1249"/>
+        <location filename="../mainwindow.cpp" line="1387"/>
+        <location filename="../mainwindow.cpp" line="1449"/>
+        <location filename="../mainwindow.cpp" line="2120"/>
+        <location filename="../mainwindow.cpp" line="2150"/>
+        <location filename="../mainwindow.cpp" line="2162"/>
+        <location filename="../mainwindow.cpp" line="2275"/>
+        <location filename="../mainwindow.cpp" line="2294"/>
+        <location filename="../mainwindow.cpp" line="2689"/>
+        <location filename="../mainwindow.cpp" line="2765"/>
+        <location filename="../mainwindow.cpp" line="2795"/>
+        <location filename="../mainwindow.cpp" line="2888"/>
+        <location filename="../mainwindow.cpp" line="2912"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="224"/>
+        <location filename="../mainwindow.cpp" line="227"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>ソースの更新中に問題がありました。一部のソースではアップデートが提供されていない可能性があります。詳細はこちらをチェックしてください：</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="599"/>
+        <location filename="../mainwindow.cpp" line="619"/>
         <source>Cancel</source>
         <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="606"/>
+        <location filename="../mainwindow.cpp" line="626"/>
         <source>Please wait...</source>
         <translation>お待ちください...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="780"/>
-        <location filename="../mainwindow.cpp" line="798"/>
+        <location filename="../mainwindow.cpp" line="810"/>
+        <location filename="../mainwindow.cpp" line="829"/>
         <source>Version </source>
         <translation>バージョン</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="780"/>
+        <location filename="../mainwindow.cpp" line="810"/>
         <source> in stable repo</source>
         <translation>安定版リポジトリ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="782"/>
+        <location filename="../mainwindow.cpp" line="812"/>
         <source>Not available in stable repo</source>
         <translation>安定版リポジトリが使用できません</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="791"/>
-        <location filename="../mainwindow.cpp" line="2314"/>
+        <location filename="../mainwindow.cpp" line="821"/>
+        <location filename="../mainwindow.cpp" line="2413"/>
         <source>Latest version </source>
         <translation>最新バージョン</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="791"/>
-        <location filename="../mainwindow.cpp" line="2314"/>
+        <location filename="../mainwindow.cpp" line="821"/>
+        <location filename="../mainwindow.cpp" line="2413"/>
         <source> already installed</source>
         <translation>インストール済みです</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="798"/>
+        <location filename="../mainwindow.cpp" line="829"/>
         <source> installed</source>
         <translation>インストール済み</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="908"/>
+        <location filename="../mainwindow.cpp" line="940"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>あなたは MX テスト版リポジトリを使おうとしていますが、そのパッケージはテストのみを目的として提供されています。システムを壊す可能性があるので、システムをバックアップして、一度につき一つのパッケージだけをインストールしたりアップデートすることをお勧めします。Main に移行する前にそのパッケージが評価できるように、フォーラムでフィードバックを提供してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="917"/>
+        <location filename="../mainwindow.cpp" line="949"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>あなたは Debian バックポートを使おうとしていますが、これは次回予定の Debian リリース（テスト版といわれます）から取られ、Debian 安定版で使用できるように修正しれコンパイルされたパッケージが含まれています。Debian と MX Linux の安定版リリース用に多くのテストが行われていません。また、Debian 安定版にある他のアプリと互換性がないというリスクがある状況で、現状のままで提供されています。注意して使用してください！</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="925"/>
+        <location filename="../mainwindow.cpp" line="957"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux は、ユーザが便利なようにとの目的のみで、この flatpaks のリポジトリを提供しているので、個々のflatpaks自体が機能するかどうかについては責任を負いません。詳しくは、Flatpak の Wikiページを参照してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="932"/>
-        <location filename="../mainwindow.cpp" line="2776"/>
+        <location filename="../mainwindow.cpp" line="964"/>
+        <location filename="../mainwindow.cpp" line="2898"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="936"/>
+        <location filename="../mainwindow.cpp" line="968"/>
         <source>Do not show this message again</source>
         <translation>このメッセージを再び表示しない</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1030"/>
+        <location filename="../mainwindow.cpp" line="1070"/>
         <source>Remove</source>
         <translation>削除</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1044"/>
+        <location filename="../mainwindow.cpp" line="1084"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>以下のパッケージが選択されました。リストの変更を表示するには「詳細の表示」をクリックしてください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1070"/>
-        <location filename="../mainwindow.cpp" line="1196"/>
-        <location filename="../mainwindow.cpp" line="1377"/>
+        <location filename="../mainwindow.cpp" line="1121"/>
+        <location filename="../mainwindow.cpp" line="1250"/>
+        <location filename="../mainwindow.cpp" line="1450"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>インターネットが利用できないので、パッケージのリストがダウンロードできません</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1075"/>
+        <location filename="../mainwindow.cpp" line="1126"/>
         <source>Installing packages...</source>
         <translation>パッケージのインストール中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1130"/>
+        <location filename="../mainwindow.cpp" line="1183"/>
         <source>Post-processing...</source>
         <translation>後処理中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1160"/>
+        <location filename="../mainwindow.cpp" line="1213"/>
         <source>Pre-processing for </source>
         <translation>の前処理中</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1173"/>
+        <location filename="../mainwindow.cpp" line="1226"/>
         <source>Installing </source>
         <translation>インストール中</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1180"/>
+        <location filename="../mainwindow.cpp" line="1233"/>
         <source>Post-processing for </source>
         <translation>の後処理中</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1320"/>
+        <location filename="../mainwindow.cpp" line="1388"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
         <translation>ファイル %1 の書き込み中にエラー発生。ドライブに十分な空き領域があるか確認してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1385"/>
+        <location filename="../mainwindow.cpp" line="1458"/>
         <source>Downloading package info...</source>
         <translation>パッケージ情報をダウンロード中...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1820"/>
-        <location filename="../mainwindow.cpp" line="1899"/>
-        <location filename="../mainwindow.cpp" line="1922"/>
+        <location filename="../mainwindow.cpp" line="1912"/>
+        <location filename="../mainwindow.cpp" line="1989"/>
+        <location filename="../mainwindow.cpp" line="2013"/>
         <source>Package info</source>
         <translation>パッケージ情報</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1837"/>
-        <location filename="../mainwindow.cpp" line="2713"/>
+        <location filename="../mainwindow.cpp" line="1926"/>
+        <location filename="../mainwindow.cpp" line="2831"/>
         <source>More &amp;info...</source>
         <translation>詳細情報...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1865"/>
+        <location filename="../mainwindow.cpp" line="1955"/>
         <source>Packages to be installed: </source>
         <translation>インストールするパッケージ: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2025"/>
-        <location filename="../mainwindow.cpp" line="2037"/>
-        <location filename="../mainwindow.cpp" line="2051"/>
-        <location filename="../mainwindow.cpp" line="2065"/>
-        <location filename="../mainwindow.cpp" line="2152"/>
-        <location filename="../mainwindow.cpp" line="2174"/>
-        <location filename="../mainwindow.cpp" line="2576"/>
-        <location filename="../mainwindow.cpp" line="2645"/>
-        <location filename="../mainwindow.cpp" line="2673"/>
-        <location filename="../mainwindow.cpp" line="2762"/>
+        <location filename="../mainwindow.cpp" line="2116"/>
+        <location filename="../mainwindow.cpp" line="2129"/>
+        <location filename="../mainwindow.cpp" line="2144"/>
+        <location filename="../mainwindow.cpp" line="2159"/>
+        <location filename="../mainwindow.cpp" line="2247"/>
+        <location filename="../mainwindow.cpp" line="2270"/>
+        <location filename="../mainwindow.cpp" line="2685"/>
+        <location filename="../mainwindow.cpp" line="2759"/>
+        <location filename="../mainwindow.cpp" line="2789"/>
+        <location filename="../mainwindow.cpp" line="2882"/>
         <source>Done</source>
         <translation>完了</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2025"/>
-        <location filename="../mainwindow.cpp" line="2037"/>
-        <location filename="../mainwindow.cpp" line="2051"/>
-        <location filename="../mainwindow.cpp" line="2065"/>
-        <location filename="../mainwindow.cpp" line="2152"/>
-        <location filename="../mainwindow.cpp" line="2174"/>
-        <location filename="../mainwindow.cpp" line="2192"/>
-        <location filename="../mainwindow.cpp" line="2576"/>
-        <location filename="../mainwindow.cpp" line="2645"/>
-        <location filename="../mainwindow.cpp" line="2673"/>
-        <location filename="../mainwindow.cpp" line="2762"/>
-        <location filename="../mainwindow.cpp" line="2782"/>
+        <location filename="../mainwindow.cpp" line="2116"/>
+        <location filename="../mainwindow.cpp" line="2129"/>
+        <location filename="../mainwindow.cpp" line="2144"/>
+        <location filename="../mainwindow.cpp" line="2159"/>
+        <location filename="../mainwindow.cpp" line="2247"/>
+        <location filename="../mainwindow.cpp" line="2270"/>
+        <location filename="../mainwindow.cpp" line="2288"/>
+        <location filename="../mainwindow.cpp" line="2685"/>
+        <location filename="../mainwindow.cpp" line="2759"/>
+        <location filename="../mainwindow.cpp" line="2789"/>
+        <location filename="../mainwindow.cpp" line="2882"/>
+        <location filename="../mainwindow.cpp" line="2906"/>
         <source>Processing finished successfully.</source>
         <translation>処理は正常に終了しました。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2029"/>
-        <location filename="../mainwindow.cpp" line="2057"/>
-        <location filename="../mainwindow.cpp" line="2068"/>
-        <location filename="../mainwindow.cpp" line="2580"/>
-        <location filename="../mainwindow.cpp" line="2651"/>
-        <location filename="../mainwindow.cpp" line="2679"/>
+        <location filename="../mainwindow.cpp" line="2121"/>
+        <location filename="../mainwindow.cpp" line="2151"/>
+        <location filename="../mainwindow.cpp" line="2163"/>
+        <location filename="../mainwindow.cpp" line="2690"/>
+        <location filename="../mainwindow.cpp" line="2766"/>
+        <location filename="../mainwindow.cpp" line="2796"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>インストール中に問題が検出されたので、コンソール出力を検査してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2077"/>
+        <location filename="../mainwindow.cpp" line="2173"/>
         <source>About %1</source>
         <translation> %1 について</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2079"/>
+        <location filename="../mainwindow.cpp" line="2174"/>
         <source>Version: </source>
         <translation>バージョン: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2080"/>
+        <location filename="../mainwindow.cpp" line="2175"/>
         <source>Package Installer for MX Linux</source>
-        <translation>MX Linux 用のパッケージ・インストーラー</translation>
+        <translation>MX Linux 用のパッケージインストーラ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2082"/>
+        <location filename="../mainwindow.cpp" line="2177"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2083"/>
+        <location filename="../mainwindow.cpp" line="2178"/>
         <source>%1 License</source>
         <translation>%1 ライセンス</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2096"/>
+        <location filename="../mainwindow.cpp" line="2191"/>
         <source>%1 Help</source>
         <translation>%1 のヘルプ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2179"/>
+        <location filename="../mainwindow.cpp" line="2275"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>アンインストールに問題が発生したので、出力をチェックしてください</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2192"/>
-        <location filename="../mainwindow.cpp" line="2782"/>
+        <location filename="../mainwindow.cpp" line="2288"/>
+        <location filename="../mainwindow.cpp" line="2906"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2198"/>
-        <location filename="../mainwindow.cpp" line="2788"/>
+        <location filename="../mainwindow.cpp" line="2294"/>
+        <location filename="../mainwindow.cpp" line="2912"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>プログラムをアンインストール中に問題が発生しました</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2290"/>
-        <location filename="../mainwindow.cpp" line="2301"/>
+        <location filename="../mainwindow.cpp" line="2387"/>
+        <location filename="../mainwindow.cpp" line="2399"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak はインストールされていません</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2290"/>
+        <location filename="../mainwindow.cpp" line="2388"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>フラットパックは現在インストールされていません。
 OKでインストールを実行しますか？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2301"/>
+        <location filename="../mainwindow.cpp" line="2399"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak はインストールされませんでした</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2322"/>
-        <location filename="../mainwindow.cpp" line="2341"/>
+        <location filename="../mainwindow.cpp" line="2423"/>
+        <location filename="../mainwindow.cpp" line="2445"/>
         <source>Flathub remote failed</source>
         <translation>Flathub のリモートに失敗</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2322"/>
-        <location filename="../mainwindow.cpp" line="2341"/>
+        <location filename="../mainwindow.cpp" line="2423"/>
+        <location filename="../mainwindow.cpp" line="2445"/>
         <source>Flathub remote could not be added</source>
         <translation>Flathub リモートを追加できませんでした</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2330"/>
+        <location filename="../mainwindow.cpp" line="2431"/>
         <source>Needs re-login</source>
         <translation>再ログインが必要です</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2330"/>
+        <location filename="../mainwindow.cpp" line="2432"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>メニューにインストールされているアイテムを表示するには、ログアウト/ログインが必要な場合があります</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2501"/>
+        <location filename="../mainwindow.cpp" line="2606"/>
         <source>Upgrade</source>
         <translation>アップグレード</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2607"/>
+        <location filename="../mainwindow.cpp" line="2718"/>
         <source>Quit?</source>
         <translation>中止しますか？</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2608"/>
+        <location filename="../mainwindow.cpp" line="2719"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>プロセスが実行中の場合、終了するとシステムが不安定な状態になる可能性があります。&lt;p&gt;&lt;b&gt;本当に MXパッケージインストーラを終了しますか？&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2744"/>
+        <location filename="../mainwindow.cpp" line="2863"/>
         <source>Reinstall</source>
         <translation>再インストール</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2768"/>
+        <location filename="../mainwindow.cpp" line="2889"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>直前の操作中に問題が検出されました。端末の出力を点検してください。</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2776"/>
+        <location filename="../mainwindow.cpp" line="2899"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>潜在的に危険な操作。
@@ -779,27 +781,27 @@ Please make sure you check carefully the list of packages to be removed.</source
         <translation>取り外し不可</translation>
     </message>
     <message>
-        <location filename="../remotes.cpp" line="75"/>
+        <location filename="../remotes.cpp" line="76"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
         <translation>Flathub はメインの Flatpak remote なので、撤去できません</translation>
     </message>
     <message>
-        <location filename="../remotes.cpp" line="91"/>
+        <location filename="../remotes.cpp" line="96"/>
         <source>Error adding remote</source>
         <translation>remote 追加中にエラー発生</translation>
     </message>
     <message>
-        <location filename="../remotes.cpp" line="91"/>
+        <location filename="../remotes.cpp" line="97"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
         <translation>remote を追加できませんでした - コマンドはエラーを返しました。remote アドレスを再度確認してから、もう一度試してください</translation>
     </message>
     <message>
-        <location filename="../remotes.cpp" line="95"/>
+        <location filename="../remotes.cpp" line="102"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../remotes.cpp" line="95"/>
+        <location filename="../remotes.cpp" line="102"/>
         <source>Remote added successfully</source>
         <translation>Remote 追加に成功</translation>
     </message>
@@ -807,43 +809,43 @@ Please make sure you check carefully the list of packages to be removed.</source
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../about.cpp" line="41"/>
+        <location filename="../about.cpp" line="52"/>
         <source>License</source>
         <translation>ライセンス</translation>
     </message>
     <message>
-        <location filename="../about.cpp" line="42"/>
-        <location filename="../about.cpp" line="52"/>
+        <location filename="../about.cpp" line="53"/>
+        <location filename="../about.cpp" line="62"/>
         <source>Changelog</source>
         <translation>更新履歴</translation>
     </message>
     <message>
-        <location filename="../about.cpp" line="43"/>
+        <location filename="../about.cpp" line="54"/>
         <source>Cancel</source>
-        <translation>取り消し</translation>
+        <translation>キャンセル</translation>
     </message>
     <message>
-        <location filename="../about.cpp" line="66"/>
+        <location filename="../about.cpp" line="74"/>
         <source>&amp;Close</source>
-        <translation>&amp;閉じる</translation>
+        <translation>閉じる(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="69"/>
+        <location filename="../main.cpp" line="73"/>
         <source>Error</source>
         <translation>エラー</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="70"/>
+        <location filename="../main.cpp" line="74"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>rootとしてログインしているようです。このプログラムを使用するには、一度ログアウトして通常のユーザーとしてログインしてください。</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="79"/>
+        <location filename="../main.cpp" line="84"/>
         <source>Unable to get exclusive lock</source>
         <translation>排他的ロックを取得できません</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="80"/>
+        <location filename="../main.cpp" line="85"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
         <translation>別のパッケージ管理アプリケーション（Synaptic や APT など）が既に実行されています。まず、そのアプリケーションを終了してください</translation>
     </message>

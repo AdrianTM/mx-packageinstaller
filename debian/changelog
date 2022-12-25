@@ -1,3 +1,10 @@
+mx-packageinstaller (22.12) mx; urgency=medium
+
+  * Translation updates
+  * Minor change: increase the size of Detailed Info text box
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 25 Dec 2022 13:15:45 -0500
+
 mx-packageinstaller (22.10.01) mx; urgency=medium
 
   * update translations

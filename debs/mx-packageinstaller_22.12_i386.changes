@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Sun, 25 Dec 2022 13:15:45 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 22.12
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (22.12) mx; urgency=medium
+ .
+   * Translation updates
+   * Minor change: increase the size of Detailed Info text box
+Checksums-Sha1:
+ 0b5d89c95a690dadd92ba103692d8a1a49456649 10086 mx-packageinstaller_22.12_i386.buildinfo
+ 9de2a7e114a48ca93efe5f006488450a0ce7f5b4 389648 mx-packageinstaller_22.12_i386.deb
+Checksums-Sha256:
+ 44e16be74ebe87e1a50413c41afeb08638db6cea6c9e176d34d164f34b4bcb91 10086 mx-packageinstaller_22.12_i386.buildinfo
+ 505151927cb17adfddbffd3ab4b11f36f6f86fea0d8c118ffa9b7b1e23564729 389648 mx-packageinstaller_22.12_i386.deb
+Files:
+ 7e41130bee9ee7b668c6d21c0e3c89d3 10086 admin optional mx-packageinstaller_22.12_i386.buildinfo
+ 12ceeaaa13e289e34639066ea3533572 389648 admin optional mx-packageinstaller_22.12_i386.deb

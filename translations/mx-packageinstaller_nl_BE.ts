@@ -302,7 +302,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1523"/>
         <source>Enter</source>
-        <translation type="unfinished"/>
+        <translation>Enter</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1534"/>
