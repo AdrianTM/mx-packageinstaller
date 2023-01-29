@@ -453,7 +453,7 @@ void MainWindow::updateBar()
 void MainWindow::checkUnckeckItem()
 {
     if (const auto &t_widget = qobject_cast<QTreeWidget *>(focusWidget())) {
-        if (t_widget->currentItem() == nullptr || t_widget->currentItem()->parent() == nullptr)
+        if (t_widget->currentItem() == nullptr || t_widget->currentItem()->childCount() > 0)
             return;
         int col
             = (t_widget == ui->treePopularApps) ? static_cast<int>(PopCol::Check) : static_cast<int>(TreeCol::Check);
