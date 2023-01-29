@@ -19,11 +19,11 @@ Changes:
    * Display upgradable packages too when displaying installed packages
    * Fix: performance issue when switching tabs
 Checksums-Sha1:
- 731e74afa776080cccd051a08180bf10aefac6c2 10113 mx-packageinstaller_23.1_i386.buildinfo
- d07265951da66e9338e4dabac47d862006b83b78 387636 mx-packageinstaller_23.1_i386.deb
+ 8adb3899f003d4afc6e744772e0103350f05172a 10113 mx-packageinstaller_23.1_i386.buildinfo
+ c5ea28057fa3c681319afa63caf2058d35b429c6 387732 mx-packageinstaller_23.1_i386.deb
 Checksums-Sha256:
- 1cb5768ee4902f731f7cc43c43540b4842d428fdf4d601bf829d9e7deddb5152 10113 mx-packageinstaller_23.1_i386.buildinfo
- 2acc1e39a5504370e229808ac2736d1df835d7796d6de6a3fd65a89388f94e68 387636 mx-packageinstaller_23.1_i386.deb
+ ad038e86c7e7ee1f30b006d27634bb1a40ad3f09781e1cbe41128d5a3ee8b157 10113 mx-packageinstaller_23.1_i386.buildinfo
+ 15d734fc006707aa9ea530c06e9fd709eadc4f474b85e1ea1e2b0b70247e192a 387732 mx-packageinstaller_23.1_i386.deb
 Files:
- a991da8fc0ceff403daacf6fc1cbbd10 10113 admin optional mx-packageinstaller_23.1_i386.buildinfo
- a9abfed33ac91903d21ad0986148e1d1 387636 admin optional mx-packageinstaller_23.1_i386.deb
+ a42addc14af62ab8fd02770ebfbfc0fb 10113 admin optional mx-packageinstaller_23.1_i386.buildinfo
+ 9547e644af3cd5516468f514a196c9ff 387732 admin optional mx-packageinstaller_23.1_i386.deb
