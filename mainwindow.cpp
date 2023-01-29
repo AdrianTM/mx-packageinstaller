@@ -2089,11 +2089,9 @@ void MainWindow::findPackageOther()
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
         (*it)->setHidden((*it)->data(0, Qt::UserRole) == false || !found_items.contains(*it));
         // Hide libs
-        if (isFilteredName((*it)->text(TreeCol::Name)) && ui->checkHideLibs->isChecked())
+        if (tree != ui->treeFlatpak && isFilteredName((*it)->text(TreeCol::Name)) && ui->checkHideLibs->isChecked())
             (*it)->setHidden(true);
     }
-    for (int i = 0; i < tree->columnCount(); ++i)
-        tree->resizeColumnToContents(i);
 }
 
 void MainWindow::showOutput()
@@ -2352,7 +2350,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (tree->topLevelItemCount() == 0 || dirtyEnabledRepos)
             buildPackageLists();
         ui->comboFilterEnabled->setCurrentIndex(filter_idx);
-        findPackageOther();
+        if (!ui->searchBoxEnabled->text().isEmpty())
+            findPackageOther();
         ui->searchBoxEnabled->setFocus();
         break;
     case Tab::Test:
@@ -2364,7 +2363,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (tree->topLevelItemCount() == 0 || dirtyTest)
             buildPackageLists();
         ui->comboFilterMX->setCurrentIndex(filter_idx);
-        findPackageOther();
+        if (!ui->searchBoxMX->text().isEmpty())
+            findPackageOther();
         ui->searchBoxMX->setFocus();
         break;
     case Tab::Backports:
@@ -2376,7 +2376,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (tree->topLevelItemCount() == 0 || dirtyBackports)
             buildPackageLists();
         ui->comboFilterBP->setCurrentIndex(filter_idx);
-        findPackageOther();
+        if (!ui->searchBoxBP->text().isEmpty())
+            findPackageOther();
         ui->searchBoxBP->setFocus();
         break;
     case Tab::Flatpak:
