@@ -1319,7 +1319,7 @@ bool MainWindow::isFilteredName(const QString &name)
 {
     return ((name.startsWith(QLatin1String("lib")) && !name.startsWith(QLatin1String("libreoffice")))
             || name.endsWith(QLatin1String("-dev")) || name.endsWith(QLatin1String("-dbg"))
-            || name.endsWith(QLatin1String("-dbgsym")));
+            || name.endsWith(QLatin1String("-dbgsym")) || name.endsWith(QLatin1String("-libs")));
 }
 
 bool MainWindow::isOnline()
