@@ -99,11 +99,20 @@ void MainWindow::setup()
     ui->treeFlatpak->hideColumn(FlatCol::Status);
     ui->treeFlatpak->hideColumn(FlatCol::Duplicate);
     ui->treeFlatpak->hideColumn(FlatCol::FullName);
-    const QString icon = QStringLiteral("package-installed-outdated");
-    const QIcon backup_icon = QIcon(":/icons/package-installed-outdated.png");
-    ui->iconUpgradable->setIcon(QIcon::fromTheme(icon, backup_icon));
-    ui->iconUpgradable_2->setIcon(QIcon::fromTheme(icon, backup_icon));
-    ui->iconUpgradable_3->setIcon(QIcon::fromTheme(icon, backup_icon));
+
+    const QString icon_upgradable = QStringLiteral("package-installed-outdated");
+    const QIcon backup_icon_upgradable = QIcon(":/icons/package-installed-outdated.png");
+    ui->iconUpgradable->setIcon(QIcon::fromTheme(icon_upgradable, backup_icon_upgradable));
+    ui->iconUpgradable_2->setIcon(QIcon::fromTheme(icon_upgradable, backup_icon_upgradable));
+    ui->iconUpgradable_3->setIcon(QIcon::fromTheme(icon_upgradable, backup_icon_upgradable));
+    const QString icon_installed = QStringLiteral("package-installed-updated");
+    const QIcon backup_icon_installed = QIcon(":/icons/package-installed-updated.png");
+    ui->iconInstalledPackages->setIcon(QIcon::fromTheme(icon_installed, backup_icon_installed));
+    ui->iconInstalledPackages_2->setIcon(QIcon::fromTheme(icon_installed, backup_icon_installed));
+    ui->iconInstalledPackages_3->setIcon(QIcon::fromTheme(icon_installed, backup_icon_installed));
+    ui->iconInstalledPackages_4->setIcon(QIcon::fromTheme(icon_installed, backup_icon_installed));
+    ui->iconInstalledPackages_5->setIcon(QIcon::fromTheme(icon_installed, backup_icon_installed));
+
     loadPmFiles();
     refreshPopularApps();
 
