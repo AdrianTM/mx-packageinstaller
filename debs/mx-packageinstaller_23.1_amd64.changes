@@ -1,0 +1,49 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 28 Jan 2023 23:53:02 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.1
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.1) mx; urgency=medium
+ .
+   * Mark installed packages with an icon instead of graying out
+   * Clarified wording: "Enabled repos" instead of "Stable repo"
+   * Changed Popular tab to show categories at a different level
+   * Display upgradable packages too when displaying installed packages
+Checksums-Sha1:
+ 63aa1f593fe3be17c18f36f31526a1b31433cf10 1220 mx-packageinstaller_23.1.dsc
+ b96c8df9e1311dcf3719aa66284217f661b8a068 318256 mx-packageinstaller_23.1.tar.xz
+ d48fa1bd7bcd54b67830a58b9504bbc38e936c99 10803 mx-packageinstaller_23.1_amd64.buildinfo
+ 491d243a2cd10b7b15b8ccc9c63d87d6f590f736 378548 mx-packageinstaller_23.1_amd64.deb
+Checksums-Sha256:
+ 742664a8f3eb7d20caa44bbe3905e236b0b8fec87687e2fdd371fccea7435ea2 1220 mx-packageinstaller_23.1.dsc
+ 6c1c499a20a9e2defaf118297b00442b1f1513e995527322bc75bafb3b4a52a7 318256 mx-packageinstaller_23.1.tar.xz
+ 156ded28bbee5912fe16fa96d286cf19462df841d31e336aecfe031909f07541 10803 mx-packageinstaller_23.1_amd64.buildinfo
+ a383ffebd93e6c0428d595bad1d97ee35fc86da8a5be72615974517f71e07e96 378548 mx-packageinstaller_23.1_amd64.deb
+Files:
+ 3f659a697a0982aaaa5c22ffdf826f97 1220 admin optional mx-packageinstaller_23.1.dsc
+ feb1223ec6459c9e67df5262225f47f9 318256 admin optional mx-packageinstaller_23.1.tar.xz
+ 55bbb3fdc60c534e422e9b1011fc9d82 10803 admin optional mx-packageinstaller_23.1_amd64.buildinfo
+ 84a15de106a07c614a613c02bd8918b6 378548 admin optional mx-packageinstaller_23.1_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmPV/uATHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumBv3B/9cMDIi9hncqRXoM1kfSKA5Ps4eAOS9
+SB1ROvggFcEmLrwSSF3wz1IUtkK+yT6WADpvdslSCSmHVvuUiO/N4BIpiLwpYFBt
+O/w8fpnZjJ5fsXYal6sFtd3gcccsdHOfMOdni2mITGHxJfZXpMLrw1qIH4Exgjm7
+HREIC1cAsGwGAm3hzoQI67ENoUHMoS0A1Zd/5iMhQbplMoBabH1M1/jJn/l3wcIy
+VLxeew3Tb7XZryhYJo60uJCGWF27F/gdYG+jpLPrcIGdoE8a+BT3PBLVL3t/FwPf
+xpV8TYy/1jnm0w4LldxfZZFEAdamWrVC7haHj/08+VW13Zom2KZYPvXa
+=3Gaq
+-----END PGP SIGNATURE-----

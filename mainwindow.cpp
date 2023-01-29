@@ -93,14 +93,10 @@ void MainWindow::setup()
 
     this->setWindowTitle(tr("MX Package Installer"));
     ui->tabWidget->setCurrentIndex(Tab::Popular);
-    ui->treeStable->hideColumn(TreeCol::Status);    // Status of the package: installed, upgradable, etc
-    ui->treeStable->hideColumn(TreeCol::Displayed); // Displayed status true/false
+    ui->treeStable->hideColumn(TreeCol::Status); // Status of the package: installed, upgradable, etc
     ui->treeMXtest->hideColumn(TreeCol::Status);
-    ui->treeMXtest->hideColumn(TreeCol::Displayed);
     ui->treeBackports->hideColumn(TreeCol::Status);
-    ui->treeBackports->hideColumn(TreeCol::Displayed);
     ui->treeFlatpak->hideColumn(FlatCol::Status);
-    ui->treeFlatpak->hideColumn(FlatCol::Displayed);
     ui->treeFlatpak->hideColumn(FlatCol::Duplicate);
     ui->treeFlatpak->hideColumn(FlatCol::FullName);
     const QString icon = QStringLiteral("package-installed-outdated");
@@ -716,7 +712,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
         if (list.contains((*it)->text(FlatCol::FullName))) {
             ++total;
             (*it)->setHidden(false);
-            (*it)->setText(FlatCol::Displayed, QStringLiteral("true")); // Displayed flag
+            (*it)->setData(0, Qt::UserRole, true); // Displayed flag
             if ((*it)->checkState(FlatCol::Check) == Qt::Checked
                 && (*it)->text(FlatCol::Status) == QLatin1String("installed")) {
                 ui->pushUninstall->setEnabled(true);
@@ -727,7 +723,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
             }
         } else {
             (*it)->setHidden(true);
-            (*it)->setText(FlatCol::Displayed, QStringLiteral("false"));
+            (*it)->setData(0, Qt::UserRole, false); // Displayed flag
             if ((*it)->checkState(FlatCol::Check) == Qt::Checked) {
                 (*it)->setCheckState(FlatCol::Check, Qt::Unchecked); // uncheck hidden item
                 change_list.removeOne((*it)->text(FlatCol::FullName));
@@ -773,8 +769,7 @@ void MainWindow::displayPackages()
         widget_item->setText(TreeCol::Name, i.key());
         widget_item->setText(TreeCol::Version, i.value().at(0));
         widget_item->setText(TreeCol::Description, i.value().at(1));
-        widget_item->setText(TreeCol::Displayed,
-                             QStringLiteral("true")); // all items are displayed till filtered
+        widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
     }
 
     // process the entire list of apps and count upgradable and installable
@@ -808,14 +803,14 @@ void MainWindow::displayPackages()
         } else {
             ++inst_count;
             if (installed >= repo_candidate) {
-                //(*it)->setIcon(TreeCol::StatusIcon, QIcon::fromTheme(QStringLiteral("package-installed-updated"),
-                //                                                     QIcon(":/icons/package-installed-updated.png")));
+                (*it)->setIcon(TreeCol::Check, QIcon::fromTheme(QStringLiteral("package-installed-updated"),
+                                                                QIcon(":/icons/package-installed-updated.png")));
                 for (int i = 0; i < newtree->columnCount(); ++i)
                     (*it)->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
                 (*it)->setText(TreeCol::Status, QStringLiteral("installed"));
             } else {
-                (*it)->setIcon(TreeCol::StatusIcon, QIcon::fromTheme(QStringLiteral("package-installed-outdated"),
-                                                                     QIcon(":/icons/package-installed-outdated.png")));
+                (*it)->setIcon(TreeCol::Check, QIcon::fromTheme(QStringLiteral("package-installed-outdated"),
+                                                                QIcon(":/icons/package-installed-outdated.png")));
                 for (int i = 0; i < newtree->columnCount(); ++i)
                     (*it)->setToolTip(i, tr("Version ") + installed.toString() + tr(" installed"));
                 ++upgr_count;
@@ -889,8 +884,7 @@ void MainWindow::displayFlatpaks(bool force_update)
         } else {
             widget_item->setText(FlatCol::Status, QStringLiteral("not installed"));
         }
-        widget_item->setText(FlatCol::Displayed,
-                             QStringLiteral("true")); // all items are displayed till filtered
+        widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
     }
 
     // add sizes for the installed packages for older flatpak that doesn't list size for all the
@@ -2076,7 +2070,7 @@ void MainWindow::findPackageOther()
         found_items << tree->findItems(word, Qt::MatchContains, TreeCol::Description);
 
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
-        (*it)->setHidden((*it)->text(TreeCol::Displayed) != QLatin1String("true") || !found_items.contains(*it));
+        (*it)->setHidden((*it)->data(0, Qt::UserRole) == false || !found_items.contains(*it));
         // Hide libs
         if (isFilteredName((*it)->text(TreeCol::Name)) && ui->checkHideLibs->isChecked())
             (*it)->setHidden(true);
@@ -2480,7 +2474,7 @@ void MainWindow::filterChanged(const QString &arg1)
             int total = 0;
             for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
                 ++total;
-                (*it)->setText(FlatCol::Displayed, QStringLiteral("true"));
+                (*it)->setData(0, Qt::UserRole, true);
                 (*it)->setHidden(false);
             }
             ui->labelNumAppFP->setText(QString::number(total));
@@ -2503,7 +2497,7 @@ void MainWindow::filterChanged(const QString &arg1)
 
     if (arg1 == tr("All packages")) {
         for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
-            (*it)->setText(TreeCol::Displayed, QStringLiteral("true"));
+            (*it)->setData(0, Qt::UserRole, true);
             (*it)->setHidden(false);
         }
         findPackageOther();
@@ -2529,10 +2523,10 @@ void MainWindow::filterChanged(const QString &arg1)
         (*it)->setCheckState(TreeCol::Check, Qt::Unchecked); // uncheck all items
         if (found_items.contains(*it)) {
             (*it)->setHidden(false);
-            (*it)->setText(TreeCol::Displayed, QStringLiteral("true"));
+            (*it)->setData(0, Qt::UserRole, true); // Displayed
         } else {
             (*it)->setHidden(true);
-            (*it)->setText(TreeCol::Displayed, QStringLiteral("false"));
+            (*it)->setData(0, Qt::UserRole, false);
         }
     }
     findPackageOther();
