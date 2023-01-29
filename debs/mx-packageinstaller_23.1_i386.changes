@@ -18,11 +18,11 @@ Changes:
    * Changed Popular tab to show categories at a different level
    * Display upgradable packages too when displaying installed packages
 Checksums-Sha1:
- 6feb55442db1ad5ace22556b0c2a7ccabf7b7f41 10113 mx-packageinstaller_23.1_i386.buildinfo
- 61abc2cc193deee3e8c394f70e5004efdfc274fc 387380 mx-packageinstaller_23.1_i386.deb
+ 4d1394acd315d6a2382890fc5bf4a92bb7f0fa3f 10113 mx-packageinstaller_23.1_i386.buildinfo
+ f27cea7f5b62bbe6391e36bec5156de69c5e236c 387364 mx-packageinstaller_23.1_i386.deb
 Checksums-Sha256:
- f29c56df4f17c930d9dea8a81386af34419e64ce18f70243d2d66e6f1603fee7 10113 mx-packageinstaller_23.1_i386.buildinfo
- 047703d86cc8176a6400932b2b50664dc2bc75fdaa927ad621147bca068995bf 387380 mx-packageinstaller_23.1_i386.deb
+ 59340c1e93aca4402296a69d79795e726a8bd1a842d913dc8d2b8d5cf31393c3 10113 mx-packageinstaller_23.1_i386.buildinfo
+ 346e29b610d26921a1f3e621e3b41d5b9c46460f4af9b6515f838e7e9e60a041 387364 mx-packageinstaller_23.1_i386.deb
 Files:
- b15eaeb545f3d10dd18119a788260a99 10113 admin optional mx-packageinstaller_23.1_i386.buildinfo
- 39e9dc4ea5239cd0a3ffa67b3b15e5fc 387380 admin optional mx-packageinstaller_23.1_i386.deb
+ 6ed0b129407a38cec94e0cf4816f54db 10113 admin optional mx-packageinstaller_23.1_i386.buildinfo
+ 8cca5769d95c4f28a10a447768b54454 387364 admin optional mx-packageinstaller_23.1_i386.deb
