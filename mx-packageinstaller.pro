@@ -104,3 +104,7 @@ TRANSLATIONS += translations/mx-packageinstaller_am.ts \
 RESOURCES += \
     images.qrc
 
+DISTFILES += \
+    icons/package-installed-outdated.png \
+    icons/package-installed-updated.png
+

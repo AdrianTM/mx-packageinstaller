@@ -93,9 +93,6 @@ void MainWindow::setup()
 
     this->setWindowTitle(tr("MX Package Installer"));
     ui->tabWidget->setCurrentIndex(Tab::Popular);
-    QStringList column_names;
-    column_names << QLatin1String("") << QLatin1String("") << tr("Package") << tr("Info") << tr("Description");
-    ui->treePopularApps->setHeaderLabels(column_names);
     ui->treeStable->hideColumn(TreeCol::Status);    // Status of the package: installed, upgradable, etc
     ui->treeStable->hideColumn(TreeCol::Displayed); // Displayed status true/false
     ui->treeMXtest->hideColumn(TreeCol::Status);
@@ -106,11 +103,11 @@ void MainWindow::setup()
     ui->treeFlatpak->hideColumn(FlatCol::Displayed);
     ui->treeFlatpak->hideColumn(FlatCol::Duplicate);
     ui->treeFlatpak->hideColumn(FlatCol::FullName);
-    const QString icon = QStringLiteral("software-update-available-symbolic");
-    const QIcon backup_icon = QIcon(":/icons/software-update-available.png");
-    ui->icon->setIcon(QIcon::fromTheme(icon, backup_icon));
-    ui->icon_2->setIcon(QIcon::fromTheme(icon, backup_icon));
-    ui->icon_3->setIcon(QIcon::fromTheme(icon, backup_icon));
+    const QString icon = QStringLiteral("package-installed-outdated");
+    const QIcon backup_icon = QIcon(":/icons/package-installed-outdated.png");
+    ui->iconUpgradable->setIcon(QIcon::fromTheme(icon, backup_icon));
+    ui->iconUpgradable_2->setIcon(QIcon::fromTheme(icon, backup_icon));
+    ui->iconUpgradable_3->setIcon(QIcon::fromTheme(icon, backup_icon));
     loadPmFiles();
     refreshPopularApps();
 
@@ -301,7 +298,7 @@ void MainWindow::blockInterfaceFP(bool block)
     ui->searchBoxFlatpak->setDisabled(block);
     ui->treeFlatpak->setDisabled(block);
     ui->frameFP->setDisabled(block);
-    ui->labelFP->setDisabled(block);
+    ui->iconInstalledPackages_4->setDisabled(block);
     ui->labelRepo->setDisabled(block);
     block ? setCursor(QCursor(Qt::BusyCursor)) : setCursor(QCursor(Qt::ArrowCursor));
 }
@@ -592,9 +589,9 @@ void MainWindow::removeDuplicatesFP()
     QString current;
     QString next;
     while ((*it) != nullptr) {
-        current = ((*it))->text(FlatCol::ShortName);
+        current = ((*it))->text(FlatCol::Name);
         if ((*(++it)) != nullptr) {
-            next = ((*it))->text(FlatCol::ShortName);
+            next = ((*it))->text(FlatCol::Name);
             if (next == current) {
                 --it;
                 (*(it))->setText(FlatCol::Duplicate, QStringLiteral("true"));
@@ -606,7 +603,7 @@ void MainWindow::removeDuplicatesFP()
     // rename duplicate to use more context
     for (QTreeWidgetItemIterator it(ui->treeFlatpak); (*it) != nullptr; ++it) {
         if ((*(it))->text(FlatCol::Duplicate) == QLatin1String("true"))
-            (*it)->setText(FlatCol::ShortName, (*it)->text(FlatCol::LongName).section(QStringLiteral("."), -2));
+            (*it)->setText(FlatCol::Name, (*it)->text(FlatCol::LongName).section(QStringLiteral("."), -2));
     }
 }
 
@@ -659,17 +656,17 @@ void MainWindow::displayPopularApps() const
         const QString &preuninstall = list.at(Popular::PreUninstall);
 
         // add package category if treePopularApps doesn't already have it
-        if (ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Name).isEmpty()) {
+        if (ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Icon).isEmpty()) {
             topLevelItem = new QTreeWidgetItem();
-            topLevelItem->setText(PopCol::Name, category);
+            topLevelItem->setText(PopCol::Icon, category);
             ui->treePopularApps->addTopLevelItem(topLevelItem);
             // topLevelItem look
             QFont font;
             font.setBold(true);
-            topLevelItem->setFont(PopCol::Name, font);
+            topLevelItem->setFont(PopCol::Icon, font);
             topLevelItem->setIcon(PopCol::Icon, QIcon::fromTheme(QStringLiteral("folder")));
         } else {
-            topLevelItem = ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Name)
+            topLevelItem = ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Icon)
                                .at(0); // find first match; add the child there
         }
         // add package name as childItem to treePopularApps
@@ -685,16 +682,14 @@ void MainWindow::displayPopularApps() const
         childItem->setText(PopCol::PostUninstall, postuninstall);    // not displayed
         childItem->setText(PopCol::PreUninstall, preuninstall);      // not displayed
 
-        // gray out installed items
-        if (checkInstalled(uninstall_names)) {
-            childItem->setForeground(PopCol::Name, QBrush(Qt::gray));
-            childItem->setForeground(PopCol::Description, QBrush(Qt::gray));
-        }
+        if (checkInstalled(uninstall_names))
+            childItem->setIcon(PopCol::Check, QIcon::fromTheme(QStringLiteral("package-installed-updated"),
+                                                               QIcon(":/icons/package-installed-updated.png")));
     }
     for (int i = 0; i < ui->treePopularApps->columnCount(); ++i)
         ui->treePopularApps->resizeColumnToContents(i);
 
-    ui->treePopularApps->sortItems(2, Qt::AscendingOrder);
+    ui->treePopularApps->sortItems(PopCol::Icon, Qt::AscendingOrder);
     connect(ui->treePopularApps, &QTreeWidget::itemClicked, this, &MainWindow::displayPopularInfo,
             Qt::UniqueConnection);
 }
@@ -781,8 +776,6 @@ void MainWindow::displayPackages()
         widget_item->setText(TreeCol::Displayed,
                              QStringLiteral("true")); // all items are displayed till filtered
     }
-    for (int i = 0; i < newtree->columnCount(); ++i)
-        newtree->resizeColumnToContents(i);
 
     // process the entire list of apps and count upgradable and installable
     int upgr_count = 0;
@@ -803,7 +796,7 @@ void MainWindow::displayPackages()
         VersionNumber repo_candidate(app_ver); // candidate from the selected repo, might be
                                                // different than the one from Stable
 
-        (*it)->setIcon(TreeCol::UpdateIcon, QIcon()); // reset update icon
+        (*it)->setIcon(TreeCol::Check, QIcon()); // reset update icon
         if (installed.toString().isEmpty()) {
             for (int i = 0; i < newtree->columnCount(); ++i) {
                 if (stable_list.contains(app_name))
@@ -815,16 +808,14 @@ void MainWindow::displayPackages()
         } else {
             ++inst_count;
             if (installed >= repo_candidate) {
-                for (int i = 0; i < newtree->columnCount(); ++i) {
-                    (*it)->setForeground(TreeCol::Name, QBrush(Qt::gray));
-                    (*it)->setForeground(TreeCol::Description, QBrush(Qt::gray));
+                //(*it)->setIcon(TreeCol::StatusIcon, QIcon::fromTheme(QStringLiteral("package-installed-updated"),
+                //                                                     QIcon(":/icons/package-installed-updated.png")));
+                for (int i = 0; i < newtree->columnCount(); ++i)
                     (*it)->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
-                }
                 (*it)->setText(TreeCol::Status, QStringLiteral("installed"));
             } else {
-                (*it)->setIcon(TreeCol::UpdateIcon,
-                               QIcon::fromTheme(QStringLiteral("software-update-available-symbolic"),
-                                                QIcon(":/icons/software-update-available.png")));
+                (*it)->setIcon(TreeCol::StatusIcon, QIcon::fromTheme(QStringLiteral("package-installed-outdated"),
+                                                                     QIcon(":/icons/package-installed-outdated.png")));
                 for (int i = 0; i < newtree->columnCount(); ++i)
                     (*it)->setToolTip(i, tr("Version ") + installed.toString() + tr(" installed"));
                 ++upgr_count;
@@ -832,6 +823,8 @@ void MainWindow::displayPackages()
             }
         }
     }
+    for (int i = 0; i < newtree->columnCount(); ++i)
+        newtree->resizeColumnToContents(i);
     updateInterface();
     newtree->blockSignals(false);
 }
@@ -883,15 +876,15 @@ void MainWindow::displayFlatpaks(bool force_update)
         ++total_count;
         widget_item = new QTreeWidgetItem(ui->treeFlatpak);
         widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
-        widget_item->setText(FlatCol::ShortName, short_name);
+        widget_item->setText(FlatCol::Name, short_name);
         widget_item->setText(FlatCol::LongName, long_name);
         widget_item->setText(FlatCol::Version, version);
         widget_item->setText(FlatCol::Size, size);
         widget_item->setText(FlatCol::FullName, item); // Full string
         QStringList installed_all {installed_apps_fp + installed_runtimes_fp};
         if (installed_all.contains(item)) {
-            widget_item->setForeground(FlatCol::ShortName, QBrush(Qt::gray));
-            widget_item->setForeground(FlatCol::LongName, QBrush(Qt::gray));
+            widget_item->setIcon(FlatCol::Check, QIcon::fromTheme(QStringLiteral("package-installed-updated"),
+                                                                  QIcon(":/icons/package-installed-updated.png")));
             widget_item->setText(FlatCol::Status, QStringLiteral("installed"));
         } else {
             widget_item->setText(FlatCol::Status, QStringLiteral("not installed"));
@@ -912,7 +905,7 @@ void MainWindow::displayFlatpaks(bool force_update)
 
     ui->labelNumInstFP->setText(QString::number(total));
 
-    ui->treeFlatpak->sortByColumn(FlatCol::ShortName, Qt::AscendingOrder);
+    ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
 
     removeDuplicatesFP();
 
@@ -2032,8 +2025,8 @@ void MainWindow::findPopular() const
             ui->treePopularApps->resizeColumnToContents(i);
         return;
     }
-    auto found_items = ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, 2);
-    found_items << ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, 4);
+    auto found_items = ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, PopCol::Name);
+    found_items << ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, PopCol::Description);
 
     // hide/unhide items
     for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
@@ -2406,8 +2399,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                     = ui->treeStable->findItems(QStringLiteral("flatpak"), Qt::MatchExactly, TreeCol::Name);
                 for (const auto &item : found_items) {
                     for (int i = 0; i < ui->treeStable->columnCount(); ++i) {
-                        item->setForeground(TreeCol::Name, QBrush(Qt::gray));
-                        item->setForeground(TreeCol::Description, QBrush(Qt::gray));
+                        item->setIcon(FlatCol::Check, QIcon::fromTheme(QStringLiteral("package-installed-updated"),
+                                                                       QIcon(":/icons/package-installed-updated.png")));
                         item->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
                     }
                     item->setText(TreeCol::Status, QStringLiteral("installed"));
@@ -2519,12 +2512,14 @@ void MainWindow::filterChanged(const QString &arg1)
         return;
     }
 
-    if (arg1 == tr("Upgradable"))
+    if (arg1 == tr("Upgradable")) {
         found_items = tree->findItems(QStringLiteral("upgradable"), Qt::MatchExactly, TreeCol::Status);
-    else if (arg1 == tr("Installed"))
+    } else if (arg1 == tr("Installed")) {
         found_items = tree->findItems(QStringLiteral("installed"), Qt::MatchExactly, TreeCol::Status);
-    else if (arg1 == tr("Not installed"))
+        found_items += tree->findItems(QStringLiteral("upgradable"), Qt::MatchExactly, TreeCol::Status);
+    } else if (arg1 == tr("Not installed")) {
         found_items = tree->findItems(QStringLiteral("not installed"), Qt::MatchExactly, TreeCol::Status);
+    }
 
     change_list.clear();
     ui->pushUninstall->setEnabled(false);
@@ -2843,7 +2838,7 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 
 void MainWindow::on_treePopularApps_itemChanged(QTreeWidgetItem *item)
 {
-    if (item->checkState(1) == Qt::Checked)
+    if (item->checkState(PopCol::Check) == Qt::Checked)
         ui->treePopularApps->setCurrentItem(item);
     bool checked = false;
     bool installed = true;
@@ -2851,7 +2846,7 @@ void MainWindow::on_treePopularApps_itemChanged(QTreeWidgetItem *item)
     for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
         if ((*it)->checkState(PopCol::Check) == Qt::Checked) {
             checked = true;
-            if ((*it)->foreground(PopCol::Name) != Qt::gray)
+            if ((*it)->icon(PopCol::Check).isNull())
                 installed = false;
         }
     }

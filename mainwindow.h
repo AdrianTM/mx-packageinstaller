@@ -58,11 +58,11 @@ enum { Icon, Check, Name, Info, Description, InstallNames, UninstallNames, Scree
 }
 namespace TreeCol
 {
-enum { Check, UpdateIcon, Name, Version, Description, Status, Displayed };
+enum { Check, StatusIcon, Name, Version, Description, Status, Displayed };
 }
 namespace FlatCol
 {
-enum { Check, ShortName, LongName, Version, Size, Status, Displayed, Duplicate, FullName };
+enum { Check, Name, LongName, Version, Size, Status, Displayed, Duplicate, FullName };
 }
 namespace Popular
 {

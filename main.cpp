@@ -54,8 +54,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(QStringLiteral("MX-Linux"));
 
     QTranslator qtTran;
-    if (qtTran.load(QLocale(), QStringLiteral("qt"), QStringLiteral("_"),
-                    QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
+    if (qtTran.load("qt_" + QLocale().name(), QLibraryInfo::location(QLibraryInfo::TranslationsPath)))
         QApplication::installTranslator(&qtTran);
 
     QTranslator qtBaseTran;
