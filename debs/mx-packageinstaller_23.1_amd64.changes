@@ -22,29 +22,29 @@ Changes:
    * Display upgradable packages too when displaying installed packages
    * Fix: performance issue when switching tabs
 Checksums-Sha1:
- 62ed5c7490b7c9e2694fee39d7e96bee146bb13d 1220 mx-packageinstaller_23.1.dsc
- f5742104a4e4827fee6b15deae5fa06d4a8701b2 318300 mx-packageinstaller_23.1.tar.xz
- f2e4bfeb3e2741e859588f3f09653b6ab86c7a23 10803 mx-packageinstaller_23.1_amd64.buildinfo
- a444848338990ba866d6f7e41cbc07a07fc96ece 379008 mx-packageinstaller_23.1_amd64.deb
+ 936cbc5f0c1356f23f35ca27f28d93b8c75411f6 1220 mx-packageinstaller_23.1.dsc
+ fd30d494929c483a64b0f2b3d45f2e3eb23f6297 318376 mx-packageinstaller_23.1.tar.xz
+ 8fb513a494b4776b213d391d0ec634b5dabdb7ca 10803 mx-packageinstaller_23.1_amd64.buildinfo
+ 8f422dc41ca6b1da0a104908430bf5e6af5aed31 379088 mx-packageinstaller_23.1_amd64.deb
 Checksums-Sha256:
- 615b76850f52e30c38fcf9432e6e0b6ce20758e032bfa2da6913946c2f26632b 1220 mx-packageinstaller_23.1.dsc
- 6e71393ee213ce128cb3b2ff71d27ad8c7e96ca1514a84fa2c0722560b377c65 318300 mx-packageinstaller_23.1.tar.xz
- d2ccf4d2f1c5c56d12f14f30b38bbdfb86028b163304a7cbaa21cfc898861f96 10803 mx-packageinstaller_23.1_amd64.buildinfo
- 52b904734bf025368d28bef5f5df969d4ec771c0e49716c7712e2f6c25d4590f 379008 mx-packageinstaller_23.1_amd64.deb
+ a04c8665ea4ac89ed570485dc749237932ff054ed5f146d7cac9a69c4f505df3 1220 mx-packageinstaller_23.1.dsc
+ fb07f96e26aba328692f274263578c4bb99e0fc65554a74063eb92a2690e88b4 318376 mx-packageinstaller_23.1.tar.xz
+ 67ac26a34e0979c13f6241c6cc46d65a341c0b04df2e5b35ccf57c1143cddba9 10803 mx-packageinstaller_23.1_amd64.buildinfo
+ d24d3a3e4207832a0df85549c4b2531ea2b2be785721bcb69cc02ac991def20f 379088 mx-packageinstaller_23.1_amd64.deb
 Files:
- 31b6661b2a9c375a1b9bb99f15b5b8e9 1220 admin optional mx-packageinstaller_23.1.dsc
- f3aa05eb1948e91d48cb50e5e9d76b16 318300 admin optional mx-packageinstaller_23.1.tar.xz
- 2785b89b6b21bb763172a3000bd0dff4 10803 admin optional mx-packageinstaller_23.1_amd64.buildinfo
- 929d83fd22edb2832f80f2a1dc694b17 379008 admin optional mx-packageinstaller_23.1_amd64.deb
+ 6971f079a7ddc2495a747e4966dcb28e 1220 admin optional mx-packageinstaller_23.1.dsc
+ ff903c2f21de2244e25835f56b4b4d7d 318376 admin optional mx-packageinstaller_23.1.tar.xz
+ f5467223b9aba3ac5e4d453467dedfb8 10803 admin optional mx-packageinstaller_23.1_amd64.buildinfo
+ b7118e92d983633b66e12731c41fe5cf 379088 admin optional mx-packageinstaller_23.1_amd64.deb
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmPWz2YTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumKBcCACcq/sD2xsOhgDALgN8wxYFcWvrjHNc
-rFK/0hpmzTBmNIp5XJYhf0Jjx2nURVmTl7U6cHVmanfv7dlZdmqFxaA2MivhlEIz
-PvoV0MGQ0UPlFnu00kcPGbOFLFPxmrNvSwX/vWIfwfEJ0woE1VZWHO7W/9LNDM6+
-/PO4yPj6w5gm5ZD6lO5oLlHUgsjZoH7hlAs6Rs7Yi/7cIw6/Csss6Evm1hsDbr9T
-AMeMacJqfk3Bali9h67jE0lhb3+/nRiPvS0uVpTx7Ksp9wcke9fvEF6KdapUYt28
-N406+4s9a8+mn4xcVNqB7YO1vd8G6EiT9eO0cVqsFcXhlSDzSoSU29J0
-=EAGR
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmPW2wITHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumLboCADDQQzBVc4+/4xbFRexu3IR23C98BuH
+qPBVYpRicd9xDBlh0ItmjcnFdZwFmYBtJteTbTuh4JtYySGgB/PwVJ4Ohp8MsQQw
+mNqYs8c/eke4UXJeD/M0ta7EFIccEcSch6UgdlClibC8Ey3dlfaaZb1PHf10FWYK
+zARlM5D6usgvv/OMf85YqzSV6AgGc0eqiui805njeEg4PXhf4bIFCubCOXemX5Wp
+FxhfScjIyBGHGf62e01rhE+8ofRDou3a+u8pYinTfsCHTm7unsiEO+kNT1sJ6wTI
+BBJcNmslhmHbgeXjKbuYoiXEzmM5SNKCl0oLti1bIHVh02/dc5GAzPy0
+=B6rK
 -----END PGP SIGNATURE-----
