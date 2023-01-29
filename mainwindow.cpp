@@ -661,6 +661,7 @@ void MainWindow::displayPopularApps() const
             font.setBold(true);
             topLevelItem->setFont(PopCol::Icon, font);
             topLevelItem->setIcon(PopCol::Icon, QIcon::fromTheme(QStringLiteral("folder")));
+            topLevelItem->setFirstColumnSpanned(true);
         } else {
             topLevelItem = ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Icon)
                                .at(0); // find first match; add the child there
