@@ -4,6 +4,7 @@ mx-packageinstaller (23.1) mx; urgency=medium
   * Clarified wording: "Enabled repos" instead of "Stable repo"
   * Changed Popular tab to show categories at a different level
   * Display upgradable packages too when displaying installed packages
+  * Fix: performance issue when switching tabs
 
  -- Adrian <adrian@mxlinux.org>  Sat, 28 Jan 2023 23:53:02 -0500
 

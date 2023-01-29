@@ -162,7 +162,7 @@
        </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabStable">
+     <widget class="QWidget" name="tabEnabled">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -174,7 +174,7 @@
       </attribute>
       <layout class="QGridLayout" name="gridLayout_2">
        <item row="2" column="2">
-        <widget class="QLineEdit" name="searchBoxStable">
+        <widget class="QLineEdit" name="searchBoxEnabled">
          <property name="minimumSize">
           <size>
            <width>150</width>
@@ -334,7 +334,7 @@
            </widget>
           </item>
           <item row="0" column="9">
-           <widget class="QPushButton" name="pushForceUpdateStable">
+           <widget class="QPushButton" name="pushForceUpdateEnabled">
             <property name="minimumSize">
              <size>
               <width>150</width>
@@ -370,7 +370,7 @@
         </widget>
        </item>
        <item row="1" column="2">
-        <widget class="QComboBox" name="comboFilterStable">
+        <widget class="QComboBox" name="comboFilterEnabled">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -444,7 +444,7 @@
         </widget>
        </item>
        <item row="3" column="0" colspan="3">
-        <widget class="QTreeWidget" name="treeStable">
+        <widget class="QTreeWidget" name="treeEnabled">
          <property name="sortingEnabled">
           <bool>false</bool>
          </property>
@@ -475,7 +475,7 @@
          </column>
          <column>
           <property name="text">
-           <string notr="true">Displayed</string>
+           <string notr="true"/>
           </property>
          </column>
         </widget>

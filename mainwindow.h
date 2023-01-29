@@ -50,7 +50,7 @@ class MainWindow;
 
 namespace Tab
 {
-enum { Popular, Stable, Test, Backports, Flatpak, Output };
+enum { Popular, EnabledRepos, Test, Backports, Flatpak, Output };
 }
 namespace PopCol
 {
@@ -58,7 +58,7 @@ enum { Icon, Check, Name, Info, Description, InstallNames, UninstallNames, Scree
 }
 namespace TreeCol
 {
-enum { Check, Name, Version, Description, Status };
+enum { Check, Name, Version, Description, Status, Displayed };
 }
 namespace FlatCol
 {
@@ -183,7 +183,7 @@ private slots:
     void on_pushEnter_clicked();
     void on_pushForceUpdateBP_clicked();
     void on_pushForceUpdateMX_clicked();
-    void on_pushForceUpdateStable_clicked();
+    void on_pushForceUpdateEnabled_clicked();
     void on_pushHelp_clicked();
     void on_pushInstall_clicked();
     void on_pushRemotes_clicked();
@@ -201,14 +201,14 @@ private slots:
     void on_treePopularApps_itemChanged(QTreeWidgetItem *item);
     void on_treePopularApps_itemCollapsed(QTreeWidgetItem *item);
     void on_treePopularApps_itemExpanded(QTreeWidgetItem *item);
-    void on_treeStable_itemChanged(QTreeWidgetItem *item);
+    void on_treeEnabled_itemChanged(QTreeWidgetItem *item);
 
 private:
     Ui::MainWindow *ui;
 
     QString indexFilterFP;
     bool dirtyBackports = true;
-    bool dirtyStable = true;
+    bool dirtyEnabledRepos = true;
     bool dirtyTest = true;
     bool test_initially_enabled {};
     bool updated_once {};
@@ -224,7 +224,7 @@ private:
     QLocale locale;
     QMap<QString, QStringList> backports_list;
     QMap<QString, QStringList> mx_list;
-    QMap<QString, QStringList> stable_list;
+    QMap<QString, QStringList> enabled_list;
     QMetaObject::Connection conn;
     QProgressBar *bar {};
     QProgressDialog *progress {};
@@ -232,7 +232,6 @@ private:
     QSettings dictionary;
     QSettings settings;
     QString arch;
-    QString stable_raw;
     QString user;
     QString ver_name;
     QStringList change_list;
