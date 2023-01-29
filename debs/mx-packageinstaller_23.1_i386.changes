@@ -17,12 +17,13 @@ Changes:
    * Clarified wording: "Enabled repos" instead of "Stable repo"
    * Changed Popular tab to show categories at a different level
    * Display upgradable packages too when displaying installed packages
+   * Fix: performance issue when switching tabs
 Checksums-Sha1:
- 4d1394acd315d6a2382890fc5bf4a92bb7f0fa3f 10113 mx-packageinstaller_23.1_i386.buildinfo
- f27cea7f5b62bbe6391e36bec5156de69c5e236c 387364 mx-packageinstaller_23.1_i386.deb
+ 3c249ca3fd4d4862e223e88e3c7c89182b99310b 10113 mx-packageinstaller_23.1_i386.buildinfo
+ 57dd9cf34163786d11e98f9d4a483e2c808e6ae4 387508 mx-packageinstaller_23.1_i386.deb
 Checksums-Sha256:
- 59340c1e93aca4402296a69d79795e726a8bd1a842d913dc8d2b8d5cf31393c3 10113 mx-packageinstaller_23.1_i386.buildinfo
- 346e29b610d26921a1f3e621e3b41d5b9c46460f4af9b6515f838e7e9e60a041 387364 mx-packageinstaller_23.1_i386.deb
+ 8561b4b97d7407414a39f6a5f926d493fb457fbef679a3f75ebbc3aa4e6bc530 10113 mx-packageinstaller_23.1_i386.buildinfo
+ 2ae33dad224fbc2dd98cbc59fc28f0292688345db2502f2a2b361873db88c7d1 387508 mx-packageinstaller_23.1_i386.deb
 Files:
- 6ed0b129407a38cec94e0cf4816f54db 10113 admin optional mx-packageinstaller_23.1_i386.buildinfo
- 8cca5769d95c4f28a10a447768b54454 387364 admin optional mx-packageinstaller_23.1_i386.deb
+ 3e3791807749f0ad3134c6691486910d 10113 admin optional mx-packageinstaller_23.1_i386.buildinfo
+ 426c1439b0e35c66e2db1a55ae8eabd1 387508 admin optional mx-packageinstaller_23.1_i386.deb
