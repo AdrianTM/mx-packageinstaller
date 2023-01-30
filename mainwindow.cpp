@@ -2333,6 +2333,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         search_str = ui->searchBoxFlatpak->text();
     }
 
+    Cmd shell;
     switch (bool success = false; index) {
     case Tab::Popular:
         ui->searchPopular->setText(search_str);
@@ -2343,7 +2344,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     case Tab::EnabledRepos:
         ui->searchBoxEnabled->setText(search_str);
         ui->pushRemoveOrphan->setVisible(
-            cmd.run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
+            shell.run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
         enableTabs(true);
         setCurrentTree();
         change_list.clear();
