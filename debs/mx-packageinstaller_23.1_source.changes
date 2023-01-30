@@ -19,26 +19,26 @@ Changes:
    * Display upgradable packages too when displaying installed packages
    * Fix: performance issue when switching tabs
 Checksums-Sha1:
- 8b726386c3884cfb309e840625c5c94276ab9ca5 1220 mx-packageinstaller_23.1.dsc
- fe9b997349313d68839c95b8a693ed80e7a7ce0e 318420 mx-packageinstaller_23.1.tar.xz
- 89f321932de810719ed2fe8075a466fd9ee99a85 10803 mx-packageinstaller_23.1_amd64.buildinfo
+ a6746fa1985686e34732a462662b41646eee456d 1220 mx-packageinstaller_23.1.dsc
+ 86265beca8124c8d08e72f3e3ce29f182df034bd 317104 mx-packageinstaller_23.1.tar.xz
+ b15bd19a82905b885af2ca9de748d2b2c306d23e 10883 mx-packageinstaller_23.1_amd64.buildinfo
 Checksums-Sha256:
- b7bb41ba6f9de007a47d812018c54e80718862dc32fa33dfc6cec1a3ebc4ab5d 1220 mx-packageinstaller_23.1.dsc
- bef0a2a5bc33a7ee1aeaefae5f9d7051785e7f20bae13f55bec65ed10a35dbd0 318420 mx-packageinstaller_23.1.tar.xz
- 793090b6c47cf2f43a49721aba535e3ac4cb3173778751ca0c52f46a48ee7b30 10803 mx-packageinstaller_23.1_amd64.buildinfo
+ 9de71bf7fd6f3bfad998efb6db39bd445ac57d5fe1b4c5837b9b5c2ca152612b 1220 mx-packageinstaller_23.1.dsc
+ 3ec28fb0c519cabec1a20b4b748355a81dce80b62c8af130cf907c32eb797d2e 317104 mx-packageinstaller_23.1.tar.xz
+ 6929fb85bd955e8640b259f1a6007fcbee0e7279be43be2fedba995e1c2a2a43 10883 mx-packageinstaller_23.1_amd64.buildinfo
 Files:
- b221cad3fd0048c0a7d0c9d3735bdaa3 1220 admin optional mx-packageinstaller_23.1.dsc
- 71671afb8c5c51ddf8b59f267bdfdc6c 318420 admin optional mx-packageinstaller_23.1.tar.xz
- ae9eadcca3d5fdf4ddbb3f781b9f4b2e 10803 admin optional mx-packageinstaller_23.1_amd64.buildinfo
+ 665698b15632ad502eeeaa8f9530ff3d 1220 admin optional mx-packageinstaller_23.1.dsc
+ a4bf8564cc1e39677ac30b3cc74aec14 317104 admin optional mx-packageinstaller_23.1.tar.xz
+ 1bb0e15c6139c4db9ca76226d2999ef8 10883 admin optional mx-packageinstaller_23.1_amd64.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmPXzxQTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumMRmCACcKhvgx6grZFG6LARIxnVWWh/X9jga
-FITaZeAJVuNHjfHsskeVD7M0lv/pv+xKBx1c1XM68aMdhBSDvu10r1WZvfflNsUF
-tTJjSF/9B0+nFthAQX5ieXqXG/2cgA495vDNM6TRr3iqnE/Y4GS/gccS/YVuXAJ5
-DOgoLwklZXp5UMv8/yezfgWiHOuQBIWSzDb3Owc3UMzMC0Vyh71fkA30UqEAGlRU
-SVMraJXYrMnnUcitaEzEnvGCuYQGzxf8YOpfQhrHLc5hgGHeOV2X40AW8MSpXP3W
-xm+uPwzsSD2bbWFPHuKnupJORQ/TSrT/b+VDIBQQLWekOkLRSb/+itVr
-=Sm8L
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmPYClQTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumMdqB/9/UVCrs3pH01bZPxgCZQbUNI8zNdz1
+GFH3iuXjuibNSAOsZjukQWsFdPFt+pW+EPXXymq0lNcUOacCM1zbU0sg3fmDSjbx
+w1YcSEe1exCGXQRaGuI14TfxOlCKyuw9iy5dYQX+HmPOWdJSp7yR0d7AgACR8hSz
+8hyGWQ471fD3He75FIGua9DRy7bPW9Lx5exbS3PVsuLswi6kSO03wjJ5s3e1UgrK
+mEqRhfJbZmtdeACF4J/X6Sp6p6BSJkOW/UhyQOVQ3eVbAyEF7RjtZMcD/lB39bNa
+abQHajghglsd/lR4AnpzvYMPR6GIEB9evHBycu3x+pxyQiO2IBwXzKFH
+=XoKd
 -----END PGP SIGNATURE-----
