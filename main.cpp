@@ -38,10 +38,10 @@
 static QFile logFile;
 extern const QString starting_home = qEnvironmentVariable("HOME");
 
-void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
-
 int main(int argc, char *argv[])
 {
+    void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+
     if (getuid() == 0) {
         qputenv("XDG_RUNTIME_DIR", "/run/user/0");
         qunsetenv("SESSION_MANAGER");
