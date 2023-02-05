@@ -85,6 +85,11 @@ void MainWindow::setup()
     arch = AptCache::getArch();
     ver_name = getDebianVerName();
 
+    if (arch == "i386") {
+        ui->tabWidget->setTabEnabled(Tab::Flatpak, false);
+        ui->tabWidget->setTabToolTip(Tab::Flatpak, tr("Flatpak tab is disabled on 32-bit."));
+    }
+
     lock_file = new LockFile(QStringLiteral("/var/lib/dpkg/lock"));
     connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::cleanup, Qt::QueuedConnection);
 
@@ -1533,6 +1538,8 @@ void MainWindow::enableTabs(bool enable)
 {
     for (int tab = 0; tab < ui->tabWidget->count() - 1; ++tab) // enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
+    if (arch == "i386")
+        ui->tabWidget->setTabEnabled(Tab::Flatpak, false);
 }
 
 // Process downloaded *Packages.gz files
