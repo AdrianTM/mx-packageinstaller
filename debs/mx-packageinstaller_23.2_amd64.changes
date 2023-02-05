@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 05 Feb 2023 17:35:33 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.2
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.2) mx; urgency=medium
+ .
+   * Disable Flatpak tab on 32-bit
+Checksums-Sha1:
+ 1b5c5c4c64f2a03427b663bef7ed21a85d6f86f1 1220 mx-packageinstaller_23.2.dsc
+ 91fb0c3014062371269c71ba2ac7cdc1b86a67de 317500 mx-packageinstaller_23.2.tar.xz
+ 482ee4c440444c3727c881963986ea57e76bffee 10803 mx-packageinstaller_23.2_amd64.buildinfo
+ 527907d36b85df156e9ad5e43a072472a031adc1 381736 mx-packageinstaller_23.2_amd64.deb
+Checksums-Sha256:
+ 79e0f431b25b32b2a3d80b2c24202f9b3f20862768831cee19ac9d91cb5aeab0 1220 mx-packageinstaller_23.2.dsc
+ ac6d7522c381674820015943e80c3250145e6e40025a96bf458f295782d76cce 317500 mx-packageinstaller_23.2.tar.xz
+ 6e9963582431695bf0afd209850815c6470de1204fef5cf737de8492c7328fa4 10803 mx-packageinstaller_23.2_amd64.buildinfo
+ 4c1c967b6df793c47bd0c333341dd52e0a1aa97ca32ac466ed7baf1ad8c32ee1 381736 mx-packageinstaller_23.2_amd64.deb
+Files:
+ b221a12782c74963db56f2a5c528e694 1220 admin optional mx-packageinstaller_23.2.dsc
+ 927c1efd3142f85346c5574ef5314881 317500 admin optional mx-packageinstaller_23.2.tar.xz
+ 657ebeffe57bc143b89109c2e0817288 10803 admin optional mx-packageinstaller_23.2_amd64.buildinfo
+ a65d48bb84d2e524cf6506610afbd4c2 381736 admin optional mx-packageinstaller_23.2_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmPgL9ATHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumK4MCACpXuJKgXdltDpB3eA30w5VL1fkLqyB
+EhzLx/WWfpQSY475o234i5vgPlmlzxKWkx0fN2kJjdQ69b8Z2io5w7APkN18ILEh
+6fcnBgf4m8L4LT1G5Wfj8ZK6DrRiZlFHyn2ne9dw9cmJA9OvXTl+iIJFOhNbjGgf
+HsSrZjCqoE6R5BubpDlmOGZz9ka9jV9eY1lyKBL59hEvj3ZnQlDIxI13Na37A5TB
+VlebUwr/HrltsXjAt5GfoXzdeduaCjUvzqXN8mHxdb2azwyX0l5Qckq9l5uTlltn
+qH0bN7lZoFtB6RDrRWEO8brjG41sO+uaUj6zHokkz/FN/hPOd/tKTAy5
+=jYFR
+-----END PGP SIGNATURE-----

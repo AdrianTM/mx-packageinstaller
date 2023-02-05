@@ -1,3 +1,9 @@
+mx-packageinstaller (23.2) mx; urgency=medium
+
+  * Disable Flatpak tab on 32-bit
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 05 Feb 2023 17:35:33 -0500
+
 mx-packageinstaller (23.1) mx; urgency=medium
 
   * Mark installed packages with an icon instead of graying out

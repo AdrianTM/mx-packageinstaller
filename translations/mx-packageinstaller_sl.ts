@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="94"/>
+        <location filename="../mainwindow.cpp" line="99"/>
         <source>MX Package Installer</source>
         <translation>MX Namestitev paketov</translation>
     </message>
@@ -17,7 +17,7 @@
     <message>
         <location filename="../mainwindow.ui" line="73"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Kategorija</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="83"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../mainwindow.ui" line="101"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Upravljanje priljubljenih paketov&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="120"/>
@@ -58,12 +58,12 @@
         <location filename="../mainwindow.ui" line="1118"/>
         <location filename="../mainwindow.ui" line="1245"/>
         <source>= Installed packages</source>
-        <translation type="unfinished"></translation>
+        <translation>= Nameščeni paketi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="173"/>
         <source>Enabled Repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Vključeni repozitoriji</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="237"/>
@@ -133,7 +133,7 @@
         <location filename="../mainwindow.ui" line="695"/>
         <location filename="../mainwindow.ui" line="1088"/>
         <location filename="../mainwindow.ui" line="1092"/>
-        <location filename="../mainwindow.cpp" line="2518"/>
+        <location filename="../mainwindow.cpp" line="2525"/>
         <source>All packages</source>
         <translation>Vsi paketi</translation>
     </message>
@@ -141,7 +141,7 @@
         <location filename="../mainwindow.ui" line="402"/>
         <location filename="../mainwindow.ui" line="700"/>
         <location filename="../mainwindow.ui" line="1097"/>
-        <location filename="../mainwindow.cpp" line="2531"/>
+        <location filename="../mainwindow.cpp" line="2538"/>
         <source>Installed</source>
         <translation>Nameščeno</translation>
     </message>
@@ -149,7 +149,7 @@
         <location filename="../mainwindow.ui" line="407"/>
         <location filename="../mainwindow.ui" line="705"/>
         <location filename="../mainwindow.ui" line="1102"/>
-        <location filename="../mainwindow.cpp" line="2529"/>
+        <location filename="../mainwindow.cpp" line="2536"/>
         <source>Upgradable</source>
         <translation>Nadgradljivo</translation>
     </message>
@@ -158,10 +158,10 @@
         <location filename="../mainwindow.ui" line="710"/>
         <location filename="../mainwindow.ui" line="1107"/>
         <location filename="../mainwindow.ui" line="1234"/>
-        <location filename="../mainwindow.cpp" line="2503"/>
-        <location filename="../mainwindow.cpp" line="2534"/>
-        <location filename="../mainwindow.cpp" line="2626"/>
-        <location filename="../mainwindow.cpp" line="2627"/>
+        <location filename="../mainwindow.cpp" line="2510"/>
+        <location filename="../mainwindow.cpp" line="2541"/>
+        <location filename="../mainwindow.cpp" line="2633"/>
+        <location filename="../mainwindow.cpp" line="2634"/>
         <source>Not installed</source>
         <translation>Ni nameščeno</translation>
     </message>
@@ -170,7 +170,7 @@
         <location filename="../mainwindow.ui" line="752"/>
         <location filename="../mainwindow.ui" line="814"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation type="unfinished"></translation>
+        <translation>= nadgradljiv paket. V izbranem repozitoriju je na voljo novejša različica.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="458"/>
@@ -216,44 +216,44 @@
     <message>
         <location filename="../mainwindow.ui" line="1165"/>
         <source>Remote (repo):</source>
-        <translation>Oddaljeno (repo):</translation>
+        <translation>Oddaljeno (repozitorij):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
-        <location filename="../mainwindow.cpp" line="2485"/>
+        <location filename="../mainwindow.cpp" line="2492"/>
         <source>All apps</source>
         <translation>Vsi programi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
-        <location filename="../mainwindow.cpp" line="2489"/>
+        <location filename="../mainwindow.cpp" line="2496"/>
         <source>All runtimes</source>
         <translation>Vse izvršljivo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
-        <location filename="../mainwindow.cpp" line="2493"/>
+        <location filename="../mainwindow.cpp" line="2500"/>
         <source>All available</source>
         <translation>Vse, kar je na voljo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1219"/>
-        <location filename="../mainwindow.cpp" line="2483"/>
+        <location filename="../mainwindow.cpp" line="2490"/>
         <source>Installed apps</source>
         <translation>Nameščeni programi</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
-        <location filename="../mainwindow.cpp" line="2481"/>
+        <location filename="../mainwindow.cpp" line="2488"/>
         <source>Installed runtimes</source>
         <translation>Nameščeno izvršljivo</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
-        <location filename="../mainwindow.cpp" line="2501"/>
-        <location filename="../mainwindow.cpp" line="2620"/>
-        <location filename="../mainwindow.cpp" line="2621"/>
+        <location filename="../mainwindow.cpp" line="2508"/>
+        <location filename="../mainwindow.cpp" line="2627"/>
+        <location filename="../mainwindow.cpp" line="2628"/>
         <source>All installed</source>
         <translation>Vse nameščeno</translation>
     </message>
@@ -299,10 +299,10 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
-        <location filename="../mainwindow.cpp" line="2304"/>
-        <location filename="../mainwindow.cpp" line="2441"/>
+        <location filename="../mainwindow.cpp" line="2311"/>
+        <location filename="../mainwindow.cpp" line="2448"/>
         <source>Console Output</source>
-        <translation>Izpis na konzoli</translation>
+        <translation>Izpis terminala</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1510"/>
@@ -316,10 +316,10 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1577"/>
-        <location filename="../mainwindow.cpp" line="1071"/>
-        <location filename="../mainwindow.cpp" line="2613"/>
-        <location filename="../mainwindow.cpp" line="2617"/>
-        <location filename="../mainwindow.cpp" line="2872"/>
+        <location filename="../mainwindow.cpp" line="1076"/>
+        <location filename="../mainwindow.cpp" line="2620"/>
+        <location filename="../mainwindow.cpp" line="2624"/>
+        <location filename="../mainwindow.cpp" line="2879"/>
         <source>Install</source>
         <translation>Namesti</translation>
     </message>
@@ -384,342 +384,347 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="178"/>
+        <location filename="../mainwindow.cpp" line="90"/>
+        <source>Flatpak tab is disabled on 32-bit.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../mainwindow.cpp" line="183"/>
         <source>Uninstalling packages...</source>
         <translation>Odstranjevanje paketov</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="183"/>
+        <location filename="../mainwindow.cpp" line="188"/>
         <source>Running pre-uninstall operations...</source>
-        <translation>Zagon dejanj pred odstranitvijo...</translation>
+        <translation>Izvedba opravil pred odstranitvijo...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="198"/>
+        <location filename="../mainwindow.cpp" line="203"/>
         <source>Running post-uninstall operations...</source>
         <translation>Izvajam opravila po namestitvi...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="212"/>
+        <location filename="../mainwindow.cpp" line="217"/>
         <source>Refreshing sources...</source>
         <translation>Osvežujem vire...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="228"/>
-        <location filename="../mainwindow.cpp" line="1117"/>
-        <location filename="../mainwindow.cpp" line="1246"/>
-        <location filename="../mainwindow.cpp" line="1384"/>
-        <location filename="../mainwindow.cpp" line="1446"/>
-        <location filename="../mainwindow.cpp" line="2122"/>
-        <location filename="../mainwindow.cpp" line="2152"/>
-        <location filename="../mainwindow.cpp" line="2164"/>
-        <location filename="../mainwindow.cpp" line="2277"/>
-        <location filename="../mainwindow.cpp" line="2296"/>
-        <location filename="../mainwindow.cpp" line="2696"/>
-        <location filename="../mainwindow.cpp" line="2772"/>
-        <location filename="../mainwindow.cpp" line="2802"/>
-        <location filename="../mainwindow.cpp" line="2895"/>
-        <location filename="../mainwindow.cpp" line="2919"/>
+        <location filename="../mainwindow.cpp" line="233"/>
+        <location filename="../mainwindow.cpp" line="1122"/>
+        <location filename="../mainwindow.cpp" line="1251"/>
+        <location filename="../mainwindow.cpp" line="1389"/>
+        <location filename="../mainwindow.cpp" line="1451"/>
+        <location filename="../mainwindow.cpp" line="2129"/>
+        <location filename="../mainwindow.cpp" line="2159"/>
+        <location filename="../mainwindow.cpp" line="2171"/>
+        <location filename="../mainwindow.cpp" line="2284"/>
+        <location filename="../mainwindow.cpp" line="2303"/>
+        <location filename="../mainwindow.cpp" line="2703"/>
+        <location filename="../mainwindow.cpp" line="2779"/>
+        <location filename="../mainwindow.cpp" line="2809"/>
+        <location filename="../mainwindow.cpp" line="2902"/>
+        <location filename="../mainwindow.cpp" line="2926"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="229"/>
+        <location filename="../mainwindow.cpp" line="234"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Prišlo je do težav pri osveževanju virov. Nekateri viri morda niso pravilno podali posodobitev. Za več informacij preveri:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="621"/>
+        <location filename="../mainwindow.cpp" line="626"/>
         <source>Cancel</source>
         <translation>Prekini</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="628"/>
+        <location filename="../mainwindow.cpp" line="633"/>
         <source>Please wait...</source>
-        <translation>Prosimo, počakajt...</translation>
+        <translation>Prosimo, počakajte...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="810"/>
-        <location filename="../mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow.cpp" line="815"/>
+        <location filename="../mainwindow.cpp" line="832"/>
         <source>Version </source>
         <translation>Različica</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="810"/>
+        <location filename="../mainwindow.cpp" line="815"/>
         <source> in stable repo</source>
         <translation>v stabilnem repozitoriju</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="812"/>
+        <location filename="../mainwindow.cpp" line="817"/>
         <source>Not available in stable repo</source>
         <translation>Ni na voljo v stabilnem repozitoriju</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="821"/>
-        <location filename="../mainwindow.cpp" line="2418"/>
+        <location filename="../mainwindow.cpp" line="826"/>
+        <location filename="../mainwindow.cpp" line="2425"/>
         <source>Latest version </source>
         <translation>Zadnja različica</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="821"/>
-        <location filename="../mainwindow.cpp" line="2418"/>
+        <location filename="../mainwindow.cpp" line="826"/>
+        <location filename="../mainwindow.cpp" line="2425"/>
         <source> already installed</source>
         <translation>je že nameščena</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="827"/>
+        <location filename="../mainwindow.cpp" line="832"/>
         <source> installed</source>
         <translation>nameščena</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="939"/>
+        <location filename="../mainwindow.cpp" line="944"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Ste na tem, da bi uporabljali testna skladišča, katerih paketi so namenjeni zgolj testiranju. Obstaja možnost, da bodo ti pokvarili vaš sistem, zato svetujemo, da naredite varnostno kopijo svojega sistema in da naenkrat namestite ali posodobite le po en paket. Prosimo, da posredujete povratne informacije na forumu, zato da bo lahko paket ovrednoten in prestavljen v glavno skladišče.</translation>
+        <translation>Ste na tem, da bi uporabljali testne repozitorije, katerih paketi so namenjeni zgolj preizkušanju. Obstaja možnost, da bodo ti pokvarili vaš sistem, zato svetujemo, da naredite varnostno kopijo svojega sistema in da naenkrat namestite ali posodobite le po en paket. Prosimo, da posredujete povratne informacije na forumu, zato da bo lahko paket ovrednoten in prestavljen v glavni repozitorij.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="948"/>
+        <location filename="../mainwindow.cpp" line="953"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Ste na tem, da boste uporabili Debian backporte, ki vsebujejo pakete iz naslednjih izdaj Debiana (poimenovano &apos;testing&apos;) in ki so prilagojeni za rabo s stabilnim Debianom. Niso preizkušeni tako intenzivno, kot stabilne izdaje za Debian ali MX Linux in so lahko nezdružljivi z drugimi komponentami stabilnega Debiana. Uporabite previdno!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="956"/>
+        <location filename="../mainwindow.cpp" line="961"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux vsebuje to skladišče flatpakov zgolj zato, da bi ustregel določenim uporabnikom in ni odgovoren za njihovo funkcionalnost. Za več informacij preverite flatpaks Wiki.</translation>
+        <translation>MX Linux vsebuje ta repozitorij flatpakov zgolj zato, da bi ustregel določenim uporabnikom in ni odgovoren za njihovo funkcionalnost. Za več informacij preverite flatpaks Wiki.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="963"/>
-        <location filename="../mainwindow.cpp" line="2905"/>
+        <location filename="../mainwindow.cpp" line="968"/>
+        <location filename="../mainwindow.cpp" line="2912"/>
         <source>Warning</source>
         <translation>Opozorilo</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="967"/>
+        <location filename="../mainwindow.cpp" line="972"/>
         <source>Do not show this message again</source>
         <translation>Ne prikaži več tega sporočila.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1069"/>
+        <location filename="../mainwindow.cpp" line="1074"/>
         <source>Remove</source>
         <translation>Briši</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1083"/>
+        <location filename="../mainwindow.cpp" line="1088"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>Izbrani so bili naslednji paketi. Kliknite na Prikaži podrobnosti za seznam sprememb.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1118"/>
-        <location filename="../mainwindow.cpp" line="1247"/>
-        <location filename="../mainwindow.cpp" line="1447"/>
+        <location filename="../mainwindow.cpp" line="1123"/>
+        <location filename="../mainwindow.cpp" line="1252"/>
+        <location filename="../mainwindow.cpp" line="1452"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>Ni povezave s spletom, zato ni mogoče naložiti seznama paketov</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1123"/>
+        <location filename="../mainwindow.cpp" line="1128"/>
         <source>Installing packages...</source>
         <translation>Nameščanje paketov...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1180"/>
+        <location filename="../mainwindow.cpp" line="1185"/>
         <source>Post-processing...</source>
         <translation>Po-procesiranje...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1210"/>
+        <location filename="../mainwindow.cpp" line="1215"/>
         <source>Pre-processing for </source>
         <translation>Pred-procesiranje...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1223"/>
+        <location filename="../mainwindow.cpp" line="1228"/>
         <source>Installing </source>
         <translation>Nameščanje</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1230"/>
+        <location filename="../mainwindow.cpp" line="1235"/>
         <source>Post-processing for </source>
         <translation>Po-procesiranje za</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1385"/>
+        <location filename="../mainwindow.cpp" line="1390"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
         <translation>Pri zapisovanju datoteke %1 se je zgodila napaka. Preverite ali je na nosilcu dovolj prostora</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1455"/>
+        <location filename="../mainwindow.cpp" line="1460"/>
         <source>Downloading package info...</source>
         <translation>Prenašanje informacij o paketu...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1909"/>
-        <location filename="../mainwindow.cpp" line="1986"/>
-        <location filename="../mainwindow.cpp" line="2010"/>
+        <location filename="../mainwindow.cpp" line="1916"/>
+        <location filename="../mainwindow.cpp" line="1993"/>
+        <location filename="../mainwindow.cpp" line="2017"/>
         <source>Package info</source>
         <translation>Informacije o paketu</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1923"/>
-        <location filename="../mainwindow.cpp" line="2838"/>
+        <location filename="../mainwindow.cpp" line="1930"/>
+        <location filename="../mainwindow.cpp" line="2845"/>
         <source>More &amp;info...</source>
         <translation>&amp;Več podatkov...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1952"/>
+        <location filename="../mainwindow.cpp" line="1959"/>
         <source>Packages to be installed: </source>
         <translation>Paketi, ki bodo nameščeni:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2118"/>
-        <location filename="../mainwindow.cpp" line="2131"/>
-        <location filename="../mainwindow.cpp" line="2146"/>
-        <location filename="../mainwindow.cpp" line="2161"/>
-        <location filename="../mainwindow.cpp" line="2249"/>
-        <location filename="../mainwindow.cpp" line="2272"/>
-        <location filename="../mainwindow.cpp" line="2692"/>
-        <location filename="../mainwindow.cpp" line="2766"/>
-        <location filename="../mainwindow.cpp" line="2796"/>
-        <location filename="../mainwindow.cpp" line="2889"/>
+        <location filename="../mainwindow.cpp" line="2125"/>
+        <location filename="../mainwindow.cpp" line="2138"/>
+        <location filename="../mainwindow.cpp" line="2153"/>
+        <location filename="../mainwindow.cpp" line="2168"/>
+        <location filename="../mainwindow.cpp" line="2256"/>
+        <location filename="../mainwindow.cpp" line="2279"/>
+        <location filename="../mainwindow.cpp" line="2699"/>
+        <location filename="../mainwindow.cpp" line="2773"/>
+        <location filename="../mainwindow.cpp" line="2803"/>
+        <location filename="../mainwindow.cpp" line="2896"/>
         <source>Done</source>
         <translation>Zaključeno</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2118"/>
-        <location filename="../mainwindow.cpp" line="2131"/>
-        <location filename="../mainwindow.cpp" line="2146"/>
-        <location filename="../mainwindow.cpp" line="2161"/>
-        <location filename="../mainwindow.cpp" line="2249"/>
-        <location filename="../mainwindow.cpp" line="2272"/>
-        <location filename="../mainwindow.cpp" line="2290"/>
-        <location filename="../mainwindow.cpp" line="2692"/>
-        <location filename="../mainwindow.cpp" line="2766"/>
-        <location filename="../mainwindow.cpp" line="2796"/>
-        <location filename="../mainwindow.cpp" line="2889"/>
-        <location filename="../mainwindow.cpp" line="2913"/>
+        <location filename="../mainwindow.cpp" line="2125"/>
+        <location filename="../mainwindow.cpp" line="2138"/>
+        <location filename="../mainwindow.cpp" line="2153"/>
+        <location filename="../mainwindow.cpp" line="2168"/>
+        <location filename="../mainwindow.cpp" line="2256"/>
+        <location filename="../mainwindow.cpp" line="2279"/>
+        <location filename="../mainwindow.cpp" line="2297"/>
+        <location filename="../mainwindow.cpp" line="2699"/>
+        <location filename="../mainwindow.cpp" line="2773"/>
+        <location filename="../mainwindow.cpp" line="2803"/>
+        <location filename="../mainwindow.cpp" line="2896"/>
+        <location filename="../mainwindow.cpp" line="2920"/>
         <source>Processing finished successfully.</source>
         <translation>Procesiranje je bilo uspešno zaključeno.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2123"/>
-        <location filename="../mainwindow.cpp" line="2153"/>
-        <location filename="../mainwindow.cpp" line="2165"/>
-        <location filename="../mainwindow.cpp" line="2697"/>
-        <location filename="../mainwindow.cpp" line="2773"/>
-        <location filename="../mainwindow.cpp" line="2803"/>
+        <location filename="../mainwindow.cpp" line="2130"/>
+        <location filename="../mainwindow.cpp" line="2160"/>
+        <location filename="../mainwindow.cpp" line="2172"/>
+        <location filename="../mainwindow.cpp" line="2704"/>
+        <location filename="../mainwindow.cpp" line="2780"/>
+        <location filename="../mainwindow.cpp" line="2810"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Ob nameščanju je bila odkrita napaka. Prosimo preverite izpis konzole.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2175"/>
+        <location filename="../mainwindow.cpp" line="2182"/>
         <source>About %1</source>
         <translation>O %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2176"/>
+        <location filename="../mainwindow.cpp" line="2183"/>
         <source>Version: </source>
         <translation>Različica:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2177"/>
+        <location filename="../mainwindow.cpp" line="2184"/>
         <source>Package Installer for MX Linux</source>
         <translation>Namestilnik paketov za MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2179"/>
+        <location filename="../mainwindow.cpp" line="2186"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2180"/>
+        <location filename="../mainwindow.cpp" line="2187"/>
         <source>%1 License</source>
         <translation>%1 licenca</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2193"/>
+        <location filename="../mainwindow.cpp" line="2200"/>
         <source>%1 Help</source>
         <translation>%1 pomoč</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2277"/>
+        <location filename="../mainwindow.cpp" line="2284"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation>Pri odstranjevanju se je pjavila težava. Preverite izpis konzole.</translation>
+        <translation>Pri odstranjevanju se je pojavila težava. Preverite izpis terminala</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2290"/>
-        <location filename="../mainwindow.cpp" line="2913"/>
+        <location filename="../mainwindow.cpp" line="2297"/>
+        <location filename="../mainwindow.cpp" line="2920"/>
         <source>Success</source>
         <translation>Operacija je uspela</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2296"/>
-        <location filename="../mainwindow.cpp" line="2919"/>
+        <location filename="../mainwindow.cpp" line="2303"/>
+        <location filename="../mainwindow.cpp" line="2926"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Pri odstranjevanju se je pojavila težava</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2392"/>
-        <location filename="../mainwindow.cpp" line="2404"/>
+        <location filename="../mainwindow.cpp" line="2399"/>
+        <location filename="../mainwindow.cpp" line="2411"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak ni bil nameščen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2393"/>
+        <location filename="../mainwindow.cpp" line="2400"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatopak trenutno ni nameščen.
 Ali naj ga namestim?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2404"/>
+        <location filename="../mainwindow.cpp" line="2411"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak ni bil namesčen</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2428"/>
-        <location filename="../mainwindow.cpp" line="2450"/>
+        <location filename="../mainwindow.cpp" line="2435"/>
+        <location filename="../mainwindow.cpp" line="2457"/>
         <source>Flathub remote failed</source>
         <translation>Flathub oddaljeni dostop ni uspel</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2428"/>
-        <location filename="../mainwindow.cpp" line="2450"/>
+        <location filename="../mainwindow.cpp" line="2435"/>
+        <location filename="../mainwindow.cpp" line="2457"/>
         <source>Flathub remote could not be added</source>
         <translation>Flathub oddaljeni dostop ni bil dodan</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2436"/>
+        <location filename="../mainwindow.cpp" line="2443"/>
         <source>Needs re-login</source>
         <translation>Potreben je ponovni vpis</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2437"/>
+        <location filename="../mainwindow.cpp" line="2444"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Da bi videli nameščene pakete v menijih, bo morda potreben ponovni vpis</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2613"/>
+        <location filename="../mainwindow.cpp" line="2620"/>
         <source>Upgrade</source>
         <translation>Nadgradi</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2725"/>
+        <location filename="../mainwindow.cpp" line="2732"/>
         <source>Quit?</source>
         <translation>Končam?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2726"/>
+        <location filename="../mainwindow.cpp" line="2733"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Proces se še izvaja, dokončanje bi lahko destabiliziralo sistem.&lt;p&gt;&lt;b&gt; Ali ste prepričani, da bi radi zaustili MX namestitev paketov?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2870"/>
+        <location filename="../mainwindow.cpp" line="2877"/>
         <source>Reinstall</source>
         <translation>Ponovno namesti</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2896"/>
+        <location filename="../mainwindow.cpp" line="2903"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Med zadnjo operacijo je bila odkrita napaka. Preverite izpis konzole.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2906"/>
+        <location filename="../mainwindow.cpp" line="2913"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Potencialno nevarno dejanje.
@@ -746,17 +751,17 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
     <message>
         <location filename="../remotes.cpp" line="29"/>
         <source>enter Flatpak remote URL</source>
-        <translation>vnesite oddaljni URL za Flatpak</translation>
+        <translation>vnesite oddaljeni URL za Flatpak</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="32"/>
         <source>enter Flatpakref location to install app</source>
-        <translation>vnesite lokacijo za Flatpakref, da bi namestili app</translation>
+        <translation>za namestitev aplikacije vnesite Flatpakref lokacijo</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Dodaj ali odstrani flatpak oddaljni dostop (repoji) ali namesti flatpakref URL ali pot</translation>
+        <translation>Dodaj ali odstrani flatpak oddaljni dostop (repozitorije) ali namesti flatpakref URL ali pot</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
@@ -771,7 +776,7 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
     <message>
         <location filename="../remotes.cpp" line="53"/>
         <source>Install app</source>
-        <translation>Namesti app</translation>
+        <translation>Namesti aplikacijo</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="58"/>
@@ -786,7 +791,7 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
     <message>
         <location filename="../remotes.cpp" line="76"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation>Flathub je glavni Flatpak oddaljeni strežnik in ne bo odstranjen</translation>
+        <translation>Flathub je glavni oddaljeni Flatpak strežnik in ne bo odstranjen</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="96"/>
@@ -840,7 +845,7 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
     <message>
         <location filename="../main.cpp" line="73"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>Prijevljeni ste kot korenski uporabnik. Izpišite se in se ponovno prijavite kot običajen uporabnik, če želite uporabljati ta program.</translation>
+        <translation>Prijavljeni ste kot korenski uporabnik. Izpišite se in se ponovno prijavite kot običajen uporabnik, če želite uporabljati ta program.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>
@@ -850,7 +855,7 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
     <message>
         <location filename="../main.cpp" line="84"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
-        <translation>Zagnana je še ena aplikacija za nameščanje programov (kot sta Synaptic ali apt-get). Zaprite najprej to aplikacijo</translation>
+        <translation>Zagnana je še ena aplikacija za nameščanje programov (npr. Synaptic ali apt-get). Zaprite najprej to aplikacijo</translation>
     </message>
 </context>
 </TS>

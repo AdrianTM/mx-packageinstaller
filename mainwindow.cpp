@@ -86,7 +86,7 @@ void MainWindow::setup()
     ver_name = getDebianVerName();
 
     if (arch == "i386") {
-        ui->tabWidget->setTabEnabled(Tab::Flatpak, false);
+        ui->tabWidget->setTabEnabled(Tab::Flatpak, false); // setTabVisible is available only on Qt >= 5.15
         ui->tabWidget->setTabToolTip(Tab::Flatpak, tr("Flatpak tab is disabled on 32-bit."));
     }
 
