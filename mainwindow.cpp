@@ -1338,7 +1338,7 @@ bool MainWindow::isOnline()
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
     auto error = QNetworkReply::NoError;
-    for (const QString &address : {"http://mxrepo.com", "http://google.com"}) {
+    for (const QString &address : {"https://mxrepo.com", "https://google.com"}) {
         error = QNetworkReply::NoError; // reset for each tried address
         request.setUrl(QUrl(address));
         reply = manager.head(request);
