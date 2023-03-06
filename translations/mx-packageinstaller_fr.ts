@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="90"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>L&apos;onglet Flatpak est désactivé en 32 bits.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>
@@ -711,7 +711,7 @@ OK pour continuer et l&apos;installer ?</translation>
     <message>
         <location filename="../mainwindow.cpp" line="2733"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>Processus toujours en cours, quitter maintenant pourrait laisser le système en état d&apos;instabilité .&lt;p&gt;&lt;b&gt;Êtes-vous sur de vouloir quitter l&apos;installateur de paquets MX ?&lt;/b&gt;</translation>
+        <translation>Processus toujours en cours, quitter maintenant pourrait laisser le système en état d&apos;instabilité .&lt;p&gt;&lt;b&gt;Êtes-vous sûr de vouloir quitter l&apos;installateur de paquets MX ?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2877"/>

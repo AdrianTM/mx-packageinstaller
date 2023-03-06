@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="90"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>O separador Flatpak está desativado em 32 bits.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>

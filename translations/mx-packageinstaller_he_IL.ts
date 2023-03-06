@@ -844,7 +844,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../main.cpp" line="73"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"></translation>
+        <translation>כנראה שנכנסת למערכת בתור משתמש על (root), נא לצאת ולהיכנס כמשתמש רגיל כדי להשתמש בתוכנית הזאת.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>

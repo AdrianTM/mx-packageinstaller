@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="90"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak zavihek ni na voljo za 32-bitov</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>

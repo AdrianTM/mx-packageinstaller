@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 05 Mar 2023 21:44:49 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.3
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.3) mx; urgency=medium
+ .
+   * Use https addresses for network check
+Checksums-Sha1:
+ 141b14396af2aa900592203ccf6f0d9c763635a1 1220 mx-packageinstaller_23.3.dsc
+ e424ea0bb358becc1e6b0499a7e670233e0bc300 318444 mx-packageinstaller_23.3.tar.xz
+ 8b265444f6fff5b2f53f431e3a55e19a20f22d3a 10803 mx-packageinstaller_23.3_amd64.buildinfo
+ 5d43ddd166ba10669a6ed5fc2fcbb075df097ee5 382324 mx-packageinstaller_23.3_amd64.deb
+Checksums-Sha256:
+ 6ebcf64dfd5b5474e7831c4e504eec91640cbfa6ad254cec8ca1859ba249d8f6 1220 mx-packageinstaller_23.3.dsc
+ 331f408270639dfbfb6f61d68082e012bfbf42c23e5f04a521f24e637bf8e0b5 318444 mx-packageinstaller_23.3.tar.xz
+ d2677742333c9690f667296e8d110b9b1a98178654aec4ac15956265a06492c8 10803 mx-packageinstaller_23.3_amd64.buildinfo
+ c292e470bbb3d4d15e491b76882ee5cda4daefa5136cb888eee97f1d38f73c62 382324 mx-packageinstaller_23.3_amd64.deb
+Files:
+ 4fc3bf5a747a116c374ada32fda218a5 1220 admin optional mx-packageinstaller_23.3.dsc
+ 24ac4d8961d401ea875282b8780bbe3f 318444 admin optional mx-packageinstaller_23.3.tar.xz
+ 3b4319bd87b0f59595aae9a9974c62b2 10803 admin optional mx-packageinstaller_23.3_amd64.buildinfo
+ 225b6b3d360ca8457f3c6f7d34dde26d 382324 admin optional mx-packageinstaller_23.3_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmQFVBwTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumCQhB/wOWIIPXYf6cog5J2h/J1mn6w9/twFj
+RLLTIsuS64BuuV5XTGLmF2Qfc13r8ijoG8bDUMfLRq/MA+qqRt2i4RuXjQ7Jwya9
+qiWrAc55RQ+xeLwYeZ+TOLXBd/vpZ18pJY8L74yYiucKWHsBkexKPuoK96jcliYM
+CFUZg9yRo1q1Yz+wt1JA9lLaOc4/HFJ4Dl2XGlPkCqBotYUcGg1stN8RLqFASm4N
+EFl/lj6mpe1ff0HX2ejyRc38oSkenR6ugUL8ipqNaIeRdN0wNUITBcM7mY2ZaAAu
+bYKysf7zyxB+zMx7FHh/3CBE9vTotcvCtPinItlTaUSvFXxIhrG68pMC
+=aawg
+-----END PGP SIGNATURE-----

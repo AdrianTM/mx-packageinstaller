@@ -1,16 +1,16 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="gl_ES">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="yue_CN">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
         <location filename="../mainwindow.cpp" line="99"/>
         <source>MX Package Installer</source>
-        <translation>MX Instalador de paquetes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
         <source>Popular Applications</source>
-        <translation>Aplicativos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="73"/>
@@ -20,12 +20,12 @@
     <message>
         <location filename="../mainwindow.ui" line="83"/>
         <source>Package</source>
-        <translation>Paquetes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
         <source>Info</source>
-        <translation>Información</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>
@@ -33,7 +33,7 @@
         <location filename="../mainwindow.ui" line="660"/>
         <location filename="../mainwindow.ui" line="1030"/>
         <source>Description</source>
-        <translation>Descrición</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="101"/>
@@ -47,7 +47,7 @@
         <location filename="../mainwindow.ui" line="1055"/>
         <location filename="../mainwindow.ui" line="1274"/>
         <source>search</source>
-        <translation>busca</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="149"/>
@@ -66,55 +66,55 @@
     <message>
         <location filename="../mainwindow.ui" line="237"/>
         <source>Remove orphan packages</source>
-        <translation>Eliminar paquetes orfos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="264"/>
         <location filename="../mainwindow.ui" line="1337"/>
         <source>Upgrade All</source>
-        <translation>Actualizar todos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="278"/>
         <location filename="../mainwindow.ui" line="558"/>
         <location filename="../mainwindow.ui" line="886"/>
         <source>Installed:</source>
-        <translation>Instalados:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="301"/>
         <location filename="../mainwindow.ui" line="508"/>
         <location filename="../mainwindow.ui" line="907"/>
         <source>Total packages:</source>
-        <translation>Total de paquetes:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="315"/>
         <location filename="../mainwindow.ui" line="615"/>
         <location filename="../mainwindow.ui" line="947"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation>Tamén instale os paquetes &quot;Recomendados&quot;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="322"/>
         <location filename="../mainwindow.ui" line="588"/>
         <location filename="../mainwindow.ui" line="879"/>
         <source>Upgradable:</source>
-        <translation>Actualizables:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="329"/>
         <location filename="../mainwindow.ui" line="522"/>
         <location filename="../mainwindow.ui" line="914"/>
         <source>Hide library and developer packages</source>
-        <translation>Agochar paquetes de bibliotecas e de desenvolvedor</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="351"/>
         <location filename="../mainwindow.ui" line="544"/>
         <location filename="../mainwindow.ui" line="966"/>
         <source>Refresh list</source>
-        <translation>Recargar a lista</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="390"/>
@@ -122,7 +122,7 @@
         <location filename="../mainwindow.ui" line="1085"/>
         <location filename="../mainwindow.ui" line="1197"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filtrar paquetes polo estado.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="393"/>
@@ -133,7 +133,7 @@
         <location filename="../mainwindow.ui" line="1092"/>
         <location filename="../mainwindow.cpp" line="2525"/>
         <source>All packages</source>
-        <translation>Todos os paquetes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="402"/>
@@ -141,7 +141,7 @@
         <location filename="../mainwindow.ui" line="1097"/>
         <location filename="../mainwindow.cpp" line="2538"/>
         <source>Installed</source>
-        <translation>Instalado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="407"/>
@@ -149,7 +149,7 @@
         <location filename="../mainwindow.ui" line="1102"/>
         <location filename="../mainwindow.cpp" line="2536"/>
         <source>Upgradable</source>
-        <translation>Actualizables</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="412"/>
@@ -161,7 +161,7 @@
         <location filename="../mainwindow.cpp" line="2633"/>
         <location filename="../mainwindow.cpp" line="2634"/>
         <source>Not installed</source>
-        <translation>Non instalados</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="432"/>
@@ -175,7 +175,7 @@
         <location filename="../mainwindow.ui" line="650"/>
         <location filename="../mainwindow.ui" line="1020"/>
         <source>Package Name</source>
-        <translation>Nome do paquete</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="463"/>
@@ -183,69 +183,69 @@
         <location filename="../mainwindow.ui" line="1025"/>
         <location filename="../mainwindow.ui" line="1469"/>
         <source>Version</source>
-        <translation>Versión</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="493"/>
         <source>MX Test Repo</source>
-        <translation>Repositorio de proba de MX</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="796"/>
         <source>Debian Backports</source>
-        <translation>Debian Backports</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1142"/>
         <source>Flatpaks</source>
-        <translation>Paquetes flatpak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1148"/>
         <location filename="../mainwindow.ui" line="1152"/>
         <source>For all users</source>
-        <translation>Para todos os usuarios</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1157"/>
         <source>For current user</source>
-        <translation>Para o actual usuario</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1165"/>
         <source>Remote (repo):</source>
-        <translation>(Repositorio) remoto:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
         <location filename="../mainwindow.cpp" line="2492"/>
         <source>All apps</source>
-        <translation>Aplicativos</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
         <location filename="../mainwindow.cpp" line="2496"/>
         <source>All runtimes</source>
-        <translation>Software &apos;runtime&apos;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
         <location filename="../mainwindow.cpp" line="2500"/>
         <source>All available</source>
-        <translation>Todo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1219"/>
         <location filename="../mainwindow.cpp" line="2490"/>
         <source>Installed apps</source>
-        <translation>Aplicativos instaladas</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
         <location filename="../mainwindow.cpp" line="2488"/>
         <source>Installed runtimes</source>
-        <translation>Software &apos;runtime&apos; instalado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
@@ -253,64 +253,64 @@
         <location filename="../mainwindow.cpp" line="2627"/>
         <location filename="../mainwindow.cpp" line="2628"/>
         <source>All installed</source>
-        <translation>Todos instalados</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1316"/>
         <source>Total items </source>
-        <translation>Total de items</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1330"/>
         <source>Installed apps:</source>
-        <translation>Aplicativos instalados:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1383"/>
         <source>Advanced</source>
-        <translation>Avanzado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1413"/>
         <source>Total installed size:</source>
-        <translation>Total instalado:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1427"/>
         <source>Remove unused runtimes</source>
-        <translation>Elimina os tempos de execución non utilizados</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1459"/>
         <source>Short Name</source>
-        <translation>Nome curto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1464"/>
         <source>Full Package Name</source>
-        <translation>Nome completo do paquete</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1474"/>
         <source>Size</source>
-        <translation>Tamaño</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
         <location filename="../mainwindow.cpp" line="2311"/>
         <location filename="../mainwindow.cpp" line="2448"/>
         <source>Console Output</source>
-        <translation>Procesamento en consola</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1510"/>
         <source>Enter</source>
-        <translation>Enter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1521"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Responder aquí ou premer enter</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1577"/>
@@ -319,67 +319,67 @@
         <location filename="../mainwindow.cpp" line="2624"/>
         <location filename="../mainwindow.cpp" line="2879"/>
         <source>Install</source>
-        <translation>Instalar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1584"/>
         <source>Alt+I</source>
-        <translation>Alt+I</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1603"/>
         <source>Quit application</source>
-        <translation>Saír do aplicativo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1606"/>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1613"/>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1645"/>
         <source>About this application</source>
-        <translation>Sobre esta aplicación</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1648"/>
         <source>About...</source>
-        <translation>Sobre...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1655"/>
         <source>Alt+B</source>
-        <translation>Alt+B</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1693"/>
         <source>Display help </source>
-        <translation>Amosar axuda</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1696"/>
         <source>Help</source>
-        <translation>Axuda</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1703"/>
         <source>Alt+H</source>
-        <translation>Alt+H</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1719"/>
         <source>Uninstall</source>
-        <translation>Desinstalar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1726"/>
         <source>Alt+U</source>
-        <translation>Alt+U</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="90"/>
@@ -389,22 +389,22 @@
     <message>
         <location filename="../mainwindow.cpp" line="183"/>
         <source>Uninstalling packages...</source>
-        <translation>Desinstalando paquetes...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="188"/>
         <source>Running pre-uninstall operations...</source>
-        <translation>Realizando operacións previas á desinstalación...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="203"/>
         <source>Running post-uninstall operations...</source>
-        <translation>Executando operacions despois de desinstalar...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="217"/>
         <source>Refreshing sources...</source>
-        <translation>Actualizando as orixes...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="233"/>
@@ -423,151 +423,151 @@
         <location filename="../mainwindow.cpp" line="2902"/>
         <location filename="../mainwindow.cpp" line="2926"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="234"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation>Houbo un problema ao actualizar as orixes. Algunhas orixes poden non ter fornecido actualizacións. Para máis información, ver:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="626"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="633"/>
         <source>Please wait...</source>
-        <translation>Agarda...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="815"/>
         <location filename="../mainwindow.cpp" line="832"/>
         <source>Version </source>
-        <translation>Versión </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="815"/>
         <source> in stable repo</source>
-        <translation>no repositorio estable</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="817"/>
         <source>Not available in stable repo</source>
-        <translation>Non dispoñible no repositorio estalbe</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="826"/>
         <location filename="../mainwindow.cpp" line="2425"/>
         <source>Latest version </source>
-        <translation>última versión</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="826"/>
         <location filename="../mainwindow.cpp" line="2425"/>
         <source> already installed</source>
-        <translation>Xa está instalado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="832"/>
         <source> installed</source>
-        <translation>instalado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="944"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>O repositório MX Test, cuxos paquetes son dispoñibilizados só para efecto de probar, está para ser usado. Os paquetes deste repositorio poden damnificar o sistema, polo que se suxire que sexa feita unha copia de seguranza do mesmo e que sexa instalado ou actualizado só un paquete de cada vez. Agradécese que os resultados sexan comunicados no foro, para que haxa unha avalición dos paquetes antes de seren movidos para o repositorio principal.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="953"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Será usado o repositorio &apos;Debian Backports&apos;, que contén paquetes retirados da versión (chamada &apos;testing&apos;) de Debian, adaptados e recompilados para uso na actual versión estable de Debian, sendo por isto designados paquetes retro-portados. Estes paquetes non foron tan extensivamente probados como os das versións estables de Debian e de MX; son dispoñibilizados &apos;como están&apos;, co risco de incompatibilidades con outros compoñentes de Debian &apos;estable&apos;. Usar con coidado!</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="961"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>O MX inclúe este repositorio de paquetes flatpak só para conveniencia dos usuarios, non sendo responsable polo funcionamento dos propios paquetes flatpak. Para máis información, consultar &apos;flatpaks&apos; na Wiki.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="968"/>
         <location filename="../mainwindow.cpp" line="2912"/>
         <source>Warning</source>
-        <translation>Aviso</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="972"/>
         <source>Do not show this message again</source>
-        <translation>Non amosar esta mensaxe de novo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1074"/>
         <source>Remove</source>
-        <translation>Eliminar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1088"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation>Seleccionáronse os seguintes paquetes. Preme en Amosar detalles para ver a lista de cambios.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1123"/>
         <location filename="../mainwindow.cpp" line="1252"/>
         <location filename="../mainwindow.cpp" line="1452"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation>Sen conexión a Internet; non é posible descargar a lista de paquetes</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1128"/>
         <source>Installing packages...</source>
-        <translation>Instalando paquetes...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1185"/>
         <source>Post-processing...</source>
-        <translation>Posprocesando...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1215"/>
         <source>Pre-processing for </source>
-        <translation>Prepocesando para</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1228"/>
         <source>Installing </source>
-        <translation>Instalando</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1235"/>
         <source>Post-processing for </source>
-        <translation>Posprocesando para</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1390"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation>Produciuse un erro ao escribir o ficheiro: %1. Comproba se tes espazo libre suficiente na túa unidade</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1460"/>
         <source>Downloading package info...</source>
-        <translation>Descargando información do paquete...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1916"/>
         <location filename="../mainwindow.cpp" line="1993"/>
         <location filename="../mainwindow.cpp" line="2017"/>
         <source>Package info</source>
-        <translation>Información do paquete</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1930"/>
         <location filename="../mainwindow.cpp" line="2845"/>
         <source>More &amp;info...</source>
-        <translation>Máis &amp;información...</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1959"/>
         <source>Packages to be installed: </source>
-        <translation>Paquetes instalándose:</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2125"/>
@@ -581,7 +581,7 @@
         <location filename="../mainwindow.cpp" line="2803"/>
         <location filename="../mainwindow.cpp" line="2896"/>
         <source>Done</source>
-        <translation>Feito</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2125"/>
@@ -597,7 +597,7 @@
         <location filename="../mainwindow.cpp" line="2896"/>
         <location filename="../mainwindow.cpp" line="2920"/>
         <source>Processing finished successfully.</source>
-        <translation>Procesamento rematado con éxito.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2130"/>
@@ -607,126 +607,124 @@
         <location filename="../mainwindow.cpp" line="2780"/>
         <location filename="../mainwindow.cpp" line="2810"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation>Detectado problema ao instalar; verificar información na consola. </translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2182"/>
         <source>About %1</source>
-        <translation>Sobre %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2183"/>
         <source>Version: </source>
-        <translation>Versión</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2184"/>
         <source>Package Installer for MX Linux</source>
-        <translation>Xestor de paquetes de MX Linux</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2186"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>Copyright (c) MX Linux</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2187"/>
         <source>%1 License</source>
-        <translation>Licenza de %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2200"/>
         <source>%1 Help</source>
-        <translation>Axuda para %1</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2284"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation>Foi atopado un problema ao desinstalar. Verificar os resultados.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2297"/>
         <location filename="../mainwindow.cpp" line="2920"/>
         <source>Success</source>
-        <translation>Con éxito</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2303"/>
         <location filename="../mainwindow.cpp" line="2926"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation>Houbo un problema ao desinstalar o programa</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2399"/>
         <location filename="../mainwindow.cpp" line="2411"/>
         <source>Flatpak not installed</source>
-        <translation>Paquete flatpak non instalado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2400"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>O paquete flatpak non está instalado.
-Continuar e instalar o paquete?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2411"/>
         <source>Flatpak was not installed</source>
-        <translation>O paquete flatpak non estaba instalado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2435"/>
         <location filename="../mainwindow.cpp" line="2457"/>
         <source>Flathub remote failed</source>
-        <translation>Fallo no repositotio remoto Flathub</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2435"/>
         <location filename="../mainwindow.cpp" line="2457"/>
         <source>Flathub remote could not be added</source>
-        <translation>Non foi posible engadir o repositorio remoto Flathub</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2443"/>
         <source>Needs re-login</source>
-        <translation>É necesario volver a iniciar sesió</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2444"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation>Poderá ser necesario saír e volver a iniciar sesión para ue os items queden visibles no menú</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2620"/>
         <source>Upgrade</source>
-        <translation>Actualizar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2732"/>
         <source>Quit?</source>
-        <translation>Saír?</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2733"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>O proceso aínda está en execución. Saír pode deixar o sistema nun estado instable.&lt;p&gt;&lt;b&gt;Saír realmente do MX instalador de paquetes?&lt;/b&gt;</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2877"/>
         <source>Reinstall</source>
-        <translation>Reinstalar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2903"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation>Detectouse un problema durante a última operación. Inspeccione a saída da consola.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2913"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation>Operación potencialmente perigosa.
-Asegúrate de comprobar coidadosamente a lista de paquetes a eliminar.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -734,82 +732,82 @@ Asegúrate de comprobar coidadosamente a lista de paquetes a eliminar.</translat
     <message>
         <location filename="../remotes.cpp" line="13"/>
         <source>Manage Flatpak Remotes</source>
-        <translation>Xestionar repositorios remotos flatpak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="22"/>
         <source>For all users</source>
-        <translation>Para todos os usuarios</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For current user</source>
-        <translation>Para o actual usuario</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="29"/>
         <source>enter Flatpak remote URL</source>
-        <translation>introducir o URL do repositorio remoto flatpak</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="32"/>
         <source>enter Flatpakref location to install app</source>
-        <translation>para instalar un aplicativo, introducir a localización do respectivo ficheiro .flatpakref</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Engadir ou eliminar repositorios remotos flatpak ou instalr aplicativos usando o URL ou o camiño para o respectivo ficheiro .flatpakref</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
         <source>Remove remote</source>
-        <translation>Eliminar repositorio remoto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="48"/>
         <source>Add remote</source>
-        <translation>Engadir repositorio remoto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="53"/>
         <source>Install app</source>
-        <translation>Instalar aplicativo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="58"/>
         <source>Close</source>
-        <translation>Cerrar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Not removable</source>
-        <translation>Non se pode eliminar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="76"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation>O Flathub é o principal repositorio remoto flatpak e non será eliminado</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="96"/>
         <source>Error adding remote</source>
-        <translation>Erro ao engadir o repositorio remoto</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="97"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation>Non é posible engadir o repositorio remoto - o comando resultou un erro. Verificar o enderezo do repositorio remoto e volver a intentar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="102"/>
         <source>Success</source>
-        <translation>Con éxito</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../remotes.cpp" line="102"/>
         <source>Remote added successfully</source>
-        <translation>Repositorio remoto engadido con éxito</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
@@ -817,43 +815,43 @@ Asegúrate de comprobar coidadosamente a lista de paquetes a eliminar.</translat
     <message>
         <location filename="../about.cpp" line="52"/>
         <source>License</source>
-        <translation>Licenza</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../about.cpp" line="53"/>
         <location filename="../about.cpp" line="62"/>
         <source>Changelog</source>
-        <translation>Rexistro dos cambios</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../about.cpp" line="54"/>
         <source>Cancel</source>
-        <translation>Cancelar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../about.cpp" line="74"/>
         <source>&amp;Close</source>
-        <translation>&amp;Cerrar</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../main.cpp" line="72"/>
         <source>Error</source>
-        <translation>Erro</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../main.cpp" line="73"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>O usuario parece ser root; para usar este programa, pechar a sesión e iniciar sesión como usuario normal.</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../main.cpp" line="83"/>
         <source>Unable to get exclusive lock</source>
-        <translation>Non foi posible obter o bloqueo exclusivo</translation>
+        <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../main.cpp" line="84"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
-        <translation>Está en execución outro aplicativo de xestión de paquetes (p. ex. Synaptic ou apt-get). Pechar primeiro o aplicativo.</translation>
+        <translation type="unfinished"/>
     </message>
 </context>
 </TS>

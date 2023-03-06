@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="90"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>La pestaña Flatpak está desactivada en 32 bits.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>
@@ -583,7 +583,7 @@
         <location filename="../mainwindow.cpp" line="2803"/>
         <location filename="../mainwindow.cpp" line="2896"/>
         <source>Done</source>
-        <translation>Hecho</translation>
+        <translation>Listo</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2125"/>

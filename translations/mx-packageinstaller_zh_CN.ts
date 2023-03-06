@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="90"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak 选项卡在 32 位系统中被禁用。</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="183"/>
