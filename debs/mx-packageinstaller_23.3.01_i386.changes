@@ -18,11 +18,11 @@ Changes:
    * Fix displaing version in About menu
    * Some translations updates
 Checksums-Sha1:
- 358165ee5486b5858de6da84f61dea516fbe97ca 10128 mx-packageinstaller_23.3.01_i386.buildinfo
- 1a03ac469539cdf4283ce6940374b0ed4f7055d5 392016 mx-packageinstaller_23.3.01_i386.deb
+ 0b6e77ef73caa15b506a38ca5a5a88865a00dbf8 10128 mx-packageinstaller_23.3.01_i386.buildinfo
+ c75d8c23be3ace8b6c671a39bb29651a6623424d 398060 mx-packageinstaller_23.3.01_i386.deb
 Checksums-Sha256:
- 5e894ce31003d81247404054f96098b5643ff723502be30fc76dfb124f716e74 10128 mx-packageinstaller_23.3.01_i386.buildinfo
- 880c4150ee686a9ec5c9a57d98a50f8386608875b5abfd0568aa291f8d7a4ef2 392016 mx-packageinstaller_23.3.01_i386.deb
+ e27532512a87b44b250d6e9e5e3105855aa0f0b803927ae82312160c2c43252e 10128 mx-packageinstaller_23.3.01_i386.buildinfo
+ c1a6c314c46f8ff5f13a60bd4614a4de4471dd52173387c7e5845397eb55f68a 398060 mx-packageinstaller_23.3.01_i386.deb
 Files:
- 03464aebe98a4190b20ea452e969f8a5 10128 admin optional mx-packageinstaller_23.3.01_i386.buildinfo
- 493e31b9ea2e4de659f9308b745b1efc 392016 admin optional mx-packageinstaller_23.3.01_i386.deb
+ 6ea70ddf1e7389291ae43222cb8e185e 10128 admin optional mx-packageinstaller_23.3.01_i386.buildinfo
+ e1583e3d5a7c700b13fc7f4a532d8822 398060 admin optional mx-packageinstaller_23.3.01_i386.deb
