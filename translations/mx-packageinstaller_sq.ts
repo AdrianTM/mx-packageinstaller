@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="99"/>
+        <location filename="../mainwindow.cpp" line="100"/>
         <source>MX Package Installer</source>
         <translation>Instalues Paketash MX</translation>
     </message>
@@ -133,7 +133,7 @@
         <location filename="../mainwindow.ui" line="695"/>
         <location filename="../mainwindow.ui" line="1088"/>
         <location filename="../mainwindow.ui" line="1092"/>
-        <location filename="../mainwindow.cpp" line="2525"/>
+        <location filename="../mainwindow.cpp" line="2529"/>
         <source>All packages</source>
         <translation>Krejt paketat</translation>
     </message>
@@ -141,7 +141,7 @@
         <location filename="../mainwindow.ui" line="402"/>
         <location filename="../mainwindow.ui" line="700"/>
         <location filename="../mainwindow.ui" line="1097"/>
-        <location filename="../mainwindow.cpp" line="2538"/>
+        <location filename="../mainwindow.cpp" line="2542"/>
         <source>Installed</source>
         <translation>Të instaluara</translation>
     </message>
@@ -149,7 +149,7 @@
         <location filename="../mainwindow.ui" line="407"/>
         <location filename="../mainwindow.ui" line="705"/>
         <location filename="../mainwindow.ui" line="1102"/>
-        <location filename="../mainwindow.cpp" line="2536"/>
+        <location filename="../mainwindow.cpp" line="2540"/>
         <source>Upgradable</source>
         <translation>Të përmirësueshme</translation>
     </message>
@@ -158,10 +158,10 @@
         <location filename="../mainwindow.ui" line="710"/>
         <location filename="../mainwindow.ui" line="1107"/>
         <location filename="../mainwindow.ui" line="1234"/>
-        <location filename="../mainwindow.cpp" line="2510"/>
-        <location filename="../mainwindow.cpp" line="2541"/>
-        <location filename="../mainwindow.cpp" line="2633"/>
-        <location filename="../mainwindow.cpp" line="2634"/>
+        <location filename="../mainwindow.cpp" line="2514"/>
+        <location filename="../mainwindow.cpp" line="2545"/>
+        <location filename="../mainwindow.cpp" line="2637"/>
+        <location filename="../mainwindow.cpp" line="2638"/>
         <source>Not installed</source>
         <translation>Jo të instaluara</translation>
     </message>
@@ -221,39 +221,39 @@
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
-        <location filename="../mainwindow.cpp" line="2492"/>
+        <location filename="../mainwindow.cpp" line="2496"/>
         <source>All apps</source>
         <translation>Krejt aplikacionet</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
-        <location filename="../mainwindow.cpp" line="2496"/>
+        <location filename="../mainwindow.cpp" line="2500"/>
         <source>All runtimes</source>
         <translation>Krejt runtime-et</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
-        <location filename="../mainwindow.cpp" line="2500"/>
+        <location filename="../mainwindow.cpp" line="2504"/>
         <source>All available</source>
         <translation>Krejt të gatshmet</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1219"/>
-        <location filename="../mainwindow.cpp" line="2490"/>
+        <location filename="../mainwindow.cpp" line="2494"/>
         <source>Installed apps</source>
         <translation>Aplikacione të instaluara</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
-        <location filename="../mainwindow.cpp" line="2488"/>
+        <location filename="../mainwindow.cpp" line="2492"/>
         <source>Installed runtimes</source>
         <translation>Runtime-e të instaluar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
-        <location filename="../mainwindow.cpp" line="2508"/>
-        <location filename="../mainwindow.cpp" line="2627"/>
-        <location filename="../mainwindow.cpp" line="2628"/>
+        <location filename="../mainwindow.cpp" line="2512"/>
+        <location filename="../mainwindow.cpp" line="2631"/>
+        <location filename="../mainwindow.cpp" line="2632"/>
         <source>All installed</source>
         <translation>Krejt të instaluarat</translation>
     </message>
@@ -299,8 +299,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
-        <location filename="../mainwindow.cpp" line="2311"/>
-        <location filename="../mainwindow.cpp" line="2448"/>
+        <location filename="../mainwindow.cpp" line="2315"/>
+        <location filename="../mainwindow.cpp" line="2452"/>
         <source>Console Output</source>
         <translation>Ç’jep Konsola</translation>
     </message>
@@ -316,10 +316,10 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1577"/>
-        <location filename="../mainwindow.cpp" line="1076"/>
-        <location filename="../mainwindow.cpp" line="2620"/>
+        <location filename="../mainwindow.cpp" line="1075"/>
         <location filename="../mainwindow.cpp" line="2624"/>
-        <location filename="../mainwindow.cpp" line="2879"/>
+        <location filename="../mainwindow.cpp" line="2628"/>
+        <location filename="../mainwindow.cpp" line="2883"/>
         <source>Install</source>
         <translation>Instaloje</translation>
     </message>
@@ -384,347 +384,347 @@
         <translation>Alt+Ç</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="90"/>
+        <location filename="../mainwindow.cpp" line="91"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="183"/>
+        <location filename="../mainwindow.cpp" line="184"/>
         <source>Uninstalling packages...</source>
         <translation>Po çinstalohen paketa…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="188"/>
+        <location filename="../mainwindow.cpp" line="189"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Po kryhen veprime para-çinstalimi…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="203"/>
+        <location filename="../mainwindow.cpp" line="204"/>
         <source>Running post-uninstall operations...</source>
         <translation>Po kryhen veprime pas-çinstalimi…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="217"/>
+        <location filename="../mainwindow.cpp" line="218"/>
         <source>Refreshing sources...</source>
         <translation>Po rifreskohen burime…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="233"/>
-        <location filename="../mainwindow.cpp" line="1122"/>
-        <location filename="../mainwindow.cpp" line="1251"/>
-        <location filename="../mainwindow.cpp" line="1389"/>
-        <location filename="../mainwindow.cpp" line="1451"/>
-        <location filename="../mainwindow.cpp" line="2129"/>
-        <location filename="../mainwindow.cpp" line="2159"/>
-        <location filename="../mainwindow.cpp" line="2171"/>
-        <location filename="../mainwindow.cpp" line="2284"/>
-        <location filename="../mainwindow.cpp" line="2303"/>
-        <location filename="../mainwindow.cpp" line="2703"/>
-        <location filename="../mainwindow.cpp" line="2779"/>
-        <location filename="../mainwindow.cpp" line="2809"/>
-        <location filename="../mainwindow.cpp" line="2902"/>
-        <location filename="../mainwindow.cpp" line="2926"/>
+        <location filename="../mainwindow.cpp" line="232"/>
+        <location filename="../mainwindow.cpp" line="1121"/>
+        <location filename="../mainwindow.cpp" line="1250"/>
+        <location filename="../mainwindow.cpp" line="1392"/>
+        <location filename="../mainwindow.cpp" line="1454"/>
+        <location filename="../mainwindow.cpp" line="2132"/>
+        <location filename="../mainwindow.cpp" line="2162"/>
+        <location filename="../mainwindow.cpp" line="2174"/>
+        <location filename="../mainwindow.cpp" line="2288"/>
+        <location filename="../mainwindow.cpp" line="2307"/>
+        <location filename="../mainwindow.cpp" line="2707"/>
+        <location filename="../mainwindow.cpp" line="2783"/>
+        <location filename="../mainwindow.cpp" line="2813"/>
+        <location filename="../mainwindow.cpp" line="2906"/>
+        <location filename="../mainwindow.cpp" line="2930"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="234"/>
+        <location filename="../mainwindow.cpp" line="233"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Pati një problem me përditësimin e burimeve. Disa burime mund të mos kenë dhënë përditësime. Për më tepër hollësi, shihni: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="626"/>
+        <location filename="../mainwindow.cpp" line="625"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="633"/>
+        <location filename="../mainwindow.cpp" line="632"/>
         <source>Please wait...</source>
         <translation>Ju lutemi, pritni…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="815"/>
-        <location filename="../mainwindow.cpp" line="832"/>
+        <location filename="../mainwindow.cpp" line="814"/>
+        <location filename="../mainwindow.cpp" line="831"/>
         <source>Version </source>
         <translation>Version </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="815"/>
+        <location filename="../mainwindow.cpp" line="814"/>
         <source> in stable repo</source>
         <translation> në depon e të qëndrueshmit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="817"/>
+        <location filename="../mainwindow.cpp" line="816"/>
         <source>Not available in stable repo</source>
         <translation>Jo i passhëm në depon e të qëndrueshmit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="826"/>
-        <location filename="../mainwindow.cpp" line="2425"/>
+        <location filename="../mainwindow.cpp" line="825"/>
+        <location filename="../mainwindow.cpp" line="2429"/>
         <source>Latest version </source>
         <translation>Versioni më i ri </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="826"/>
-        <location filename="../mainwindow.cpp" line="2425"/>
+        <location filename="../mainwindow.cpp" line="825"/>
+        <location filename="../mainwindow.cpp" line="2429"/>
         <source> already installed</source>
         <translation> tashmë i instaluar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="832"/>
+        <location filename="../mainwindow.cpp" line="831"/>
         <source> installed</source>
         <translation> i instaluar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="944"/>
+        <location filename="../mainwindow.cpp" line="943"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>Ju ndan një hap nga përdorimi i depos MX Test, paketat e së cilës jepen vetëm për qëllime testimi. Është e mundur që të dëmtojnë sistemin, ndaj sugjerohet që të kopjeruani sistemin dhe të instaloni apo përditësoni vetëm një paketë në herë. Ju lutemi, jepni përshtypjet te Forumi, që kështu paketa të mund të vlerësohet, përpara se të kalojë te Kryesori.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="953"/>
+        <location filename="../mainwindow.cpp" line="952"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Ju ndan një hap nga përdorimi i depos Debian Backports, që përmban paketa të marra nga hedhja e ardhshme në qarkullim e Debian-it (e quajtur “testim”), përshtatur dhe ripërpiluar për përdorim në versionin e qëndrueshëm të Debian-it. S’mund të testohen aq gjerë sa te hedhjet në qarkullim të versioneve të qëndrueshëm të Debian-it dhe të MX Linux-it dhe jepen ashtu siç janë, me rrezikun e mospërputhjes me përbërës të tjerë te versioni i qëndrueshëm i Debian-it. Përdorini me kujdes!</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="961"/>
+        <location filename="../mainwindow.cpp" line="960"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux e përfshin këtë depo paketash Flatpak vetëm për leverdinë e përdoruesve dhe nuk është përgjegjës për punimin e vetë paketave Flatpak. Për më tepër, shihni rreth paketimesh Flatpak te Wiki.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="968"/>
-        <location filename="../mainwindow.cpp" line="2912"/>
+        <location filename="../mainwindow.cpp" line="967"/>
+        <location filename="../mainwindow.cpp" line="2916"/>
         <source>Warning</source>
         <translation>Kujdes</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="972"/>
+        <location filename="../mainwindow.cpp" line="971"/>
         <source>Do not show this message again</source>
         <translation>Mos e shfaq sërish këtë mesazh</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1074"/>
+        <location filename="../mainwindow.cpp" line="1073"/>
         <source>Remove</source>
         <translation>Hiqe</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1088"/>
+        <location filename="../mainwindow.cpp" line="1087"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>Janë përzgjedhur paketat vijuese. Për një listë të ndryshimeve, klikoni mbi “Shfaq Hollësi”.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1123"/>
-        <location filename="../mainwindow.cpp" line="1252"/>
-        <location filename="../mainwindow.cpp" line="1452"/>
+        <location filename="../mainwindow.cpp" line="1122"/>
+        <location filename="../mainwindow.cpp" line="1251"/>
+        <location filename="../mainwindow.cpp" line="1455"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>S’ka Internet, s’do të jetë në gjendje të shkarkojë listën e paketave</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1128"/>
+        <location filename="../mainwindow.cpp" line="1127"/>
         <source>Installing packages...</source>
         <translation>Po instalohen paketa…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1185"/>
+        <location filename="../mainwindow.cpp" line="1184"/>
         <source>Post-processing...</source>
         <translation>Pas-përpunim…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1215"/>
+        <location filename="../mainwindow.cpp" line="1214"/>
         <source>Pre-processing for </source>
         <translation>Para-përpunim për </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1228"/>
+        <location filename="../mainwindow.cpp" line="1227"/>
         <source>Installing </source>
         <translation>Po instalohet </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1235"/>
+        <location filename="../mainwindow.cpp" line="1234"/>
         <source>Post-processing for </source>
         <translation>Pas-përpunim për </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1390"/>
+        <location filename="../mainwindow.cpp" line="1393"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
         <translation>Pati një gabim në shkrim kartele: %1. Ju lutemi, kontrolloni nëse keni hapësirë të lirë të mjaftueshme në diskun tuaj</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1460"/>
+        <location filename="../mainwindow.cpp" line="1463"/>
         <source>Downloading package info...</source>
         <translation>Po shkarkohen hollësi pakete…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1916"/>
-        <location filename="../mainwindow.cpp" line="1993"/>
-        <location filename="../mainwindow.cpp" line="2017"/>
+        <location filename="../mainwindow.cpp" line="1919"/>
+        <location filename="../mainwindow.cpp" line="1996"/>
+        <location filename="../mainwindow.cpp" line="2020"/>
         <source>Package info</source>
         <translation>Hollësi pakete</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1930"/>
-        <location filename="../mainwindow.cpp" line="2845"/>
+        <location filename="../mainwindow.cpp" line="1933"/>
+        <location filename="../mainwindow.cpp" line="2849"/>
         <source>More &amp;info...</source>
         <translation>Më tepër &amp;hollësi…</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1959"/>
+        <location filename="../mainwindow.cpp" line="1962"/>
         <source>Packages to be installed: </source>
         <translation>Paketa për t’u instaluar: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2125"/>
-        <location filename="../mainwindow.cpp" line="2138"/>
-        <location filename="../mainwindow.cpp" line="2153"/>
-        <location filename="../mainwindow.cpp" line="2168"/>
-        <location filename="../mainwindow.cpp" line="2256"/>
-        <location filename="../mainwindow.cpp" line="2279"/>
-        <location filename="../mainwindow.cpp" line="2699"/>
-        <location filename="../mainwindow.cpp" line="2773"/>
-        <location filename="../mainwindow.cpp" line="2803"/>
-        <location filename="../mainwindow.cpp" line="2896"/>
+        <location filename="../mainwindow.cpp" line="2128"/>
+        <location filename="../mainwindow.cpp" line="2141"/>
+        <location filename="../mainwindow.cpp" line="2156"/>
+        <location filename="../mainwindow.cpp" line="2171"/>
+        <location filename="../mainwindow.cpp" line="2260"/>
+        <location filename="../mainwindow.cpp" line="2283"/>
+        <location filename="../mainwindow.cpp" line="2703"/>
+        <location filename="../mainwindow.cpp" line="2777"/>
+        <location filename="../mainwindow.cpp" line="2807"/>
+        <location filename="../mainwindow.cpp" line="2900"/>
         <source>Done</source>
         <translation>U bë</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2125"/>
-        <location filename="../mainwindow.cpp" line="2138"/>
-        <location filename="../mainwindow.cpp" line="2153"/>
-        <location filename="../mainwindow.cpp" line="2168"/>
-        <location filename="../mainwindow.cpp" line="2256"/>
-        <location filename="../mainwindow.cpp" line="2279"/>
-        <location filename="../mainwindow.cpp" line="2297"/>
-        <location filename="../mainwindow.cpp" line="2699"/>
-        <location filename="../mainwindow.cpp" line="2773"/>
-        <location filename="../mainwindow.cpp" line="2803"/>
-        <location filename="../mainwindow.cpp" line="2896"/>
-        <location filename="../mainwindow.cpp" line="2920"/>
+        <location filename="../mainwindow.cpp" line="2128"/>
+        <location filename="../mainwindow.cpp" line="2141"/>
+        <location filename="../mainwindow.cpp" line="2156"/>
+        <location filename="../mainwindow.cpp" line="2171"/>
+        <location filename="../mainwindow.cpp" line="2260"/>
+        <location filename="../mainwindow.cpp" line="2283"/>
+        <location filename="../mainwindow.cpp" line="2301"/>
+        <location filename="../mainwindow.cpp" line="2703"/>
+        <location filename="../mainwindow.cpp" line="2777"/>
+        <location filename="../mainwindow.cpp" line="2807"/>
+        <location filename="../mainwindow.cpp" line="2900"/>
+        <location filename="../mainwindow.cpp" line="2924"/>
         <source>Processing finished successfully.</source>
         <translation>Përpunimi përfundoi me sukses.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2130"/>
-        <location filename="../mainwindow.cpp" line="2160"/>
-        <location filename="../mainwindow.cpp" line="2172"/>
-        <location filename="../mainwindow.cpp" line="2704"/>
-        <location filename="../mainwindow.cpp" line="2780"/>
-        <location filename="../mainwindow.cpp" line="2810"/>
+        <location filename="../mainwindow.cpp" line="2133"/>
+        <location filename="../mainwindow.cpp" line="2163"/>
+        <location filename="../mainwindow.cpp" line="2175"/>
+        <location filename="../mainwindow.cpp" line="2708"/>
+        <location filename="../mainwindow.cpp" line="2784"/>
+        <location filename="../mainwindow.cpp" line="2814"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>U pikas problem teksa instalohej, ju lutemi, vëzhgoni ç’jepet te konsola.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2182"/>
+        <location filename="../mainwindow.cpp" line="2185"/>
         <source>About %1</source>
         <translation>Mbi %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2183"/>
+        <location filename="../mainwindow.cpp" line="2186"/>
         <source>Version: </source>
         <translation>Version: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2184"/>
+        <location filename="../mainwindow.cpp" line="2188"/>
         <source>Package Installer for MX Linux</source>
         <translation>Instalues Paketash për MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2186"/>
+        <location filename="../mainwindow.cpp" line="2190"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Të drejta kopjimi (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2187"/>
+        <location filename="../mainwindow.cpp" line="2191"/>
         <source>%1 License</source>
         <translation>Licencë %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2200"/>
+        <location filename="../mainwindow.cpp" line="2204"/>
         <source>%1 Help</source>
         <translation>Ndihmë për %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2284"/>
+        <location filename="../mainwindow.cpp" line="2288"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Hasëm një problem me çinstalimin, ju lutemi, shihni ç’jepet</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2297"/>
-        <location filename="../mainwindow.cpp" line="2920"/>
+        <location filename="../mainwindow.cpp" line="2301"/>
+        <location filename="../mainwindow.cpp" line="2924"/>
         <source>Success</source>
         <translation>Sukses</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2303"/>
-        <location filename="../mainwindow.cpp" line="2926"/>
+        <location filename="../mainwindow.cpp" line="2307"/>
+        <location filename="../mainwindow.cpp" line="2930"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Hasëm një problem me çinstalimin e programit</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2399"/>
-        <location filename="../mainwindow.cpp" line="2411"/>
+        <location filename="../mainwindow.cpp" line="2403"/>
+        <location filename="../mainwindow.cpp" line="2415"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak-u s’është i instaluar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2400"/>
+        <location filename="../mainwindow.cpp" line="2404"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak-u aktualisht s’është i instaluar.
 OK të ecet më tej dhe të instalohet?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2411"/>
+        <location filename="../mainwindow.cpp" line="2415"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak-u s’qe i instaluar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2435"/>
-        <location filename="../mainwindow.cpp" line="2457"/>
+        <location filename="../mainwindow.cpp" line="2439"/>
+        <location filename="../mainwindow.cpp" line="2461"/>
         <source>Flathub remote failed</source>
         <translation>Dështoi lidhja me pjesën e largët Flathub</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2435"/>
-        <location filename="../mainwindow.cpp" line="2457"/>
+        <location filename="../mainwindow.cpp" line="2439"/>
+        <location filename="../mainwindow.cpp" line="2461"/>
         <source>Flathub remote could not be added</source>
         <translation>S’u shtua dot pjesë e largët Flathub</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2443"/>
+        <location filename="../mainwindow.cpp" line="2447"/>
         <source>Needs re-login</source>
         <translation>Lyp rihyrje në llogari</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2444"/>
+        <location filename="../mainwindow.cpp" line="2448"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Mund t’ju duhet të dilni/hyni në llogari, që të shihni te menuja zërat e instaluar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2620"/>
+        <location filename="../mainwindow.cpp" line="2624"/>
         <source>Upgrade</source>
         <translation>Përmirësojeni</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2732"/>
+        <location filename="../mainwindow.cpp" line="2736"/>
         <source>Quit?</source>
         <translation>Të dilet?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2733"/>
+        <location filename="../mainwindow.cpp" line="2737"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Proces ende në xhirim, dalja mund ta lërë sistemin në një gjendje të paqëndrueshme.&lt;p&gt;&lt;b&gt;Jeni i sigurt se doni të dilet nga Instaluesi MX i Paketave?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2877"/>
+        <location filename="../mainwindow.cpp" line="2881"/>
         <source>Reinstall</source>
         <translation>Riinstaloje</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2903"/>
+        <location filename="../mainwindow.cpp" line="2907"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>U pikas problem gjatë veprimit të fundit, ju lutemi, vëzhgoni ç’jepet te konsola.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2913"/>
+        <location filename="../mainwindow.cpp" line="2917"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Veprim potencialisht i rrezikshëm.
@@ -838,22 +838,36 @@ Ju lutemi, sigurohuni se kontrolluat me kujdes listën e paketave për heqje.</t
         <translation>&amp;Mbylle</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="72"/>
+        <location filename="../main.cpp" line="74"/>
+        <source>MX Package Installer is a tool used for managing packages on MX Linux
+    - installs popular programs from different sources
+    - installs programs from the MX Test repo
+    - installs programs from Debian Backports repo
+    - installs flatpaks</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="82"/>
+        <source>Skip online check if it falsely reports lack of internet access.</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../main.cpp" line="88"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="73"/>
+        <location filename="../main.cpp" line="89"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Duket të keni hyrë si rrënjë, ju lutemi, që të përdorni këtë program, dilni dhe bëni hyrjen si përdorues normal.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="83"/>
+        <location filename="../main.cpp" line="99"/>
         <source>Unable to get exclusive lock</source>
         <translation>S’arrihet të kihet kyçje ekskluzive</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="84"/>
+        <location filename="../main.cpp" line="100"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
         <translation>Është duke xhiruar një tjetër aplikacion administrimi paketash (bie fjala, Synaptic, ose apt-get). Ju lutemi, së pari, mbyllni atë aplikacion</translation>
     </message>

@@ -25,7 +25,7 @@
     <message>
         <location filename="../mainwindow.ui" line="88"/>
         <source>Info</source>
-        <translation type="unfinished"/>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>

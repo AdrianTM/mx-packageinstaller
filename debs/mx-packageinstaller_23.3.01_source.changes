@@ -1,0 +1,43 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 11 Mar 2023 14:18:41 -0500
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.3.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.3.01) mx; urgency=medium
+ .
+   * Try to detect proxy configuration
+   * Add command line switches --help, --version, --skip-online-check
+   * Fix displaing version in About menu
+   * Some translations updates
+Checksums-Sha1:
+ ff03380c990b02b57c0c40e42831b28efb6b4ff6 1232 mx-packageinstaller_23.3.01.dsc
+ fa0d517d4b90f56f7936630201bfc6fe6ea69d55 318420 mx-packageinstaller_23.3.01.tar.xz
+ 45bc2b4a2e3a5abc4ce4b4871a2df8af565ac5e9 10827 mx-packageinstaller_23.3.01_amd64.buildinfo
+Checksums-Sha256:
+ 4c9b8407e7f44e3249db7ca52216092b6a8416f9b1c05bb574fde29c89a38a41 1232 mx-packageinstaller_23.3.01.dsc
+ 085277f23339f023d179d84d331884ed548b4a4a2ec5bec1ea3e2bf016ca4e86 318420 mx-packageinstaller_23.3.01.tar.xz
+ ca6a461c6effd67c22d07d8f87056e48d8454f23a99e408b6b1cf4685454a03a 10827 mx-packageinstaller_23.3.01_amd64.buildinfo
+Files:
+ 88f972b30caf0983336d07288758e4ae 1232 admin optional mx-packageinstaller_23.3.01.dsc
+ 2ee89bea4f7f6c0d7afc657774d39d00 318420 admin optional mx-packageinstaller_23.3.01.tar.xz
+ c99ec5a9e3f1649589cf64cf4d1f1487 10827 admin optional mx-packageinstaller_23.3.01_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmQM2xwTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumBGBB/9ldw+V1BaUIPX9EQHvYcJ/hnCUdaE6
+nPkeBkQR4f8fHeC2NUo+g1X8gxTcYAN3gtsDcUukb2xuRAH0KjH/7KMMIPKFFh6c
+tZdGBbnJUAAXenFUsYLLHyAcNnltVei7CNVnNNWaGIVvNa+6HbcjXX/oghjlHgfS
+L18D2KQmEat6U4ct74GZWIvp0Nbf3b4vSBM1nLYD0rIekvOqzZ18ZFD6UIc/3Vyp
+RoWK2J95bfV3ZKiDpvoIc8Blgid/aZnjJw+mtrH3pUEi6b7BnbJ2Z6Hi3qwvkzjC
+HmlYXKdbxkP1xtkaHJOPiWdNjwpxao9XJjfsU/hzdOMeWFnT2nSWRmrE
+=jkon
+-----END PGP SIGNATURE-----
