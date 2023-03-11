@@ -41,19 +41,19 @@
 
 #include "about.h"
 #include "aptcache.h"
-#include "version.h"
 #include "versionnumber.h"
 #include <chrono>
 
 using namespace std::chrono_literals;
 
-MainWindow::MainWindow(QWidget *parent)
+MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     : QDialog(parent)
     , ui(new Ui::MainWindow)
     , dictionary(QStringLiteral("/usr/share/mx-packageinstaller-pkglist/category.dict"), QSettings::IniFormat)
+    , args {arg_parser}
     , reply(nullptr)
 {
-    qDebug().noquote() << QCoreApplication::applicationName() << "version:" << VERSION;
+    qDebug().noquote() << QCoreApplication::applicationName() << "version:" << QCoreApplication::applicationVersion();
 
     ui->setupUi(this);
     setProgressDialog();
@@ -1329,7 +1329,7 @@ bool MainWindow::isFilteredName(const QString &name)
 
 bool MainWindow::isOnline()
 {
-    if (settings.value(QStringLiteral("skiponlinecheck"), false).toBool())
+    if (settings.value(QStringLiteral("skiponlinecheck"), false).toBool() || args.isSet("skip-online-check"))
         return true;
 
     QNetworkRequest request;
@@ -2181,7 +2181,8 @@ void MainWindow::on_pushAbout_clicked()
     displayAboutMsgBox(
         tr("About %1").arg(this->windowTitle()),
         "<p align=\"center\"><b><h2>" + this->windowTitle() + "</h2></b></p><p align=\"center\">" + tr("Version: ")
-            + VERSION + "</p><p align=\"center\"><h3>" + tr("Package Installer for MX Linux")
+            + QCoreApplication::applicationVersion() + "</p><p align=\"center\"><h3>"
+            + tr("Package Installer for MX Linux")
             + R"(</h3></p><p align="center"><a href="http://mxlinux.org">http://mxlinux.org</a><br /></p><p align="center">)"
             + tr("Copyright (c) MX Linux") + "<br /><br /></p>",
         QStringLiteral("/usr/share/doc/mx-packageinstaller/license.html"), tr("%1 License").arg(this->windowTitle()));

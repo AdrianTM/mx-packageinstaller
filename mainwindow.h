@@ -26,6 +26,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include <QCommandLineParser>
 #include <QDomDocument>
 #include <QFile>
 #include <QMessageBox>
@@ -90,7 +91,7 @@ class MainWindow : public QDialog
     Q_OBJECT
 
 public:
-    explicit MainWindow(QWidget *parent = nullptr);
+    MainWindow(const QCommandLineParser &arg_parser, QWidget *parent = nullptr);
     ~MainWindow();
 
     QString version;
@@ -245,6 +246,7 @@ private:
     QTimer timer;
     QTreeWidget *tree {}; // current/calling tree
     VersionNumber fp_ver;
+    const QCommandLineParser &args;
 
     QNetworkAccessManager manager;
     QNetworkReply *reply;
