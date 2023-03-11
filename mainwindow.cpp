@@ -222,14 +222,12 @@ bool MainWindow::updateApt()
     if (cmd.run(QStringLiteral("apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o "
                                "Acquire::https:Timeout=10 -o Acquire::ftp:Timeout=10"))) {
         lock_file->lock();
-        msg = QStringLiteral("echo sources updated OK >>/var/log/mxpi.log");
-        system(msg.toUtf8());
+        qDebug() << "sources updated OK";
         updated_once = true;
         return true;
     }
     lock_file->lock();
-    msg = QStringLiteral("echo problem updating sources >>/var/log/mxpi.log");
-    system(msg.toUtf8());
+    qDebug() << "problem updating sources";
     QMessageBox::critical(this, tr("Error"),
                           tr("There was a problem updating sources. Some sources may not have "
                              "provided updates. For more info check: ")
