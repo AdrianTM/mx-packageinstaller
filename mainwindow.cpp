@@ -30,6 +30,7 @@
 #include <QImageReader>
 #include <QMenu>
 #include <QNetworkAccessManager>
+#include <QNetworkProxyFactory>
 #include <QNetworkReply>
 #include <QProgressBar>
 #include <QScreen>
@@ -1338,6 +1339,10 @@ bool MainWindow::isOnline()
     auto error = QNetworkReply::NoError;
     for (const QString &address : {"https://mxrepo.com", "https://google.com"}) {
         error = QNetworkReply::NoError; // reset for each tried address
+        QNetworkProxyQuery query {QUrl(address)};
+        QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
+        if (!proxies.isEmpty())
+            manager.setProxy(proxies.first());
         request.setUrl(QUrl(address));
         reply = manager.head(request);
         QEventLoop loop;
