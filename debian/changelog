@@ -1,3 +1,9 @@
+mx-packageinstaller (23.3.02) mx; urgency=medium
+
+  * Add error message if it cannot download list of packages.
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 30 Mar 2023 14:00:16 -0400
+
 mx-packageinstaller (23.3.01) mx; urgency=medium
 
   * Try to detect proxy configuration
