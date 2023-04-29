@@ -10,7 +10,6 @@ AptCache::AptCache() { loadCacheFiles(); }
 
 void AptCache::loadCacheFiles()
 {
-    QDir dir(dir_name);
     // include all _Packages list files
     const QString packages_filter = QStringLiteral("*_Packages");
 
@@ -116,9 +115,9 @@ void AptCache::parseContent()
 
 bool AptCache::readFile(const QString &file_name)
 {
-    QFile file(dir_name + file_name);
+    QFile file(dir.absoluteFilePath(file_name));
     if (!file.open(QFile::ReadOnly)) {
-        qDebug() << "Could not open file: " << file.fileName();
+        qWarning() << "Could not open file: " << file.fileName();
         return false;
     }
     files_content += file.readAll();

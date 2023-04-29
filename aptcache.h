@@ -2,7 +2,7 @@
 #ifndef APTCACHE_H
 #define APTCACHE_H
 
-#include <QFile>
+#include <QDir>
 #include <QHash>
 #include <QMap>
 
@@ -16,17 +16,17 @@ class AptCache
 public:
     AptCache();
 
-    void loadCacheFiles();
     QMap<QString, QStringList> getCandidates();
     static QString getArch();
 
 private:
     QMap<QString, QStringList> candidates;
     QString files_content;
-    const QString dir_name = QStringLiteral("/var/lib/apt/lists/");
+    const QDir dir {QStringLiteral("/var/lib/apt/lists/")};
 
-    void parseContent();
     bool readFile(const QString &file_name);
+    void loadCacheFiles();
+    void parseContent();
 };
 
 #endif // APTCACHE_H
