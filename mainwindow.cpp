@@ -811,7 +811,7 @@ void MainWindow::displayPackages()
     // update tree
     for (QTreeWidgetItemIterator it(newtree); (*it) != nullptr; ++it) {
         app_name = (*it)->text(TreeCol::Name);
-        if (isFilteredName(app_name) && ui->checkHideLibs->isChecked())
+        if (ui->checkHideLibs->isChecked() && isFilteredName(app_name))
             (*it)->setHidden(true);
         app_ver = (*it)->text(TreeCol::Version);
         installed = hashInstalled.value(app_name);
@@ -2112,7 +2112,7 @@ void MainWindow::findPackageOther()
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
         (*it)->setHidden((*it)->data(0, Qt::UserRole) == false || !found_items.contains(*it));
         // Hide libs
-        if (tree != ui->treeFlatpak && isFilteredName((*it)->text(TreeCol::Name)) && ui->checkHideLibs->isChecked())
+        if (tree != ui->treeFlatpak && ui->checkHideLibs->isChecked() && isFilteredName((*it)->text(TreeCol::Name)))
             (*it)->setHidden(true);
     }
 }
