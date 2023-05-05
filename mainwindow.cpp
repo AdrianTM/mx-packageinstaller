@@ -1570,7 +1570,7 @@ bool MainWindow::readPackageList(bool force_download)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     pushCancel->setDisabled(true);
-    // don't process if the lists are already populated
+    // Don't process if the lists are already populated
     if (!((tree == ui->treeEnabled && enabled_list.isEmpty()) || (tree == ui->treeMXtest && mx_list.isEmpty())
           || (tree == ui->treeBackports && backports_list.isEmpty()) || force_download)) {
         return true;
@@ -1596,30 +1596,27 @@ bool MainWindow::readPackageList(bool force_download)
     QString file_content = file.readAll();
     file.close();
 
-    QMap<QString, QStringList> map;
-    QStringList package_list;
-    QStringList version_list;
-    QStringList description_list;
+    QMap<QString, QStringList> *map {};
+    map = (tree == ui->treeMXtest) ? &mx_list : &backports_list;
+    map->clear();
+    QString package;
+    QString version;
+    QString description;
 
     const QStringList list = file_content.split(QStringLiteral("\n"));
-
-    for (QString line : list) {
-        if (line.startsWith(QLatin1String("Package: ")))
-            package_list << line.remove(QLatin1String("Package: "));
-        else if (line.startsWith(QLatin1String("Version: ")))
-            version_list << line.remove(QLatin1String("Version: "));
-        else if (line.startsWith(QLatin1String("Description: ")))
-            description_list << line.remove(QLatin1String("Description: "));
+    for (const QString &line : list) {
+        if (line.startsWith(QLatin1String("Package: "))) {
+            package = line.mid(9);
+        } else if (line.startsWith(QLatin1String("Version: "))) {
+            version = line.mid(9);
+        } else if (line.startsWith(QLatin1String("Description: "))) {
+            description = line.mid(13);
+            map->insert(package, {version, description});
+            package.clear();
+            version.clear();
+            description.clear();
+        }
     }
-
-    for (int i = 0; i < package_list.size(); ++i)
-        map.insert(package_list.at(i), QStringList() << version_list.at(i) << description_list.at(i));
-
-    if (tree == ui->treeMXtest)
-        mx_list = map;
-    else if (tree == ui->treeBackports)
-        backports_list = map;
-
     return true;
 }
 
@@ -1690,7 +1687,7 @@ void MainWindow::cleanup()
         changed = true;
 
     if (changed)
-        system("nohup apt-get update&");
+        QProcess::startDetached("apt-get", {"update"});
 
     lock_file->unlock();
     settings.setValue(QStringLiteral("geometry"), saveGeometry());
