@@ -1496,29 +1496,21 @@ bool MainWindow::downloadPackageList(bool force_download)
         if (!QFile::exists(tmp_dir.path() + "/mxPackages") || force_download) {
             progress->show();
 
-            repo_name = (ver_name == QLatin1String("jessie")) ? QStringLiteral("mx15")
-                                                              : ver_name; // repo name is 'mx15' for Strech, use
-                                                                          // Debian version name for later versions
             QFile file(tmp_dir.path() + "/mxPackages.gz");
             QString url = QStringLiteral("http://mxrepo.com/mx/testrepo/dists/");
             QString testrepo_url = url;
-            if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oP "
-                        "'https?://.*/mx/testrepo/dists/(?="
-                            + repo_name + "/test/)'",
-                        testrepo_url)) {
-                url = testrepo_url;
-            } else if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oE "
-                               "'https?://.*/mx/repo/dists/"
-                                   + repo_name + "/main/' | sed -e 's:/mx/repo/dists/" + repo_name
-                                   + "/main/:/mx/testrepo/dists/:' | grep -oE "
-                                     "'https?://.*/mx/testrepo/dists/'",
-                               testrepo_url)) {
-                url = testrepo_url;
-            }
+            if (!cmd.run("apt-get update --print-uris | tac | grep -m1 -oP 'https?://.*/mx/testrepo/dists/(?="
+                             + ver_name + "/test/)'",
+                         testrepo_url))
+                cmd.run("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + ver_name
+                            + "/main/' | sed -e 's:/mx/repo/dists/" + ver_name
+                            + "/main/:/mx/testrepo/dists/:' | grep -oE 'https?://.*/mx/testrepo/dists/'",
+                        testrepo_url);
+            url = testrepo_url;
 
             QString branch = QStringLiteral("/test");
             QString format = QStringLiteral("gz");
-            if (!downloadAndUnzip(url, repo_name, branch, format, file))
+            if (!downloadAndUnzip(url, ver_name, branch, format, file))
                 return false;
         }
     } else if (tree == ui->treeBackports) {
