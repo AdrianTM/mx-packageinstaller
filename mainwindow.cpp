@@ -359,49 +359,59 @@ QString MainWindow::addSizes(const QString &arg1, const QString &arg2)
 
     const auto bytes = convert(number1.toDouble(), unit1) + convert(number2.toDouble(), unit2);
 
-    if (bytes < KB)
+    if (bytes < KiB)
         return QString::number(bytes) + " bytes";
-    else if (bytes < MB)
-        return QString::number(bytes / KB) + " KB";
-    else if (bytes < GB)
-        return QString::number(bytes / MB, 'f', 1) + " MB";
+    else if (bytes < MiB)
+        return QString::number(bytes / KiB) + " KiB";
+    else if (bytes < GiB)
+        return QString::number(bytes / MiB, 'f', 1) + " MiB";
     else
-        return QString::number(bytes / GB, 'f', 2) + " GB";
+        return QString::number(bytes / GiB, 'f', 2) + " GiB";
 }
 
 int MainWindow::getDebianVerNum()
 {
-    QString out = cmd.getCmdOut(QStringLiteral("cat /etc/debian_version"));
-    QStringList list = out.split(QStringLiteral("."));
+    QFile file("/etc/debian_version");
+    QStringList list;
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        QTextStream in(&file);
+        QString line = in.readLine();
+        list = line.split(".");
+        file.close();
+    } else {
+        qCritical() << "Could not open /etc/debian_version:" << file.errorString() << "Assumes Bullseye";
+        return Release::Bullseye;
+    }
     bool ok = false;
     int ver = list.at(0).toInt(&ok);
     if (ok)
         return ver;
-    else if (list.at(0).split(QStringLiteral("/")).at(0) == QLatin1String("bullseye"))
-        return Release::Bullseye;
-    else if (list.at(0).split(QStringLiteral("/")).at(0) == QLatin1String("bookworm"))
-        return Release::Bookworm;
-    else
-        return 0; // unknown
+    else {
+        QString verName = list.at(0).split(QStringLiteral("/")).at(0);
+        if (verName == QLatin1String("bullseye"))
+            return Release::Bullseye;
+        else if (verName == QLatin1String("bookworm"))
+            return Release::Bookworm;
+        else {
+            qCritical() << "Unknown Debian version:" << ver << "Assumes Bullseye";
+            return Release::Bullseye;
+        }
+    }
 }
 
 QString MainWindow::getDebianVerName()
 {
-    switch (getDebianVerNum()) {
-    case Release::Jessie:
-        return QStringLiteral("jessie");
-    case Release::Stretch:
-        return QStringLiteral("stretch");
-    case Release::Buster:
-        return QStringLiteral("buster");
-    case Release::Bullseye:
-        return QStringLiteral("bullseye");
-    case Release::Bookworm:
-        return QStringLiteral("bookworm");
-    default:
-        qDebug() << "Could not detect Debian version";
-        exit(EXIT_FAILURE);
+    int ver = getDebianVerNum();
+    QHash<int, QString> releaseNames {{Release::Jessie, QStringLiteral("jessie")},
+                                      {Release::Stretch, QStringLiteral("stretch")},
+                                      {Release::Buster, QStringLiteral("buster")},
+                                      {Release::Bullseye, QStringLiteral("bullseye")},
+                                      {Release::Bookworm, QStringLiteral("bookworm")}};
+    if (!releaseNames.contains(ver)) {
+        qWarning() << "Error: Invalid Debian version, assumes Bullseye";
+        return "bullseye";
     }
+    return releaseNames.value(ver);
 }
 
 QString MainWindow::getLocalizedName(const QDomElement &element) const
@@ -1486,8 +1496,8 @@ bool MainWindow::downloadPackageList(bool force_download)
             progress->show();
 
             repo_name = (ver_name == QLatin1String("jessie")) ? QStringLiteral("mx15")
-                                                              : ver_name; // repo name is 'mx15' for Strech, use Debian
-                                                                          // version name for later versions
+                                                              : ver_name; // repo name is 'mx15' for Strech, use
+                                                                          // Debian version name for later versions
             QFile file(tmp_dir.path() + "/mxPackages.gz");
             QString url = QStringLiteral("http://mxrepo.com/mx/testrepo/dists/");
             QString testrepo_url = url;
