@@ -1395,7 +1395,7 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
 
     bool success = true;
     connect(reply, &QNetworkReply::readyRead,
-            [this, &file, success]() mutable { success = (file.write(reply->readAll()) != 0); });
+            [this, &file, &success] { success = (file.write(reply->readAll()) != 0); });
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
     reply->disconnect();
@@ -1424,8 +1424,9 @@ bool MainWindow::downloadAndUnzip(const QString &url, QFile &file)
                       + QFileInfo(file.fileName()).baseName()); // rm unzipped file
         return false;
     } else {
-        QString unzip = (file.fileName().endsWith(QLatin1String(".gz"))) ? QStringLiteral("gunzip -f ")
-                                                                         : QStringLiteral("unxz -f ");
+        QString unzip = (QFileInfo(file).suffix() == QLatin1String("gz")) ? QStringLiteral("gunzip -f ")
+                                                                          : QStringLiteral("unxz -f ");
+
         if (!cmd.run(unzip + file.fileName())) {
             qDebug() << "Could not unzip file:" << file.fileName();
             return false;
