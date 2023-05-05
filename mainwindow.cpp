@@ -239,15 +239,15 @@ bool MainWindow::updateApt()
 // convert different units to bytes
 double MainWindow::convert(double number, const QString &unit)
 {
-    constexpr float KB = 1024;
-    constexpr float MB = KB * 1024;
-    constexpr float GB = MB * 1024;
-    if (unit == QLatin1String("KB")) // assuming KiB not KB
-        return number * KB;
-    else if (unit == QLatin1String("MB"))
-        return number * MB;
-    else if (unit == QLatin1String("GB"))
-        return number * GB;
+    constexpr float KiB = 1024;
+    constexpr float MiB = KiB * 1024;
+    constexpr float GiB = MiB * 1024;
+    if (unit == QLatin1String("KiB"))
+        return number * KiB;
+    else if (unit == QLatin1String("MiB"))
+        return number * MiB;
+    else if (unit == QLatin1String("GiB"))
+        return number * GiB;
     else // for "bytes"
         return number;
 }
@@ -344,12 +344,12 @@ void MainWindow::updateInterface()
     progress->hide();
 }
 
-// add two string "00 KB" and "00 GB", return similar string
+// add two strings, "00 KB" and "00 GB", return similar string
 QString MainWindow::addSizes(const QString &arg1, const QString &arg2)
 {
-    constexpr float KB = 1024;
-    constexpr float MB = KB * 1024;
-    constexpr float GB = MB * 1024;
+    constexpr float KiB = 1024;
+    constexpr float MiB = KiB * 1024;
+    constexpr float GiB = MiB * 1024;
     const QString number1 = arg1.section(QStringLiteral(" "), 0, 0);
     const QString number2 = arg2.section(QStringLiteral(" "), 0, 0);
     const QString unit1 = arg1.section(QStringLiteral(" "), 1);
