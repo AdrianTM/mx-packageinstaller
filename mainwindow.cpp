@@ -1461,8 +1461,6 @@ bool MainWindow::buildPackageLists(bool force_download)
 bool MainWindow::downloadPackageList(bool force_download)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    QString repo_name;
-
     if (!isOnline()) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Internet is not available, won't be able to download the list of packages"));
@@ -1536,7 +1534,24 @@ bool MainWindow::downloadPackageList(bool force_download)
                 return false;
 
             pushCancel->setDisabled(true);
-            cmd.run(QStringLiteral("cat mainPackages contribPackages nonfreePackages > allPackages"));
+            QFile outputFile("allPackages");
+            if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text))
+                qWarning() << "Could not open: " << outputFile;
+
+            QTextStream outStream(&outputFile);
+            QFile inputFile1("mainPackages");
+            QFile inputFile2("contribPackages");
+            QFile inputFile3("nonfreePackages");
+
+            if (!inputFile1.open(QIODevice::ReadOnly | QIODevice::Text)
+                || !inputFile2.open(QIODevice::ReadOnly | QIODevice::Text)
+                || !inputFile3.open(QIODevice::ReadOnly | QIODevice::Text))
+                qWarning() << "Could not read file";
+
+            outStream << inputFile1.readAll();
+            outStream << inputFile2.readAll();
+            outStream << inputFile3.readAll();
+            outputFile.close();
         }
     }
     return true;
