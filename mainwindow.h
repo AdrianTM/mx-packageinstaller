@@ -165,8 +165,10 @@ public:
 
 protected:
     void keyPressEvent(QKeyEvent *event);
+    void showEvent(QShowEvent *event);
 
 private slots:
+    void afterWindowShown();
     void checkUnckeckItem();
     void cleanup();
     void cmdDone();
