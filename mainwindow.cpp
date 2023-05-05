@@ -318,6 +318,8 @@ void MainWindow::updateInterface()
 
     auto upgr_list = tree->findItems(QStringLiteral("upgradable"), Qt::MatchExactly, TreeCol::Status);
     auto inst_list = tree->findItems(QStringLiteral("installed"), Qt::MatchExactly, TreeCol::Status);
+    for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it)
+        (*it)->setHidden(false);
 
     if (tree == ui->treeEnabled) {
         ui->labelNumApps->setText(QString::number(tree->topLevelItemCount()));
@@ -777,8 +779,8 @@ void MainWindow::displayPackages()
 
     newtree->blockSignals(true);
 
-    auto hashInstalled = listInstalledVersions();
     // create a list of apps, create a hash with app_name, app_info
+    auto hashInstalled = listInstalledVersions();
     for (auto i = list.constBegin(); i != list.constEnd(); ++i) {
         auto *widget_item = new QTreeWidgetItem(newtree);
         widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
@@ -1827,6 +1829,7 @@ void MainWindow::setCurrentTree()
     for (const auto &item : list) {
         if (item->isVisible()) {
             tree = item;
+            updateInterface();
             return;
         }
     }
