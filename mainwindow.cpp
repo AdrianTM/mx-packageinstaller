@@ -174,7 +174,6 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
 
-    lock_file->unlock();
     bool success = true;
     // simulate install of selections and present for confirmation
     // if user selects cancel, break routine but return success to avoid error message
@@ -188,24 +187,29 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         qDebug() << "Pre-uninstall";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Running pre-uninstall operations..."));
         enableOutput();
+        lock_file->unlock();
         success = cmd.run(preuninstall);
+        lock_file->lock();
     }
 
     if (success) {
         enableOutput();
+        lock_file->unlock();
         success = cmd.run("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i "
                           "&& echo kde || echo gnome) "
                           "apt-get -o=Dpkg::Use-Pty=0 remove -y "
                           + names); // use -y since there is a confirm dialog already
+        lock_file->lock();
     }
 
     if (success && !postuninstall.isEmpty()) {
         qDebug() << "Post-uninstall";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Running post-uninstall operations..."));
         enableOutput();
+        lock_file->unlock();
         success = cmd.run(postuninstall);
+        lock_file->lock();
     }
-    lock_file->lock();
 
     return success;
 }
@@ -1026,6 +1030,7 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
                                             "&& echo kde || echo gnome) LANG=C ");
     const QString aptget = QStringLiteral("apt-get -s -V -o=Dpkg::Use-Pty=0 ");
     const QString aptitude = QStringLiteral("aptitude -sy -V -o=Dpkg::Use-Pty=0 ");
+    lock_file->unlock();
     if (tree == ui->treeFlatpak) {
         detailed_installed_names = change_list;
     } else if (tree == ui->treeBackports) {
@@ -1061,6 +1066,7 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
         aptitude_info
             = cmd.getCmdOut(frontend + aptitude + action + " " + recommends_aptitude + names + " |tail -2 |head -1");
     }
+    lock_file->lock();
 
     if (tree != ui->treeFlatpak)
         detailed_installed_names = detailed_names.split(QStringLiteral("\n"));
@@ -1134,8 +1140,6 @@ bool MainWindow::install(const QString &names)
                               tr("Internet is not available, won't be able to download the list of packages"));
         return false;
     }
-
-    lock_file->unlock();
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Installing packages..."));
 
     bool success = false;
@@ -1151,6 +1155,8 @@ bool MainWindow::install(const QString &names)
     QString frontend = QStringLiteral("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | "
                                       "grep -sq ^i && echo kde || echo gnome) ");
     QString aptget = QStringLiteral("apt-get -o=Dpkg::Use-Pty=0 install -y ");
+
+    lock_file->unlock();
     if (tree == ui->treeBackports) {
         recommends = (ui->checkBoxInstallRecommendsMXBP->isChecked()) ? QStringLiteral("--install-recommends ")
                                                                       : QLatin1String("");
@@ -1231,6 +1237,7 @@ bool MainWindow::installPopularApp(const QString &name)
                 file.remove();
                 updateApt();
             }
+            lock_file->lock();
             return false;
         }
     }
