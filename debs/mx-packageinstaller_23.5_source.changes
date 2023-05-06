@@ -1,0 +1,41 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 05 May 2023 13:41:06 -0400
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.5
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.5) mx; urgency=medium
+ .
+   * Fix: when switching tabs resets search
+   * Performance improvements: caches "enabled repos" at start time
+Checksums-Sha1:
+ 33baa78ddf2ec26e564c0b34f6f1e6db545f2f9f 1220 mx-packageinstaller_23.5.dsc
+ 51bfdebe2c0f67ab5c9bc5f53116f4893c51cec3 307848 mx-packageinstaller_23.5.tar.xz
+ 9f5315592c07d680096d560b9643221fd1d85011 10817 mx-packageinstaller_23.5_amd64.buildinfo
+Checksums-Sha256:
+ c580aef49f414408d6618326d8ed617b0620ac984c2563ad57ca2c6fdcc3169e 1220 mx-packageinstaller_23.5.dsc
+ aa17b1df876c8fe46f032728600ea941cefbe22be87b1cc0d95b9ea427824972 307848 mx-packageinstaller_23.5.tar.xz
+ 6e10c1915f121af39b3ff57d5101939e6bece33369f36dc5f882a78ba8d573c8 10817 mx-packageinstaller_23.5_amd64.buildinfo
+Files:
+ f3384e838be7b6ae727cd247d605760e 1220 admin optional mx-packageinstaller_23.5.dsc
+ 4fe1c718762a1040fab430eb6f72714b 307848 admin optional mx-packageinstaller_23.5.tar.xz
+ fe546ed468905cad14114265840eb32d 10817 admin optional mx-packageinstaller_23.5_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmRVtikTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumJOuB/9v2ZinmsmtRW1miqWis09Su2VSzUtK
+QDEgu3ymGxGcfSMFipNtFPvX294IBzJuJZIUs1UWi0BT70BgqBaM803gJm76Pt+F
+rhUTBJX9FNznLHMHZ9YJcE9c+A3fEl0UOE+4TDz2KuUJVhbPapcnTmB0Mh/1XOc6
+r+WT/Oj94gmwvjLCRxR31KXtCWEf08Avv5BX/m0Hdt5E3JoUa9e5gQZ/euQ1aFB4
+WhBZRiaXlf9kYDiOJiqdEcxlIgRTwVw1z/0FiKJ2fK6akLzYYhNBaERxWYT/w4Es
+lMUVZ6vP/WgPcu4BKBTOlONPsvkGRmu0Y6IP53kxcQhe+8er26Se8HK4
+=QYUw
+-----END PGP SIGNATURE-----

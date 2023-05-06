@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Fri, 05 May 2023 13:41:06 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.5
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.5) mx; urgency=medium
+ .
+   * Fix: when switching tabs resets search
+   * Performance improvements: caches "enabled repos" at start time
+Checksums-Sha1:
+ 3107ed7e8efc24dca455550e43b4d1567e7e5e80 10127 mx-packageinstaller_23.5_i386.buildinfo
+ dbe4554ff561e6862ffa2de7bd03b67360d32a6e 390844 mx-packageinstaller_23.5_i386.deb
+Checksums-Sha256:
+ 4e714d893ed8334475df5c2103ceaec3652f25ad7239dee243a1bd53628b554d 10127 mx-packageinstaller_23.5_i386.buildinfo
+ 86d471ba8306994750ae93dc985b4ebb4e239c23a17f51b5862ba6a770b9a44a 390844 mx-packageinstaller_23.5_i386.deb
+Files:
+ cb19c75c1d9a3a00275d159e01957be2 10127 admin optional mx-packageinstaller_23.5_i386.buildinfo
+ deb743b201d18ab72a40495673104692 390844 admin optional mx-packageinstaller_23.5_i386.deb
