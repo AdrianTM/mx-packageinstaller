@@ -16,11 +16,11 @@ Changes:
    * Fix: when switching tabs resets search
    * Performance improvements: caches "enabled repos" at start time
 Checksums-Sha1:
- 3107ed7e8efc24dca455550e43b4d1567e7e5e80 10127 mx-packageinstaller_23.5_i386.buildinfo
- dbe4554ff561e6862ffa2de7bd03b67360d32a6e 390844 mx-packageinstaller_23.5_i386.deb
+ 79eb45ea87507e32b87019f9ada5b945ee68e9a7 10113 mx-packageinstaller_23.5_i386.buildinfo
+ c8c377442821fa0c6b1233bb6e35a639685a212f 391028 mx-packageinstaller_23.5_i386.deb
 Checksums-Sha256:
- 4e714d893ed8334475df5c2103ceaec3652f25ad7239dee243a1bd53628b554d 10127 mx-packageinstaller_23.5_i386.buildinfo
- 86d471ba8306994750ae93dc985b4ebb4e239c23a17f51b5862ba6a770b9a44a 390844 mx-packageinstaller_23.5_i386.deb
+ 6adf31e1ba05d59e53edaebc4dc93888c1f25c0ee4643810b85108055a2394e9 10113 mx-packageinstaller_23.5_i386.buildinfo
+ ab3559aa9d44c5d4f9f2d349c6dd4577244159416be19b2fce8c293874f4280c 391028 mx-packageinstaller_23.5_i386.deb
 Files:
- cb19c75c1d9a3a00275d159e01957be2 10127 admin optional mx-packageinstaller_23.5_i386.buildinfo
- deb743b201d18ab72a40495673104692 390844 admin optional mx-packageinstaller_23.5_i386.deb
+ 589f5d9a6e8c3dc579ae9cb93894948e 10113 admin optional mx-packageinstaller_23.5_i386.buildinfo
+ 3d7cc3dfdefba50404cb8d77c01f877d 391028 admin optional mx-packageinstaller_23.5_i386.deb

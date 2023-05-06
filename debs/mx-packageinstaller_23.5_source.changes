@@ -16,26 +16,26 @@ Changes:
    * Fix: when switching tabs resets search
    * Performance improvements: caches "enabled repos" at start time
 Checksums-Sha1:
- 33baa78ddf2ec26e564c0b34f6f1e6db545f2f9f 1220 mx-packageinstaller_23.5.dsc
- 51bfdebe2c0f67ab5c9bc5f53116f4893c51cec3 307848 mx-packageinstaller_23.5.tar.xz
- 9f5315592c07d680096d560b9643221fd1d85011 10817 mx-packageinstaller_23.5_amd64.buildinfo
+ 916f9cf5320edf69a4d51ba96e31e8508f47ebd1 1220 mx-packageinstaller_23.5.dsc
+ 722748897c4af45d6ceae4ac9f8d8dfe383fc474 307900 mx-packageinstaller_23.5.tar.xz
+ e326dcaf5b6896a4e852a1b943038345e960b468 10803 mx-packageinstaller_23.5_amd64.buildinfo
 Checksums-Sha256:
- c580aef49f414408d6618326d8ed617b0620ac984c2563ad57ca2c6fdcc3169e 1220 mx-packageinstaller_23.5.dsc
- aa17b1df876c8fe46f032728600ea941cefbe22be87b1cc0d95b9ea427824972 307848 mx-packageinstaller_23.5.tar.xz
- 6e10c1915f121af39b3ff57d5101939e6bece33369f36dc5f882a78ba8d573c8 10817 mx-packageinstaller_23.5_amd64.buildinfo
+ de1e40acb6a826351225c71870f1f8922f032b0db0fb486bf9571b6a7fa2572a 1220 mx-packageinstaller_23.5.dsc
+ 7547c2ad651f1b4f716aeea27da4574eb9eca4292c6a1201d26d69241db9104a 307900 mx-packageinstaller_23.5.tar.xz
+ d1c2ad62cda7aa9448aaae9711fdf3b4bf307794933ecfdf933fed0cbf859470 10803 mx-packageinstaller_23.5_amd64.buildinfo
 Files:
- f3384e838be7b6ae727cd247d605760e 1220 admin optional mx-packageinstaller_23.5.dsc
- 4fe1c718762a1040fab430eb6f72714b 307848 admin optional mx-packageinstaller_23.5.tar.xz
- fe546ed468905cad14114265840eb32d 10817 admin optional mx-packageinstaller_23.5_amd64.buildinfo
+ dfecf8dd991ca12133886ea80d56e462 1220 admin optional mx-packageinstaller_23.5.dsc
+ 58383616b032384728807ee9024d9c21 307900 admin optional mx-packageinstaller_23.5.tar.xz
+ e884c0a2651628c557c7749166df0673 10803 admin optional mx-packageinstaller_23.5_amd64.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmRVtikTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumJOuB/9v2ZinmsmtRW1miqWis09Su2VSzUtK
-QDEgu3ymGxGcfSMFipNtFPvX294IBzJuJZIUs1UWi0BT70BgqBaM803gJm76Pt+F
-rhUTBJX9FNznLHMHZ9YJcE9c+A3fEl0UOE+4TDz2KuUJVhbPapcnTmB0Mh/1XOc6
-r+WT/Oj94gmwvjLCRxR31KXtCWEf08Avv5BX/m0Hdt5E3JoUa9e5gQZ/euQ1aFB4
-WhBZRiaXlf9kYDiOJiqdEcxlIgRTwVw1z/0FiKJ2fK6akLzYYhNBaERxWYT/w4Es
-lMUVZ6vP/WgPcu4BKBTOlONPsvkGRmu0Y6IP53kxcQhe+8er26Se8HK4
-=QYUw
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmRV43UTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumDpiB/95ImNXzAYRTCLhrQQpVwNVz+SZIhcI
+4e+RhmlkpEwQGn0HDfH/9SoXCfPvSFjeGUuE+psxLOiwt0f03qaZK2RsmO7vk2BN
+nl+viSD8F4g3FUH9vEqrT5sHwP+J7XGUBX7XjW4WfZHzAHILjkWVvvtXATW6cLcI
+G/vXKoW8grPBS4NP93wLCIsOLMMEBeNpBkgvHh6XLe+kXwx9mJsWojhdFLI+L+h2
+0ezMxH+61uN/YvLjC3gBq/E3UD7YRwLZdA4CIl8H2xGANdJ+Sy7ydPSVFs1IUa1J
+RIF4JeTbnEBAdRo7WObql6LoxHcsvVV3AFx17nj2Ymj+5GwBL7u0mv4t
+=xao1
 -----END PGP SIGNATURE-----
