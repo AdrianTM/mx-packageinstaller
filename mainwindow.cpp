@@ -2898,15 +2898,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
         on_pushCancel_clicked();
 }
 
-void MainWindow::showEvent(QShowEvent *event)
-{
-    QDialog::showEvent(event);
-    if (firstRun)
-        // Without a slight delay the window shows up, but it's not painted yet
-        QTimer::singleShot(10, this, &MainWindow::afterWindowShown);
-    firstRun = false;
-}
-
 void MainWindow::afterWindowShown()
 {
     AptCache cache;
