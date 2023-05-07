@@ -5,8 +5,6 @@
 #include <QDir>
 #include <QMap>
 
-#include "versionnumber.h"
-
 // Pair of arch names returned by QSysInfo::currentCpuArchitecture() and corresponding DEB_BUILD_ARCH formats
 static const QHash<QString, QString> arch_names {{"x86_64", "amd64"}, {"i386", "i386"}, {"arm64", "armhf"}};
 

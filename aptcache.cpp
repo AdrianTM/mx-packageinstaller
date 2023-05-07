@@ -1,38 +1,29 @@
 #include "aptcache.h"
 
 #include <QDebug>
+#include <QDirIterator>
 #include <QRegularExpression>
 
 AptCache::AptCache() { loadCacheFiles(); }
 
 void AptCache::loadCacheFiles()
 {
-    // include all _Packages list files
-    const QString packages_filter = QStringLiteral("*_Packages");
+    // Exclude Debian backports and MX testrepo and temp repos
+    const QRegularExpression packages_filter("(.*binary-" + getArch()
+                                             + "_Packages)|"
+                                               "(.*binary-.*_Packages(?!.*debian_.*-backports_.*_Packages)"
+                                               "(?!.*mx_testrepo.*_test_.*_Packages)"
+                                               "(?!.*mx_repo.*_temp_.*_Packages))");
 
-    // some regexps
-    // to include those which match architecture in filename
-    const QRegularExpression re_binary_arch(".*binary-" + getArch() + "_Packages");
-    // to include those flat-repos which do not have 'binary' within the name
-    const QRegularExpression re_binary_other(QStringLiteral(".*binary-.*_Packages"));
-    // to exclude Debian backports
-    const QRegularExpression re_backports(QStringLiteral(".*debian_.*-backports_.*_Packages"));
-    // to exclude MX testrepo
-    const QRegularExpression re_testrepo(QStringLiteral(".*mx_testrepo.*_test_.*_Packages"));
-    // to exclude developer's MX temp repo
-    const QRegularExpression re_temprepo(QStringLiteral(".*mx_repo.*_temp_.*_Packages"));
-
-    const QStringList packages_files = dir.entryList({packages_filter}, QDir::Files, QDir::Unsorted);
-    QStringList files;
-    for (const QString &file_name : packages_files) {
-        if (!re_backports.match(file_name).hasMatch() && !re_testrepo.match(file_name).hasMatch()
-            && !re_temprepo.match(file_name).hasMatch()) {
-            if (re_binary_arch.match(file_name).hasMatch() || re_binary_other.match(file_name).hasMatch())
-                files << file_name;
-        }
+    QDirIterator it(dir);
+    QList<QString> matchingFiles;
+    while (it.hasNext()) {
+        QString fileName = it.next();
+        if (packages_filter.match(fileName).hasMatch())
+            matchingFiles.append(fileName);
     }
-    for (const QString &file_name : qAsConst(files)) {
-        if (!readFile(file_name))
+    for (const QString &fileName : matchingFiles) {
+        if (!readFile(fileName))
             qDebug() << "error reading a cache file";
     }
     parseContent();
@@ -69,10 +60,10 @@ void AptCache::parseContent()
             if (match_arch) {
                 candidates.insert(package.toString(), {version.toString(), description.toString()});
                 // clear the variables for the next package
-                package = QStringRef();
-                version = QStringRef();
-                description = QStringRef();
-                architecture = QStringRef();
+                package.clear();
+                version.clear();
+                description.clear();
+                architecture.clear();
                 match_arch = false;
             }
         }
