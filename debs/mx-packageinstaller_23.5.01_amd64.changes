@@ -1,0 +1,47 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 14 May 2023 22:16:55 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.5.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.5.01) mx; urgency=medium
+ .
+   * Update icon
+   * Refresh translations
+Checksums-Sha1:
+ 8097521c6ff5007d1e26079e996b8bce6541ec56 1232 mx-packageinstaller_23.5.01.dsc
+ 645831f279dc02e9ec210f457fd032c9ea84ebb3 306868 mx-packageinstaller_23.5.01.tar.xz
+ e6ae4469d23d6aba0c9cae891768c39f69df3d69 10827 mx-packageinstaller_23.5.01_amd64.buildinfo
+ cdf9991f13de14ce373c173095940d94720fc839 380956 mx-packageinstaller_23.5.01_amd64.deb
+Checksums-Sha256:
+ ffa387ba91164fe0ec464355dcb85f9d741d28fd4ba447ca8c3616ccec5e2071 1232 mx-packageinstaller_23.5.01.dsc
+ e567354132361f50936db0bdaa9da2ed6a2c7cb38332dfec0f22a49ff898de03 306868 mx-packageinstaller_23.5.01.tar.xz
+ b11f20ebd767e1ee7c1a0a1819963b64a5904246dfbbec3044d21125996fdd1a 10827 mx-packageinstaller_23.5.01_amd64.buildinfo
+ f799b54f0ff7ff29e5da74a9e713996d483ff0dfe73c08951f1159b98b7f83d2 380956 mx-packageinstaller_23.5.01_amd64.deb
+Files:
+ 90e04af7191320fe5ba8322168969b6a 1232 admin optional mx-packageinstaller_23.5.01.dsc
+ 1bf585ccd561194f8a535d8009cae0a2 306868 admin optional mx-packageinstaller_23.5.01.tar.xz
+ a42a67a4610ed7ac9e20819c336bd3d2 10827 admin optional mx-packageinstaller_23.5.01_amd64.buildinfo
+ 8f941b87f231e4daafe919ce71c76991 380956 admin optional mx-packageinstaller_23.5.01_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmRhltITHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNKCCACNr599+3miWsgqXWgUYGLC+kgAlfiB
+Vv8SpncDCyRIMMeLDDyWMWutXlWvTJ7O0EZgcV+2QpfZC/AIFXz61pM8YT3qJxVW
+jdq1lPFYbdfVPIskVqkiyATqMnhT5etZVAczYEssoMiweXFtByfh9Y2k3HL0dbZr
+Jt5FXQIjfXKW5/h56pqXAE7GwPI2cTOFqG5odAJ0L6r1jvU0dIXG2knOh1o9zOPT
+3ee54rg9/N44HAPQkxNNRB3nAOH1u0w7zgSuWpVHLYvv4+/0DPE2qZdJqvhiZoN5
+cqT7GevrpL3MV0Xz+EfDbO3dpBHJS1RM098g4lYAPJzQuVl84hf/SHbn
+=fGGI
+-----END PGP SIGNATURE-----
