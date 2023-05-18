@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Wed, 17 May 2023 22:30:20 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.5.02
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.5.02) mx; urgency=medium
+ .
+   * Update logo
+Checksums-Sha1:
+ 5901d53a0bd2691838e527f88e322cacb95c5e13 10128 mx-packageinstaller_23.5.02_i386.buildinfo
+ a8c3dde2ff1b2fc13f5a6bc4d81e7effa19f9650 390228 mx-packageinstaller_23.5.02_i386.deb
+Checksums-Sha256:
+ 2af6a29a5662f973710e5ca6633b01346d50590bb5c2255b16d7dbaecd6ae95b 10128 mx-packageinstaller_23.5.02_i386.buildinfo
+ 5993e6c78912bd29e83fee254c0aa1b7df86634936d90cf80f037ffd4dff3284 390228 mx-packageinstaller_23.5.02_i386.deb
+Files:
+ b3bce1b77234693ea042882c3406d7de 10128 admin optional mx-packageinstaller_23.5.02_i386.buildinfo
+ ae8458a95a320e80a37bb42c4568cc71 390228 admin optional mx-packageinstaller_23.5.02_i386.deb
