@@ -1,0 +1,47 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 27 May 2023 15:47:58 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.5.03
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.5.03) mx; urgency=medium
+ .
+   * Fix logo file location
+   * Refresh translations
+Checksums-Sha1:
+ 91c8c6b6d49817f59175774b9a853b637d0eff26 1232 mx-packageinstaller_23.5.03.dsc
+ a17a648da12a3dd3b603fbdcf97fe60d3921e2bd 307500 mx-packageinstaller_23.5.03.tar.xz
+ 6edc05230796bceb26d107444bd101df4a3865ff 10827 mx-packageinstaller_23.5.03_amd64.buildinfo
+ ef718bd73e82e3b83768870e478d4b330fc1bea0 381980 mx-packageinstaller_23.5.03_amd64.deb
+Checksums-Sha256:
+ ebcc59074947638ea12528033df2f55fb51e0e0a4be7978b78b4d99854c77a6d 1232 mx-packageinstaller_23.5.03.dsc
+ 0ec2148c788eb99b79f453c8760d1b5dc5283ae159f27c6fe3282b3cd9ef6c99 307500 mx-packageinstaller_23.5.03.tar.xz
+ c260f9ada1d16ff188d38a7f1222e33f61903cdbe24d74d6e92cd8d16c21be2f 10827 mx-packageinstaller_23.5.03_amd64.buildinfo
+ 09d6e9ec7d0c3cc3bf8c94fb620b3218ee62784058d5dafa89b62259a1386af6 381980 mx-packageinstaller_23.5.03_amd64.deb
+Files:
+ 81d1307578478c16e664fa0bab833f06 1232 admin optional mx-packageinstaller_23.5.03.dsc
+ 1ba204bb280fa5108796d1b3c70af520 307500 admin optional mx-packageinstaller_23.5.03.tar.xz
+ b1daa256d436cf139b71be7c7160abec 10827 admin optional mx-packageinstaller_23.5.03_amd64.buildinfo
+ 3636ce32880cb272c8856d029faaf36f 381980 admin optional mx-packageinstaller_23.5.03_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmRyXuwTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumG6BCACBiPmM0Ap9m7ZyfJZ6aq3u+OqVjPbC
+Rts/Mf25bkwCcLEeI6HjHgDdBGjM1+aLFzJew//NuFlUQRGIvu/KWX6sXAku7PJJ
+ySH/cNRJM/oQtzJPvkVnxM5McgC/7BQTKtJvPdWEZTUbkmfaw9cXSUbnjjPnkQqe
+UrrOm/vR3WXXl2/UmwiieU6jbVv3+69KWTJA11/49cm549NBEeUbNrbnHYC3P0QG
+VhxXuxn3IWAQ9sIW3P4YNU2E9t1+nJ3WVwULcefJwyhWVXWhXtfSzVZ5rc3ZeWTh
+E0+NiG6bwzkfie5KV1M9Gmw6/7TsDjyAeyp1i+GPqyFPSyc0BiE8OQte
+=X1gW
+-----END PGP SIGNATURE-----

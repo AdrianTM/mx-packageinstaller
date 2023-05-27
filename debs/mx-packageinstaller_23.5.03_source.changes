@@ -1,0 +1,41 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sat, 27 May 2023 15:47:58 -0400
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.5.03
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.5.03) mx; urgency=medium
+ .
+   * Fix logo file location
+   * Refresh translations
+Checksums-Sha1:
+ 91c8c6b6d49817f59175774b9a853b637d0eff26 1232 mx-packageinstaller_23.5.03.dsc
+ a17a648da12a3dd3b603fbdcf97fe60d3921e2bd 307500 mx-packageinstaller_23.5.03.tar.xz
+ 6edc05230796bceb26d107444bd101df4a3865ff 10827 mx-packageinstaller_23.5.03_amd64.buildinfo
+Checksums-Sha256:
+ ebcc59074947638ea12528033df2f55fb51e0e0a4be7978b78b4d99854c77a6d 1232 mx-packageinstaller_23.5.03.dsc
+ 0ec2148c788eb99b79f453c8760d1b5dc5283ae159f27c6fe3282b3cd9ef6c99 307500 mx-packageinstaller_23.5.03.tar.xz
+ c260f9ada1d16ff188d38a7f1222e33f61903cdbe24d74d6e92cd8d16c21be2f 10827 mx-packageinstaller_23.5.03_amd64.buildinfo
+Files:
+ 81d1307578478c16e664fa0bab833f06 1232 admin optional mx-packageinstaller_23.5.03.dsc
+ 1ba204bb280fa5108796d1b3c70af520 307500 admin optional mx-packageinstaller_23.5.03.tar.xz
+ b1daa256d436cf139b71be7c7160abec 10827 admin optional mx-packageinstaller_23.5.03_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmRyXuwTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumCJ1CADGeLbjgjEl03RpGOB+RL2gvJFXtGul
+fxVHGN2TUnnqX4lAEtCtlCOyBtej7uH199XcUM1LRjYhej6ii+GetwsMBU+qMDUt
+vbXtoOim0bioqKytYjCCG/cATOPO4i3q1ljsxN0FkXcpu6fxp7MX7+acUsqs/fuN
+vfbTyryuZ73oENqRReeLnx+rueQdxVFRbGAx3FF48zCkLiznLr7LcZsWanKIZ7Xb
+hG1HxwRzUd/u+wAI7yY+7cqx2IMVm48wEHBiqPgRqXZLQmO+RKXkaS/zqasciIMM
+5a3AsR02GmvUjHwK1H0/RHQcuRSk3+NHxaaPdMY7oOpmQcbRuIvoXryn
+=WdEk
+-----END PGP SIGNATURE-----
