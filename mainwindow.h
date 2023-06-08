@@ -133,7 +133,6 @@ public:
     void cancelDownload();
     void centerWindow();
     void clearUi();
-    static void copyTree(QTreeWidget *, QTreeWidget *);
     void displayFilteredFP(QStringList list, bool raw = false);
     void displayFlatpaks(bool force_update = false);
     void displayPackages();
@@ -167,13 +166,11 @@ protected:
     void keyPressEvent(QKeyEvent *event);
 
 private slots:
-    void afterWindowShown();
     void checkUnckeckItem();
     void cleanup();
     void cmdDone();
     void cmdStart();
     void disableOutput();
-    void disableWarning(bool checked, const QString &key);
     void displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeWidgetItem *item);
     void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
     void displayPackageInfo(const QTreeWidgetItem *item);

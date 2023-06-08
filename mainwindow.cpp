@@ -223,7 +223,6 @@ bool MainWindow::updateApt()
         : progress->show();
 
     enableOutput();
-    QString msg;
     if (cmd.run(QStringLiteral("apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o "
                                "Acquire::https:Timeout=10 -o Acquire::ftp:Timeout=10"))) {
         lock_file->lock();
@@ -819,7 +818,6 @@ void MainWindow::displayPackages()
             (*it)->setHidden(true);
         app_ver = (*it)->text(TreeCol::Version);
         installed = hashInstalled.value(app_name);
-        candidate = VersionNumber(list.value(app_name).at(0));
         VersionNumber repo_candidate(app_ver); // candidate from the selected repo, might be
                                                // different than the one from Enabled
 
@@ -1673,18 +1671,6 @@ void MainWindow::clearUi()
     blockSignals(false);
 }
 
-void MainWindow::copyTree(QTreeWidget *from, QTreeWidget *to)
-{
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    to->clear();
-    QTreeWidgetItem *item {nullptr};
-
-    for (QTreeWidgetItemIterator it(from); (*it) != nullptr; ++it) {
-        item = (*it)->clone();
-        to->addTopLevelItem(item);
-    }
-}
-
 void MainWindow::cleanup()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -1949,8 +1935,6 @@ void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeW
     layout->addItem(horizontalSpacer, 0, 1);
     info.exec();
 }
-
-void MainWindow::disableWarning(bool checked, const QString &key) { settings.setValue(key, checked); }
 
 void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
 {
@@ -2896,13 +2880,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape)
         on_pushCancel_clicked();
-}
-
-void MainWindow::afterWindowShown()
-{
-    AptCache cache;
-    enabled_list = cache.getCandidates();
-    displayPackages();
 }
 
 void MainWindow::on_treePopularApps_itemChanged(QTreeWidgetItem *item)
