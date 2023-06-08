@@ -43,6 +43,7 @@
 #include "about.h"
 #include "aptcache.h"
 #include "versionnumber.h"
+#include <algorithm>
 #include <chrono>
 
 using namespace std::chrono_literals;
@@ -240,11 +241,8 @@ bool MainWindow::updateApt()
 }
 
 // convert different units to bytes
-double MainWindow::convert(double number, const QString &unit)
+double MainWindow::convert(quint64 number, const QString &unit)
 {
-    constexpr float KiB = 1024;
-    constexpr float MiB = KiB * 1024;
-    constexpr float GiB = MiB * 1024;
     if (unit == QLatin1String("KiB"))
         return number * KiB;
     else if (unit == QLatin1String("MiB"))
@@ -352,15 +350,12 @@ void MainWindow::updateInterface()
 // add two strings, "00 KB" and "00 GB", return similar string
 QString MainWindow::addSizes(const QString &arg1, const QString &arg2)
 {
-    constexpr float KiB = 1024;
-    constexpr float MiB = KiB * 1024;
-    constexpr float GiB = MiB * 1024;
     const QString number1 = arg1.section(QStringLiteral(" "), 0, 0);
     const QString number2 = arg2.section(QStringLiteral(" "), 0, 0);
     const QString unit1 = arg1.section(QStringLiteral(" "), 1);
     const QString unit2 = arg2.section(QStringLiteral(" "), 1);
 
-    const auto bytes = convert(number1.toDouble(), unit1) + convert(number2.toDouble(), unit2);
+    const auto bytes = convert(number1.toULongLong(), unit1) + convert(number2.toULongLong(), unit2);
 
     if (bytes < KiB)
         return QString::number(bytes) + " bytes";
@@ -667,7 +662,6 @@ void MainWindow::displayPopularApps() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     QTreeWidgetItem *topLevelItem {nullptr};
-    QTreeWidgetItem *childItem {nullptr};
 
     for (const QStringList &list : popular_apps) {
         const QString &category = list.at(Popular::Category);
@@ -695,6 +689,7 @@ void MainWindow::displayPopularApps() const
                                .at(0); // find first match; add the child there
         }
         // add package name as childItem to treePopularApps
+        QTreeWidgetItem *childItem {nullptr};
         childItem = new QTreeWidgetItem(topLevelItem);
         childItem->setText(PopCol::Name, name);
         childItem->setIcon(PopCol::Info, QIcon::fromTheme(QStringLiteral("dialog-information")));
@@ -1073,9 +1068,9 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     qDebug() << "detailed installed names sorted " << detailed_installed_names;
     QStringListIterator iterator(detailed_installed_names);
 
-    if (QString value; tree != ui->treeFlatpak) {
+    if (tree != ui->treeFlatpak) {
         while (iterator.hasNext()) {
-            value = iterator.next();
+            QString value = iterator.next();
             if (value.contains(QLatin1String("Remv"))) {
                 value = value.section(QStringLiteral(";"), 0, 0) + " " + value.section(QStringLiteral(";"), 1, 1);
                 detailed_removed_names = detailed_removed_names + value + "\n";
@@ -1694,10 +1689,9 @@ bool MainWindow::checkInstalled(const QString &names) const
     if (names.isEmpty())
         return false;
 
-    for (const QString &name : names.split(QStringLiteral("\n")))
-        if (!installed_packages.contains(name.trimmed()))
-            return false;
-    return true;
+    auto names_list = names.split(QStringLiteral("\n"));
+    return std::all_of(names_list.cbegin(), names_list.cend(),
+                       [&](const QString &name) { return installed_packages.contains(name.trimmed()); });
 }
 
 // Return true if all the packages in the list are installed
@@ -1834,12 +1828,11 @@ void MainWindow::setCurrentTree()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     const QList list({ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak});
 
-    for (const auto &item : list) {
-        if (item->isVisible()) {
-            tree = item;
-            updateInterface();
-            return;
-        }
+    auto it = std::find_if(list.cbegin(), list.cend(), [](const auto &item) { return item->isVisible(); });
+    if (it != list.end()) {
+        tree = *it;
+        updateInterface();
+        return;
     }
 }
 
@@ -1922,10 +1915,11 @@ void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeW
         }
     }
     auto msg_list = msg.split(QStringLiteral("\n"));
-    auto max_no_chars = 2000;      // around 15-17 lines
-    auto max_no_lines = 20;        // cut message after these many lines
-    if (msg.size() > max_no_chars) // split msg into details if too large
+    auto max_no_chars = 2000;        // around 15-17 lines
+    if (msg.size() > max_no_chars) { // split msg into details if too large
+        auto max_no_lines = 20;      // cut message after these many lines
         msg = msg_list.mid(0, max_no_lines).join(QStringLiteral("\n"));
+    }
 
     QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg, QMessageBox::Close);
 
@@ -2018,10 +2012,10 @@ void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
     auto detail_list = details.split(QStringLiteral("\n"));
     auto msg_list = msg.split(QStringLiteral("\n"));
     auto max_no_chars = 2000;        // around 15-17 lines
-    auto max_no_lines = 17;          // cut message after these many lines
     if (msg.size() > max_no_chars) { // split msg into details if too large
+        auto max_no_lines = 17;      // cut message after these many lines
         msg = msg_list.mid(0, max_no_lines).join(QStringLiteral("\n"));
-        detail_list = msg_list.mid(max_no_lines, msg_list.length()) + QStringList {""} + detail_list;
+        detail_list = msg_list.mid(max_no_lines, msg_list.length()) + QStringList {} + detail_list;
         details = detail_list.join(QStringLiteral("\n"));
     }
     msg += "\n\n" + detail_list.at(detail_list.size() - 2); // add info about space needed/freed
