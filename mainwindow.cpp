@@ -264,10 +264,10 @@ void MainWindow::listSizeInstalledFP()
     QStringList runtimes;
     if (fp_ver < VersionNumber(QStringLiteral("1.0.1"))) { // older version doesn't display all apps
                                                            // and runtimes without specifying them
-        list = cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak -d list --app " + user
+        list = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak -d list --app " + user
                              + "|tr -s ' ' |cut -f1,5,6 -d' '\"")
                    .split(QStringLiteral("\n"));
-        runtimes = cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak -d list --runtime " + user
+        runtimes = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak -d list --runtime " + user
                                  + "|tr -s ' '|cut -f1,5,6 -d' '\"")
                        .split(QStringLiteral("\n"));
         if (!runtimes.isEmpty())
@@ -283,16 +283,14 @@ void MainWindow::listSizeInstalledFP()
             }
         }
     } else if (fp_ver < VersionNumber(QStringLiteral("1.2.4")))
-        list = cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak -d list " + user
-                             + "|tr -s ' '|cut -f1,5\"")
+        list = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak -d list " + user + "|tr -s ' '|cut -f1,5\"")
                    .split(QStringLiteral("\n"));
     else
-        list = cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak list " + user + "--columns app,size\"")
+        list = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak list " + user + "--columns app,size\"")
                    .split(QStringLiteral("\n"));
 
     for (const QString &item : qAsConst(list))
         total = addSizes(total, item.section(QStringLiteral("\t"), 1));
-
     ui->labelNumSize->setText(total);
 }
 
@@ -820,9 +818,10 @@ void MainWindow::displayPackages()
         if (installed.toString().isEmpty()) {
             for (int i = 0; i < newtree->columnCount(); ++i) {
                 if (enabled_list.contains(app_name))
-                    (*it)->setToolTip(i, tr("Version ") + enabled_list.value(app_name).at(0) + tr(" in stable repo"));
+                    (*it)->setToolTip(i, tr("Version ") + enabled_list.value(app_name).at(0)
+                                             + tr(" in the enabled repos"));
                 else
-                    (*it)->setToolTip(i, tr("Not available in stable repo"));
+                    (*it)->setToolTip(i, tr("Not available in the enabled repos"));
             }
             (*it)->setText(TreeCol::Status, QStringLiteral("not installed"));
         } else {
@@ -995,10 +994,9 @@ void MainWindow::listFlatpakRemotes()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
-    QStringList list
-        = cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak remote-list " + user + "| cut -f1\"")
-              .remove(QStringLiteral(" "))
-              .split(QStringLiteral("\n"));
+    QStringList list = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak remote-list " + user + "| cut -f1\"")
+                           .remove(QStringLiteral(" "))
+                           .split(QStringLiteral("\n"));
     ui->comboRemote->addItems(list);
     // set flathub default
     ui->comboRemote->setCurrentIndex(ui->comboRemote->findText(QStringLiteral("flathub")));
@@ -1757,38 +1755,36 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     disconnect(conn);
     if (fp_ver < VersionNumber(QStringLiteral("1.0.1"))) {
         // list packages, strip first part remote/ or app/ no size for old flatpak
-        success = cmd.run("runuser -s /bin/bash -l $(logname) -c \"set -o pipefail; flatpak -d remote-ls " + user
-                              + remote + " " + arch_fp + type
+        success = cmd.run("runuser $(logname) -s /bin/bash -c \"set -o pipefail; flatpak -d remote-ls " + user + remote
+                              + " " + arch_fp + type
                               + R"(2>/dev/null| cut -f1 | tr -s ' ' | cut -f1 -d' '|sed 's/^[^\/]*\///g' ")",
                           out);
         list = QString(out).split(QStringLiteral("\n"));
     } else if (fp_ver < VersionNumber(QStringLiteral("1.2.4"))) { // lower than Buster version
         // list size too
-        success
-            = cmd.run("runuser -s /bin/bash -l $(logname) -c \"set -o pipefail; flatpak -d remote-ls " + user + remote
-                          + " " + arch_fp + type + R"(2>/dev/null| cut -f1,3 |tr -s ' ' | sed 's/^[^\/]*\///g' ")",
-                      out);
+        success = cmd.run("runuser $(logname) -s /bin/bash -c \"set -o pipefail; flatpak -d remote-ls " + user + remote
+                              + " " + arch_fp + type + R"(2>/dev/null| cut -f1,3 |tr -s ' ' | sed 's/^[^\/]*\///g' ")",
+                          out);
         list = QString(out).split(QStringLiteral("\n"));
     } else { // Buster version and above
         if (!updated) {
-            success = cmd.run(QStringLiteral("runuser -s /bin/bash -l $(logname) -c \"flatpak update --appstream\""));
+            success = cmd.run(QStringLiteral("runuser $(logname) -s /bin/bash -c \"flatpak update --appstream\""));
             updated = true;
         }
         // list version too, unfortunatelly the resulting string structure is different depending on
         // type option
         if (type == QLatin1String("--app") || type.isEmpty()) {
-            success = cmd.run("runuser -s /bin/bash -l $(logname) -c \"set -o pipefail; flatpak remote-ls " + user
-                                  + remote + " " + arch_fp + "--app --columns=ver,ref,installed-size 2>/dev/null\"",
+            success = cmd.run("runuser $(logname) -s /bin/bash -c \"set -o pipefail; flatpak remote-ls " + user + remote
+                                  + " " + arch_fp + "--app --columns=ver,ref,installed-size 2>/dev/null\"",
                               out);
             list = QString(out).split(QStringLiteral("\n"));
             if (list == QStringList(QLatin1String("")))
                 list = QStringList();
         }
         if (type == QLatin1String("--runtime") || type.isEmpty()) {
-            success
-                = cmd.run("runuser -s /bin/bash -l $(logname) -c \"set -o pipefail; flatpak remote-ls " + user + remote
-                              + " " + arch_fp + "--runtime --columns=branch,ref,installed-size 2>/dev/null\"",
-                          out);
+            success = cmd.run("runuser $(logname) -s /bin/bash -c \"set -o pipefail; flatpak remote-ls " + user + remote
+                                  + " " + arch_fp + "--runtime --columns=branch,ref,installed-size 2>/dev/null\"",
+                              out);
             list += QString(out).split(QStringLiteral("\n"));
             if (list == QStringList(QLatin1String("")))
                 list = QStringList();
@@ -1809,12 +1805,12 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
     QStringList list;
     if (fp_ver < VersionNumber(QStringLiteral("1.2.4")))
-        list << cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak -d list 2>/dev/null " + user + type
+        list << cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak -d list 2>/dev/null " + user + type
                               + "|cut -f1|cut -f1 -d' '\"")
                     .remove(QStringLiteral(" "))
                     .split(QStringLiteral("\n"));
     else
-        list << cmd.getCmdOut("runuser -s /bin/bash -l $(logname) -c \"flatpak list 2>/dev/null " + user + type
+        list << cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak list 2>/dev/null " + user + type
                               + " --columns=ref\"")
                     .remove(QStringLiteral(" "))
                     .split(QStringLiteral("\n"));
@@ -2150,7 +2146,7 @@ void MainWindow::on_pushInstall_clicked()
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("runuser -s /bin/bash -l $(logname) -c \"socat SYSTEM:'flatpak install -y " + user
+        if (cmd.run("runuser $(logname) -s /bin/bash -c \"socat SYSTEM:'flatpak install -y " + user
                     + ui->comboRemote->currentText() + " " + change_list.join(QStringLiteral(" "))
                     + "',stderr STDIO\"")) {
             displayFlatpaks(true);
@@ -2271,7 +2267,7 @@ void MainWindow::on_pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         for (const QString &app : qAsConst(change_list)) {
             enableOutput();
-            if (!cmd.run("runuser -s /bin/bash -l $(logname) -c \"socat SYSTEM:'flatpak uninstall " + conf + user + app
+            if (!cmd.run("runuser $(logname) -s /bin/bash -c \"socat SYSTEM:'flatpak uninstall " + conf + user + app
                          + "',stderr STDIO\"")) // success if all processed successfuly, failure if
                                                 // one failed
                 success = false;
@@ -2447,9 +2443,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 }
             }
             enableOutput();
-            success
-                = cmd.run(QStringLiteral("runuser -s /bin/bash -l $(logname) -c \"flatpak remote-add --if-not-exists "
-                                         "flathub https://flathub.org/repo/flathub.flatpakrepo\""));
+            success = cmd.run(QStringLiteral("runuser $(logname) -s /bin/bash -c \"flatpak remote-add --if-not-exists "
+                                             "flathub https://flathub.org/repo/flathub.flatpakrepo\""));
             if (!success) {
                 QMessageBox::critical(this, tr("Flathub remote failed"), tr("Flathub remote could not be added"));
                 ui->tabWidget->setCurrentIndex(Tab::Popular);
@@ -2469,9 +2464,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        success = cmd.run(
-            QStringLiteral("runuser -s /bin/bash -l $(logname) -c \"flatpak remote-add --if-not-exists flathub "
-                           "https://flathub.org/repo/flathub.flatpakrepo\""));
+        success
+            = cmd.run(QStringLiteral("runuser $(logname) -s /bin/bash -c \"flatpak remote-add --if-not-exists flathub "
+                                     "https://flathub.org/repo/flathub.flatpakrepo\""));
         if (!success) {
             QMessageBox::critical(this, tr("Flathub remote failed"), tr("Flathub remote could not be added"));
             ui->tabWidget->setCurrentIndex(Tab::Popular);
@@ -2785,7 +2780,7 @@ void MainWindow::on_pushUpgradeFP_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    if (cmd.run("runuser -s /bin/bash -l $(logname) -c \"socat SYSTEM:'flatpak update " + user.trimmed()
+    if (cmd.run("runuser $(logname) -s /bin/bash -c \"socat SYSTEM:'flatpak update " + user.trimmed()
                 + "',pty STDIO\"")) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
@@ -2813,7 +2808,7 @@ void MainWindow::on_pushRemotes_clicked()
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("runuser -s /bin/bash -l $(logname) -c \"socat SYSTEM:'flatpak install -y " + dialog->getUser()
+        if (cmd.run("runuser $(logname) -s /bin/bash -c \"socat SYSTEM:'flatpak install -y " + dialog->getUser()
                     + "--from " + dialog->getInstallRef().replace(QLatin1String(":"), QLatin1String("\\:"))
                     + "',stderr STDIO\"")) {
             listFlatpakRemotes();
@@ -2834,19 +2829,19 @@ void MainWindow::on_pushRemotes_clicked()
 
 void MainWindow::on_comboUser_activated(int index)
 {
-    static bool updated = false;
     if (index == 0) {
         user = QStringLiteral("--system ");
     } else {
         user = QStringLiteral("--user ");
+        static bool updated = false;
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            cmd.run(QStringLiteral("runuser -s /bin/bash -l $(logname) -c \"flatpak --user remote-add --if-not-exists "
+            cmd.run(QStringLiteral("runuser $(logname) -s /bin/bash -c \"flatpak --user remote-add --if-not-exists "
                                    "flathub https://flathub.org/repo/flathub.flatpakrepo\""));
             if (fp_ver >= VersionNumber(QStringLiteral("1.2.4"))) {
                 enableOutput();
-                cmd.run(QStringLiteral("runuser -s /bin/bash -l $(logname) -c \"flatpak update --appstream\""));
+                cmd.run(QStringLiteral("runuser $(logname) -s /bin/bash -c \"flatpak update --appstream\""));
             }
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
@@ -2908,7 +2903,7 @@ void MainWindow::on_pushRemoveUnused_clicked()
     QString conf = QStringLiteral("-y ");
     if (fp_ver < VersionNumber(QStringLiteral("1.0.1")))
         conf = QString();
-    if (cmd.run("runuser -s /bin/bash -l $(logname) -c \"socat SYSTEM:'flatpak uninstall --unused " + conf + user
+    if (cmd.run("runuser $(logname) -s /bin/bash -c \"socat SYSTEM:'flatpak uninstall --unused " + conf + user
                 + "',pty STDIO\"")) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
