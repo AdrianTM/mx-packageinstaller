@@ -14,27 +14,28 @@ Changes:
  mx-packageinstaller (23.6) mx; urgency=medium
  .
    * Fix progress bar for flatpak
+   * Fix displaying space taken by flatpak packages
 Checksums-Sha1:
- e8d753ca9b54ee9acfaf8517de83d82e8fb63200 1220 mx-packageinstaller_23.6.dsc
- 972ec4d8a9b9228824f10b8982c4b1cf8e8c9d7b 307684 mx-packageinstaller_23.6.tar.xz
- 3d9bf82ab8419567f201faa21ccd6bbcd884a827 10803 mx-packageinstaller_23.6_amd64.buildinfo
+ b9321e972ebbf3e818e08d8c9f1baf872eafc6b0 1220 mx-packageinstaller_23.6.dsc
+ 7b71fef93a1970ce83cf3a7fc0d232cd0b0dfa0c 307324 mx-packageinstaller_23.6.tar.xz
+ 16e0480237ced9e691a51adba17376970ad6e1ea 10803 mx-packageinstaller_23.6_amd64.buildinfo
 Checksums-Sha256:
- 97135a3996cf3a595420e4bb25abceda276e70b8c8affa6df353570bf4d08804 1220 mx-packageinstaller_23.6.dsc
- e1ae89087b3cbe3214efc55a4a25784c40727be82f416077e4b741a1c9bb07d1 307684 mx-packageinstaller_23.6.tar.xz
- 686178a61eeaa478aba1f4fab57147169f5259b6991ae22c60f6da8542ffb83f 10803 mx-packageinstaller_23.6_amd64.buildinfo
+ 96e742b58cb4241a1f8df0b1199194de6050c347c865d093d248c8d9b0dd5cd7 1220 mx-packageinstaller_23.6.dsc
+ 98eba3d3292d79133315c119be33a244206d2e20a9514ee895eb89a8eea53c1e 307324 mx-packageinstaller_23.6.tar.xz
+ 24c608e12299c3e07c8cb54293adee415aaa9507f4019c03f58351798dfb5204 10803 mx-packageinstaller_23.6_amd64.buildinfo
 Files:
- c4559987c51897a83af47c3aefe8de90 1220 admin optional mx-packageinstaller_23.6.dsc
- 81169799f6d3c9076281c4ab6ab07fe9 307684 admin optional mx-packageinstaller_23.6.tar.xz
- 5c93451d03590f6077e42236c0233840 10803 admin optional mx-packageinstaller_23.6_amd64.buildinfo
+ bff8a56912b88b5ed602f063892696c4 1220 admin optional mx-packageinstaller_23.6.dsc
+ f4773fc858909db54fb38da133db1fe7 307324 admin optional mx-packageinstaller_23.6.tar.xz
+ 382e5c3ef2363e4115d86cc30272fc98 10803 admin optional mx-packageinstaller_23.6_amd64.buildinfo
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmSBdMkTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumCsrCACuGNowD5G47PxjsxZMxvGVKVuxRRtp
-NxXWuFCgP7EdSKQwceuUBlq26HvuBr8LQ+ghcS+czvsi/yVxxAPiHsPC5+N4lCQ1
-fNGg1J/wfZmZ7TqWEHk1AimZcwO2oaOWDvWmzeox/+0l0aUP27vZ+wu1q2ksZdRb
-tgMsB03Q+e3FZgUtt4YsdcoFuj9pAZ7mSfVX8KApphiItfAPhdyM83DrsyuXXxWR
-RBXK680sKCAmNh+uwsqqhTRDxA+ue+flkWPFPgE1hfDuTtMqmjhtDy3mn9FFUZz5
-BBn1m9GU9XLvbeQ+6UwqVNK4e0gl5/+zXWR8trcmaJmeg5UsinTXUOdC
-=Exoi
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmSCjrkTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumPt1B/9iyZx0g0wqpPsH4PDx+ueLdE0DYYFc
+HwmtRMT49bwXX2GQncjCJ8vam37iDvHOy1O4q9UG5J223dZ62+uoibun/sSLvV0f
+eLTbenZBxjxS89jkjszM3q6PGHCu0JUr96iNhj4b1TsQG6qVDO+9ZhZW2vbvhLKG
+bXyKRC+T7PKwng0qRoGR2qOZRqVM3hau9fMwaDvITxyra9oDEHdrorC201KcPVkn
+LRB5gqVTwoTlg7bdUB+7+/ZMrcFv/oHMC24vtiA9NIvqwVuVLv8PGmA7r/xEmfdj
+Udg948fr+0tyoi+xB9l/dg12UMSac4asPcCcaBKifMpnxne3GjenBuRi
+=+yh6
 -----END PGP SIGNATURE-----

@@ -14,12 +14,13 @@ Changes:
  mx-packageinstaller (23.6) mx; urgency=medium
  .
    * Fix progress bar for flatpak
+   * Fix displaying space taken by flatpak packages
 Checksums-Sha1:
- fae1307a3901ddb5861cf8701f245a7e4196e0a7 10113 mx-packageinstaller_23.6_i386.buildinfo
- 0989ba436ba650167c2b22251e41c3c7aa8dd31f 389472 mx-packageinstaller_23.6_i386.deb
+ c4186cb9ac58247a59fb5cb5af5e95db6fef7ff2 10113 mx-packageinstaller_23.6_i386.buildinfo
+ 40e7ec333c1b783fbf487f1cd9fea2fe19bc67f5 390628 mx-packageinstaller_23.6_i386.deb
 Checksums-Sha256:
- 18c87990234307dfd07e2e3f0232b7ae41ae88e1557a0ddec513db10ff7dc370 10113 mx-packageinstaller_23.6_i386.buildinfo
- 95c871ceec57704630eb2596880f52d55c49eacd2322303a6ce860c31810b524 389472 mx-packageinstaller_23.6_i386.deb
+ 24270e1601627daac93f4fabad8070f1f6e6536e8db42c56ee99beb76ee912ce 10113 mx-packageinstaller_23.6_i386.buildinfo
+ 9a47ff4be985d2735027103e64d06fcb4abb09838fe50af154c1a3aef3bcc818 390628 mx-packageinstaller_23.6_i386.deb
 Files:
- 45c44e51c02771bf8a52da4584b47fcd 10113 admin optional mx-packageinstaller_23.6_i386.buildinfo
- 48b27d1f71b35b96260fd7fe568a8530 389472 admin optional mx-packageinstaller_23.6_i386.deb
+ 8284e3cacad64170e8c6ebab89d82bba 10113 admin optional mx-packageinstaller_23.6_i386.buildinfo
+ d8c051a8d2ea401c94d7108cd3158548 390628 admin optional mx-packageinstaller_23.6_i386.deb

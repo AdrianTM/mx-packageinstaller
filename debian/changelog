@@ -1,7 +1,8 @@
 mx-packageinstaller (23.6) mx; urgency=medium
 
   * Fix progress bar for flatpak
-
+  * Fix displaying space taken by flatpak packages
+ 
  -- Adrian <adrian@mxlinux.org>  Thu, 08 Jun 2023 02:15:54 -0400
 
 mx-packageinstaller (23.5.03) mx; urgency=medium
