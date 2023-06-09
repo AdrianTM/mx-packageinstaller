@@ -134,10 +134,10 @@ public:
     bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""),
                    const QString &postuninstall = QLatin1String(""));
     bool updateApt();
-    static QString addSizes(const QString &arg1, const QString &arg2);
     static bool isFilteredName(const QString &name);
     static int getDebianVerNum();
-    static quint64 convert(quint64 number, const QString &unit);
+    static quint64 convert(const QString &size);
+    static QString convert(quint64 bytes);
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();

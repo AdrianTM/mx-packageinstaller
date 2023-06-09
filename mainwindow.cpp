@@ -240,17 +240,34 @@ bool MainWindow::updateApt()
     return false;
 }
 
-// convert different units to bytes
-quint64 MainWindow::convert(quint64 number, const QString &unit)
+// Convert different size units to bytes
+quint64 MainWindow::convert(const QString &size)
 {
-    if (unit == QLatin1String("KiB"))
-        return number * KiB;
-    else if (unit == QLatin1String("MiB"))
-        return number * MiB;
-    else if (unit == QLatin1String("GiB"))
-        return number * GiB;
+    QString number = size.section(QChar(160), 0, 0);
+    QString unit = size.section(QChar(160), 1);
+    double value = number.toDouble();
+    if (unit == QLatin1String("KB"))
+        return value * KiB;
+    else if (unit == QLatin1String("MB"))
+        return value * MiB;
+    else if (unit == QLatin1String("GB"))
+        return value * GiB;
     else // for "bytes"
-        return number;
+        return value;
+}
+
+// Convert to string (#bytes, KiB, MiB, and GiB)
+QString MainWindow::convert(quint64 bytes)
+{
+    double size = static_cast<double>(bytes);
+    if (bytes < KiB)
+        return QString::number(size) + " bytes";
+    else if (bytes < MiB)
+        return QString::number(size / KiB) + " KiB";
+    else if (bytes < GiB)
+        return QString::number(size / MiB, 'f', 1) + " MiB";
+    else
+        return QString::number(size / GiB, 'f', 2) + " GiB";
 }
 
 void MainWindow::listSizeInstalledFP()
@@ -259,9 +276,9 @@ void MainWindow::listSizeInstalledFP()
 
     QString name;
     QString size;
-    QString total = QStringLiteral("0 bytes");
     QStringList list;
     QStringList runtimes;
+    quint64 total {0};
     if (fp_ver < VersionNumber(QStringLiteral("1.0.1"))) { // older version doesn't display all apps
                                                            // and runtimes without specifying them
         list = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak -d list --app " + user
@@ -276,10 +293,8 @@ void MainWindow::listSizeInstalledFP()
             for (const QString &item : qAsConst(list)) {
                 name = item.section(QStringLiteral(" "), 0, 0);
                 size = item.section(QStringLiteral(" "), 1);
-                if (name == (*it)->text(FlatCol::FullName)) {
-                    total = addSizes(total, size);
+                if (name == (*it)->text(FlatCol::FullName))
                     (*it)->setText(FlatCol::Size, size);
-                }
             }
         }
     } else if (fp_ver < VersionNumber(QStringLiteral("1.2.4")))
@@ -289,9 +304,10 @@ void MainWindow::listSizeInstalledFP()
         list = cmd.getCmdOut("runuser $(logname) -s /bin/bash -c \"flatpak list " + user + "--columns app,size\"")
                    .split(QStringLiteral("\n"));
 
-    for (const QString &item : qAsConst(list))
-        total = addSizes(total, item.section(QStringLiteral("\t"), 1));
-    ui->labelNumSize->setText(total);
+    total = std::accumulate(list.cbegin(), list.cend(), 0, [](quint64 acc, const QString &item) {
+        return acc + convert(item.section(QStringLiteral("\t"), 1));
+    });
+    ui->labelNumSize->setText(convert(total));
 }
 
 // Block interface while updating Flatpak list
@@ -343,26 +359,6 @@ void MainWindow::updateInterface()
 
     QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
     progress->hide();
-}
-
-// add two strings, "00 KB" and "00 GB", return similar string
-QString MainWindow::addSizes(const QString &arg1, const QString &arg2)
-{
-    const QString number1 = arg1.section(QStringLiteral(" "), 0, 0);
-    const QString number2 = arg2.section(QStringLiteral(" "), 0, 0);
-    const QString unit1 = arg1.section(QStringLiteral(" "), 1);
-    const QString unit2 = arg2.section(QStringLiteral(" "), 1);
-
-    const auto bytes = convert(number1.toULongLong(), unit1) + convert(number2.toULongLong(), unit2);
-
-    if (bytes < KiB)
-        return QString::number(bytes) + " bytes";
-    else if (bytes < MiB)
-        return QString::number(bytes / KiB) + " KiB";
-    else if (bytes < GiB)
-        return QString::number(bytes / MiB, 'f', 1) + " MiB";
-    else
-        return QString::number(bytes / GiB, 'f', 2) + " GiB";
 }
 
 int MainWindow::getDebianVerNum()
