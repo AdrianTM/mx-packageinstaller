@@ -241,7 +241,7 @@ bool MainWindow::updateApt()
 }
 
 // convert different units to bytes
-double MainWindow::convert(quint64 number, const QString &unit)
+quint64 MainWindow::convert(quint64 number, const QString &unit)
 {
     if (unit == QLatin1String("KiB"))
         return number * KiB;
