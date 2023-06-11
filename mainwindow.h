@@ -68,7 +68,7 @@ enum {
     PreUninstall,
     MAX
 };
-}
+} // namespace PopCol
 namespace TreeCol
 {
 enum { Check, Name, Version, Description, Status, Displayed };
@@ -92,7 +92,7 @@ enum {
     PostUninstall,
     PreUninstall
 };
-}
+} // namespace Popular
 namespace Release
 {
 enum { Jessie = 8, Stretch, Buster, Bullseye, Bookworm };
@@ -108,21 +108,19 @@ class MainWindow : public QDialog
 
 public:
     explicit MainWindow(const QCommandLineParser &arg_parser, QWidget *parent = nullptr);
-    ~MainWindow();
-
-    QString version;
+    ~MainWindow() override;
 
     QString categoryTranslation(const QString &item);
     QString getDebianVerName();
-    QString getLocalizedName(const QDomElement &element) const;
+    [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
     QString getVersion(const QString &name);
     QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String(""));
     QStringList listInstalled();
     QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
     bool buildPackageLists(bool force_download = false);
-    bool checkInstalled(const QString &names) const;
-    bool checkInstalled(const QStringList &name_list) const;
-    bool checkUpgradable(const QStringList &name_list) const;
+    [[nodiscard]] bool checkInstalled(const QString &names) const;
+    [[nodiscard]] bool checkInstalled(const QStringList &name_list) const;
+    [[nodiscard]] bool checkUpgradable(const QStringList &name_list) const;
     bool confirmActions(const QString &names, const QString &action);
     bool downloadPackageList(bool force_download = false);
     bool install(const QString &names);
@@ -164,7 +162,7 @@ public:
     void updateInterface();
 
 protected:
-    void keyPressEvent(QKeyEvent *event);
+    void keyPressEvent(QKeyEvent *event) override;
 
 private slots:
     void checkUnckeckItem();

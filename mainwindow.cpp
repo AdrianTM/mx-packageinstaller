@@ -1500,11 +1500,11 @@ bool MainWindow::downloadPackageList(bool force_download)
             QString testrepo_url = url;
             if (!cmd.run("apt-get update --print-uris | tac | grep -m1 -oP 'https?://.*/mx/testrepo/dists/(?="
                              + ver_name + "/test/)'",
-                         testrepo_url))
+                         &testrepo_url))
                 cmd.run("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + ver_name
                             + "/main/' | sed -e 's:/mx/repo/dists/" + ver_name
                             + "/main/:/mx/testrepo/dists/:' | grep -oE 'https?://.*/mx/testrepo/dists/'",
-                        testrepo_url);
+                        &testrepo_url);
             url = testrepo_url;
 
             QString branch = QStringLiteral("/test");
@@ -1762,7 +1762,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
                           "flatpak -d remote-ls "
                               + user + remote + " " + arch_fp + type
                               + R"(2>/dev/null| cut -f1 | tr -s ' ' | cut -f1 -d' '|sed 's/^[^\/]*\///g' ")",
-                          out);
+                          &out);
         list = QString(out).split(QStringLiteral("\n"));
     } else if (fp_ver < VersionNumber(QStringLiteral("1.2.4"))) { // lower than Buster version
         // list size too
@@ -1770,7 +1770,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
                           "flatpak -d remote-ls "
                               + user + remote + " " + arch_fp + type
                               + R"(2>/dev/null| cut -f1,3 |tr -s ' ' | sed 's/^[^\/]*\///g' ")",
-                          out);
+                          &out);
         list = QString(out).split(QStringLiteral("\n"));
     } else { // Buster version and above
         if (!updated) {
@@ -1785,7 +1785,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
                 = cmd.run("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"set -o pipefail; "
                           "flatpak remote-ls "
                               + user + remote + " " + arch_fp + "--app --columns=ver,ref,installed-size 2>/dev/null\"",
-                          out);
+                          &out);
             list = QString(out).split(QStringLiteral("\n"));
             if (list == QStringList(QLatin1String("")))
                 list = QStringList();
@@ -1795,7 +1795,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
                               "flatpak remote-ls "
                                   + user + remote + " " + arch_fp
                                   + "--runtime --columns=branch,ref,installed-size 2>/dev/null\"",
-                              out);
+                              &out);
             list += QString(out).split(QStringLiteral("\n"));
             if (list == QStringList(QLatin1String("")))
                 list = QStringList();
