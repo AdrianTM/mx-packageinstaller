@@ -366,7 +366,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1696"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>עזרה</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1703"/>

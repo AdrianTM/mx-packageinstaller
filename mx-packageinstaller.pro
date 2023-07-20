@@ -58,6 +58,7 @@ FORMS    += \
 TRANSLATIONS += translations/mx-packageinstaller_af.ts \
                 translations/mx-packageinstaller_am.ts \
                 translations/mx-packageinstaller_ar.ts \
+                translations/mx-packageinstaller_ast.ts \
                 translations/mx-packageinstaller_be.ts \
                 translations/mx-packageinstaller_bg.ts \
                 translations/mx-packageinstaller_bn.ts \
@@ -85,7 +86,6 @@ TRANSLATIONS += translations/mx-packageinstaller_af.ts \
                 translations/mx-packageinstaller_fil.ts \
                 translations/mx-packageinstaller_fi.ts \
                 translations/mx-packageinstaller_fr_BE.ts \
-                translations/mx-packageinstaller_fr_FR.ts \
                 translations/mx-packageinstaller_fr.ts \
                 translations/mx-packageinstaller_fy.ts \
                 translations/mx-packageinstaller_ga.ts \
@@ -101,12 +101,16 @@ TRANSLATIONS += translations/mx-packageinstaller_af.ts \
                 translations/mx-packageinstaller_hr.ts \
                 translations/mx-packageinstaller_ht.ts \
                 translations/mx-packageinstaller_hu.ts \
+                translations/mx-packageinstaller_hy_AM.ts \
+                translations/mx-packageinstaller_hye.ts \
                 translations/mx-packageinstaller_hy.ts \
                 translations/mx-packageinstaller_id.ts \
+                translations/mx-packageinstaller_ie.ts \
                 translations/mx-packageinstaller_is.ts \
                 translations/mx-packageinstaller_it.ts \
                 translations/mx-packageinstaller_ja.ts \
                 translations/mx-packageinstaller_jv.ts \
+                translations/mx-packageinstaller_kab.ts \
                 translations/mx-packageinstaller_ka.ts \
                 translations/mx-packageinstaller_kk.ts \
                 translations/mx-packageinstaller_km.ts \
@@ -132,7 +136,9 @@ TRANSLATIONS += translations/mx-packageinstaller_af.ts \
                 translations/mx-packageinstaller_ne.ts \
                 translations/mx-packageinstaller_nl_BE.ts \
                 translations/mx-packageinstaller_nl.ts \
+                translations/mx-packageinstaller_nn.ts \
                 translations/mx-packageinstaller_ny.ts \
+                translations/mx-packageinstaller_oc.ts \
                 translations/mx-packageinstaller_or.ts \
                 translations/mx-packageinstaller_pa.ts \
                 translations/mx-packageinstaller_pl.ts \

@@ -1,3 +1,9 @@
+mx-packageinstaller (23.7) mx; urgency=medium
+
+  * Update translations
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 20 Jul 2023 16:54:58 -0400
+
 mx-packageinstaller (23.6) mx; urgency=medium
 
   * Fix progress bar for flatpak

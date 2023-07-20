@@ -454,12 +454,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="823"/>
         <source> in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>nos repositórios ativados</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Not available in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Não está disponível nos repositórios que estão ativados</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="834"/>
@@ -481,7 +481,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="952"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Você está prestes a utilizar o Repositório de Testes do MX que disponibiliza os pacotes apenas para teste. É possível que eles quebrem/danifiquem o seu sistema operacional. Por isso, é recomendado que você faça um cópia de segurança (backup) do seu sistema operacional e instale ou atualize apenas um pacote de cada vez. Se for possível, nos informe no fórum, como foi a sua experiência com o pacote, para que ele seja avaliado e encaminhado para o repositório principal (estável) se for qualificado.</translation>
+        <translation>Você está prestes a utilizar o Repositório de Testes do MX que disponibiliza os pacotes apenas para teste. É possível que eles quebrem/danifiquem o seu sistema operacional. Por isso, é recomendado que você faça uma cópia de segurança (backup) do seu sistema operacional e instale ou atualize apenas um pacote de cada vez. Se for possível, nos informe no fórum, como foi a sua experiência com o pacote, para que ele seja avaliado e encaminhado para o repositório principal (estável) se for qualificado.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="961"/>

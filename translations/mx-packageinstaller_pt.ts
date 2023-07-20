@@ -454,12 +454,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="823"/>
         <source> in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>nos repositórios ativados</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Not available in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Não está disponível nos repositórios ativados</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="834"/>

@@ -454,12 +454,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="823"/>
         <source> in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>i de aktiverade förråden</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Not available in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Inte tillgänglig i de aktiverade förråden</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="834"/>

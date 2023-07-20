@@ -170,7 +170,7 @@
         <location filename="../mainwindow.ui" line="752"/>
         <location filename="../mainwindow.ui" line="814"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation>= Aktualisierbares Paket. Neuere Version im ausgewählten Repository verfügbar.</translation>
+        <translation>= Aktualisierbares Paket. Eine neuere Version ist bei der ausgewählten Paketquelle verfügbar.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="458"/>
@@ -190,7 +190,7 @@
     <message>
         <location filename="../mainwindow.ui" line="493"/>
         <source>MX Test Repo</source>
-        <translation>MX Test Repositorium</translation>
+        <translation>MX-Test-Paketquellen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="796"/>
@@ -216,20 +216,20 @@
     <message>
         <location filename="../mainwindow.ui" line="1165"/>
         <source>Remote (repo):</source>
-        <translation>Flatpak-Repository:</translation>
+        <translation>Flatpak-Paketquellen:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
         <location filename="../mainwindow.cpp" line="2522"/>
         <source>All apps</source>
-        <translation>Alle Apps</translation>
+        <translation>Alle Anwendungen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
         <location filename="../mainwindow.cpp" line="2526"/>
         <source>All runtimes</source>
-        <translation>Alle Runtimes</translation>
+        <translation>Alle Laufzeitbibliotheken</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
@@ -241,13 +241,13 @@
         <location filename="../mainwindow.ui" line="1219"/>
         <location filename="../mainwindow.cpp" line="2520"/>
         <source>Installed apps</source>
-        <translation>Installierte Apps</translation>
+        <translation>Installierte Anwendungen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
         <location filename="../mainwindow.cpp" line="2518"/>
         <source>Installed runtimes</source>
-        <translation>Installierte Runtimes</translation>
+        <translation>Installierte Laufzeitbibliotheken</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
@@ -265,7 +265,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1330"/>
         <source>Installed apps:</source>
-        <translation>Installierte Apps:</translation>
+        <translation>Installierte Anwendungen:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1383"/>
@@ -307,12 +307,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1510"/>
         <source>Enter</source>
-        <translation>Enter</translation>
+        <translation>Eingabetaste</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1521"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Hier antworten oder nur Enter drücken.</translation>
+        <translation>Hier antworten oder einfach die Eingabetaste betätigen.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1577"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="92"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation>Der flatpak-Reiter ist für 32-bit-Versionen deaktiviert.</translation>
+        <translation>Die flatpak-Registerkarte ist für 32-bit-Versionen deaktiviert.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="184"/>
@@ -454,12 +454,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="823"/>
         <source> in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>in den freigeschalteten Paketquellen</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Not available in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>In den freigeschalteten Paketquellen nicht verfügbar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="834"/>
@@ -471,7 +471,7 @@
         <location filename="../mainwindow.cpp" line="834"/>
         <location filename="../mainwindow.cpp" line="2455"/>
         <source> already installed</source>
-        <translation>bereits schon installiert</translation>
+        <translation>ist bereits installiert</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="840"/>
@@ -481,17 +481,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="952"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Sie sind im Begriff, das MX Testrepo zunutzen, dessen Pakete nur zu Testzwecken zur Verfügung gestellt werden. Es ist möglich, daß diese Pakete das System unbrauchbar machenkönnen; deshalb wird empfohlen, eine Sicherung des Systems anzulegen und immer nur einzelne Pakete zu installieren oder aktualisieren. Bitte geben Sie auch Rückmeldungen im Forum ab, damit das jeweilige Paket evaluiert werden kann bevor es in die stabile Version übernommen wird.</translation>
+        <translation>Sie sind im Begriff, die MX-Testpaketquelle zu nutzen, dessen Pakete nur zu Testzwecken verfügbar sind. Es ist möglich, daß diese Pakete das System unbrauchbar machen; deshalb wird empfohlen, eine Sicherung des Systems anzulegen und immer nur einzelne Pakete zu installieren oder zu aktualisieren. Bitte geben sie auch Rückmeldungen im Forum ab, damit das jeweilige Paket evaluiert werden kann, bevor es in die stabile Version übernommen wird.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="961"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Sie sind dabei Debian Backports zu benutzen, welches Pakete aus der nächsten Debian Freigabe (&quot;testing&quot;) enthält, die zur Nutzung in Debian Stable angepasst und neu kompiliert wurden. Diese Pakete konnten nicht so intensiv wie in der stabilen Freigabe von Debian und MX Linux getestet werden und werden ohne Garantie und mit dem Risiko der Inkompatibilität zu Komponenten aus Debian Stable zur Verfügung gestellt. Mit Vorsicht verwenden! </translation>
+        <translation>Sie sind dabei, Debian Backports zu benutzen, welches Pakete aus der nächsten Debian Freigabe (&quot;testing&quot;) enthält, die zur Nutzung in Debian Stable angepasst und neu kompiliert wurden. Diese Pakete konnten nicht so intensiv wie in der stabilen Freigabe von Debian und MX Linux getestet werden und werden ohne Garantie und mit dem Risiko der Inkompatibilität zu Komponenten aus Debian Stable zur Verfügung gestellt. Mit Vorsicht verwenden! </translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="969"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux enthält dieses Repo von Flatpaks nur aus Gründen der Benutzerfreundlichkeit und ist nicht verantwortlich für die Funktionalität der einzelnen Flatpaks. Nähere Infos dazu stehen im Wiki.</translation>
+        <translation>MX Linux enthält diese Paketquelle von Flatpaks nur aus Gründen der Benutzerfreundlichkeit und ist nicht verantwortlich für die Funktionalität der einzelnen Flatpaks. Nähere Infos dazu stehen im Wiki.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="976"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1099"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation>Die folgenden Pakete wurden ausgewählt. Zur Anzeige einer Übersicht aller Änderungen klicken Sie bitte auf »Details anzeigen«.</translation>
+        <translation>Die folgenden Pakete wurden ausgewählt. Zur Anzeige einer Übersicht aller Änderungen klicken sie bitte auf »Details anzeigen«.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1134"/>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1406"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation>Beim Schreiben der Datei %1 gab es einen Fehler. Bitte prüfen Sie, ob genügend freier Speicherplatz auf dem Laufwerk vorhanden ist</translation>
+        <translation>Beim Schreiben der Datei %1 gab es einen Fehler. Bitte prüfen sie, ob genügend freier Speicherplatz auf dem Laufwerk vorhanden ist</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1475"/>
@@ -666,7 +666,7 @@
         <location filename="../mainwindow.cpp" line="2396"/>
         <location filename="../mainwindow.cpp" line="2413"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
-        <translation>Die Liste der Pakete konnte nicht heruntergeladen werden. Bitte überprüfen Sie Ihre APT-Quellen.</translation>
+        <translation>Die Liste der Pakete konnte nicht heruntergeladen werden. Bitte überprüfen sie ihre APT-Quellen.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2429"/>
@@ -678,8 +678,8 @@
         <location filename="../mainwindow.cpp" line="2430"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>Flatpak ist nocht nickt installiert.
-Mit OK die Installation bestätigen?</translation>
+        <translation>Flatpak ist noch nicht installiert.
+Mit OK die Installation einleiten?</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2441"/>
@@ -701,12 +701,12 @@ Mit OK die Installation bestätigen?</translation>
     <message>
         <location filename="../mainwindow.cpp" line="2473"/>
         <source>Needs re-login</source>
-        <translation>Re-login erforderlich</translation>
+        <translation>Erneutes Anmelden erforderlich</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2474"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation>Erst nach dem Ab- und wieder Anmelden werden installierte Anwendungen im Menu sichtbar.</translation>
+        <translation>Erst nach dem Ab-/Neuanmelden werden installierte Anwendungen im Menü sichtbar</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2650"/>
@@ -721,7 +721,7 @@ Mit OK die Installation bestätigen?</translation>
     <message>
         <location filename="../mainwindow.cpp" line="2763"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>Der Prozeß läuft noch. Ein Abbrechen könnte das System in einen instabilen Zustand bringen.&lt;p&gt;&lt;b&gt;Sind Sie sicher, MX Package Installer zu beenden?&lt;/b&gt;</translation>
+        <translation>Der Prozess läuft noch, das Beenden könnte das System in einen instabilen Zustand versetzen.&lt;p&gt;&lt;b&gt;Sind sie sicher, daß sie das MX-Paketinstallationsprogrammn beenden möchten?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2910"/>
@@ -731,14 +731,14 @@ Mit OK die Installation bestätigen?</translation>
     <message>
         <location filename="../mainwindow.cpp" line="2937"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation>Während des letzten Vorgangs wurde ein Problem festgestellt. Bitte sehen Sie sich die Konsolenausgabe an.</translation>
+        <translation>Während des letzten Vorgangs wurde ein Problem festgestellt. Bitte überprüfen sie die Konsolenausgabe.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2947"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation>Der Vorgang ist potentiell gefährlich
-Bitte überprüfen Sie sorgfältig die Liste der zur Entfernung vorgesehenen Pakete.</translation>
+        <translation>Der Vorgang ist potentiell riskant
+Bitte überprüfen sie sorgfältig die Liste der zum Entfernen vorgesehenen Pakete.</translation>
     </message>
 </context>
 <context>
@@ -771,7 +771,7 @@ Bitte überprüfen Sie sorgfältig die Liste der zur Entfernung vorgesehenen Pak
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Hinzufügen und Entfernen von Flatpak Repos, oder Installation von Flatpak-Apps mit Flatpakref (Pfad/URL)</translation>
+        <translation>Flatpak-Paketquellen hinzufügen oder entfernen, oder Installation von Flatpak-Apps mit Flatpakref (Pfad/URL)</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
@@ -856,8 +856,8 @@ Bitte überprüfen Sie sorgfältig die Liste der zur Entfernung vorgesehenen Pak
     - installs flatpaks</source>
         <translation>MX Package Installer ist eine Anwendung zur Verwaltung von Paketen in MX Linux
     - installiert beliebte Programme aus verschiedenen Quellen
-    - installiert Programme aus dem MX-Test-Repository
-    - installiert Programme aus dem Debian-Backports-Repository
+    - installiert Programme aus der MX-Test-Paketquelle
+    - installiert Programme aus der Debian-Backports-Paketquelley
     - installiert Flatpak-Dateien</translation>
     </message>
     <message>
@@ -873,7 +873,7 @@ Bitte überprüfen Sie sorgfältig die Liste der zur Entfernung vorgesehenen Pak
     <message>
         <location filename="../main.cpp" line="93"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>Sie sind als Benutzer “root” am System angemeldet. Bitte melden Sie sich ab und melden sich als normaler Benutzer an, um dieses Programm zu verwenden.</translation>
+        <translation>Sie sind als Administrator am System angemeldet. Bitte melden sie sich ab und dann als normaler Benutzer wieder an, um dieses Programm zu verwenden.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="103"/>
@@ -883,7 +883,7 @@ Bitte überprüfen Sie sorgfältig die Liste der zur Entfernung vorgesehenen Pak
     <message>
         <location filename="../main.cpp" line="104"/>
         <source>Another package management application (like Synaptic or apt-get), is already running. Please close that application first</source>
-        <translation>Eine andere Paketmanager Anwendung (evtl. Synaptic oder apt-get) läuft bereits. Bitte diese Anwendung erst beenden.</translation>
+        <translation>Eine anderer Paketmanager (evtl. Synaptic oder apt-get) läuft bereits. Bitte diese Anwendung zuerst beenden.</translation>
     </message>
 </context>
 </TS>

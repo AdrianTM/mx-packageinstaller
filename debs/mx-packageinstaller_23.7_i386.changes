@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Thu, 20 Jul 2023 16:54:58 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.7
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.7) mx; urgency=medium
+ .
+   * Update translations
+Checksums-Sha1:
+ 923ba46164b82c8230cd6648d2b4a505076b806e 10113 mx-packageinstaller_23.7_i386.buildinfo
+ 34d4895278ac11549dfc9c53121bcef61997cc97 391324 mx-packageinstaller_23.7_i386.deb
+Checksums-Sha256:
+ 2176b5b6740854ab64e79810508f065c7cec18d708e1c9f674e97a40c414bd98 10113 mx-packageinstaller_23.7_i386.buildinfo
+ 05083e3eadb79091422dcaa9f86a4b50b3a60af37263a92a1316b6a9bb117ec2 391324 mx-packageinstaller_23.7_i386.deb
+Files:
+ 51770b12fab6f6474586dca15cdcbb11 10113 admin optional mx-packageinstaller_23.7_i386.buildinfo
+ 939b0c49cde0931c18f53d95fef1c727 391324 admin optional mx-packageinstaller_23.7_i386.deb

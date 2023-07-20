@@ -336,7 +336,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1606"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1613"/>
@@ -366,7 +366,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1696"/>
         <source>Help</source>
-        <translation type="unfinished"></translation>
+        <translation>Помощь</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1703"/>
@@ -428,7 +428,7 @@
         <location filename="../mainwindow.cpp" line="2936"/>
         <location filename="../mainwindow.cpp" line="2960"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="237"/>
@@ -789,7 +789,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="58"/>
         <source>Close</source>
-        <translation type="unfinished"></translation>
+        <translation>Закрыть</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
@@ -862,7 +862,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../main.cpp" line="92"/>
         <source>Error</source>
-        <translation type="unfinished"></translation>
+        <translation>Ошибка</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="93"/>

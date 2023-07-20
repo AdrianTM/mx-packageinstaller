@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Thu, 20 Jul 2023 16:54:58 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.7
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.7) mx; urgency=medium
+ .
+   * Update translations
+Checksums-Sha1:
+ 5c4e37e758011dabdf5c112e0017a7125c1ae8fd 1220 mx-packageinstaller_23.7.dsc
+ 4a4e8b4c42782fa124912f4ad5b86798de7d7196 309528 mx-packageinstaller_23.7.tar.xz
+ ef85b67ba65d99e94469ae4ee382b7b6b95061df 10803 mx-packageinstaller_23.7_amd64.buildinfo
+ da323d77bb2c56b81dbc0694134dbeca384f7c00 382188 mx-packageinstaller_23.7_amd64.deb
+Checksums-Sha256:
+ 5304c75af26a23c18141c6205fd84ef2027b5a10cebbd239798e16f6a1501c6b 1220 mx-packageinstaller_23.7.dsc
+ cec512a4328e000b61a9ca1670858d42a210239c0b843d9feb7f5e5c94370439 309528 mx-packageinstaller_23.7.tar.xz
+ e9a4645e5b7700316c56c685f0365312029fd9edeb8930337e4dd87c842353f7 10803 mx-packageinstaller_23.7_amd64.buildinfo
+ 2d208f31c221ccc11f145a8342ae520484541d6ffb96d8c2f350ce53844a4c8f 382188 mx-packageinstaller_23.7_amd64.deb
+Files:
+ f5c9120d87236b8e64dd089a8f55c0b2 1220 admin optional mx-packageinstaller_23.7.dsc
+ cefe88c562ab78bd1221514faf61331f 309528 admin optional mx-packageinstaller_23.7.tar.xz
+ 91f42f96efe7ace2dd3c748a6460559d 10803 admin optional mx-packageinstaller_23.7_amd64.buildinfo
+ e045ea0da41dd0ef1d5f7a0aabcf2847 382188 admin optional mx-packageinstaller_23.7_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmS5n4wTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumDrjCACCoPSCv4qfwJSSHDCAwRqPf2H6yMRf
+O5oglcIL4MOghYzIAxol+bwFHoo+Mn0gZsv7t0gQAMo1XAw8gZqqLZlnt3eIidHC
+G9+AxqebLVV4A1HALsF5ItNISAgQqtIqbSA+sk/NTqs3HgudFBSgUQ/UkOjyMEPp
+nTojB1pVisef5Ktu3og1UhqWDktw7L74Zr8HFhJrIH6QEby9kbkk8JmVOnt1VH/X
+iCD4V1/sCZbakdup24tbwDQQI1Ag6Cf3zlQhl/VYaw3RUcWLupJr4I21wyFG0Eof
+V3M6KMJSfnx4o3t7uk/p5APw3hwMLrJUFgIaiSokWJ1hZNHqlkLKIrR5
+=kV5f
+-----END PGP SIGNATURE-----

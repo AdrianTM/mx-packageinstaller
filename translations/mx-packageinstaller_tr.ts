@@ -17,7 +17,7 @@
     <message>
         <location filename="../mainwindow.ui" line="73"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Kategori</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="83"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../mainwindow.ui" line="101"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="120"/>
@@ -58,12 +58,12 @@
         <location filename="../mainwindow.ui" line="1118"/>
         <location filename="../mainwindow.ui" line="1245"/>
         <source>= Installed packages</source>
-        <translation type="unfinished"></translation>
+        <translation>= Kurulu paketler</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="173"/>
         <source>Enabled Repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Etkin Depolar</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="237"/>
@@ -170,7 +170,7 @@
         <location filename="../mainwindow.ui" line="752"/>
         <location filename="../mainwindow.ui" line="814"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation type="unfinished"></translation>
+        <translation>= Yükseltilebilir paket. Seçilen depoda daha yeni sürüm mevcut.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="458"/>
@@ -312,7 +312,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1521"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Burada cevaplayın veya sadece Enter&apos;a basın</translation>
+        <translation>Burada cevaplayın veya sadece Enter’a basın</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1577"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="92"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>Flatpak sekmesi 32-bit’te devre dışıdır.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="184"/>
@@ -454,12 +454,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="823"/>
         <source> in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>etkin depolarda</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Not available in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Etkin depolarda mevcut değil</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="834"/>
@@ -481,17 +481,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="952"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Paketleri yalnızca deneme amacıyla sağlanan MX Test deposunu kullanmak üzeresiniz. Sisteminizi bozma olasılığı vardır, bu nedenle sisteminizi yedeklemeniz ve bir seferde yalnızca bir paketi yüklemeniz veya güncellemeniz önerilir. Lütfen Forum&apos;da geri bildirimde bulunun, böylece paket Ana Depoya geçmeden önce değerlendirilebilir.</translation>
+        <translation>Paketleri yalnızca deneme amacıyla sağlanan MX Test deposunu kullanmak üzeresiniz. Sisteminizi bozma olasılığı vardır, bu nedenle sisteminizi yedeklemeniz ve bir seferde yalnızca bir paketi yüklemeniz veya güncellemeniz önerilir. Lütfen Forum’da geri bildirimde bulunun, böylece paket Ana Depoya geçmeden önce değerlendirilebilir.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="961"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Bir sonraki Debian sürümünden (&apos;testing&apos; olarak adlandırılır) alınan paketleri içeren Debian Backports&apos;u kullanmak üzeresiniz. Debian kararlı sürümünde kullanılmak üzere ayarlanmış ve yeniden derlenmiştir. Debian ve antiX Linux’un kararlı sürümlerinde olduğu gibi kapsamlı bir şekilde test edilememekteler ve Debian Kararlı Sürümdeki diğer bileşenlerle uyumsuzluk riskiyle beraber &quot;oldukları gibi&quot; sağlanmaktalar. Dikkatli kullanın!</translation>
+        <translation>Bir sonraki Debian sürümünden (‘testing’ olarak adlandırılır) alınan paketleri içeren Debian Backports’u kullanmak üzeresiniz. Debian kararlı sürümünde kullanılmak üzere ayarlanmış ve yeniden derlenmiştir. Debian ve antiX Linux’un kararlı sürümlerinde olduğu gibi kapsamlı bir şekilde test edilememekteler ve Debian Kararlı Sürümdeki diğer bileşenlerle uyumsuzluk riskiyle beraber &quot;oldukları gibi&quot; sağlanmaktalar. Dikkatli kullanın!</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="969"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux, yalnızca kullanıcıların rahatlığı için flatpaks deposunu içerir ve bireysel flatpaks&apos;ların işlevselliğinden sorumlu değildir. Daha fazla bilgi için Wiki&apos;deki flatpaks&apos;e bakın.</translation>
+        <translation>MX Linux, yalnızca kullanıcıların rahatlığı için flatpaks deposunu içerir ve bireysel flatpaks’ların işlevselliğinden sorumlu değildir. Daha fazla bilgi için Wiki’deki flatpaks’e bakın.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="976"/>
@@ -512,7 +512,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1099"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation>Aşağıdaki paketler seçildi. Değişikliklerin listesi için Ayrıntıları Göster&apos;e tıklayın.</translation>
+        <translation>Aşağıdaki paketler seçildi. Değişikliklerin listesi için Ayrıntıları Göster’e tıklayın.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1134"/>
@@ -666,7 +666,7 @@
         <location filename="../mainwindow.cpp" line="2396"/>
         <location filename="../mainwindow.cpp" line="2413"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
-        <translation type="unfinished"></translation>
+        <translation>Paket listesi indirilemedi. Lütfen APT kaynaklarınızı kontrol edin.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2429"/>
@@ -854,12 +854,16 @@ Lütfen kaldırılacak paketlerin listesini dikkatlice kontrol ettiğinizden emi
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>MX Paket Yükleyici, MX Linux’ta paketleri yönetmek için kullanılan bir araçtır 
+    - farklı kaynaklardan popüler programları yükler 
+    - MX Test deposundan programları yükler 
+    - Debian Backports deposundan programları yükler 
+    - flatpak’ları yükler</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="82"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
-        <translation type="unfinished"></translation>
+        <translation>Yanlışlıkla internet erişimi olmadığını bildiriyorsa çevrimiçi kontrolü atlayın.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="92"/>
