@@ -17,7 +17,7 @@
     <message>
         <location filename="../mainwindow.ui" line="73"/>
         <source>Category</source>
-        <translation type="unfinished"></translation>
+        <translation>Kategória</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="83"/>
@@ -40,7 +40,7 @@
     <message>
         <location filename="../mainwindow.ui" line="101"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"></translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Népszerű csomagok kezelése&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="120"/>
@@ -58,12 +58,12 @@
         <location filename="../mainwindow.ui" line="1118"/>
         <location filename="../mainwindow.ui" line="1245"/>
         <source>= Installed packages</source>
-        <translation type="unfinished"></translation>
+        <translation>= Telepített csomagok</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="173"/>
         <source>Enabled Repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Bekapcsolt csomagforrások</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="237"/>
@@ -170,7 +170,7 @@
         <location filename="../mainwindow.ui" line="752"/>
         <location filename="../mainwindow.ui" line="814"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation type="unfinished"></translation>
+        <translation>= Frissíthető csomag. Új verzió érhető el a kiválasztott csomagforrásban.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="458"/>
@@ -386,7 +386,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="92"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation type="unfinished"></translation>
+        <translation>A Flatpak lap ki van kapcsolva 32-bites rendszeren.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="184"/>
@@ -454,12 +454,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="823"/>
         <source> in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>a bekapcsolt forrásokban</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <source>Not available in the enabled repos</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem érhető el a bekapcsolt forrásokban</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="834"/>
@@ -666,7 +666,7 @@
         <location filename="../mainwindow.cpp" line="2396"/>
         <location filename="../mainwindow.cpp" line="2413"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
-        <translation type="unfinished"></translation>
+        <translation>Nem sikerült a csomagok listájának betöltése. Ellenőrizze az APT csomagforrásokat.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2429"/>
@@ -854,12 +854,16 @@ Ellenőrizze alaposan az eltávolítandó csomagok listáját.</translation>
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation type="unfinished"></translation>
+        <translation>Az MX csomagtelepítő egy segédeszköz az MX Linuxon elérhető programok kezelésére
+   - népszerű programokat telepít különböző forrásokból
+   - programokat telepít az MX Teszt forrásból
+   - programokat telepít a Debian Visszaportolt forrásból
+   - flatpak csomagokat telepít</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="82"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
-        <translation type="unfinished"></translation>
+        <translation>Az online ellenőrzés kihagyása, ha hibásan az internetelérés hiányát jelzi.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="92"/>
