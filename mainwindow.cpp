@@ -145,6 +145,7 @@ void MainWindow::setup()
 
     ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), false);
     ui->tabWidget->blockSignals(false);
+    ui->pushUpgradeAll->setVisible(false);
 
     const QSize size = this->size();
     if (settings.contains(QStringLiteral("geometry"))) {
@@ -165,7 +166,7 @@ void MainWindow::setup()
             tree->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(tree, &QTreeWidget::itemDoubleClicked, [tree](QTreeWidgetItem *item) { tree->setCurrentItem(item); });
         connect(tree, &QTreeWidget::itemDoubleClicked, this, &MainWindow::checkUnckeckItem);
-        connect(tree, &QTreeWidget::customContextMenuRequested,
+        connect(tree, &QTreeWidget::customContextMenuRequested, this,
                 [this, tree](QPoint pos) { displayPackageInfo(tree, pos); });
     }
 }
@@ -1110,7 +1111,7 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     // find Detailed Info box and set heigth, set box height between 100 - 400 depending on length of content
     const auto min = 100;
     const auto max = 400;
-    const auto detailedInfo = msgBox.findChild<QTextEdit *>();
+    auto *const detailedInfo = msgBox.findChild<QTextEdit *>();
     const auto recommended = qMax(msgBox.detailedText().length() / 2, min); // half of length is just guesswork
     const auto height = qMin(recommended, max);
     detailedInfo->setFixedHeight(height);
@@ -1395,7 +1396,7 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     QEventLoop loop;
 
     bool success = true;
-    connect(reply, &QNetworkReply::readyRead,
+    connect(reply, &QNetworkReply::readyRead, this,
             [this, &file, &success] { success = (file.write(reply->readAll()) != 0); });
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
@@ -1753,7 +1754,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     else if (arch == QLatin1String("armhf"))
         arch_fp = QStringLiteral("--arch=arm ");
     else
-        return QStringList();
+        return {};
 
     disconnect(conn);
     if (fp_ver < VersionNumber(QStringLiteral("1.0.1"))) {
@@ -1806,7 +1807,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     if (!success || list == QStringList(QLatin1String(""))) {
         qDebug()
             << QStringLiteral("Could not list packages from %1 remote, or remote doesn't contain packages").arg(remote);
-        return QStringList();
+        return {};
     }
     return list;
 }
@@ -1948,14 +1949,14 @@ void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
             action->deleteLater();
             return;
         }
-        connect(action, &QAction::triggered, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
+        connect(action, &QAction::triggered, this, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
     }
     QMenu menu(this);
     menu.addAction(action);
     if (tree == ui->treeEnabled)
-        connect(action, &QAction::triggered, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
+        connect(action, &QAction::triggered, this, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
     else
-        connect(action, &QAction::triggered,
+        connect(action, &QAction::triggered, this,
                 [this, tree, t_widget] { displayInfoTestOrBackport(tree, t_widget->currentItem()); });
     menu.exec(t_widget->mapToGlobal(pos));
     action->deleteLater();
@@ -2638,9 +2639,9 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
         if (change_list.isEmpty()
             && indexFilterFP.isEmpty()) // remember the Flatpak combo location first time this is called
             indexFilterFP = ui->comboFilterFlatpak->currentText();
-        newapp = QString(item->text(FlatCol::FullName));
+        newapp = (item->text(FlatCol::FullName));
     } else {
-        newapp = QString(item->text(TreeCol::Name));
+        newapp = (item->text(TreeCol::Name));
     }
 
     if (item->checkState(0) == Qt::Checked) {
@@ -2883,7 +2884,7 @@ void MainWindow::on_treePopularApps_customContextMenuRequested(QPoint pos)
     auto *action = new QAction(QIcon::fromTheme(QStringLiteral("dialog-information")), tr("More &info..."), this);
     QMenu menu(this);
     menu.addAction(action);
-    connect(action, &QAction::triggered, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
+    connect(action, &QAction::triggered, this, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
     menu.exec(ui->treePopularApps->mapToGlobal(pos));
     action->deleteLater();
 }

@@ -111,7 +111,7 @@ public:
     ~MainWindow() override;
 
     QString categoryTranslation(const QString &item);
-    QString getDebianVerName();
+    static QString getDebianVerName();
     [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
     QString getVersion(const QString &name);
     QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String(""));

@@ -1,3 +1,10 @@
+mx-packageinstaller (23.7.02) mx; urgency=medium
+
+  * Fix search when switching back to Popular tab
+  * Set proxy when downloading package info
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 26 Jul 2023 17:26:42 -0400
+
 mx-packageinstaller (23.7.01) mx; urgency=medium
 
   * Fix a couple of translations
