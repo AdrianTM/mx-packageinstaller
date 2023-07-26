@@ -1978,8 +1978,11 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
     if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none"))
         qDebug() << "no screenshot for: " << title;
     else {
-        auto *manager = new QNetworkAccessManager(this);
-        auto *reply = manager->get(QNetworkRequest(url));
+        QNetworkProxyQuery query {QUrl(url)};
+        QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
+        if (!proxies.isEmpty())
+            manager.setProxy(proxies.first());
+        reply = manager.get(QNetworkRequest(url));
 
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
