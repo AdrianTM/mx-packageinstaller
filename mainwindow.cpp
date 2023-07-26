@@ -259,7 +259,7 @@ quint64 MainWindow::convert(const QString &size)
 // Convert to string (#bytes, KiB, MiB, and GiB)
 QString MainWindow::convert(quint64 bytes)
 {
-    double size = static_cast<double>(bytes);
+    auto size = static_cast<double>(bytes);
     if (bytes < KiB)
         return QString::number(size) + " bytes";
     else if (bytes < MiB)
@@ -1643,18 +1643,18 @@ void MainWindow::clearUi()
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
 
-    if (tree == ui->treeEnabled || tree == ui->treePopularApps) {
+    if (tree == ui->treeEnabled) {
         ui->labelNumApps->clear();
         ui->labelNumInst->clear();
         ui->labelNumUpgr->clear();
         ui->treeEnabled->clear();
         ui->pushUpgradeAll->setHidden(true);
-    } else if (tree == ui->treeMXtest || tree == ui->treePopularApps) {
+    } else if (tree == ui->treeMXtest) {
         ui->labelNumApps_2->clear();
         ui->labelNumInstMX->clear();
         ui->labelNumUpgrMX->clear();
         ui->treeMXtest->clear();
-    } else if (tree == ui->treeBackports || tree == ui->treePopularApps) {
+    } else if (tree == ui->treeBackports) {
         ui->labelNumApps_3->clear();
         ui->labelNumInstBP->clear();
         ui->labelNumUpgrBP->clear();
@@ -2364,6 +2364,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         ui->searchPopular->setText(search_str);
         enableTabs(true);
         setCurrentTree();
+        if (!ui->searchPopular->text().isEmpty())
+            findPopular();
         ui->searchPopular->setFocus();
         break;
     case Tab::EnabledRepos:
