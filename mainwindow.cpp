@@ -92,6 +92,11 @@ void MainWindow::setup()
         ui->tabWidget->setTabToolTip(Tab::Flatpak, tr("Flatpak tab is disabled on 32-bit."));
     }
 
+    if (!QFile::exists("/etc/apt/sources.list.d/mx.list")) {
+        ui->tabWidget->setTabEnabled(Tab::Test, false); // setTabVisible is available only on Qt >= 5.15
+        ui->tabWidget->setTabToolTip(Tab::Test, tr("Could not find MX sources."));
+    }
+
     lock_file = new LockFile(QStringLiteral("/var/lib/dpkg/lock"));
     connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::cleanup, Qt::QueuedConnection);
 
@@ -1949,7 +1954,8 @@ void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
             action->deleteLater();
             return;
         }
-        connect(action, &QAction::triggered, this, [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
+        connect(action, &QAction::triggered, this,
+                [this, t_widget] { displayPopularInfo(t_widget->currentItem(), 3); });
     }
     QMenu menu(this);
     menu.addAction(action);
