@@ -1,0 +1,26 @@
+Format: 1.8
+Date: Fri, 11 Aug 2023 14:12:41 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.8) mx; urgency=medium
+ .
+   * Fix displaying the correct version of installed package if the package is available in multiple sources
+   *  -- fixes upgradable package list
+Checksums-Sha1:
+ a5faa42c18c4d8331cebadb6c89369300a4e1184 10114 mx-packageinstaller_23.8_i386.buildinfo
+ 83ad9855fbdc727b5989dec21cae904847677b3c 392284 mx-packageinstaller_23.8_i386.deb
+Checksums-Sha256:
+ 57f65c39b38ac707e6847e63fdb18bdbc0a728eb233a70440e1eb35158e9c919 10114 mx-packageinstaller_23.8_i386.buildinfo
+ 01355f3febbc1d7c7d3010d1e77995f75a695536045ea849f22047f524c375bc 392284 mx-packageinstaller_23.8_i386.deb
+Files:
+ 181baa3e2d5cd327a2f6576b47ab2a9f 10114 admin optional mx-packageinstaller_23.8_i386.buildinfo
+ 5db7f074eefb81805e299b2575cdcbe7 392284 admin optional mx-packageinstaller_23.8_i386.deb

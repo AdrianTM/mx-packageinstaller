@@ -1,3 +1,10 @@
+mx-packageinstaller (23.8) mx; urgency=medium
+
+  * Fix displaying the correct version of installed package if the package is available in multiple sources
+  *  -- fixes upgradable package list
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 11 Aug 2023 14:12:41 -0400
+
 mx-packageinstaller (23.7.02) mx; urgency=medium
 
   * Fix search when switching back to Popular tab

@@ -1,0 +1,41 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 11 Aug 2023 14:12:41 -0400
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.8
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.8) mx; urgency=medium
+ .
+   * Fix displaying the correct version of installed package if the package is available in multiple sources
+   *  -- fixes upgradable package list
+Checksums-Sha1:
+ a18cc0610d72fb97be9623e84863b75b4d1bf396 1220 mx-packageinstaller_23.8.dsc
+ 433ba4a594b17a79505b6b262f3ae97acd669dda 309376 mx-packageinstaller_23.8.tar.xz
+ a29c81e942b3d17184884593a2bd8c00cbc4ebec 10980 mx-packageinstaller_23.8_amd64.buildinfo
+Checksums-Sha256:
+ 1455088f00d8d902f782fcc327cc46c8a32c8b400f40089394bf9ffcc4448776 1220 mx-packageinstaller_23.8.dsc
+ f6ed3f0c4c1b7efe1ae9f4f54534cff0fd49b1326227fb83ba3ebaf21efc4404 309376 mx-packageinstaller_23.8.tar.xz
+ de85a0b4ab650eead389ab0cef74ab10b539eff2d4c66fd5f2d71f98a957d21e 10980 mx-packageinstaller_23.8_amd64.buildinfo
+Files:
+ c6d291962a127ac147286a71ffea5bfb 1220 admin optional mx-packageinstaller_23.8.dsc
+ f430127eda363774708bb3ccc3c1e15f 309376 admin optional mx-packageinstaller_23.8.tar.xz
+ 484d634e3e8872d14ea6b982b5eb74a3 10980 admin optional mx-packageinstaller_23.8_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmTWf8ITHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNL7B/9wCnePAzYgMjXcq0Mhi5wt5A567+J6
+Gs/RYE8wV2MUW+fGPFp80xznhznoge7z97Jh1qDUTLwA7KaHo+s7ZVQDJgDewNuM
+imK1xZUhVKwqq8zPXnsu0Vqd2voe7nNJJ9ilMb+jJN/fJJtHk/RcDv1Rdd92Poxf
+7SUT1+t5sO19ZHsr9BHGX+NqZVJYUoYossDLnXlZzHtDqPGo3zZBy7v6wiKkNYWH
+slvSpi9AYlZN6qltd9ppsETkhArSH3QOlHV9ewPekBeK6TGzJRzSFAYlH6Jge/7t
+lSdVBUfvzFDF/LHFy1j1Ddm1+rFHLyc9UEyNKY0V6miqWgsClUXs0YNG
+=OBzt
+-----END PGP SIGNATURE-----
