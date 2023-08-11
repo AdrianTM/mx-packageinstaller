@@ -4,6 +4,8 @@
 #include <QDirIterator>
 #include <QRegularExpression>
 
+#include "versionnumber.h"
+
 AptCache::AptCache()
 {
     loadCacheFiles();
@@ -69,13 +71,10 @@ void AptCache::parseContent()
         } else if (line.startsWith(QLatin1String("Description:"))) {
             description = line.midRef(13).trimmed();
             if (match_arch) {
-                candidates.insert(package.toString(), {version.toString(), description.toString()});
-                // clear the variables for the next package
-                package.clear();
-                version.clear();
-                description.clear();
-                architecture.clear();
-                match_arch = false;
+                if (candidates.constFind(package.toString()) == candidates.constEnd()
+                    || VersionNumber(candidates.value(package.toString()).at(0)) < VersionNumber(version.toString())) {
+                    candidates.insert(package.toString(), {version.toString(), description.toString()});
+                }
             }
         }
     }
