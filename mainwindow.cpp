@@ -1411,7 +1411,7 @@ bool MainWindow::isOnline()
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
     auto error = QNetworkReply::NoError;
-    for (const QString &address : {"https://mxrepo.com", "https://google.com"}) {
+    for (const QString address : {"https://mxrepo.com", "https://google.com"}) {
         error = QNetworkReply::NoError; // reset for each tried address
         QNetworkProxyQuery query {QUrl(address)};
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
@@ -1550,8 +1550,8 @@ bool MainWindow::downloadPackageList(bool force_download)
         enabled_list = cache.getCandidates();
         if (enabled_list.isEmpty()) {
             updateApt();
-            AptCache cache;
-            enabled_list = cache.getCandidates();
+            AptCache cache2;
+            enabled_list = cache2.getCandidates();
         }
     }
 
@@ -2320,10 +2320,8 @@ void MainWindow::on_pushAbout_clicked()
 
 void MainWindow::on_pushHelp_clicked()
 {
-    QLocale locale;
     QString lang = locale.bcp47Name();
-
-    QString url = QStringLiteral("/usr/share/doc/mx-packageinstaller/mx-package-installer.html");
+    QString url {"/usr/share/doc/mx-packageinstaller/mx-package-installer.html"};
 
     if (lang.startsWith(QLatin1String("fr"))) {
         url = QStringLiteral("https://mxlinux.org/wiki/help-files/help-mx-installateur-de-paquets");
