@@ -4,7 +4,10 @@
 #include <QDirIterator>
 #include <QRegularExpression>
 
-AptCache::AptCache() { loadCacheFiles(); }
+AptCache::AptCache()
+{
+    loadCacheFiles();
+}
 
 void AptCache::loadCacheFiles()
 {
@@ -19,20 +22,28 @@ void AptCache::loadCacheFiles()
     QList<QString> matchingFiles;
     while (it.hasNext()) {
         QString fileName = it.next();
-        if (packages_filter.match(fileName).hasMatch())
+        if (packages_filter.match(fileName).hasMatch()) {
             matchingFiles.append(fileName);
+        }
     }
     for (const QString &fileName : matchingFiles) {
-        if (!readFile(fileName))
+        if (!readFile(fileName)) {
             qDebug() << "error reading a cache file";
+        }
     }
     parseContent();
 }
 
-QMap<QString, QStringList> AptCache::getCandidates() { return candidates; }
+QMap<QString, QStringList> AptCache::getCandidates()
+{
+    return candidates;
+}
 
 // return DEB_BUILD_ARCH format which differs from what 'arch' or currentCpuArchitecture return
-QString AptCache::getArch() { return arch_names.value(QSysInfo::currentCpuArchitecture()); }
+QString AptCache::getArch()
+{
+    return arch_names.value(QSysInfo::currentCpuArchitecture());
+}
 
 void AptCache::parseContent()
 {

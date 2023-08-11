@@ -34,7 +34,10 @@ public:
         : file(file_name)
     {
     }
-    ~LockFile() { unlock(); };
+    ~LockFile()
+    {
+        unlock();
+    };
 
     bool isLocked();
     bool lock();

@@ -100,7 +100,7 @@ private:
     void setStrings(const QString &value);
 
     [[nodiscard]] int compare(const VersionNumber &first,
-                const VersionNumber &second) const; // 1 for >second, -1 for <second, 0 for equal
+                              const VersionNumber &second) const; // 1 for >second, -1 for <second, 0 for equal
     static int compare(const QStringList &first, const QStringList &second);
     static int compare(QChar first, QChar second);
 };
