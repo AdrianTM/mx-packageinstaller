@@ -391,7 +391,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="100"/>
         <source>Could not find MX sources.</source>
-        <translation type="unfinished"></translation>
+        <translation>MX kaynakları bulunamadı.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="195"/>
