@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Sat, 02 Sep 2023 16:44:06 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.9
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.9) mx; urgency=medium
+ .
+   *  Load info for enabled repos and flatpaks in the background at start time
+Checksums-Sha1:
+ b203344037af14e3888f4b6fe1bd8c2d7cc93350 10113 mx-packageinstaller_23.9_i386.buildinfo
+ eff1c7ef12869bb95f43d0aa7507d52388e10711 393616 mx-packageinstaller_23.9_i386.deb
+Checksums-Sha256:
+ 1cd8850d5c74c939776b20c0ed1e42b53fbfd124a70c4581d7c63bda1dcd1407 10113 mx-packageinstaller_23.9_i386.buildinfo
+ 916c888f936de3ef2672c2b2f634bc1e42cbef6c89bdba29808058f8b4159b53 393616 mx-packageinstaller_23.9_i386.deb
+Files:
+ 479b4b2ed03ec04a749e0e3d4d650d7d 10113 admin optional mx-packageinstaller_23.9_i386.buildinfo
+ 61d32fe086459bbf0d9aa889cd46ebe9 393616 admin optional mx-packageinstaller_23.9_i386.deb
