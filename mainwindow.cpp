@@ -66,7 +66,14 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     conn = connect(&cmd, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
     connect(&cmd, &Cmd::errorAvailable, [](const QString &out) { qWarning() << out.trimmed(); });
     setWindowFlags(Qt::Window); // for the close, min and max buttons
-    setup();
+
+    QTimer::singleShot(0, this, [this] {
+        setup();
+        QApplication::processEvents();
+        AptCache cache;
+        enabled_list = cache.getCandidates();
+        displayPackages();
+    });
 }
 
 MainWindow::~MainWindow()
@@ -801,6 +808,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 void MainWindow::displayPackages()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    displayPackagesIsRunning = true;
 
     QTreeWidget *newtree {nullptr}; // new pointer to avoid overwriting current "tree"
 
@@ -888,8 +896,14 @@ void MainWindow::displayPackages()
     for (int i = 0; i < newtree->columnCount(); ++i) {
         newtree->resizeColumnToContents(i);
     }
+    if (newtree == ui->treeEnabled) {
+        Cmd shell;
+        ui->pushRemoveOrphan->setVisible(
+            shell.run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
+    }
     updateInterface();
     newtree->blockSignals(false);
+    displayPackagesIsRunning = false;
 }
 
 void MainWindow::displayFlatpaks(bool force_update)
@@ -1943,8 +1957,9 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     disconnect(conn);
-    QString out = cmd.getCmdOut(QStringLiteral("dpkg -l | grep '^ii'"), true);
-    conn = connect(&cmd, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
+    Cmd shell;
+    const QString out = shell.getCmdOut("dpkg -l | grep '^ii'", true);
+    conn = connect(&shell, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
 
     QString name;
     QString ver_str;
@@ -2488,17 +2503,21 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     case Tab::EnabledRepos:
         ui->searchBoxEnabled->setText(search_str);
-        ui->pushRemoveOrphan->setVisible(
-            shell.run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
         enableTabs(true);
         setCurrentTree();
         change_list.clear();
-        if (tree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
-            if (!buildPackageLists()) {
-                QMessageBox::critical(this, tr("Error"),
-                                      tr("Could not download the list of packages. Please check your APT sources."));
-                return;
+        if (!displayPackagesIsRunning) {
+            if (tree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
+                if (!buildPackageLists()) {
+                    QMessageBox::critical(
+                        this, tr("Error"),
+                        tr("Could not download the list of packages. Please check your APT sources."));
+                    return;
+                }
             }
+        } else {
+            progress->show();
+            QApplication::processEvents();
         }
         ui->comboFilterEnabled->setCurrentIndex(filter_idx);
         if (!ui->searchBoxEnabled->text().isEmpty()) {

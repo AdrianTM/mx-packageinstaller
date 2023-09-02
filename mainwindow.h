@@ -217,6 +217,7 @@ private:
     Ui::MainWindow *ui;
 
     QString indexFilterFP;
+    bool displayPackagesIsRunning {false};
     bool dirtyBackports {true};
     bool dirtyEnabledRepos {true};
     bool dirtyTest {true};
