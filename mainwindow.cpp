@@ -73,6 +73,7 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
         AptCache cache;
         enabled_list = cache.getCandidates();
         displayPackages();
+        displayFlatpaks();
     });
 }
 
@@ -240,6 +241,9 @@ bool MainWindow::updateApt()
     ui->tabOutput->isVisible() // don't display in output if calling to refresh from tabs
         ? ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Refreshing sources..."))
         : progress->show();
+    if (!timer.isActive()) {
+        timer.start(100ms);
+    }
 
     enableOutput();
     if (cmd.run(QStringLiteral("apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o "
@@ -341,8 +345,10 @@ void MainWindow::listSizeInstalledFP()
 // Block interface while updating Flatpak list
 void MainWindow::blockInterfaceFP(bool block)
 {
-    for (int tab = 0; tab < 4; ++tab) {
-        ui->tabWidget->setTabEnabled(tab, !block);
+    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+        for (int tab = 0; tab < 4; ++tab) {
+            ui->tabWidget->setTabEnabled(tab, !block);
+        }
     }
 
     ui->comboRemote->setDisabled(block);
@@ -909,24 +915,31 @@ void MainWindow::displayPackages()
 void MainWindow::displayFlatpaks(bool force_update)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-
-    setCursor(QCursor(Qt::BusyCursor));
-    ui->treeFlatpak->clear();
+    displayFlatpaksIsRunning = true;
+    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+        setCursor(QCursor(Qt::BusyCursor));
+    }
     ui->treeFlatpak->blockSignals(true);
+    ui->treeFlatpak->clear();
     change_list.clear();
 
     if (flatpaks.isEmpty() || force_update) {
-        progress->show();
+        if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+            progress->show();
+            if (!timer.isActive()) {
+                timer.start(100ms);
+            }
+        }
         blockInterfaceFP(true);
         flatpaks = listFlatpaks(ui->comboRemote->currentText());
         flatpaks_apps.clear();
         flatpaks_runtimes.clear();
 
         // list installed packages
-        installed_apps_fp = listInstalledFlatpaks(QStringLiteral("--app"));
+        installed_apps_fp = listInstalledFlatpaks("--app");
 
         // add runtimes (needed for older flatpak versions)
-        installed_runtimes_fp = listInstalledFlatpaks(QStringLiteral("--runtime"));
+        installed_runtimes_fp = listInstalledFlatpaks("--runtime");
     }
     int total_count = 0;
     QTreeWidgetItem *widget_item {nullptr};
@@ -969,9 +982,7 @@ void MainWindow::displayFlatpaks(bool force_update)
         }
         widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
     }
-
-    // add sizes for the installed packages for older flatpak that doesn't list size for all the
-    // packages
+    // add sizes for the installed packages for older flatpak that doesn't list size for all the packages
     listSizeInstalledFP();
 
     ui->labelNumAppFP->setText(QString::number(total_count));
@@ -980,22 +991,21 @@ void MainWindow::displayFlatpaks(bool force_update)
     if (installed_apps_fp != QStringList(QLatin1String(""))) {
         total = installed_apps_fp.count();
     }
-
     ui->labelNumInstFP->setText(QString::number(total));
-
     ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
-
     removeDuplicatesFP();
-
     for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
         ui->treeFlatpak->resizeColumnToContents(i);
     }
-
     ui->treeFlatpak->blockSignals(false);
-    filterChanged(ui->comboFilterFlatpak->currentText());
+    if (ui->tabWidget->currentIndex() == Tab::Flatpak && !ui->comboFilterFlatpak->currentText().isEmpty()) {
+        filterChanged(ui->comboFilterFlatpak->currentText());
+    }
     blockInterfaceFP(false);
     ui->searchBoxFlatpak->setFocus();
     progress->hide();
+    timer.stop();
+    displayFlatpaksIsRunning = false;
 }
 
 void MainWindow::displayWarning(const QString &repo)
@@ -1056,6 +1066,7 @@ void MainWindow::listFlatpakRemotes()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
+    Cmd cmd;
     QStringList list
         = cmd.getCmdOut("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"flatpak remote-list "
                         + user + "| cut -f1\"")
@@ -1554,12 +1565,14 @@ bool MainWindow::downloadPackageList(bool force_download)
 
     if (enabled_list.isEmpty() || force_download) {
         if (force_download) {
-            progress->show();
             if (!updateApt()) {
                 return false;
             }
         }
         progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
+        }
         AptCache cache;
         enabled_list = cache.getCandidates();
         if (enabled_list.isEmpty()) {
@@ -1572,6 +1585,9 @@ bool MainWindow::downloadPackageList(bool force_download)
     if (tree == ui->treeMXtest) {
         if (!QFile::exists(tmp_dir.path() + "/mxPackages") || force_download) {
             progress->show();
+            if (!timer.isActive()) {
+                timer.start(100ms);
+            }
 
             QFile file(tmp_dir.path() + "/mxPackages.gz");
             QString url = QStringLiteral("http://mxrepo.com/mx/testrepo/dists/");
@@ -1596,6 +1612,9 @@ bool MainWindow::downloadPackageList(bool force_download)
         if (!QFile::exists(tmp_dir.path() + "/mainPackages") || !QFile::exists(tmp_dir.path() + "/contribPackages")
             || !QFile::exists(tmp_dir.path() + "/nonfreePackages") || force_download) {
             progress->show();
+            if (!timer.isActive()) {
+                timer.start(100ms);
+            }
 
             QFile file(tmp_dir.path() + "/mainPackages.xz");
             QString url = QStringLiteral("http://deb.debian.org/debian/dists/");
@@ -1855,6 +1874,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     }
 
     disconnect(conn);
+    Cmd cmd;
     if (fp_ver < VersionNumber(QStringLiteral("1.0.1"))) {
         // list packages, strip first part remote/ or app/ no size for old flatpak
         success = cmd.run("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"set -o pipefail; "
@@ -1980,7 +2000,9 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 
 void MainWindow::cmdStart()
 {
-    timer.start(100ms);
+    if (!timer.isActive()) {
+        timer.start(100ms);
+    }
     setCursor(QCursor(Qt::BusyCursor));
     ui->lineEdit->setFocus();
 }
@@ -2489,7 +2511,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     } else if (tree == ui->treeFlatpak) {
         search_str = ui->searchBoxFlatpak->text();
     }
-
     Cmd shell;
     switch (bool success = false; index) {
     case Tab::Popular:
@@ -2517,7 +2538,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             }
         } else {
             progress->show();
-            QApplication::processEvents();
+            if (!timer.isActive()) {
+                timer.start(100ms);
+            }
         }
         ui->comboFilterEnabled->setCurrentIndex(filter_idx);
         if (!ui->searchBoxEnabled->text().isEmpty()) {
@@ -2569,7 +2592,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         setCurrentTree();
         displayWarning(QStringLiteral("flatpaks"));
         blockInterfaceFP(true);
-
         if (!checkInstalled(QStringLiteral("flatpak"))) {
             int ans = QMessageBox::question(this, tr("Flatpak not installed"),
                                             tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
@@ -2603,9 +2625,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 }
             }
             enableOutput();
-            success = cmd.run(QStringLiteral("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c "
-                                             "\"flatpak remote-add --if-not-exists "
-                                             "flathub https://flathub.org/repo/flathub.flatpakrepo\""));
+            success = shell.run(QStringLiteral("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c "
+                                               "\"flatpak remote-add --if-not-exists "
+                                               "flathub https://flathub.org/repo/flathub.flatpakrepo\""));
             if (!success) {
                 QMessageBox::critical(this, tr("Flathub remote failed"), tr("Flathub remote could not be added"));
                 ui->tabWidget->setCurrentIndex(Tab::Popular);
@@ -2613,7 +2635,14 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 break;
             }
             listFlatpakRemotes();
-            displayFlatpaks(false);
+            if (displayFlatpaksIsRunning) {
+                progress->show();
+                if (!timer.isActive()) {
+                    timer.start(100ms);
+                }
+            } else if (!displayPackagesIsRunning) {
+                displayFlatpaks(false);
+            }
             setCursor(QCursor(Qt::ArrowCursor));
             QMessageBox::warning(this, tr("Needs re-login"),
                                  tr("You might need to logout/login to see installed items in the menu"));
@@ -2625,9 +2654,10 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        success = cmd.run(QStringLiteral("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"flatpak "
-                                         "remote-add --if-not-exists flathub "
-                                         "https://flathub.org/repo/flathub.flatpakrepo\""));
+        success
+            = shell.run(QStringLiteral("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"flatpak "
+                                       "remote-add --if-not-exists flathub "
+                                       "https://flathub.org/repo/flathub.flatpakrepo\""));
         if (!success) {
             QMessageBox::critical(this, tr("Flathub remote failed"), tr("Flathub remote could not be added"));
             ui->tabWidget->setCurrentIndex(Tab::Popular);
@@ -2638,7 +2668,14 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (ui->comboRemote->currentText().isEmpty()) {
             listFlatpakRemotes();
         }
-        displayFlatpaks(false);
+        if (displayFlatpaksIsRunning) {
+            progress->show();
+            if (!timer.isActive()) {
+                timer.start(100ms);
+            }
+        } else if (!displayPackagesIsRunning) {
+            displayFlatpaks(false);
+        }
         ui->searchBoxBP->setText(search_str);
         break;
     case Tab::Output:
@@ -2983,10 +3020,10 @@ void MainWindow::on_pushRemotes_clicked()
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run(
-                "runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"socat SYSTEM:'flatpak install -y "
-                + dialog->getUser() + "--from "
-                + dialog->getInstallRef().replace(QLatin1String(":"), QLatin1String("\\:")) + "',stderr STDIO\"")) {
+        if (cmd.run("runuser -l $(logname) --whitelist-environment LANG -s /bin/bash -c \"socat SYSTEM:'flatpak "
+                    "install -y "
+                    + dialog->getUser() + "--from "
+                    + dialog->getInstallRef().replace(QLatin1String(":"), QLatin1String("\\:")) + "',stderr STDIO\"")) {
             listFlatpakRemotes();
             displayFlatpaks(true);
             setCursor(QCursor(Qt::ArrowCursor));
