@@ -1,3 +1,9 @@
+mx-packageinstaller (23.9.01) mx; urgency=medium
+
+  * Remove flatpak dependency on 32-bit
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 19 Sep 2023 10:15:51 -0400
+
 mx-packageinstaller (23.9) mx; urgency=medium
 
   *  Load info for enabled repos and flatpaks in the background at start time

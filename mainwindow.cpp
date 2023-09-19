@@ -73,7 +73,9 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
         AptCache cache;
         enabled_list = cache.getCandidates();
         displayPackages();
-        displayFlatpaks();
+        if (arch != "i386") {
+            displayFlatpaks();
+        }
     });
 }
 
