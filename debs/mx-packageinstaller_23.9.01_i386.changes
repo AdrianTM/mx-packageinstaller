@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Tue, 19 Sep 2023 10:15:51 -0400
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.9.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.9.01) mx; urgency=medium
+ .
+   * Remove flatpak dependency on 32-bit
+Checksums-Sha1:
+ bc2def0bfc83132cd970334de947a89267d15158 10128 mx-packageinstaller_23.9.01_i386.buildinfo
+ 304dd459a60a7b38726121882c98776f2425627d 393864 mx-packageinstaller_23.9.01_i386.deb
+Checksums-Sha256:
+ f754d1499c2046435e37e09c9f4a3c1ee770bc9096494b9da5afaba5584f27d0 10128 mx-packageinstaller_23.9.01_i386.buildinfo
+ b7fa991301d1d12b371cc359858c95c58fad109038594ec4d95344560b25c1f8 393864 mx-packageinstaller_23.9.01_i386.deb
+Files:
+ da9fe0bd9396262e3c52a8d7afe64f42 10128 admin optional mx-packageinstaller_23.9.01_i386.buildinfo
+ 0e4f48c53c1893910e059505448f588b 393864 admin optional mx-packageinstaller_23.9.01_i386.deb

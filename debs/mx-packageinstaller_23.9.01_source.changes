@@ -1,0 +1,40 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Tue, 19 Sep 2023 10:15:51 -0400
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.9.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.9.01) mx; urgency=medium
+ .
+   * Remove flatpak dependency on 32-bit
+Checksums-Sha1:
+ 4fdcaf0224837d3253dba1a7fc62722bf79de5c4 1232 mx-packageinstaller_23.9.01.dsc
+ dfd3cf4cf4aad519de8ab9ee10c5028c32d69654 309900 mx-packageinstaller_23.9.01.tar.xz
+ 5c568e76abf4b8ca11a4798c97f392eec4a6d6dc 11003 mx-packageinstaller_23.9.01_amd64.buildinfo
+Checksums-Sha256:
+ e307e2701018090af32b260f6a30f458c9d6880a886f026050d4fc2661026756 1232 mx-packageinstaller_23.9.01.dsc
+ 766548c94242a51638fb43794c2827e45815dc18c5198f87c2d7de31ea96944b 309900 mx-packageinstaller_23.9.01.tar.xz
+ db9defaec4a4e179cc31e3d7ee338a0906f1604971301ded82d3773714646b79 11003 mx-packageinstaller_23.9.01_amd64.buildinfo
+Files:
+ 2a9433b6a8d87c8da521f4c1835bb50a 1232 admin optional mx-packageinstaller_23.9.01.dsc
+ 123ab6e5437ddb5b26a6a2b31c265b41 309900 admin optional mx-packageinstaller_23.9.01.tar.xz
+ 02ffe41b74cea317f92e805976a9e9f8 11003 admin optional mx-packageinstaller_23.9.01_amd64.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmUJrlUTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumIJsB/4lUgRdN286wLD30xQQVR4c6IdepTzF
+mvjpnZPh66vFAUwzbBVTI+ZDsbD9rRfUaKxO17T0ON2emL6UCQ8GYO3KLcnipTkm
+KBU3rA/NnuSEAJcpcGzlory/Yj1qvbwR3M4HUTPJQS4kd+HbZVVzMZryCX8YBCC2
+Vvr1ndpOouIidM30muALru6rut6H8Dm4Vhu96nsCXKnssV3EQ3iOCHklc5Ldf4/0
+bGX5lL0voMqdleI73n8AdXNQiWg8NHJA0TovZ8UJRyHSFFFkEA6AuzJHigVp+F7Y
+AZVUeHNY2Xfn7GiGgXm2/8lCOF/0Q8CDhMb8eVj1MEIIBU6IOr0XQmUK
+=4s6Q
+-----END PGP SIGNATURE-----
