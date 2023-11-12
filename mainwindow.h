@@ -245,8 +245,9 @@ private:
     QSettings dictionary;
     QSettings settings;
     QString arch;
-    QString user;
+    QString FPuser;
     QString ver_name;
+    QString temp_list {"/etc/apt/sources.list.d/mxpm-temp.list"};
     QStringList change_list;
     QStringList flatpaks;
     QStringList flatpaks_apps;
@@ -257,6 +258,7 @@ private:
     QTemporaryDir tmp_dir;
     QTimer timer;
     QTreeWidget *tree {}; // current/calling tree
+    QTreeWidgetItem *lastItemClicked {};
     VersionNumber fp_ver;
     const QCommandLineParser &args;
 

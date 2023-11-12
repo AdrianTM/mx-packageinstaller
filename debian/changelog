@@ -1,3 +1,12 @@
+mx-packageinstaller (23.11) mx; urgency=medium
+
+  * Run program as normal user and elevate only when needed
+  * Lock apt database only when running apt program, also allow GUI to start if database is locked
+      -- will notify user which app is locking the database
+  * Keep selected item in view when selecting first item in flatpaks to install/uninstall
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 13 Nov 2023 15:34:50 -0500
+
 mx-packageinstaller (23.9.01) mx; urgency=medium
 
   * Remove flatpak dependency on 32-bit
