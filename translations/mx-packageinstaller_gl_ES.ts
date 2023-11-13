@@ -319,7 +319,7 @@
         <location filename="../mainwindow.cpp" line="1147"/>
         <location filename="../mainwindow.cpp" line="2773"/>
         <location filename="../mainwindow.cpp" line="2777"/>
-        <location filename="../mainwindow.cpp" line="3037"/>
+        <location filename="../mainwindow.cpp" line="3039"/>
         <source>Install</source>
         <translation>Instalar</translation>
     </message>
@@ -428,10 +428,10 @@
         <location filename="../mainwindow.cpp" line="2510"/>
         <location filename="../mainwindow.cpp" line="2529"/>
         <location filename="../mainwindow.cpp" line="2860"/>
-        <location filename="../mainwindow.cpp" line="2936"/>
-        <location filename="../mainwindow.cpp" line="2965"/>
-        <location filename="../mainwindow.cpp" line="3061"/>
-        <location filename="../mainwindow.cpp" line="3086"/>
+        <location filename="../mainwindow.cpp" line="2937"/>
+        <location filename="../mainwindow.cpp" line="2966"/>
+        <location filename="../mainwindow.cpp" line="3063"/>
+        <location filename="../mainwindow.cpp" line="3088"/>
         <source>Error</source>
         <translation>Erro</translation>
     </message>
@@ -500,7 +500,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
-        <location filename="../mainwindow.cpp" line="3070"/>
+        <location filename="../mainwindow.cpp" line="3072"/>
         <source>Warning</source>
         <translation>Aviso</translation>
     </message>
@@ -570,7 +570,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2032"/>
-        <location filename="../mainwindow.cpp" line="3000"/>
+        <location filename="../mainwindow.cpp" line="3002"/>
         <source>More &amp;info...</source>
         <translation>Máis &amp;información...</translation>
     </message>
@@ -587,9 +587,9 @@
         <location filename="../mainwindow.cpp" line="2376"/>
         <location filename="../mainwindow.cpp" line="2399"/>
         <location filename="../mainwindow.cpp" line="2856"/>
-        <location filename="../mainwindow.cpp" line="2930"/>
-        <location filename="../mainwindow.cpp" line="2959"/>
-        <location filename="../mainwindow.cpp" line="3055"/>
+        <location filename="../mainwindow.cpp" line="2931"/>
+        <location filename="../mainwindow.cpp" line="2960"/>
+        <location filename="../mainwindow.cpp" line="3057"/>
         <source>Done</source>
         <translation>Feito</translation>
     </message>
@@ -602,10 +602,10 @@
         <location filename="../mainwindow.cpp" line="2399"/>
         <location filename="../mainwindow.cpp" line="2418"/>
         <location filename="../mainwindow.cpp" line="2856"/>
-        <location filename="../mainwindow.cpp" line="2930"/>
-        <location filename="../mainwindow.cpp" line="2959"/>
-        <location filename="../mainwindow.cpp" line="3055"/>
-        <location filename="../mainwindow.cpp" line="3079"/>
+        <location filename="../mainwindow.cpp" line="2931"/>
+        <location filename="../mainwindow.cpp" line="2960"/>
+        <location filename="../mainwindow.cpp" line="3057"/>
+        <location filename="../mainwindow.cpp" line="3081"/>
         <source>Processing finished successfully.</source>
         <translation>Procesamento rematado con éxito.</translation>
     </message>
@@ -614,8 +614,8 @@
         <location filename="../mainwindow.cpp" line="2279"/>
         <location filename="../mainwindow.cpp" line="2291"/>
         <location filename="../mainwindow.cpp" line="2861"/>
-        <location filename="../mainwindow.cpp" line="2937"/>
-        <location filename="../mainwindow.cpp" line="2966"/>
+        <location filename="../mainwindow.cpp" line="2938"/>
+        <location filename="../mainwindow.cpp" line="2967"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Detectado problema ao instalar; verificar información na consola. </translation>
     </message>
@@ -656,13 +656,13 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2418"/>
-        <location filename="../mainwindow.cpp" line="3079"/>
+        <location filename="../mainwindow.cpp" line="3081"/>
         <source>Success</source>
         <translation>Con éxito</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2425"/>
-        <location filename="../mainwindow.cpp" line="3086"/>
+        <location filename="../mainwindow.cpp" line="3088"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Houbo un problema ao desinstalar o programa</translation>
     </message>
@@ -725,17 +725,17 @@ Continuar e instalar o paquete?</translation>
         <translation>O proceso aínda está en execución. Saír pode deixar o sistema nun estado instable.&lt;p&gt;&lt;b&gt;Saír realmente do MX instalador de paquetes?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3035"/>
+        <location filename="../mainwindow.cpp" line="3037"/>
         <source>Reinstall</source>
         <translation>Reinstalar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3062"/>
+        <location filename="../mainwindow.cpp" line="3064"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Detectouse un problema durante a última operación. Inspeccione a saída da consola.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3071"/>
+        <location filename="../mainwindow.cpp" line="3073"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Operación potencialmente perigosa.

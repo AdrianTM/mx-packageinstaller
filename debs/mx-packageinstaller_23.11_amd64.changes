@@ -21,29 +21,29 @@ Changes:
        -- will notify user which app is locking the database
    * Keep selected item in view when selecting first item in flatpaks to install/uninstall
 Checksums-Sha1:
- 530253707af51aa7fb93df18b370ce9665f560f8 1224 mx-packageinstaller_23.11.dsc
- 585326e9c0f98b71408c340eaad17e707dd3a046 310172 mx-packageinstaller_23.11.tar.xz
- 59824038864eb0ff07a6b1eff218a001208337a8 10988 mx-packageinstaller_23.11_amd64.buildinfo
- f8050a1f1ee8dc6508fd6f2407822ea88dc4fb9f 380048 mx-packageinstaller_23.11_amd64.deb
+ 9568bb71ea0176bd25697d30bee7b4b2671b26fb 1224 mx-packageinstaller_23.11.dsc
+ aef47a0e8b088430f402f33d2dce3b47042cf638 310168 mx-packageinstaller_23.11.tar.xz
+ b08d74373ad042c31a35f39cca608913c07d63f3 10988 mx-packageinstaller_23.11_amd64.buildinfo
+ 125a5a70db2b6961abf559a8b67c56f4863d09f1 380008 mx-packageinstaller_23.11_amd64.deb
 Checksums-Sha256:
- 1bd1312b74c9ee7abb9eb5cb501b4d38b4e9a92e8e7e87e2c37bebccba79493f 1224 mx-packageinstaller_23.11.dsc
- 58e33fe870597302874037587e7c8201c739f1625ecffeb0862d550b07a7d4b5 310172 mx-packageinstaller_23.11.tar.xz
- 542d858e8418bf40b71254183392a48be36c98eb4ced96a04e34b3165cb39ef3 10988 mx-packageinstaller_23.11_amd64.buildinfo
- aecd733350b2e1d2ab502a6da5dc83a7d9c21afff2e77bf57a470c1e01e902b3 380048 mx-packageinstaller_23.11_amd64.deb
+ ec289995bdcd19b6ef8d1a2cb8cdbdf4ad9dd028f950146182cf06f6355c828b 1224 mx-packageinstaller_23.11.dsc
+ 467d30fb0ab3dab2cf2533f32b1d2c4602eaa9d703a24bf69cbcde16139d6602 310168 mx-packageinstaller_23.11.tar.xz
+ b42a7ab55b9332c9ac728f38f04d323bc8d48dcf7a406f7de390f97f15cb8406 10988 mx-packageinstaller_23.11_amd64.buildinfo
+ 3ba1cca5632601e8ecee362eea87a169091ae5e2dbc722efe9f44f1dafe3e0f3 380008 mx-packageinstaller_23.11_amd64.deb
 Files:
- 6e6067ce9394d30d01f20e64be4c9c91 1224 admin optional mx-packageinstaller_23.11.dsc
- 30f359f7227c782605b0daf3fc8e217d 310172 admin optional mx-packageinstaller_23.11.tar.xz
- 15997aadd8279f42ce6ffa6be3a0623b 10988 admin optional mx-packageinstaller_23.11_amd64.buildinfo
- 2c18d6a6e08d29a50eb63122adc89a3a 380048 admin optional mx-packageinstaller_23.11_amd64.deb
+ a120d08f45b282ec397ece87c720a650 1224 admin optional mx-packageinstaller_23.11.dsc
+ 2b0f39a42820ad5c489e2fbf0f49773a 310168 admin optional mx-packageinstaller_23.11.tar.xz
+ 0bea29b92077e75d1b64fa238cb990f0 10988 admin optional mx-packageinstaller_23.11_amd64.buildinfo
+ f25f4ea1b20039a1bce0a97f014e4f9f 380008 admin optional mx-packageinstaller_23.11_amd64.deb
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVSl7QTHGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumHzhB/9hgmYzesERKlg8ETJDY/SKJk9RnUCr
-GOnodtpuecL0ABhTutV+vBPo5KIkE/j33uwWeWXB9mEsKaZyTiqw4wOBbnD3olaF
-dSvJZL2zOAu8PKFS/H6TnjDGHKUKeHTcpUaaxK1apXHq+ZFcTD+sOQj+1WPP9KaE
-wUL3vOCmQI+p2G49YQ6uTypY83B+R/ec/SVT4bZbgPRtN9PP4rRkpesDC9Vo2/gJ
-Akx7WoUpaMJaQZ707VUFK2yNE4gUHNhQ6c1nNM+Sja+bgf52KBnyPuyTV6OuoraI
-EjTFBm5xjjQ5tpvhuslu9gLpC7Ill7Jb37JGPvDBPeMICF98+b8kCCFN
-=vcRL
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVSnGkTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumDeMB/9rbvdVGmliL/wXjFQWHKLrNMno7GpP
+d7yNgF5352rYux1RmqUuyl3ZMkIoAXTXHCHFCKf3RZceaK0oV/87cFbVNUJegJmk
+e26z72xO0/MPoJ3dZmaebmIjiOZNQBQ4Lqa/QgPPaDDnKtH0bEzbFAS8GJi2t88B
+zm0hFIZkLbKIU1gtKPHeqxpDR19tD85RH28SRbeG5+wHvupnGU61NCxBWtQssnS/
+S42vg/2Oisy8pT89UW3xu2Rt+Q4bRhy0ZBTQyNZ3t3mjHFTONo8NgEz8KNfYROVt
+I4r7bHnBWcQn8fxyp7iC+UFWUPtjqG8lhi/FlwBlNz+kWGJ8PEnct00M
+=DPLY
 -----END PGP SIGNATURE-----

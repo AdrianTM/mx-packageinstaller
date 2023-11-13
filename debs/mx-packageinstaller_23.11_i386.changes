@@ -18,11 +18,11 @@ Changes:
        -- will notify user which app is locking the database
    * Keep selected item in view when selecting first item in flatpaks to install/uninstall
 Checksums-Sha1:
- 7a42bb7d9a91e2f0740f64ed14777fb54e181de7 10119 mx-packageinstaller_23.11_i386.buildinfo
- 8538bf3ff22ac326b85bc734c8586b393768201b 390368 mx-packageinstaller_23.11_i386.deb
+ fcbb1f1f2f9839454c7ac105419952498f9db7db 10119 mx-packageinstaller_23.11_i386.buildinfo
+ 3419118e46f5dd042629773ff5b31e7b6bb0f301 390044 mx-packageinstaller_23.11_i386.deb
 Checksums-Sha256:
- 2abbb28f61d3425d9052a55df6095ee60d8565933ae0bc7e0e4e3a27a35a13c4 10119 mx-packageinstaller_23.11_i386.buildinfo
- 1cbce859198d93e90a04f673d4ac7ab6c96d204aee7d5f5c9edc1c5b0ebccdb2 390368 mx-packageinstaller_23.11_i386.deb
+ 9dabab81ac640d0c3c19eca3d4a836e941374c909fede01b294053c24f3c6fa8 10119 mx-packageinstaller_23.11_i386.buildinfo
+ eaa432f2e48dc21eacf5ac4980d587ab6042dea07b89fb03b733d8e0d2587473 390044 mx-packageinstaller_23.11_i386.deb
 Files:
- 16cb302f39d9792305bf5276082d27d4 10119 admin optional mx-packageinstaller_23.11_i386.buildinfo
- cdfb31af47ca546a102c0c1593f3fb64 390368 admin optional mx-packageinstaller_23.11_i386.deb
+ 7ca717e9ad9b91dd41b212608cb656d8 10119 admin optional mx-packageinstaller_23.11_i386.buildinfo
+ d4f72f1a5ed78250f83a3b8c2f886d96 390044 admin optional mx-packageinstaller_23.11_i386.deb
