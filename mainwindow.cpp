@@ -2915,6 +2915,7 @@ void MainWindow::on_checkHideLibsBP_clicked(bool checked)
 void MainWindow::on_comboRemote_activated()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    lastItemClicked = nullptr;
     displayFlatpaks(true);
 }
 
@@ -2987,6 +2988,7 @@ void MainWindow::on_comboUser_activated(int index)
             updated = true;
         }
     }
+    lastItemClicked = nullptr;
     listFlatpakRemotes();
     displayFlatpaks(true);
 }
