@@ -18,11 +18,11 @@ Changes:
        -- will notify user which app is locking the database
    * Keep selected item in view when selecting first item in flatpaks to install/uninstall
 Checksums-Sha1:
- 4dbd9bf919700b43ab874ce86c4c795b84973a66 10161 mx-packageinstaller_23.11_arm64.buildinfo
- 44a38cd8e3f83c1d59c59e39b6d492f966030673 363860 mx-packageinstaller_23.11_arm64.deb
+ 27ba2300e2679b83932a9ca5dc2b72231bfb18d9 10161 mx-packageinstaller_23.11_arm64.buildinfo
+ a81a90b61c7c0d40e6bd53abda5f02409d658e46 363572 mx-packageinstaller_23.11_arm64.deb
 Checksums-Sha256:
- fc5c07d9a33246f8fa6104e79284932bba3f0137c401fd9bef6db9d3ede1d431 10161 mx-packageinstaller_23.11_arm64.buildinfo
- fab7afdd80a833643adbfd427d046871892d87f0fff85b2246a97ce51b2d6fd9 363860 mx-packageinstaller_23.11_arm64.deb
+ 70e166137251cbb0bd6daeb09a7aba07c396f3b5ad866efe43631c3819bc1df6 10161 mx-packageinstaller_23.11_arm64.buildinfo
+ d26437c1149516689cb47157565a15f2ebaa95193fc51bf396b49489a5dbd83d 363572 mx-packageinstaller_23.11_arm64.deb
 Files:
- a07d51fbd82e197dd9b7328f133c8e5b 10161 admin optional mx-packageinstaller_23.11_arm64.buildinfo
- 22a7ff7110d4f95138cc4c963c2864ed 363860 admin optional mx-packageinstaller_23.11_arm64.deb
+ ed5241d53788b3a0a26b8605ec57b673 10161 admin optional mx-packageinstaller_23.11_arm64.buildinfo
+ a169e50190e0665435e492db039e9e4c 363572 admin optional mx-packageinstaller_23.11_arm64.deb

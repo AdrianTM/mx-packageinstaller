@@ -10,8 +10,8 @@ Build-Depends: debhelper (>= 10), qtbase5-dev, qttools5-dev-tools
 Package-List:
  mx-packageinstaller deb admin optional arch=any
 Checksums-Sha1:
- de9342e7e3e3a3d47e3a2c8a5e89f1ee68712ca4 310264 mx-packageinstaller_23.11.tar.xz
+ 6245690b7b1817d111f75cd7f883514694175784 310284 mx-packageinstaller_23.11.tar.xz
 Checksums-Sha256:
- d3577a8e3b39b31864419e0040b71970fb8e2b0c69c60dad1cf05fc9139387d5 310264 mx-packageinstaller_23.11.tar.xz
+ 6da36d738b35a103b96d33debee9888da1abd04cd8bf13ac91195f739fd5cb4d 310284 mx-packageinstaller_23.11.tar.xz
 Files:
- 1d212cfe9ae9f3ad6e8ca2fd0b4a2d4c 310264 mx-packageinstaller_23.11.tar.xz
+ 1175d2fab5220bbea91dc40e9942d1ec 310284 mx-packageinstaller_23.11.tar.xz
