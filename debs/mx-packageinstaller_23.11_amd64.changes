@@ -1,0 +1,49 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Mon, 13 Nov 2023 15:34:50 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.11
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11) mx; urgency=medium
+ .
+   * Run program as normal user and elevate only when needed
+   * Lock apt database only when running apt program, also allow GUI to start if database is locked
+       -- will notify user which app is locking the database
+   * Keep selected item in view when selecting first item in flatpaks to install/uninstall
+Checksums-Sha1:
+ 3404f371dd95bd1cb91566f58be506a72084d670 1224 mx-packageinstaller_23.11.dsc
+ 3f24b394d30449f1a6e9d2c2b48abd5e81782e77 310192 mx-packageinstaller_23.11.tar.xz
+ a3e654dd895df01e3b039aa682659fa92674319d 10988 mx-packageinstaller_23.11_amd64.buildinfo
+ 738376c5684dca3ad86d4b781c7ecd66c13770f1 380216 mx-packageinstaller_23.11_amd64.deb
+Checksums-Sha256:
+ e9e5fefd037edfb4dcb45a5a4a175f94a0b10718f7543d47ff53fadfd1185ba4 1224 mx-packageinstaller_23.11.dsc
+ c9e57c3ac865559aa6bf83534f1536b4d3a052083d4024159a312a80e13b487a 310192 mx-packageinstaller_23.11.tar.xz
+ 3d6fb12d69afba2df763a3a33f09750a6e8a6040d100e9caf03aebbb10fd44da 10988 mx-packageinstaller_23.11_amd64.buildinfo
+ c573e11638387e74cf9257b24ebaa5c7939dfa350db32c3ead996ebffabf0c3a 380216 mx-packageinstaller_23.11_amd64.deb
+Files:
+ 2dd51f53f1bc90efc46bb25cceb70721 1224 admin optional mx-packageinstaller_23.11.dsc
+ 6bfaa1e6a5c6b3a06d92cd2e60919302 310192 admin optional mx-packageinstaller_23.11.tar.xz
+ 6e67bf095402e0ecebe81c73732c0029 10988 admin optional mx-packageinstaller_23.11_amd64.buildinfo
+ b5c3d5e7afa9855d5c3574cb3bb3a8c3 380216 admin optional mx-packageinstaller_23.11_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVSlAkTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumE2tB/9rLRcOX7YkcAtLwYAwvWbC5ZTFnBvH
+/NXq9H3OVjJfY9gXyHedjCBQaU9ILTsPcEPqYNbFk4xnxdokC+tKH9O31aiSSjz2
+aAX/PWHKKNy5goNo0bHkf62oDHOxsGXbKXEpjCmKHSJQmjv3I0MARA5h6+yzPmyY
+aFI7MaUx5npVpjw96zIwCPlCOF7CKCxJWBLv2D82/qaVvvROivJvb2RZH9GeOcGx
+7vewtXkmED3jVwcj5TDhRJK2gHaWqVI7KIvrJi66EKvsZttBn5JBqg89SsBxA5wD
+ylKHxtSXozTGdCpNw2PHX0mCmyCUIkR1Q4RUaandsfPX9A564lXbNRtZ
+=4gJ4
+-----END PGP SIGNATURE-----

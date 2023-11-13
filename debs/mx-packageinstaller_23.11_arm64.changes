@@ -1,0 +1,28 @@
+Format: 1.8
+Date: Mon, 13 Nov 2023 15:34:50 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: arm64
+Version: 23.11
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11) mx; urgency=medium
+ .
+   * Run program as normal user and elevate only when needed
+   * Lock apt database only when running apt program, also allow GUI to start if database is locked
+       -- will notify user which app is locking the database
+   * Keep selected item in view when selecting first item in flatpaks to install/uninstall
+Checksums-Sha1:
+ 4dbd9bf919700b43ab874ce86c4c795b84973a66 10161 mx-packageinstaller_23.11_arm64.buildinfo
+ 44a38cd8e3f83c1d59c59e39b6d492f966030673 363860 mx-packageinstaller_23.11_arm64.deb
+Checksums-Sha256:
+ fc5c07d9a33246f8fa6104e79284932bba3f0137c401fd9bef6db9d3ede1d431 10161 mx-packageinstaller_23.11_arm64.buildinfo
+ fab7afdd80a833643adbfd427d046871892d87f0fff85b2246a97ce51b2d6fd9 363860 mx-packageinstaller_23.11_arm64.deb
+Files:
+ a07d51fbd82e197dd9b7328f133c8e5b 10161 admin optional mx-packageinstaller_23.11_arm64.buildinfo
+ 22a7ff7110d4f95138cc4c963c2864ed 363860 admin optional mx-packageinstaller_23.11_arm64.deb
