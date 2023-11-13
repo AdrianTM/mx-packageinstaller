@@ -799,7 +799,9 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
             ui->pushInstall->setEnabled(false);
         }
     }
-    ui->treeFlatpak->scrollToItem(lastItemClicked);
+    if (lastItemClicked) {
+        ui->treeFlatpak->scrollToItem(lastItemClicked);
+    }
     ui->labelNumAppFP->setText(QString::number(total));
     ui->treeFlatpak->blockSignals(false);
 }
