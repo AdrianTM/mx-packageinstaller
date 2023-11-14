@@ -1,12 +1,15 @@
 Format: 1.8
 Date: Mon, 13 Nov 2023 15:34:50 -0500
 Source: mx-packageinstaller
-Architecture: source
+Binary: mx-packageinstaller
+Architecture: arm64
 Version: 23.11
 Distribution: mx
 Urgency: medium
 Maintainer: Adrian <adrian@mxlinux.org>
 Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
 Changes:
  mx-packageinstaller (23.11) mx; urgency=medium
  .
@@ -15,14 +18,11 @@ Changes:
        -- will notify user which app is locking the database
    * Keep selected item in view when selecting first item in flatpaks to install/uninstall
 Checksums-Sha1:
- c22bf41abc306abcbe08e6190b0745b1fcbc466a 662 mx-packageinstaller_23.11.dsc
- 23a1a1b5b10f6bbdc66e1f3ad8af24c053faa32a 307152 mx-packageinstaller_23.11.tar.xz
  ffbe5e52867b2515106a4e727591787c947462ed 10160 mx-packageinstaller_23.11_arm64.buildinfo
+ 8f6f4b40740ef863bb511b013f2e752d36377a0b 364468 mx-packageinstaller_23.11_arm64.deb
 Checksums-Sha256:
- 7cf64759f0ef53608a1d6f29c0d8b1cbcf50a22dcc03d9204c4468647f6df14b 662 mx-packageinstaller_23.11.dsc
- e3572fc6aa75e800be2dc797e98f17120d22da17a7b2f11046d9285d69818ade 307152 mx-packageinstaller_23.11.tar.xz
  4daafbb57dcc7bd5d2a4552b61022f79d6dc7cef85d3072b073b7583f4d97fc5 10160 mx-packageinstaller_23.11_arm64.buildinfo
+ 0eb5a4697f7cd9432d269a83b64e3f450f5ee2e74d025e0fcf7a5b9c4060486b 364468 mx-packageinstaller_23.11_arm64.deb
 Files:
- 36fa93c9c095f8b6550f04396d84643a 662 admin optional mx-packageinstaller_23.11.dsc
- bdaea7f79ffdfcd131ce1e8563109e24 307152 admin optional mx-packageinstaller_23.11.tar.xz
  91de0cd1a59b2202fd23868ff5e9e8dd 10160 admin optional mx-packageinstaller_23.11_arm64.buildinfo
+ 8ae9bc7d36f057581f3a6f57fa16b6a3 364468 admin optional mx-packageinstaller_23.11_arm64.deb
