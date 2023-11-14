@@ -1394,7 +1394,7 @@ bool MainWindow::installSelected()
     getDebianVerNum();
     bool result = install(names);
     if (tree == ui->treeBackports || (tree == ui->treeMXtest && !test_initially_enabled)) {
-        if (QFile::remove(temp_list)) {
+        if (Cmd().runAsRoot("rm " + temp_list)) {
             updateApt();
         }
     }
