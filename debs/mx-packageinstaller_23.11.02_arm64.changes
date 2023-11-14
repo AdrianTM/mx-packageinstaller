@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Tue, 14 Nov 2023 10:00:55 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: arm64
+Version: 23.11.02
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.02) mx; urgency=medium
+ .
+   * Remove flatpak dependecy, make it a recommended package
+Checksums-Sha1:
+ 7ddcf9fb3d1d2f7c428e68536b0fa91631804943 10176 mx-packageinstaller_23.11.02_arm64.buildinfo
+ 037a0f26ca1ad491428c0457cef785df85e76dd6 365320 mx-packageinstaller_23.11.02_arm64.deb
+Checksums-Sha256:
+ 6e7457edd942266af1557a56c45a5e2e22ec55a13301b2b4217b0222c56c11b7 10176 mx-packageinstaller_23.11.02_arm64.buildinfo
+ ef46545a169399a1f98be0ae150e6fcffac8a7092bd339ae443eea7f19a50a2f 365320 mx-packageinstaller_23.11.02_arm64.deb
+Files:
+ 9144e0d580542ef326c977c9ba13cfe9 10176 admin optional mx-packageinstaller_23.11.02_arm64.buildinfo
+ 4d349965e3dcedafca8b8176bba0ca9c 365320 admin optional mx-packageinstaller_23.11.02_arm64.deb

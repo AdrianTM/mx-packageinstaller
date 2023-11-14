@@ -74,7 +74,7 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
         AptCache cache;
         enabled_list = cache.getCandidates();
         displayPackages();
-        if (arch != "i386") {
+        if (arch != "i386" && checkInstalled("flatpak")) {
             Cmd().run("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             displayFlatpaks();
         }
@@ -1856,12 +1856,12 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     if (fp_ver < VersionNumber("1.0.1")) {
         // list packages, strip first part remote/ or app/ no size for old flatpak
         success = cmd.run("flatpak -d remote-ls " + FPuser + remote + " " + arch_fp + type
-                          + R"(2>/dev/null| cut -f1 | tr -s ' ' | cut -f1 -d' '|sed 's/^[^\/]*\///g' ")");
+                          + R"( 2>/dev/null| cut -f1 | tr -s ' ' | cut -f1 -d' '|sed 's/^[^\/]*\///g' ")");
         list = cmd.readAllOutput().split("\n");
     } else if (fp_ver < VersionNumber("1.2.4")) { // lower than Buster version
         // list size too
         success = cmd.run("flatpak -d remote-ls " + FPuser + remote + " " + arch_fp + type
-                          + R"(2>/dev/null| cut -f1,3 |tr -s ' ' | sed 's/^[^\/]*\///g' ")");
+                          + R"( 2>/dev/null| cut -f1,3 |tr -s ' ' | sed 's/^[^\/]*\///g' ")");
         list = cmd.readAllOutput().split("\n");
     } else { // Buster version and above
         if (!updated) {
@@ -2575,6 +2575,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                     item->setText(TreeCol::Status, "installed");
                 }
             }
+            fp_ver = getVersion("flatpak");
+            Cmd().run("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             enableOutput();
             listFlatpakRemotes();
             if (displayFlatpaksIsRunning) {

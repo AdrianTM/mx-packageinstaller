@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Tue, 14 Nov 2023 10:00:55 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.11.02
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.02) mx; urgency=medium
+ .
+   * Remove flatpak dependecy, make it a recommended package
+Checksums-Sha1:
+ 828fec11bd88bf2fb2c137f4c41ed109a3cd62dd 1236 mx-packageinstaller_23.11.02.dsc
+ 7cbf5e65c72b445a11ac8cfa824f42046ca972e5 307340 mx-packageinstaller_23.11.02.tar.xz
+ 187a2773bccfd1870589f312ac2dd49a694799c7 11012 mx-packageinstaller_23.11.02_amd64.buildinfo
+ cfb3b42559a92a71baadb7c0adc0fdf46111c357 381560 mx-packageinstaller_23.11.02_amd64.deb
+Checksums-Sha256:
+ 5e79f7006de8b944cdf62e3688d1e31e36d33cbb25bd6f98e23e78f55f087ffd 1236 mx-packageinstaller_23.11.02.dsc
+ 9ae0002926c7000744fa4c65ef64f2f6989d66a5452b400154868e0724fc3f2f 307340 mx-packageinstaller_23.11.02.tar.xz
+ bf64e33447a5215a5e8d901d04f98a8a629232adcca3e8a00224ae1bdcf2a9ac 11012 mx-packageinstaller_23.11.02_amd64.buildinfo
+ de6026d1e123a2de2b799eda443cb47fecce398f06a78a30bb072532167bc81a 381560 mx-packageinstaller_23.11.02_amd64.deb
+Files:
+ b7888bdfb22a7431fd71b3bb9454c218 1236 admin optional mx-packageinstaller_23.11.02.dsc
+ 1cc7c3cc64a8276a01de403e2d322227 307340 admin optional mx-packageinstaller_23.11.02.tar.xz
+ 3993c670e47a883f2dc1a4efda91343a 11012 admin optional mx-packageinstaller_23.11.02_amd64.buildinfo
+ e3004284cb516b3f7441b276660f4ae6 381560 admin optional mx-packageinstaller_23.11.02_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVTlzATHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNLZB/9lSuY8V4akreeHEDBf31BEkI6Y/2hM
+6zzXHlMZymtcW8QOWE1uFzq3GtQnQgii2HOfFR64wPPh/t6nr++NnvcJMm91S0Cl
+8xp6E3bsUcEjLNoBkqsuNJaf44H3uV/U0UFzr3Pz1TZP2wkQAQRbQ29EEZtfb/HW
+lqYh6pEix1ghz855KNYBHYgWAPmSSLaSQsC3LkAS79LEiSfwZaqlRlnwcH/SLM/P
+St1ZP2/B+Z2kOnij5Tk4aGfg9oRs7lHYPEGRJ2DDSApt89YgGcLoy3YAEGy6s03Y
+K6bYAG9st4a/z0HVZjv/cy6X8A5GbP+EnjGvIFlJO1eQ8EDEa7YJPnNt
+=XSM1
+-----END PGP SIGNATURE-----
