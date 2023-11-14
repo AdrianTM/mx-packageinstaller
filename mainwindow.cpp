@@ -911,6 +911,7 @@ void MainWindow::displayFlatpaks(bool force_update)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     displayFlatpaksIsRunning = true;
+    lastItemClicked = nullptr;
     if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
         setCursor(QCursor(Qt::BusyCursor));
     }
