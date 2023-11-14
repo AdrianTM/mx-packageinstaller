@@ -849,7 +849,8 @@ Por favor, asegúrese de comprobar cuidadosamente la lista de paquetes que deben
         <location filename="../lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>La base de datos dpkg/apt está bloqueada por otro programa: %1
+Cierre el programa o espere a que termine el proceso e inténtelo de nuevo.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="78"/>

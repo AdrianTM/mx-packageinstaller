@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Tue, 14 Nov 2023 08:35:07 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: arm64
+Version: 23.11.01
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.01) mx; urgency=medium
+ .
+   * Add link to /usr/bin/mxpi-launcher
+Checksums-Sha1:
+ 6982fa0641574947f3fd0d4bf9b849cd27377f4e 10175 mx-packageinstaller_23.11.01_arm64.buildinfo
+ 81bd9139af30a57c85aa605c0926cd31580f84e2 364688 mx-packageinstaller_23.11.01_arm64.deb
+Checksums-Sha256:
+ 0194071461f8572fa27bbca741b3400f73bbb69f4dc00efca883dd4407d8c48f 10175 mx-packageinstaller_23.11.01_arm64.buildinfo
+ 369dfe1763a9f49f0cdbe1d583c6400a028611e06c98ad61fb89d92c2585daf9 364688 mx-packageinstaller_23.11.01_arm64.deb
+Files:
+ db149a896b84f832100e8b0c22938072 10175 admin optional mx-packageinstaller_23.11.01_arm64.buildinfo
+ 19c865e5287445fb7176d82859b0142d 364688 admin optional mx-packageinstaller_23.11.01_arm64.deb

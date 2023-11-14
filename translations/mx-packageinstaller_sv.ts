@@ -849,7 +849,8 @@ Var vänlig kontrollera listan över paket som ska tas bort noga.</translation>
         <location filename="../lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Dpkg/apt databasen är låst av ett annat program: %1
+Stäng programet, eller vänta tills det kört klart och försök igen.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="78"/>

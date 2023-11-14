@@ -849,7 +849,8 @@ Veillez à bien vérifier la liste des paquets à supprimer.</translation>
         <location filename="../lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>La base de données dpkg/apt est verrouillée par un autre programme&#xa0;: %1
+Fermez le programme ou attendez qu’il ait terminé son traitement et réessayez.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="78"/>

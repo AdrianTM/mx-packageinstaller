@@ -20,3 +20,7 @@ override_dh_shlibdeps:
 
 %:
 	dh $@ --no-automatic-dbgsym --parallel 
+
+override_dh_auto_install:
+	dh_auto_install
+	dh_link usr/bin/mx-packageinstaller usr/bin/mxpi-launcher

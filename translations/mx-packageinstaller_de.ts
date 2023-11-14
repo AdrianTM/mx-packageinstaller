@@ -849,7 +849,8 @@ Bitte überprüfen sie sorgfältig die Liste der zum Entfernen vorgesehenen Pake
         <location filename="../lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Die dpkg/apt-Datenbank ist durch ein anderes Programm gesperrt: %1
+Bitte das Programm schließen oder warten, bis es fertig ist und es dann erneut versuchen.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="78"/>

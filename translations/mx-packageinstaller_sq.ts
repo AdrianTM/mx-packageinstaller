@@ -849,7 +849,8 @@ Ju lutemi, sigurohuni se kontrolluat me kujdes listën e paketave për heqje.</t
         <location filename="../lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"></translation>
+        <translation>Baza e të dhënave të Dpkg/apt është e kyçur nga një tjetër program: %1
+Mbylleni programin, ose prisni deri sa ky të mbarojë punën e vet dhe riprovoni.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="78"/>

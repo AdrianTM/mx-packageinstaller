@@ -2,7 +2,7 @@ Format: 3.0 (native)
 Source: mx-packageinstaller
 Binary: mx-packageinstaller
 Architecture: any
-Version: 23.11
+Version: 23.11.01
 Maintainer: Adrian <adrian@mxlinux.org>
 Standards-Version: 3.9.8
 Vcs-Git: git://github.com/AdrianTM/mx-packageinstaller
@@ -10,8 +10,8 @@ Build-Depends: debhelper (>= 10), qtbase5-dev, qttools5-dev-tools
 Package-List:
  mx-packageinstaller deb admin optional arch=any
 Checksums-Sha1:
- 23a1a1b5b10f6bbdc66e1f3ad8af24c053faa32a 307152 mx-packageinstaller_23.11.tar.xz
+ 0d43079c7ffbc89e157513bcf12ef81db39a0f0d 307712 mx-packageinstaller_23.11.01.tar.xz
 Checksums-Sha256:
- e3572fc6aa75e800be2dc797e98f17120d22da17a7b2f11046d9285d69818ade 307152 mx-packageinstaller_23.11.tar.xz
+ 40708997df1bedd0972b181d00247e86484f90fd55b64d4e86d02c076b00ff85 307712 mx-packageinstaller_23.11.01.tar.xz
 Files:
- bdaea7f79ffdfcd131ce1e8563109e24 307152 mx-packageinstaller_23.11.tar.xz
+ 6ab97c51a9ca5f3d8bd5fde3301695c3 307712 mx-packageinstaller_23.11.01.tar.xz
