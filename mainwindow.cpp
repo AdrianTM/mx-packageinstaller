@@ -1381,8 +1381,8 @@ bool MainWindow::installSelected()
                                                        // version name for newer versions
                 suite = "mx15";
             }
-            cmd.run("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + suite
-                    + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > " + temp_list);
+            cmd.runAsRoot("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + suite
+                          + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > " + temp_list);
         }
         updateApt();
     } else if (tree == ui->treeBackports) {
