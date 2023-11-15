@@ -1,3 +1,9 @@
+mx-packageinstaller (23.11.03) mx; urgency=medium
+
+  * Run flatpak remote-add as root to avoid two authentication pop-ups
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 15 Nov 2023 18:14:24 -0500
+
 mx-packageinstaller (23.11.02) mx; urgency=medium
 
   * Remove flatpak dependecy, make it a recommended package
