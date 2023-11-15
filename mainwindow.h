@@ -95,7 +95,7 @@ enum {
 } // namespace Popular
 namespace Release
 {
-enum { Jessie = 8, Stretch, Buster, Bullseye, Bookworm };
+enum { Jessie = 8, Stretch, Buster, Bullseye, Bookworm, Trixie };
 }
 
 constexpr int KiB = 1024;

@@ -75,7 +75,7 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
         enabled_list = cache.getCandidates();
         displayPackages();
         if (arch != "i386" && checkInstalled("flatpak")) {
-            Cmd().run("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
+            Cmd().runAsRoot("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             displayFlatpaks();
         }
     });
@@ -2576,7 +2576,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 }
             }
             fp_ver = getVersion("flatpak");
-            Cmd().run("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
+            Cmd().runAsRoot("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             enableOutput();
             listFlatpakRemotes();
             if (displayFlatpaksIsRunning) {
