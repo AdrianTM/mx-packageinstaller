@@ -12,14 +12,14 @@ Changes:
  .
    * Run flatpak remote-add as root to avoid two authentication pop-ups
 Checksums-Sha1:
- 5308f4c16eb323b91f3f2c9a366e8d5d23949c06 674 mx-packageinstaller_23.11.03.dsc
- feced9b0d06fb8973117a952136054370fe52420 307508 mx-packageinstaller_23.11.03.tar.xz
- c3db70909227e822b04a4f2a5e803fd0a1d4d2c2 10175 mx-packageinstaller_23.11.03_arm64.buildinfo
+ 8771c84d50b5c65604a6cc5fa20362f7affa6e51 674 mx-packageinstaller_23.11.03.dsc
+ 7972c8a0ffcf0aaeff80caa1be1d912eb1e80232 307776 mx-packageinstaller_23.11.03.tar.xz
+ 2d5eab4eb60ba5b535d3792c28ac9568b6766c34 10175 mx-packageinstaller_23.11.03_arm64.buildinfo
 Checksums-Sha256:
- 20d557948b7f793d82edb63c000f72686bc6ff3709b917a68f3f45599b344358 674 mx-packageinstaller_23.11.03.dsc
- ec10da785a60429f3f3709fe30019247388cd18bddb3dc8cca70002dd9be96b0 307508 mx-packageinstaller_23.11.03.tar.xz
- 8a9159b53bf867c07da00fe195ffcf1c977045abe31722f58f153ddc2adb1e0b 10175 mx-packageinstaller_23.11.03_arm64.buildinfo
+ e71abf759967ebcfeaa8e3342c5237e6e6c533e7938541b5265d51b544489c72 674 mx-packageinstaller_23.11.03.dsc
+ 07998c2e8dbba69c8e68f0eb5bb5585d5fe74dc82491d6b7f7676cce2fd1aab9 307776 mx-packageinstaller_23.11.03.tar.xz
+ 55473c25a76dea5d06e0e8f8ec20bd547682370a1490d439fd8e520edeacdbdc 10175 mx-packageinstaller_23.11.03_arm64.buildinfo
 Files:
- 8e3f08aa3eaeea2d25bf72b1ef496951 674 admin optional mx-packageinstaller_23.11.03.dsc
- 27c72b66486d6f4a70a34f5de1bc32db 307508 admin optional mx-packageinstaller_23.11.03.tar.xz
- 064978cf76b5ed1f002a7f8419103806 10175 admin optional mx-packageinstaller_23.11.03_arm64.buildinfo
+ 0d5f9f60d2af2c6048b82046aa4a839c 674 admin optional mx-packageinstaller_23.11.03.dsc
+ ae705e37023a5f6f204d5685984ef0fa 307776 admin optional mx-packageinstaller_23.11.03.tar.xz
+ ee9aca1c023ad8300e838d6820197b1e 10175 admin optional mx-packageinstaller_23.11.03_arm64.buildinfo

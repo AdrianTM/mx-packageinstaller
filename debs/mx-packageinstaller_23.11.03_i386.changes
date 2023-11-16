@@ -15,11 +15,11 @@ Changes:
  .
    * Run flatpak remote-add as root to avoid two authentication pop-ups
 Checksums-Sha1:
- d612ae3580cfa8c878f8f56c3aa294dae4036560 10133 mx-packageinstaller_23.11.03_i386.buildinfo
- 889baba1603e0e252439a1e243ec4870f58da0f8 391440 mx-packageinstaller_23.11.03_i386.deb
+ f039dffdcab3670310d37bee35a802123ec91d4e 10133 mx-packageinstaller_23.11.03_i386.buildinfo
+ 1f390c726a8c13df82da1d51f16026a62dd5b879 391484 mx-packageinstaller_23.11.03_i386.deb
 Checksums-Sha256:
- e3b1ea49365485f1f34eeb0a6ccd691a5cd42801096e86cde19c34b4928c6285 10133 mx-packageinstaller_23.11.03_i386.buildinfo
- e4c010b6721101b2464f82e5db1c6818481d210c8257071280549683731aef49 391440 mx-packageinstaller_23.11.03_i386.deb
+ 7a77759d1739417015a55e8e82dd34b9aabd35b99f9de3da820722da5068644e 10133 mx-packageinstaller_23.11.03_i386.buildinfo
+ c0b356a58425434e6cc8ea9fa1eb3c3e1e89a7937520ccee007022505f065d8b 391484 mx-packageinstaller_23.11.03_i386.deb
 Files:
- c805b0c8f0695f02833449d473d639f4 10133 admin optional mx-packageinstaller_23.11.03_i386.buildinfo
- fc63734f91332bdb27bf97402183ee5c 391440 admin optional mx-packageinstaller_23.11.03_i386.deb
+ 68b8e58808b5857da3c9292d3e3c616f 10133 admin optional mx-packageinstaller_23.11.03_i386.buildinfo
+ 3304cfaa5a26f6c8dee67e951a7a82f2 391484 admin optional mx-packageinstaller_23.11.03_i386.deb
