@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Wed, 15 Nov 2023 18:14:24 -0500
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.11.03
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.11.03) mx; urgency=medium
+ .
+   * Run flatpak remote-add as root to avoid two authentication pop-ups
+Checksums-Sha1:
+ 5308f4c16eb323b91f3f2c9a366e8d5d23949c06 674 mx-packageinstaller_23.11.03.dsc
+ feced9b0d06fb8973117a952136054370fe52420 307508 mx-packageinstaller_23.11.03.tar.xz
+ c3db70909227e822b04a4f2a5e803fd0a1d4d2c2 10175 mx-packageinstaller_23.11.03_arm64.buildinfo
+Checksums-Sha256:
+ 20d557948b7f793d82edb63c000f72686bc6ff3709b917a68f3f45599b344358 674 mx-packageinstaller_23.11.03.dsc
+ ec10da785a60429f3f3709fe30019247388cd18bddb3dc8cca70002dd9be96b0 307508 mx-packageinstaller_23.11.03.tar.xz
+ 8a9159b53bf867c07da00fe195ffcf1c977045abe31722f58f153ddc2adb1e0b 10175 mx-packageinstaller_23.11.03_arm64.buildinfo
+Files:
+ 8e3f08aa3eaeea2d25bf72b1ef496951 674 admin optional mx-packageinstaller_23.11.03.dsc
+ 27c72b66486d6f4a70a34f5de1bc32db 307508 admin optional mx-packageinstaller_23.11.03.tar.xz
+ 064978cf76b5ed1f002a7f8419103806 10175 admin optional mx-packageinstaller_23.11.03_arm64.buildinfo

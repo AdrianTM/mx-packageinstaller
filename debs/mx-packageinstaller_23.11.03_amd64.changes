@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Wed, 15 Nov 2023 18:14:24 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.11.03
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.03) mx; urgency=medium
+ .
+   * Run flatpak remote-add as root to avoid two authentication pop-ups
+Checksums-Sha1:
+ dec98dfa1232beb6e955c6e2262691b0f83318c8 1236 mx-packageinstaller_23.11.03.dsc
+ 4f8033503760063c8c0fc3987161c313fe61e78d 307288 mx-packageinstaller_23.11.03.tar.xz
+ 7a1173d390c28a3511d1f4a2a071db47c8dd7527 11011 mx-packageinstaller_23.11.03_amd64.buildinfo
+ c3c6b50ee94d34ae678aeebf4b859308044df56e 381576 mx-packageinstaller_23.11.03_amd64.deb
+Checksums-Sha256:
+ 16892f0b3756c5e3b5bf6738eea47f741e39ad377de0df6d0f95501a717263a7 1236 mx-packageinstaller_23.11.03.dsc
+ df8a02eeda24398b7f826159721caf8055afc3245becb22bf660577e39a727cd 307288 mx-packageinstaller_23.11.03.tar.xz
+ 584b3c851a1d213e1557dbe20720fdd4e88af4e0117d70025958d179b37c34aa 11011 mx-packageinstaller_23.11.03_amd64.buildinfo
+ 30357b7a31ffb3872e7e6edba4012239d8f4a767751e569a4b3dbf9808eadf37 381576 mx-packageinstaller_23.11.03_amd64.deb
+Files:
+ 4bc6f32bdcec02260077a8c87d1e5c3e 1236 admin optional mx-packageinstaller_23.11.03.dsc
+ 8aafdf4696324ab8ff12df434addeaa6 307288 admin optional mx-packageinstaller_23.11.03.tar.xz
+ d1b5a82fd2cd86a384a9125e6b3068d0 11011 admin optional mx-packageinstaller_23.11.03_amd64.buildinfo
+ b490269308a47df9cf48fd4713ce8676 381576 admin optional mx-packageinstaller_23.11.03_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVVVDQTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumH8oB/9MGcgcV65J5dOknvMyObmJwCzrtUbX
+AhTAVdniLm5TIeao4ddszQmH6V48Kj3d4StsoZVPoArXRsbM0SvATVBqv5zy+Wz1
+alTCihME6E9xfUrVsz12g2oEKi4E7TQFpZcmufQb2Q+tPwhGY/Ov04G+TgvRV1E7
+r88AoACP+/0r834SxkMFVG2ilC9wQUk0ucsqBUqnIzp7qsZVHRq1hdC/aVhYRZ3R
+NI+dZnapK+0vfU9Ro1WYBPLQgZ3i2Inn82KOC6U6n+yqifZeBQqraW4movg/rWRF
+u8hMZ3oFdP9g1zhPR3/iJYErHeFbW3WjlHELTX3nOne9RNqeOvgVVIp1
+=TeRt
+-----END PGP SIGNATURE-----

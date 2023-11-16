@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="122"/>
+        <location filename="../mainwindow.cpp" line="125"/>
         <source>MX Package Installer</source>
         <translation>एमएक्स पैकेज इंस्टॉलर</translation>
     </message>
@@ -133,7 +133,7 @@
         <location filename="../mainwindow.ui" line="695"/>
         <location filename="../mainwindow.ui" line="1088"/>
         <location filename="../mainwindow.ui" line="1092"/>
-        <location filename="../mainwindow.cpp" line="2675"/>
+        <location filename="../mainwindow.cpp" line="2678"/>
         <source>All packages</source>
         <translation>सभी पैकेज</translation>
     </message>
@@ -141,7 +141,7 @@
         <location filename="../mainwindow.ui" line="402"/>
         <location filename="../mainwindow.ui" line="700"/>
         <location filename="../mainwindow.ui" line="1097"/>
-        <location filename="../mainwindow.cpp" line="2688"/>
+        <location filename="../mainwindow.cpp" line="2691"/>
         <source>Installed</source>
         <translation>इंस्टॉल हैं</translation>
     </message>
@@ -149,7 +149,7 @@
         <location filename="../mainwindow.ui" line="407"/>
         <location filename="../mainwindow.ui" line="705"/>
         <location filename="../mainwindow.ui" line="1102"/>
-        <location filename="../mainwindow.cpp" line="2686"/>
+        <location filename="../mainwindow.cpp" line="2689"/>
         <source>Upgradable</source>
         <translation>अपग्रेड योग्य</translation>
     </message>
@@ -158,10 +158,10 @@
         <location filename="../mainwindow.ui" line="710"/>
         <location filename="../mainwindow.ui" line="1107"/>
         <location filename="../mainwindow.ui" line="1234"/>
-        <location filename="../mainwindow.cpp" line="2659"/>
-        <location filename="../mainwindow.cpp" line="2691"/>
-        <location filename="../mainwindow.cpp" line="2790"/>
-        <location filename="../mainwindow.cpp" line="2791"/>
+        <location filename="../mainwindow.cpp" line="2662"/>
+        <location filename="../mainwindow.cpp" line="2694"/>
+        <location filename="../mainwindow.cpp" line="2793"/>
+        <location filename="../mainwindow.cpp" line="2794"/>
         <source>Not installed</source>
         <translation>इंस्टॉल नहीं हैं</translation>
     </message>
@@ -221,39 +221,39 @@
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
-        <location filename="../mainwindow.cpp" line="2639"/>
+        <location filename="../mainwindow.cpp" line="2642"/>
         <source>All apps</source>
         <translation>सभी अनुप्रयोग</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
-        <location filename="../mainwindow.cpp" line="2644"/>
+        <location filename="../mainwindow.cpp" line="2647"/>
         <source>All runtimes</source>
         <translation>सभी निष्पादन आश्रित पैकेज</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
-        <location filename="../mainwindow.cpp" line="2649"/>
+        <location filename="../mainwindow.cpp" line="2652"/>
         <source>All available</source>
         <translation>सभी उपलब्ध</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1219"/>
-        <location filename="../mainwindow.cpp" line="2637"/>
+        <location filename="../mainwindow.cpp" line="2640"/>
         <source>Installed apps</source>
         <translation>इंस्टॉल हो रखें अनुप्रयोग</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
-        <location filename="../mainwindow.cpp" line="2635"/>
+        <location filename="../mainwindow.cpp" line="2638"/>
         <source>Installed runtimes</source>
         <translation>इंस्टॉल हो रखें निष्पादन आश्रित पैकेज</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
-        <location filename="../mainwindow.cpp" line="2657"/>
-        <location filename="../mainwindow.cpp" line="2783"/>
-        <location filename="../mainwindow.cpp" line="2784"/>
+        <location filename="../mainwindow.cpp" line="2660"/>
+        <location filename="../mainwindow.cpp" line="2786"/>
+        <location filename="../mainwindow.cpp" line="2787"/>
         <source>All installed</source>
         <translation type="unfinished"></translation>
     </message>
@@ -299,8 +299,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
-        <location filename="../mainwindow.cpp" line="2434"/>
-        <location filename="../mainwindow.cpp" line="2596"/>
+        <location filename="../mainwindow.cpp" line="2437"/>
+        <location filename="../mainwindow.cpp" line="2599"/>
         <source>Console Output</source>
         <translation>कंसोल आउटपुट</translation>
     </message>
@@ -316,10 +316,10 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1580"/>
-        <location filename="../mainwindow.cpp" line="1148"/>
-        <location filename="../mainwindow.cpp" line="2776"/>
-        <location filename="../mainwindow.cpp" line="2780"/>
-        <location filename="../mainwindow.cpp" line="3042"/>
+        <location filename="../mainwindow.cpp" line="1151"/>
+        <location filename="../mainwindow.cpp" line="2779"/>
+        <location filename="../mainwindow.cpp" line="2783"/>
+        <location filename="../mainwindow.cpp" line="3045"/>
         <source>Install</source>
         <translation>इंस्टॉल</translation>
     </message>
@@ -384,350 +384,350 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="107"/>
+        <location filename="../mainwindow.cpp" line="110"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="112"/>
+        <location filename="../mainwindow.cpp" line="115"/>
         <source>Could not find MX sources.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="208"/>
+        <location filename="../mainwindow.cpp" line="211"/>
         <source>Uninstalling packages...</source>
         <translation>पैकेज हटाना जारी...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="213"/>
+        <location filename="../mainwindow.cpp" line="216"/>
         <source>Running pre-uninstall operations...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="233"/>
+        <location filename="../mainwindow.cpp" line="236"/>
         <source>Running post-uninstall operations...</source>
         <translation>हटाने-उपरांत कार्य निष्पादन जारी...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="251"/>
+        <location filename="../mainwindow.cpp" line="254"/>
         <source>Refreshing sources...</source>
         <translation>स्रोत रिफ्रेश करना जारी...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="265"/>
-        <location filename="../mainwindow.cpp" line="1196"/>
-        <location filename="../mainwindow.cpp" line="1330"/>
-        <location filename="../mainwindow.cpp" line="1479"/>
-        <location filename="../mainwindow.cpp" line="1539"/>
-        <location filename="../mainwindow.cpp" line="2251"/>
-        <location filename="../mainwindow.cpp" line="2279"/>
-        <location filename="../mainwindow.cpp" line="2291"/>
-        <location filename="../mainwindow.cpp" line="2405"/>
-        <location filename="../mainwindow.cpp" line="2426"/>
-        <location filename="../mainwindow.cpp" line="2486"/>
-        <location filename="../mainwindow.cpp" line="2511"/>
-        <location filename="../mainwindow.cpp" line="2530"/>
-        <location filename="../mainwindow.cpp" line="2863"/>
-        <location filename="../mainwindow.cpp" line="2940"/>
-        <location filename="../mainwindow.cpp" line="2969"/>
-        <location filename="../mainwindow.cpp" line="3066"/>
-        <location filename="../mainwindow.cpp" line="3091"/>
+        <location filename="../mainwindow.cpp" line="268"/>
+        <location filename="../mainwindow.cpp" line="1199"/>
+        <location filename="../mainwindow.cpp" line="1333"/>
+        <location filename="../mainwindow.cpp" line="1482"/>
+        <location filename="../mainwindow.cpp" line="1542"/>
+        <location filename="../mainwindow.cpp" line="2254"/>
+        <location filename="../mainwindow.cpp" line="2282"/>
+        <location filename="../mainwindow.cpp" line="2294"/>
+        <location filename="../mainwindow.cpp" line="2408"/>
+        <location filename="../mainwindow.cpp" line="2429"/>
+        <location filename="../mainwindow.cpp" line="2489"/>
+        <location filename="../mainwindow.cpp" line="2514"/>
+        <location filename="../mainwindow.cpp" line="2533"/>
+        <location filename="../mainwindow.cpp" line="2866"/>
+        <location filename="../mainwindow.cpp" line="2943"/>
+        <location filename="../mainwindow.cpp" line="2972"/>
+        <location filename="../mainwindow.cpp" line="3069"/>
+        <location filename="../mainwindow.cpp" line="3094"/>
         <source>Error</source>
         <translation>त्रुटि</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="266"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>स्रोत अपडेट करते समय त्रुटि। कुछ स्रोतों से अपडेट प्राप्ति विफल। अधिक सूचना हेतु देखें :</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="672"/>
+        <location filename="../mainwindow.cpp" line="675"/>
         <source>Cancel</source>
         <translation>रद्द करें</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="679"/>
+        <location filename="../mainwindow.cpp" line="682"/>
         <source>Please wait...</source>
         <translation>प्रतीक्षा करें...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="870"/>
-        <location filename="../mainwindow.cpp" line="890"/>
+        <location filename="../mainwindow.cpp" line="873"/>
+        <location filename="../mainwindow.cpp" line="893"/>
         <source>Version </source>
         <translation>संस्करण</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="871"/>
+        <location filename="../mainwindow.cpp" line="874"/>
         <source> in the enabled repos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="873"/>
+        <location filename="../mainwindow.cpp" line="876"/>
         <source>Not available in the enabled repos</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="883"/>
-        <location filename="../mainwindow.cpp" line="2573"/>
+        <location filename="../mainwindow.cpp" line="886"/>
+        <location filename="../mainwindow.cpp" line="2576"/>
         <source>Latest version </source>
         <translation>नवीनतम संस्करण</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="883"/>
-        <location filename="../mainwindow.cpp" line="2573"/>
+        <location filename="../mainwindow.cpp" line="886"/>
+        <location filename="../mainwindow.cpp" line="2576"/>
         <source> already installed</source>
         <translation>पहले से इंस्टॉल है</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="890"/>
+        <location filename="../mainwindow.cpp" line="893"/>
         <source> installed</source>
         <translation>इंस्टॉल है</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1020"/>
+        <location filename="../mainwindow.cpp" line="1023"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>अब आप एमएक्स परीक्षण पैकेज-संग्रह उपयोग करेंगे जिसमें सम्मिलित पैकेज का उद्देश्य केवल परीक्षण है। इससे सिस्टम को हानि संभव है अतः सिस्टम बैकअप कर लें व एक बार में एक ही पैकेज इंस्टॉल या अपडेट करें। मुख्य संग्रह में अंतरण हेतु पैकेज परीक्षण प्रक्रिया में सहायता करने हेतु कृपया पैकेज संबंधी प्रतिक्रिया व अनुभव चर्चा-मंच पर पोस्ट करें।</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1029"/>
+        <location filename="../mainwindow.cpp" line="1032"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>अब आप डेबियन बैकपोर्ट उपयोग करेंगे, इसमें सम्मिलित पैकेज का स्रोत है डेबियन का आगामी संस्करण (&apos;परीक्षण&apos;) व ये डेबियन स्थिर पर उपयोग हेतु अनुकूलित व संयोजित हैं। इनका परीक्षण डेबियन व एंटी-एक्स लिनक्स के स्थिर के स्तर पर नहीं किया गया है व ये अपने मूल स्वरुप में प्रदान किए गए हैं, अतः डेबियन स्थिर के अन्य अनुभागों हेतु असंगतता संभव है। सावधानी से उपयोग करें! </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1037"/>
+        <location filename="../mainwindow.cpp" line="1040"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>एमएक्स लिनक्स द्वारा यह फ्लैटपैक पैकेज-संग्रह केवल उपयोक्ता की सुविधा हेतु प्रदान की गई है एवं फ्लैटपैक पैकेज की कार्यक्षमता हेतु केवल उपयोक्ता उत्तरदायी होगा। अधिक सूचना हेतु विकी में फ्लैटपैक विषय देखें।</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1045"/>
-        <location filename="../mainwindow.cpp" line="3075"/>
+        <location filename="../mainwindow.cpp" line="1048"/>
+        <location filename="../mainwindow.cpp" line="3078"/>
         <source>Warning</source>
         <translation>चेतावनी</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1049"/>
+        <location filename="../mainwindow.cpp" line="1052"/>
         <source>Do not show this message again</source>
         <translation>पहले से इंस्टॉल है</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1145"/>
+        <location filename="../mainwindow.cpp" line="1148"/>
         <source>Remove</source>
         <translation>हटाएँ</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1161"/>
+        <location filename="../mainwindow.cpp" line="1164"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1197"/>
-        <location filename="../mainwindow.cpp" line="1331"/>
-        <location filename="../mainwindow.cpp" line="1540"/>
+        <location filename="../mainwindow.cpp" line="1200"/>
+        <location filename="../mainwindow.cpp" line="1334"/>
+        <location filename="../mainwindow.cpp" line="1543"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>इंटरनेट अनुपलब्ध होने के कारण पैकेज सूची डाउनलोड करना विफल</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1200"/>
+        <location filename="../mainwindow.cpp" line="1203"/>
         <source>Installing packages...</source>
         <translation>पैकेज इंस्टॉल जारी...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1259"/>
+        <location filename="../mainwindow.cpp" line="1262"/>
         <source>Post-processing...</source>
         <translation>उपरांत-संसाधन जारी...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1291"/>
+        <location filename="../mainwindow.cpp" line="1294"/>
         <source>Pre-processing for </source>
         <translation>इन हेतु पूर्व-संसाधन</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1306"/>
+        <location filename="../mainwindow.cpp" line="1309"/>
         <source>Installing </source>
         <translation>इंस्टॉल जारी</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1313"/>
+        <location filename="../mainwindow.cpp" line="1316"/>
         <source>Post-processing for </source>
         <translation>इन हेतु उपरांत-संसाधन</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1480"/>
+        <location filename="../mainwindow.cpp" line="1483"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="1548"/>
+        <location filename="../mainwindow.cpp" line="1551"/>
         <source>Downloading package info...</source>
         <translation>पैकेज सूचना डाउनलोड जारी..</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2021"/>
-        <location filename="../mainwindow.cpp" line="2104"/>
-        <location filename="../mainwindow.cpp" line="2127"/>
+        <location filename="../mainwindow.cpp" line="2024"/>
+        <location filename="../mainwindow.cpp" line="2107"/>
+        <location filename="../mainwindow.cpp" line="2130"/>
         <source>Package info</source>
         <translation>पैकेज सूचना</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2033"/>
-        <location filename="../mainwindow.cpp" line="3005"/>
+        <location filename="../mainwindow.cpp" line="2036"/>
+        <location filename="../mainwindow.cpp" line="3008"/>
         <source>More &amp;info...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2065"/>
+        <location filename="../mainwindow.cpp" line="2068"/>
         <source>Packages to be installed: </source>
         <translation>इंस्टॉल हेतु पैकेज :</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2247"/>
-        <location filename="../mainwindow.cpp" line="2260"/>
-        <location filename="../mainwindow.cpp" line="2273"/>
-        <location filename="../mainwindow.cpp" line="2288"/>
-        <location filename="../mainwindow.cpp" line="2377"/>
-        <location filename="../mainwindow.cpp" line="2400"/>
-        <location filename="../mainwindow.cpp" line="2859"/>
-        <location filename="../mainwindow.cpp" line="2934"/>
-        <location filename="../mainwindow.cpp" line="2963"/>
-        <location filename="../mainwindow.cpp" line="3060"/>
+        <location filename="../mainwindow.cpp" line="2250"/>
+        <location filename="../mainwindow.cpp" line="2263"/>
+        <location filename="../mainwindow.cpp" line="2276"/>
+        <location filename="../mainwindow.cpp" line="2291"/>
+        <location filename="../mainwindow.cpp" line="2380"/>
+        <location filename="../mainwindow.cpp" line="2403"/>
+        <location filename="../mainwindow.cpp" line="2862"/>
+        <location filename="../mainwindow.cpp" line="2937"/>
+        <location filename="../mainwindow.cpp" line="2966"/>
+        <location filename="../mainwindow.cpp" line="3063"/>
         <source>Done</source>
         <translation>पूर्ण</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2247"/>
-        <location filename="../mainwindow.cpp" line="2260"/>
-        <location filename="../mainwindow.cpp" line="2273"/>
-        <location filename="../mainwindow.cpp" line="2288"/>
-        <location filename="../mainwindow.cpp" line="2377"/>
-        <location filename="../mainwindow.cpp" line="2400"/>
-        <location filename="../mainwindow.cpp" line="2419"/>
-        <location filename="../mainwindow.cpp" line="2859"/>
-        <location filename="../mainwindow.cpp" line="2934"/>
-        <location filename="../mainwindow.cpp" line="2963"/>
-        <location filename="../mainwindow.cpp" line="3060"/>
-        <location filename="../mainwindow.cpp" line="3084"/>
+        <location filename="../mainwindow.cpp" line="2250"/>
+        <location filename="../mainwindow.cpp" line="2263"/>
+        <location filename="../mainwindow.cpp" line="2276"/>
+        <location filename="../mainwindow.cpp" line="2291"/>
+        <location filename="../mainwindow.cpp" line="2380"/>
+        <location filename="../mainwindow.cpp" line="2403"/>
+        <location filename="../mainwindow.cpp" line="2422"/>
+        <location filename="../mainwindow.cpp" line="2862"/>
+        <location filename="../mainwindow.cpp" line="2937"/>
+        <location filename="../mainwindow.cpp" line="2966"/>
+        <location filename="../mainwindow.cpp" line="3063"/>
+        <location filename="../mainwindow.cpp" line="3087"/>
         <source>Processing finished successfully.</source>
         <translation>संसाधन प्रक्रिया सफलतापूर्वक पूर्ण।</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2252"/>
-        <location filename="../mainwindow.cpp" line="2280"/>
-        <location filename="../mainwindow.cpp" line="2292"/>
-        <location filename="../mainwindow.cpp" line="2864"/>
-        <location filename="../mainwindow.cpp" line="2941"/>
-        <location filename="../mainwindow.cpp" line="2970"/>
+        <location filename="../mainwindow.cpp" line="2255"/>
+        <location filename="../mainwindow.cpp" line="2283"/>
+        <location filename="../mainwindow.cpp" line="2295"/>
+        <location filename="../mainwindow.cpp" line="2867"/>
+        <location filename="../mainwindow.cpp" line="2944"/>
+        <location filename="../mainwindow.cpp" line="2973"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>इंस्टॉल करते समय त्रुटि, कृपया कंसोल आउटपुट जाँचें।</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2302"/>
+        <location filename="../mainwindow.cpp" line="2305"/>
         <source>About %1</source>
         <translation>%1 के बारे में</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2303"/>
+        <location filename="../mainwindow.cpp" line="2306"/>
         <source>Version: </source>
         <translation>संस्करण :</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2305"/>
+        <location filename="../mainwindow.cpp" line="2308"/>
         <source>Package Installer for MX Linux</source>
         <translation>एमएक्स लिनक्स हेतु पैकेज इंस्टॉलर</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2307"/>
+        <location filename="../mainwindow.cpp" line="2310"/>
         <source>Copyright (c) MX Linux</source>
         <translation>कॉपीराइट (c) एमएक्स लिनक्स</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2308"/>
+        <location filename="../mainwindow.cpp" line="2311"/>
         <source>%1 License</source>
         <translation>%1 लाइसेंस</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2320"/>
+        <location filename="../mainwindow.cpp" line="2323"/>
         <source>%1 Help</source>
         <translation>%1 सहायता</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2405"/>
+        <location filename="../mainwindow.cpp" line="2408"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>हटाते समय त्रुटि, कृपया आउटपुट जाँचें</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2419"/>
-        <location filename="../mainwindow.cpp" line="3084"/>
+        <location filename="../mainwindow.cpp" line="2422"/>
+        <location filename="../mainwindow.cpp" line="3087"/>
         <source>Success</source>
         <translation>सफलता</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2426"/>
-        <location filename="../mainwindow.cpp" line="3091"/>
+        <location filename="../mainwindow.cpp" line="2429"/>
+        <location filename="../mainwindow.cpp" line="3094"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>प्रोग्राम हटाते समय त्रुटि हुई</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2487"/>
-        <location filename="../mainwindow.cpp" line="2512"/>
-        <location filename="../mainwindow.cpp" line="2531"/>
+        <location filename="../mainwindow.cpp" line="2490"/>
+        <location filename="../mainwindow.cpp" line="2515"/>
+        <location filename="../mainwindow.cpp" line="2534"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2548"/>
-        <location filename="../mainwindow.cpp" line="2560"/>
+        <location filename="../mainwindow.cpp" line="2551"/>
+        <location filename="../mainwindow.cpp" line="2563"/>
         <source>Flatpak not installed</source>
         <translation>फ्लैटपैक इंस्टॉल नहीं है</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2549"/>
+        <location filename="../mainwindow.cpp" line="2552"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>फ्लैटपैक इंस्टॉल नहीं है।
 क्या आप उन्हें इंस्टॉल करना चाहते हैं?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2560"/>
+        <location filename="../mainwindow.cpp" line="2563"/>
         <source>Flatpak was not installed</source>
         <translation>फ्लैटपैक इंस्टॉल नहीं है</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2591"/>
+        <location filename="../mainwindow.cpp" line="2594"/>
         <source>Needs re-login</source>
         <translation>पुनः लॉगिन आवश्यक</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2592"/>
+        <location filename="../mainwindow.cpp" line="2595"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>इंस्टॉल की गई वस्तुएँ लॉगआउट/लॉगिन उपरांत ही मेन्यू में प्रदर्शित होंगी </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2776"/>
+        <location filename="../mainwindow.cpp" line="2779"/>
         <source>Upgrade</source>
         <translation>अपग्रेड</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2893"/>
+        <location filename="../mainwindow.cpp" line="2896"/>
         <source>Quit?</source>
         <translation>बंद करें?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2894"/>
+        <location filename="../mainwindow.cpp" line="2897"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>प्रक्रिया कार्यरत है, निरस्त करने से सिस्टम अस्थिर हो सकता है। &lt;p&gt;&lt;b&gt;क्या आप निश्चित ही एमएक्स पैकेज इंस्टॉलर बंद करना चाहते हैं?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3040"/>
+        <location filename="../mainwindow.cpp" line="3043"/>
         <source>Reinstall</source>
         <translation>पुनः इंस्टॉल</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3067"/>
+        <location filename="../mainwindow.cpp" line="3070"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3076"/>
+        <location filename="../mainwindow.cpp" line="3079"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation type="unfinished"></translation>
