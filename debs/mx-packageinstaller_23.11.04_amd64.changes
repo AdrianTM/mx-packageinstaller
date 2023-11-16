@@ -1,0 +1,46 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Thu, 16 Nov 2023 10:56:18 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.11.04
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.04) mx; urgency=medium
+ .
+   * Fix: added socat back, needed for responding to terminal prompts
+Checksums-Sha1:
+ 50473ddb94ca547037080c6762d4474d532380a5 1236 mx-packageinstaller_23.11.04.dsc
+ a2bf5eeea78f872ca7af3fe81c455b083694f3b6 308156 mx-packageinstaller_23.11.04.tar.xz
+ 98eaec4f5b112fe27e0c138376118d7c99c58bbe 11012 mx-packageinstaller_23.11.04_amd64.buildinfo
+ 1620a899f3599e5d6c86ef03c9482a6166324afe 382780 mx-packageinstaller_23.11.04_amd64.deb
+Checksums-Sha256:
+ 1dc616288e5d9344b3f3cfde307ea01e8601b7ffa2d3acf4807bd2b49127d21c 1236 mx-packageinstaller_23.11.04.dsc
+ 683c5a1a86e1134a27ac69915066ac12e784398df7b2ce78ac9917f6f5256106 308156 mx-packageinstaller_23.11.04.tar.xz
+ 82255a680983ad07426c675b4b0f0d2192ca2b0e11c3a8bcebcd76ef85c376b5 11012 mx-packageinstaller_23.11.04_amd64.buildinfo
+ 79057a4b2e9545e2349beb59cee3f368e69e1a3a67d9850af8f0b78e2814dcf2 382780 mx-packageinstaller_23.11.04_amd64.deb
+Files:
+ ecf9828fbfd0e6260572507ca85d40c4 1236 admin optional mx-packageinstaller_23.11.04.dsc
+ c3c238ee2c75065ca736f9a583681141 308156 admin optional mx-packageinstaller_23.11.04.tar.xz
+ d70ade44864a5c319cd7d18d8f241513 11012 admin optional mx-packageinstaller_23.11.04_amd64.buildinfo
+ 0f30abf4bfd70a10c0f5ff9754749b69 382780 admin optional mx-packageinstaller_23.11.04_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVWPHUTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumCBEB/4zAdAU1d8pJLSpaqz0oTJxjFbEDTQ4
+s4s+QQkY2Hx2hicLe9hhRJXdk0DYN5QK8a41Y4EnP9r7pZ8DLPcSo2gswp4B4ELr
+7BaSk3UfGPVlxIpzjZMZP7YzL5UD9I7tOQG0vii4TajVmW8ZdZvpnDKExozaGlMi
+xG2KPNMLTzSLHFxiN8M8yfEYg0He13vi0EP9pF7Jz1e4I7wMYOKoD0LHYWt2mMkG
+lAGRLaf0v01TKnz1N+w02ROYyUaidQv9eFJeie7cpnjL0q6RzMhmW5RDUWK4789d
+13sWQve1BNl2pyCJO+wOn20muayLTm0pavsxGOFtIX+JJDO+hKjrXfMs
+=OyrS
+-----END PGP SIGNATURE-----

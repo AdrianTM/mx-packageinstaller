@@ -133,7 +133,7 @@
         <location filename="../mainwindow.ui" line="695"/>
         <location filename="../mainwindow.ui" line="1088"/>
         <location filename="../mainwindow.ui" line="1092"/>
-        <location filename="../mainwindow.cpp" line="2677"/>
+        <location filename="../mainwindow.cpp" line="2679"/>
         <source>All packages</source>
         <translation>Alle pakker</translation>
     </message>
@@ -141,7 +141,7 @@
         <location filename="../mainwindow.ui" line="402"/>
         <location filename="../mainwindow.ui" line="700"/>
         <location filename="../mainwindow.ui" line="1097"/>
-        <location filename="../mainwindow.cpp" line="2690"/>
+        <location filename="../mainwindow.cpp" line="2692"/>
         <source>Installed</source>
         <translation>Installert</translation>
     </message>
@@ -149,7 +149,7 @@
         <location filename="../mainwindow.ui" line="407"/>
         <location filename="../mainwindow.ui" line="705"/>
         <location filename="../mainwindow.ui" line="1102"/>
-        <location filename="../mainwindow.cpp" line="2688"/>
+        <location filename="../mainwindow.cpp" line="2690"/>
         <source>Upgradable</source>
         <translation>Kan oppgraderes</translation>
     </message>
@@ -158,10 +158,10 @@
         <location filename="../mainwindow.ui" line="710"/>
         <location filename="../mainwindow.ui" line="1107"/>
         <location filename="../mainwindow.ui" line="1234"/>
-        <location filename="../mainwindow.cpp" line="2661"/>
-        <location filename="../mainwindow.cpp" line="2693"/>
-        <location filename="../mainwindow.cpp" line="2792"/>
-        <location filename="../mainwindow.cpp" line="2793"/>
+        <location filename="../mainwindow.cpp" line="2663"/>
+        <location filename="../mainwindow.cpp" line="2695"/>
+        <location filename="../mainwindow.cpp" line="2794"/>
+        <location filename="../mainwindow.cpp" line="2795"/>
         <source>Not installed</source>
         <translation>Ikke installert</translation>
     </message>
@@ -221,39 +221,39 @@
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
-        <location filename="../mainwindow.cpp" line="2641"/>
+        <location filename="../mainwindow.cpp" line="2643"/>
         <source>All apps</source>
         <translation>Alle programmer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
-        <location filename="../mainwindow.cpp" line="2646"/>
+        <location filename="../mainwindow.cpp" line="2648"/>
         <source>All runtimes</source>
         <translation>Alle kjøremiljø</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
-        <location filename="../mainwindow.cpp" line="2651"/>
+        <location filename="../mainwindow.cpp" line="2653"/>
         <source>All available</source>
         <translation>Alle tilgjengelige</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1219"/>
-        <location filename="../mainwindow.cpp" line="2639"/>
+        <location filename="../mainwindow.cpp" line="2641"/>
         <source>Installed apps</source>
         <translation>Installerte programmer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
-        <location filename="../mainwindow.cpp" line="2637"/>
+        <location filename="../mainwindow.cpp" line="2639"/>
         <source>Installed runtimes</source>
         <translation>Installerte kjøremiljøer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
-        <location filename="../mainwindow.cpp" line="2659"/>
-        <location filename="../mainwindow.cpp" line="2785"/>
-        <location filename="../mainwindow.cpp" line="2786"/>
+        <location filename="../mainwindow.cpp" line="2661"/>
+        <location filename="../mainwindow.cpp" line="2787"/>
+        <location filename="../mainwindow.cpp" line="2788"/>
         <source>All installed</source>
         <translation>Alle installerte</translation>
     </message>
@@ -299,8 +299,8 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
-        <location filename="../mainwindow.cpp" line="2436"/>
-        <location filename="../mainwindow.cpp" line="2598"/>
+        <location filename="../mainwindow.cpp" line="2438"/>
+        <location filename="../mainwindow.cpp" line="2600"/>
         <source>Console Output</source>
         <translation>Terminalutdata</translation>
     </message>
@@ -317,9 +317,9 @@
     <message>
         <location filename="../mainwindow.ui" line="1580"/>
         <location filename="../mainwindow.cpp" line="1150"/>
-        <location filename="../mainwindow.cpp" line="2778"/>
-        <location filename="../mainwindow.cpp" line="2782"/>
-        <location filename="../mainwindow.cpp" line="3044"/>
+        <location filename="../mainwindow.cpp" line="2780"/>
+        <location filename="../mainwindow.cpp" line="2784"/>
+        <location filename="../mainwindow.cpp" line="3046"/>
         <source>Install</source>
         <translation>Installer</translation>
     </message>
@@ -420,18 +420,18 @@
         <location filename="../mainwindow.cpp" line="1481"/>
         <location filename="../mainwindow.cpp" line="1541"/>
         <location filename="../mainwindow.cpp" line="2253"/>
-        <location filename="../mainwindow.cpp" line="2281"/>
-        <location filename="../mainwindow.cpp" line="2293"/>
-        <location filename="../mainwindow.cpp" line="2407"/>
-        <location filename="../mainwindow.cpp" line="2428"/>
-        <location filename="../mainwindow.cpp" line="2488"/>
-        <location filename="../mainwindow.cpp" line="2513"/>
-        <location filename="../mainwindow.cpp" line="2532"/>
-        <location filename="../mainwindow.cpp" line="2865"/>
-        <location filename="../mainwindow.cpp" line="2942"/>
-        <location filename="../mainwindow.cpp" line="2971"/>
-        <location filename="../mainwindow.cpp" line="3068"/>
-        <location filename="../mainwindow.cpp" line="3093"/>
+        <location filename="../mainwindow.cpp" line="2282"/>
+        <location filename="../mainwindow.cpp" line="2294"/>
+        <location filename="../mainwindow.cpp" line="2409"/>
+        <location filename="../mainwindow.cpp" line="2430"/>
+        <location filename="../mainwindow.cpp" line="2490"/>
+        <location filename="../mainwindow.cpp" line="2515"/>
+        <location filename="../mainwindow.cpp" line="2534"/>
+        <location filename="../mainwindow.cpp" line="2867"/>
+        <location filename="../mainwindow.cpp" line="2944"/>
+        <location filename="../mainwindow.cpp" line="2973"/>
+        <location filename="../mainwindow.cpp" line="3070"/>
+        <location filename="../mainwindow.cpp" line="3095"/>
         <source>Error</source>
         <translation>Feil</translation>
     </message>
@@ -468,13 +468,13 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="886"/>
-        <location filename="../mainwindow.cpp" line="2575"/>
+        <location filename="../mainwindow.cpp" line="2577"/>
         <source>Latest version </source>
         <translation>Nyeste versjon</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="886"/>
-        <location filename="../mainwindow.cpp" line="2575"/>
+        <location filename="../mainwindow.cpp" line="2577"/>
         <source> already installed</source>
         <translation>allerede installert</translation>
     </message>
@@ -500,7 +500,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1048"/>
-        <location filename="../mainwindow.cpp" line="3077"/>
+        <location filename="../mainwindow.cpp" line="3079"/>
         <source>Warning</source>
         <translation>Advarsel</translation>
     </message>
@@ -570,7 +570,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2035"/>
-        <location filename="../mainwindow.cpp" line="3007"/>
+        <location filename="../mainwindow.cpp" line="3009"/>
         <source>More &amp;info...</source>
         <translation>Mer &amp;info …</translation>
     </message>
@@ -582,152 +582,152 @@
     <message>
         <location filename="../mainwindow.cpp" line="2249"/>
         <location filename="../mainwindow.cpp" line="2262"/>
-        <location filename="../mainwindow.cpp" line="2275"/>
-        <location filename="../mainwindow.cpp" line="2290"/>
-        <location filename="../mainwindow.cpp" line="2379"/>
-        <location filename="../mainwindow.cpp" line="2402"/>
-        <location filename="../mainwindow.cpp" line="2861"/>
-        <location filename="../mainwindow.cpp" line="2936"/>
-        <location filename="../mainwindow.cpp" line="2965"/>
-        <location filename="../mainwindow.cpp" line="3062"/>
+        <location filename="../mainwindow.cpp" line="2276"/>
+        <location filename="../mainwindow.cpp" line="2291"/>
+        <location filename="../mainwindow.cpp" line="2380"/>
+        <location filename="../mainwindow.cpp" line="2404"/>
+        <location filename="../mainwindow.cpp" line="2863"/>
+        <location filename="../mainwindow.cpp" line="2938"/>
+        <location filename="../mainwindow.cpp" line="2967"/>
+        <location filename="../mainwindow.cpp" line="3064"/>
         <source>Done</source>
         <translation>Ferdig</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2249"/>
         <location filename="../mainwindow.cpp" line="2262"/>
-        <location filename="../mainwindow.cpp" line="2275"/>
-        <location filename="../mainwindow.cpp" line="2290"/>
-        <location filename="../mainwindow.cpp" line="2379"/>
-        <location filename="../mainwindow.cpp" line="2402"/>
-        <location filename="../mainwindow.cpp" line="2421"/>
-        <location filename="../mainwindow.cpp" line="2861"/>
-        <location filename="../mainwindow.cpp" line="2936"/>
-        <location filename="../mainwindow.cpp" line="2965"/>
-        <location filename="../mainwindow.cpp" line="3062"/>
-        <location filename="../mainwindow.cpp" line="3086"/>
+        <location filename="../mainwindow.cpp" line="2276"/>
+        <location filename="../mainwindow.cpp" line="2291"/>
+        <location filename="../mainwindow.cpp" line="2380"/>
+        <location filename="../mainwindow.cpp" line="2404"/>
+        <location filename="../mainwindow.cpp" line="2423"/>
+        <location filename="../mainwindow.cpp" line="2863"/>
+        <location filename="../mainwindow.cpp" line="2938"/>
+        <location filename="../mainwindow.cpp" line="2967"/>
+        <location filename="../mainwindow.cpp" line="3064"/>
+        <location filename="../mainwindow.cpp" line="3088"/>
         <source>Processing finished successfully.</source>
         <translation>Prosessen er fullført.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2254"/>
-        <location filename="../mainwindow.cpp" line="2282"/>
-        <location filename="../mainwindow.cpp" line="2294"/>
-        <location filename="../mainwindow.cpp" line="2866"/>
-        <location filename="../mainwindow.cpp" line="2943"/>
-        <location filename="../mainwindow.cpp" line="2972"/>
+        <location filename="../mainwindow.cpp" line="2283"/>
+        <location filename="../mainwindow.cpp" line="2295"/>
+        <location filename="../mainwindow.cpp" line="2868"/>
+        <location filename="../mainwindow.cpp" line="2945"/>
+        <location filename="../mainwindow.cpp" line="2974"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Det oppstod et problem under installering. Se terminalutdata for mer informasjon.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2304"/>
+        <location filename="../mainwindow.cpp" line="2305"/>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2305"/>
+        <location filename="../mainwindow.cpp" line="2306"/>
         <source>Version: </source>
         <translation>Versjon:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2307"/>
+        <location filename="../mainwindow.cpp" line="2308"/>
         <source>Package Installer for MX Linux</source>
         <translation>Verktøy for pakkeinstallering for MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2309"/>
+        <location filename="../mainwindow.cpp" line="2310"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Opphavsrett (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2310"/>
+        <location filename="../mainwindow.cpp" line="2311"/>
         <source>%1 License</source>
         <translation>Lisens for %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2322"/>
+        <location filename="../mainwindow.cpp" line="2323"/>
         <source>%1 Help</source>
         <translation>Hjelpetekst for %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2407"/>
+        <location filename="../mainwindow.cpp" line="2409"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Det oppstod et problem under avinstallering. Se utdata for mer informasjon.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2421"/>
-        <location filename="../mainwindow.cpp" line="3086"/>
+        <location filename="../mainwindow.cpp" line="2423"/>
+        <location filename="../mainwindow.cpp" line="3088"/>
         <source>Success</source>
         <translation>Vellykket</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2428"/>
-        <location filename="../mainwindow.cpp" line="3093"/>
+        <location filename="../mainwindow.cpp" line="2430"/>
+        <location filename="../mainwindow.cpp" line="3095"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Det oppstod et problem under avinstallering av programmet</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2489"/>
-        <location filename="../mainwindow.cpp" line="2514"/>
-        <location filename="../mainwindow.cpp" line="2533"/>
+        <location filename="../mainwindow.cpp" line="2491"/>
+        <location filename="../mainwindow.cpp" line="2516"/>
+        <location filename="../mainwindow.cpp" line="2535"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>Klarte ikke laste ned pakkeliste. Sjekk APT-kildene.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2550"/>
-        <location filename="../mainwindow.cpp" line="2562"/>
+        <location filename="../mainwindow.cpp" line="2552"/>
+        <location filename="../mainwindow.cpp" line="2564"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak ikke installert</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2551"/>
+        <location filename="../mainwindow.cpp" line="2553"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak er ikke installert.
 Vil du installere nå?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2562"/>
+        <location filename="../mainwindow.cpp" line="2564"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak ble ikke installert</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2593"/>
+        <location filename="../mainwindow.cpp" line="2595"/>
         <source>Needs re-login</source>
         <translation>Logg inn på nytt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2594"/>
+        <location filename="../mainwindow.cpp" line="2596"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Du må logge ut og inn igjen for å oppdatere menyen med de installerte programmene</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2778"/>
+        <location filename="../mainwindow.cpp" line="2780"/>
         <source>Upgrade</source>
         <translation>Oppgrader</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2895"/>
+        <location filename="../mainwindow.cpp" line="2897"/>
         <source>Quit?</source>
         <translation>Avslutt?</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2896"/>
+        <location filename="../mainwindow.cpp" line="2898"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Prosessen kjører fortsatt. Hvis du avslutter nå så kan systemet bli ustabilt.&lt;p&gt;&lt;b&gt;Vil du virkelig avslutte MX Verktøy for pakkeinstallering?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3042"/>
+        <location filename="../mainwindow.cpp" line="3044"/>
         <source>Reinstall</source>
         <translation>Installer på nytt</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3069"/>
+        <location filename="../mainwindow.cpp" line="3071"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Det oppstod et problem under forrige handling. Se terminalutdata for mer informasjon.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3078"/>
+        <location filename="../mainwindow.cpp" line="3080"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Mulig farlig handling.

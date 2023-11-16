@@ -2268,7 +2268,8 @@ void MainWindow::on_pushInstall_clicked()
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("flatpak install -y " + FPuser + ui->comboRemote->currentText() + " " + change_list.join(" "))) {
+        if (cmd.run("socat SYSTEM:'flatpak install -y " + FPuser + ui->comboRemote->currentText() + " "
+                    + change_list.join(" ") + "',stderr STDIO")) {
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
@@ -2387,8 +2388,9 @@ void MainWindow::on_pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         for (const QString &app : qAsConst(change_list)) {
             enableOutput();
-            if (!cmd.run("flatpak uninstall " + FPuser + conf + " " + app)) { // success if all processed successfuly,
-                                                                              // failure if one failed
+            if (!cmd.run("socat SYSTEM:'flatpak uninstall " + FPuser + conf + " " + app
+                         + "',stderr STDIO")) { // success if all processed successfuly,
+                                                // failure if one failed
                 success = false;
             }
         }
@@ -2930,7 +2932,7 @@ void MainWindow::on_pushUpgradeFP_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    if (cmd.run("flatpak update")) {
+    if (cmd.run("socat SYSTEM:'flatpak update " + FPuser + "',pty STDIO")) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
@@ -2957,7 +2959,7 @@ void MainWindow::on_pushRemotes_clicked()
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("flatpak install -y " + dialog->getUser() + "--from "
+        if (cmd.run("socat SYSTEM:'flatpak install -y " + dialog->getUser() + "--from "
                     + dialog->getInstallRef().replace(QLatin1String(":"), QLatin1String("\\:")) + "',stderr STDIO\"")) {
             listFlatpakRemotes();
             displayFlatpaks(true);
@@ -3056,7 +3058,7 @@ void MainWindow::on_pushRemoveUnused_clicked()
     if (fp_ver < VersionNumber("1.0.1")) {
         conf = QString();
     }
-    if (cmd.run("flatpak uninstall --unused " + conf)) {
+    if (cmd.run("socat SYSTEM:'flatpak uninstall --unused " + conf + "',pty STDIO")) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));

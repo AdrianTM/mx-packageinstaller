@@ -10,7 +10,8 @@ Package: mx-packageinstaller
 Architecture: any
 Depends: aptitude,
          mx-packageinstaller-pkglist (>= 17.4),
-         xdg-utils | mx-viewer,         
+         xdg-utils | mx-viewer,
+         socat,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: flatpak (<< 1.0) | xdg-desktop-portal-gtk,

@@ -1,3 +1,9 @@
+mx-packageinstaller (23.11.04) mx; urgency=medium
+
+  * Fix: added socat back, needed for responding to terminal prompts
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 16 Nov 2023 10:56:18 -0500
+
 mx-packageinstaller (23.11.03) mx; urgency=medium
 
   * Run flatpak remote-add as root to avoid two authentication pop-ups

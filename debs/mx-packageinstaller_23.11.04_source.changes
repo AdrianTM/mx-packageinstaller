@@ -1,0 +1,25 @@
+Format: 1.8
+Date: Thu, 16 Nov 2023 10:56:18 -0500
+Source: mx-packageinstaller
+Architecture: source
+Version: 23.11.04
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Changes:
+ mx-packageinstaller (23.11.04) mx; urgency=medium
+ .
+   * Fix: added socat back, needed for responding to terminal prompts
+Checksums-Sha1:
+ 1716cc15b23b58d7c8cd098de2fe1e685b97786f 674 mx-packageinstaller_23.11.04.dsc
+ 07b4da2c74c9c604f70b6512bac4516c29afbbaf 308516 mx-packageinstaller_23.11.04.tar.xz
+ 86bf93d80e8e4f4f06eb45eef32db93410564cc2 10176 mx-packageinstaller_23.11.04_arm64.buildinfo
+Checksums-Sha256:
+ 429d4b9e752cc8e19c2163527883cc337a2de9ec409661e62888da00bae132aa 674 mx-packageinstaller_23.11.04.dsc
+ 3d2cd7ed2feb05095d2182348a52eb8fcddeb423c97af6bc0abe9b841b62180e 308516 mx-packageinstaller_23.11.04.tar.xz
+ 4bac38ed42f04340610e98aa3ea16dd87d2a9fd561175a42c86b1ecf886f4b73 10176 mx-packageinstaller_23.11.04_arm64.buildinfo
+Files:
+ 8c581ecebd2236de9605fe36c37405a8 674 admin optional mx-packageinstaller_23.11.04.dsc
+ 8bf61498a2bbc7606aa53dadb7ad3779 308516 admin optional mx-packageinstaller_23.11.04.tar.xz
+ 4c03a1fa81cfb319cd2988b55f6f228a 10176 admin optional mx-packageinstaller_23.11.04_arm64.buildinfo
