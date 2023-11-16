@@ -1092,7 +1092,7 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
                              "&& echo kde || echo gnome) LANG=C ";
     const QString aptget = "apt-get -s -V -o=Dpkg::Use-Pty=0 ";
     const QString aptitude = "aptitude -sy -V -o=Dpkg::Use-Pty=0 ";
-    if (tree == ui->treeFlatpak) {
+    if (tree == ui->treeFlatpak && names != "flatpak") {
         detailed_installed_names = change_list;
     } else if (tree == ui->treeBackports) {
         recommends = (ui->checkBoxInstallRecommendsMXBP->isChecked()) ? "--install-recommends " : "";
@@ -1113,7 +1113,6 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
         aptitude_info = cmd.getOutAsRoot(frontend + aptitude + action + " -t mx " + recommends_aptitude + names
                                          + " |tail -2 |head -1");
     } else {
-
         recommends = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "";
         recommends_aptitude
             = (ui->checkBoxInstallRecommends->isChecked()) ? "--with-recommends " : "--without-recommends ";
