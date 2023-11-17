@@ -1003,9 +1003,6 @@ void MainWindow::displayFlatpaks(bool force_update)
         filterChanged(ui->comboFilterFlatpak->currentText());
     }
     blockInterfaceFP(false);
-    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
-        ui->searchBoxFlatpak->setFocus();
-    }
     progress->hide();
     timer.stop();
     displayFlatpaksIsRunning = false;
@@ -2470,7 +2467,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     } else if (tree == ui->treeFlatpak) {
         search_str = ui->searchBoxFlatpak->text();
     }
-    Cmd shell;
     switch (index) {
     case Tab::Popular:
         ui->searchPopular->setText(search_str);
@@ -2595,6 +2591,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 displayFlatpaks(false);
             }
             setCursor(QCursor(Qt::ArrowCursor));
+            ui->searchBoxFlatpak->setFocus();
             QMessageBox::warning(this, tr("Needs re-login"),
                                  tr("You might need to logout/login to see installed items in the menu"));
             ui->tabWidget->blockSignals(true);
