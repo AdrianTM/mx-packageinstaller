@@ -1003,7 +1003,9 @@ void MainWindow::displayFlatpaks(bool force_update)
         filterChanged(ui->comboFilterFlatpak->currentText());
     }
     blockInterfaceFP(false);
-    ui->searchBoxFlatpak->setFocus();
+    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+        ui->searchBoxFlatpak->setFocus();
+    }
     progress->hide();
     timer.stop();
     displayFlatpaksIsRunning = false;
