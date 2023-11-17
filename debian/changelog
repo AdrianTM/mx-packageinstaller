@@ -1,3 +1,10 @@
+mx-packageinstaller (23.11.05) mx; urgency=medium
+
+  * Don't filter out librewolf alongside other "libs"
+  * Fix: search field in Popular should not lose focus when the program finishes loading
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 17 Nov 2023 14:49:23 -0500
+
 mx-packageinstaller (23.11.04) mx; urgency=medium
 
   * Fix: added socat back, needed for responding to terminal prompts
