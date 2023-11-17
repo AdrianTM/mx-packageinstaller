@@ -1407,7 +1407,8 @@ bool MainWindow::installSelected()
 
 bool MainWindow::isFilteredName(const QString &name)
 {
-    return ((name.startsWith(QLatin1String("lib")) && !name.startsWith(QLatin1String("libreoffice")))
+    return ((name.startsWith(QLatin1String("lib")) && !name.startsWith(QLatin1String("libreoffice"))
+             && !name.startsWith(QLatin1String("librewolf")))
             || name.endsWith(QLatin1String("-dev")) || name.endsWith(QLatin1String("-dbg"))
             || name.endsWith(QLatin1String("-dbgsym")) || name.endsWith(QLatin1String("-libs")));
 }
