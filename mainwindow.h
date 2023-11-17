@@ -222,7 +222,7 @@ private:
     bool dirtyBackports {true};
     bool dirtyEnabledRepos {true};
     bool dirtyTest {true};
-    bool firstRun {true};
+    bool firstRunFP {true};
     bool test_initially_enabled {};
     bool updated_once {};
     bool warning_backports {};

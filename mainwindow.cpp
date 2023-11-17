@@ -688,13 +688,13 @@ void MainWindow::setProgressDialog()
 
 void MainWindow::setSearchFocus()
 {
-    if (ui->tabEnabled->isVisible()) {
+    if (ui->tabWidget->currentIndex() == Tab::EnabledRepos) {
         ui->searchBoxEnabled->setFocus();
-    } else if (ui->tabMXtest->isVisible()) {
+    } else if (ui->tabWidget->currentIndex() == Tab::Test) {
         ui->searchBoxMX->setFocus();
-    } else if (ui->tabBackports->isVisible()) {
+    } else if (ui->tabWidget->currentIndex() == Tab::Backports) {
         ui->searchBoxBP->setFocus();
-    } else if (ui->tabFlatpak->isVisible()) {
+    } else if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
         ui->searchBoxFlatpak->setFocus();
     }
 }
@@ -915,16 +915,16 @@ void MainWindow::displayFlatpaks(bool force_update)
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     displayFlatpaksIsRunning = true;
     lastItemClicked = nullptr;
-    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
-        setCursor(QCursor(Qt::BusyCursor));
-    }
-    listFlatpakRemotes();
-
-    ui->treeFlatpak->blockSignals(true);
-    ui->treeFlatpak->clear();
-    change_list.clear();
-
     if (flatpaks.isEmpty() || force_update) {
+        if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+            setCursor(QCursor(Qt::BusyCursor));
+        }
+        listFlatpakRemotes();
+
+        ui->treeFlatpak->blockSignals(true);
+        ui->treeFlatpak->clear();
+        change_list.clear();
+
         if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
             progress->show();
             if (!timer.isActive()) {
@@ -941,68 +941,73 @@ void MainWindow::displayFlatpaks(bool force_update)
 
         // add runtimes (needed for older flatpak versions)
         installed_runtimes_fp = listInstalledFlatpaks("--runtime");
-    }
-    int total_count = 0;
-    QTreeWidgetItem *widget_item {nullptr};
 
-    QString short_name;
-    QString long_name;
-    QString version;
-    QString size;
-    for (QString item : qAsConst(flatpaks)) {
-        if (fp_ver < VersionNumber("1.2.4")) {
-            size = item.section("\t", 1, 1);
-            item = item.section("\t", 0, 0); // strip size
-            version = item.section("/", -1);
-        } else { // Buster and higher versions
-            size = item.section("\t", -1);
-            version = item.section("\t", 0, 0);
-            item = item.section("\t", 1, 1).section("/", 1);
-        }
-        long_name = item.section("/", 0, 0);
-        short_name = long_name.section(".", -1);
-        if (short_name == QLatin1String("Locale") || short_name == QLatin1String("Sources")
-            || short_name == QLatin1String("Debug")) { // skip Locale, Sources, Debug
-            continue;
-        }
-        ++total_count;
-        widget_item = new QTreeWidgetItem(ui->treeFlatpak);
-        widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
-        widget_item->setText(FlatCol::Name, short_name);
-        widget_item->setText(FlatCol::LongName, long_name);
-        widget_item->setText(FlatCol::Version, version);
-        widget_item->setText(FlatCol::Size, size);
-        widget_item->setText(FlatCol::FullName, item); // Full string
-        QStringList installed_all {installed_apps_fp + installed_runtimes_fp};
-        if (installed_all.contains(item)) {
-            widget_item->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
-                                                                  QIcon(":/icons/package-installed-updated.png")));
-            widget_item->setText(FlatCol::Status, "installed");
-        } else {
-            widget_item->setText(FlatCol::Status, "not installed");
-        }
-        widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
-    }
-    // add sizes for the installed packages for older flatpak that doesn't list size for all the packages
-    listSizeInstalledFP();
+        int total_count = 0;
+        QTreeWidgetItem *widget_item {nullptr};
 
-    ui->labelNumAppFP->setText(QString::number(total_count));
+        QString short_name;
+        QString long_name;
+        QString version;
+        QString size;
+        for (QString item : qAsConst(flatpaks)) {
+            if (fp_ver < VersionNumber("1.2.4")) {
+                size = item.section("\t", 1, 1);
+                item = item.section("\t", 0, 0); // strip size
+                version = item.section("/", -1);
+            } else { // Buster and higher versions
+                size = item.section("\t", -1);
+                version = item.section("\t", 0, 0);
+                item = item.section("\t", 1, 1).section("/", 1);
+            }
+            long_name = item.section("/", 0, 0);
+            short_name = long_name.section(".", -1);
+            if (short_name == QLatin1String("Locale") || short_name == QLatin1String("Sources")
+                || short_name == QLatin1String("Debug")) { // skip Locale, Sources, Debug
+                continue;
+            }
+            ++total_count;
+            widget_item = new QTreeWidgetItem(ui->treeFlatpak);
+            widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
+            widget_item->setText(FlatCol::Name, short_name);
+            widget_item->setText(FlatCol::LongName, long_name);
+            widget_item->setText(FlatCol::Version, version);
+            widget_item->setText(FlatCol::Size, size);
+            widget_item->setText(FlatCol::FullName, item); // Full string
+            QStringList installed_all {installed_apps_fp + installed_runtimes_fp};
+            if (installed_all.contains(item)) {
+                widget_item->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
+                                                                      QIcon(":/icons/package-installed-updated.png")));
+                widget_item->setText(FlatCol::Status, "installed");
+            } else {
+                widget_item->setText(FlatCol::Status, "not installed");
+            }
+            widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
+        }
+        // add sizes for the installed packages for older flatpak that doesn't list size for all the packages
+        listSizeInstalledFP();
 
-    int total = 0;
-    if (installed_apps_fp != QStringList(QLatin1String(""))) {
-        total = installed_apps_fp.count();
-    }
-    ui->labelNumInstFP->setText(QString::number(total));
-    ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
-    removeDuplicatesFP();
-    for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
-        ui->treeFlatpak->resizeColumnToContents(i);
+        ui->labelNumAppFP->setText(QString::number(total_count));
+
+        int total = 0;
+        if (installed_apps_fp != QStringList(QLatin1String(""))) {
+            total = installed_apps_fp.count();
+        }
+        ui->labelNumInstFP->setText(QString::number(total));
+        ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
+        removeDuplicatesFP();
+        for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
+            ui->treeFlatpak->resizeColumnToContents(i);
+        }
     }
     ui->treeFlatpak->blockSignals(false);
+
     if (ui->tabWidget->currentIndex() == Tab::Flatpak && !ui->comboFilterFlatpak->currentText().isEmpty()) {
         filterChanged(ui->comboFilterFlatpak->currentText());
     }
     blockInterfaceFP(false);
+    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+        ui->searchBoxFlatpak->setFocus();
+    }
     progress->hide();
     timer.stop();
     displayFlatpaksIsRunning = false;
@@ -2260,9 +2265,7 @@ void MainWindow::on_pushInstall_clicked()
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-            ui->tabWidget->blockSignals(true);
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-            ui->tabWidget->blockSignals(false);
             enableTabs(true);
             return;
         }
@@ -2274,9 +2277,7 @@ void MainWindow::on_pushInstall_clicked()
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-            ui->tabWidget->blockSignals(true);
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-            ui->tabWidget->blockSignals(false);
         } else {
             setCursor(QCursor(Qt::ArrowCursor));
             QMessageBox::critical(this, tr("Error"),
@@ -2378,9 +2379,7 @@ void MainWindow::on_pushUninstall_clicked()
             on_comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-            ui->tabWidget->blockSignals(true);
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-            ui->tabWidget->blockSignals(false);
             enableTabs(true);
             return;
         }
@@ -2402,9 +2401,7 @@ void MainWindow::on_pushUninstall_clicked()
             on_comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-            ui->tabWidget->blockSignals(true);
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-            ui->tabWidget->blockSignals(false);
         } else {
             QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling, please check output"));
         }
@@ -2475,7 +2472,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchPopular->text().isEmpty()) {
             findPopular();
         }
-        ui->searchPopular->setFocus();
         break;
     case Tab::EnabledRepos:
         ui->searchBoxEnabled->setText(search_str);
@@ -2501,7 +2497,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchBoxEnabled->text().isEmpty()) {
             findPackageOther();
         }
-        ui->searchBoxEnabled->setFocus();
         break;
     case Tab::Test:
         ui->searchBoxMX->setText(search_str);
@@ -2520,7 +2515,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchBoxMX->text().isEmpty()) {
             findPackageOther();
         }
-        ui->searchBoxMX->setFocus();
         break;
     case Tab::Backports:
         ui->searchBoxBP->setText(search_str);
@@ -2539,12 +2533,15 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchBoxBP->text().isEmpty()) {
             findPackageOther();
         }
-        ui->searchBoxBP->setFocus();
         break;
     case Tab::Flatpak:
         ui->searchBoxFlatpak->setText(search_str);
         enableTabs(true);
         setCurrentTree();
+        ui->searchBoxFlatpak->setFocus();
+        if (!firstRunFP) {
+            return;
+        }
         displayWarning("flatpaks");
         blockInterfaceFP(true);
         if (!checkInstalled("flatpak")) {
@@ -2591,7 +2588,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 displayFlatpaks(false);
             }
             setCursor(QCursor(Qt::ArrowCursor));
-            ui->searchBoxFlatpak->setFocus();
             QMessageBox::warning(this, tr("Needs re-login"),
                                  tr("You might need to logout/login to see installed items in the menu"));
             ui->tabWidget->blockSignals(true);
@@ -2615,6 +2611,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             displayFlatpaks(false);
         }
         ui->searchBoxBP->setText(search_str);
+        firstRunFP = false;
         break;
     case Tab::Output:
         ui->searchPopular->clear();
@@ -2634,7 +2631,6 @@ void MainWindow::filterChanged(const QString &arg1)
     tree->blockSignals(true);
 
     QList<QTreeWidgetItem *> found_items;
-    // filter for Flatpak
     if (tree == ui->treeFlatpak) {
         if (arg1 == tr("Installed runtimes")) {
             displayFilteredFP(installed_runtimes_fp);
@@ -2670,8 +2666,8 @@ void MainWindow::filterChanged(const QString &arg1)
             }
             displayFilteredFP(new_list);
         }
-        setSearchFocus();
         findPackageOther();
+        setSearchFocus();
         tree->blockSignals(false);
         return;
     }
@@ -2936,9 +2932,7 @@ void MainWindow::on_pushUpgradeFP_clicked()
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-        ui->tabWidget->blockSignals(true);
         ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-        ui->tabWidget->blockSignals(false);
     } else {
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::critical(this, tr("Error"),
@@ -3062,9 +3056,7 @@ void MainWindow::on_pushRemoveUnused_clicked()
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-        ui->tabWidget->blockSignals(true);
         ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-        ui->tabWidget->blockSignals(false);
     } else {
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::critical(this, tr("Error"),
