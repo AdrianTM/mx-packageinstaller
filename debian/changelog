@@ -1,4 +1,4 @@
-mx-packageinstaller (23.11.05+nmu1) mx; urgency=medium
+mx-packageinstaller (23.11.06) mx; urgency=medium
 
   * flatpak 64 bit arm arch
 
