@@ -1,0 +1,27 @@
+Format: 1.8
+Date: Fri, 17 Nov 2023 14:49:23 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.11.05
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.05) mx; urgency=medium
+ .
+   * Don't filter out librewolf alongside other "libs"
+   * Fix: search field in Popular should not lose focus when the program finishes loading
+   * Improve speed when switching tabs
+Checksums-Sha1:
+ 745baff3c9c7874c08684d39411a0430bc8e8db0 10133 mx-packageinstaller_23.11.05_i386.buildinfo
+ a9523375d4aabddd91d9cf6a9570208409f47f2d 392548 mx-packageinstaller_23.11.05_i386.deb
+Checksums-Sha256:
+ f08ae8d052b80256507195b6918dc45d7831988917036f4ae321462b8b078c53 10133 mx-packageinstaller_23.11.05_i386.buildinfo
+ e74d752de11baea33cc43b782ef1902f6067e176117576de97ce2c643d818ef8 392548 mx-packageinstaller_23.11.05_i386.deb
+Files:
+ 5ffad923a57d755848dafd8ae0b144bb 10133 admin optional mx-packageinstaller_23.11.05_i386.buildinfo
+ 157cd16bdd3cb9bc887917e2dacb7d44 392548 admin optional mx-packageinstaller_23.11.05_i386.deb

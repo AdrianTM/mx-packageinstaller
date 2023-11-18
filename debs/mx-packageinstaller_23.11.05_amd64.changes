@@ -1,0 +1,48 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 17 Nov 2023 14:49:23 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: source amd64
+Version: 23.11.05
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Adrian <adrian@mxlinux.org>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.05) mx; urgency=medium
+ .
+   * Don't filter out librewolf alongside other "libs"
+   * Fix: search field in Popular should not lose focus when the program finishes loading
+   * Improve speed when switching tabs
+Checksums-Sha1:
+ a1a837319d374e89d8ab39674f25abcfcf4c1877 1236 mx-packageinstaller_23.11.05.dsc
+ 684ffea81b569c161990723254bc5a1f0ef11352 308280 mx-packageinstaller_23.11.05.tar.xz
+ c046e1521da0679b406c22056c468dd7c4d92436 11011 mx-packageinstaller_23.11.05_amd64.buildinfo
+ cc356abf5fdaf43e5b7df8719c7afc2654d1f9f9 382560 mx-packageinstaller_23.11.05_amd64.deb
+Checksums-Sha256:
+ be54708cd5a45dc78859331a5d2f4dd22379e9e58b022ae433ccd8e10638cc38 1236 mx-packageinstaller_23.11.05.dsc
+ f26f7e27956fb1d3164545a0556ee401e461192c3bcd4bd2e4198f3d1667fd2e 308280 mx-packageinstaller_23.11.05.tar.xz
+ 3879460674a7ae5a7296cd3d18addb7a293d01ae44368b2a19a0b82e399f399b 11011 mx-packageinstaller_23.11.05_amd64.buildinfo
+ bd54c878bf7d0096cda1ba07ad184675c84b43afc546d65b74ab5521a116eb5e 382560 mx-packageinstaller_23.11.05_amd64.deb
+Files:
+ 63895480c569f32ce7638462692a824b 1236 admin optional mx-packageinstaller_23.11.05.dsc
+ ee9d8bfa87614ac97983a902cf39781b 308280 admin optional mx-packageinstaller_23.11.05.tar.xz
+ bb9b0f161b7c2ad53c4416e1297e347c 11011 admin optional mx-packageinstaller_23.11.05_amd64.buildinfo
+ a3d9c91abf4e68b4585873bcd7d45f45 382560 admin optional mx-packageinstaller_23.11.05_amd64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmVYAugTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumDbECACmQSt3EiXJlDRRh6JxL8Vd3pErY4iv
+bypyYkjuI7FblbLNrQU+G1BkvJ+dxDd61TeK96Kqrgpkeq9m1I4UFgPGmC81RXef
++yLHnDqu5XZLN+OYJZahdFzfT/JAdQEVCMjcxxjYELaQNygTDz/gyCvJ5/Zxl8g6
+pVbFEpHsJ37t3ixJXc0lc1b2qlYxSDtYDDsCXbTlxTY+kjIdl/AXsHIEKXlOahyO
+jxXBUu3z6AqS0uVnZHcZX/D9Iv6tHL58dIED385Exqz8T/iDOdzscSLyCqhPiGHL
+nU747goFemBoV64cpG24+HUukfHMjzDTPbUCYp+pY+pqNMiats95vCQF
+=xmE7
+-----END PGP SIGNATURE-----
