@@ -613,6 +613,8 @@ void MainWindow::processDoc(const QDomDocument &doc)
         mod_arch = "32";
     } else if (arch == QLatin1String("armhf")) {
         mod_arch = "armhf";
+    } else if (arch == QLatin1String("armhf")) {
+        mod_arch = "arm64";
     } else {
         return;
     }
