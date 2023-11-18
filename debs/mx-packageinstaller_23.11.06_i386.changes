@@ -1,0 +1,45 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Fri, 17 Nov 2023 22:17:03 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: i386
+Version: 23.11.06
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Dolphin Oracle <dolphinoracle@gmail.com>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.06) mx; urgency=medium
+ .
+   * flatpak 64 bit arm arch
+Checksums-Sha1:
+ be063982272bd5888be59dfac8c6591f0695a6cc 10993 mx-packageinstaller_23.11.06_i386.buildinfo
+ 878fb81f979d9f4922dc4cbf2dfd9c761d932dd2 392640 mx-packageinstaller_23.11.06_i386.deb
+Checksums-Sha256:
+ c079227ee4fb6e9f1a9af1ecbd4bd794e870246b6b7f3521a200118caac9422e 10993 mx-packageinstaller_23.11.06_i386.buildinfo
+ 59891862f4db5f71546dacac7096bb8c23c9141f291764de722a947b5a3a5852 392640 mx-packageinstaller_23.11.06_i386.deb
+Files:
+ 9f62954bd9b99c66473ddf11a2493173 10993 admin optional mx-packageinstaller_23.11.06_i386.buildinfo
+ b7675eedc5e49e7bda49ecf7f44dcdaa 392640 admin optional mx-packageinstaller_23.11.06_i386.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmVZAEUACgkQm2ih6Lm2
+N1y6zhAAi/47IND9mkLG+9vg/zIqT/JmJG8HCGUnwQGIF+XlZSXedLWiwGu4KPzG
+B3OtltCuYQBKGt41+yG2qAw6D05XiHGf1YC2LGw1/uGA7exkt2zWLJ3nsYRCuFMp
+kpkYjyQt1MVI82eXbn8dRVEpPjGYtWyC/xh+2NUKDiUlxVasfi0P3Kh0N5uORuiz
+MhRbkopI/xTGFrJ/V522eFHkrA4feFb50E05zvwpKz3E7cKUTYYzzDCL4/IoNj4d
+YvTekgIOTDYyV8dzfDU9CvR6240e60v1AbQ98fLKzTJ6zjy84JR86NddUy2AQIwB
+AGGNhQRp27J51nKCBVkfq2b322ffxOSpOgtAIXLM8iDEJnun1gh1WyW/FKme5iuO
+JPOjpo8NnY4MkKcbabHB839gQZBx6c80nNytIo6fapuW08+43fT+CO1jlF8cG9gb
+7KWlSpG6Xn1ci+9IN5dhV4VQPRnFTLwXWg60aHyCou3u3eyqlOewVYEsKVpRrUYC
+lNL579+ZwDFKlZCZvA7P5CqZw/IvGYhvMzEJrNba5Z3ckFTwopeiyaFIGBBm/xpN
+3Xgf3pUM4jSnBeChrGdcWrUESaORFILZ1iJl5rQdzoXNxkSd76iiJiGrK317Z0xO
+1/rvuUGN8pbrQnD6EFw1O5mw7beMJ2tl4z/wxXMXDhhOjSAc3SI=
+=Bevr
+-----END PGP SIGNATURE-----
