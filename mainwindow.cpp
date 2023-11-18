@@ -613,6 +613,8 @@ void MainWindow::processDoc(const QDomDocument &doc)
         mod_arch = "32";
     } else if (arch == QLatin1String("armhf")) {
         mod_arch = "armhf";
+    } else if (arch == QLatin1String("arm64")) {
+        mod_arch = "arm64";
     } else {
         return;
     }
@@ -1854,6 +1856,8 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         arch_fp = "--arch=i386 ";
     } else if (arch == QLatin1String("armhf")) {
         arch_fp = "--arch=arm ";
+    } else if (arch == QLatin1String("arm64")) {
+        arch_fp = "--arch=aarch64 ";
     } else {
         return {};
     }
