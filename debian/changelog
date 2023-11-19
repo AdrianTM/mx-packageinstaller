@@ -1,3 +1,9 @@
+mx-packageinstaller (23.11.07) mx; urgency=medium
+
+  * fix version number
+
+ -- Dolphin Oracle <dolphinoracle@gmail.com>  Sun, 19 Nov 2023 08:53:22 -0500
+
 mx-packageinstaller (23.11.06) mx; urgency=medium
 
   * flatpak 64 bit arm arch
