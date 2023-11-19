@@ -4,18 +4,18 @@ Hash: SHA512
 Format: 1.0
 Source: mx-packageinstaller
 Binary: mx-packageinstaller
-Architecture: amd64
-Version: 23.11.06
+Architecture: i386
+Version: 23.11.07
 Checksums-Md5:
- 082defea6923d97cb568d42cddc5a741 382808 mx-packageinstaller_23.11.06_amd64.deb
+ 666d726e8e699f1ca349d0b745ef9749 392788 mx-packageinstaller_23.11.07_i386.deb
 Checksums-Sha1:
- 990f12e2f27dbc0d4e70138f84e576f4e40a8a6e 382808 mx-packageinstaller_23.11.06_amd64.deb
+ 3b49a466e660f0aec1567ce59a84fe169cf734d7 392788 mx-packageinstaller_23.11.07_i386.deb
 Checksums-Sha256:
- a4e1a02923c32d42d9212bc893c904d97c46e1c623944f7a485fc8373dcd517f 382808 mx-packageinstaller_23.11.06_amd64.deb
+ 61417210a00c7e45d388e9b3cbcf0fbdd2da52ea485e0def974862ab7d1b6483 392788 mx-packageinstaller_23.11.07_i386.deb
 Build-Origin: Debian
-Build-Architecture: amd64
-Build-Date: Sat, 18 Nov 2023 18:16:55 +0000
-Build-Path: /build/mx-packageinstaller-23.11.06
+Build-Architecture: i386
+Build-Date: Sun, 19 Nov 2023 14:02:17 +0000
+Build-Path: /build/mx-packageinstaller-23.11.07
 Installed-Build-Depends:
  autoconf (= 2.69-11),
  automake (= 1:1.16.1-4),
@@ -26,7 +26,7 @@ Installed-Build-Depends:
  bash (= 5.0-4),
  binutils (= 2.31.1-16),
  binutils-common (= 2.31.1-16),
- binutils-x86-64-linux-gnu (= 2.31.1-16),
+ binutils-i686-linux-gnu (= 2.31.1-16),
  bsdmainutils (= 11.1.2+b1),
  bsdutils (= 1:2.33.1-0.1),
  build-essential (= 12.6),
@@ -159,7 +159,6 @@ Installed-Build-Depends:
  libkrb5-3 (= 1.17-3+deb10u4),
  libkrb5support0 (= 1.17-3+deb10u4),
  libllvm7 (= 1:7.0.1-8+deb10u2),
- liblsan0 (= 8.3.0-6),
  liblz4-1 (= 1.8.3-1+deb10u1),
  liblzma5 (= 5.2.4-1+deb10u1),
  libmagic-mgc (= 1:5.35-4+deb10u2),
@@ -223,7 +222,6 @@ Installed-Build-Depends:
  libtasn1-6 (= 4.13-3),
  libtinfo6 (= 6.1+20181013-2+deb10u2),
  libtool (= 2.4.6-9),
- libtsan0 (= 8.3.0-6),
  libubsan1 (= 8.3.0-6),
  libuchardet0 (= 0.0.6-3),
  libudev1 (= 241-7~deb10u8),
@@ -336,21 +334,21 @@ Environment:
  LANG="C"
  LC_ALL="C"
  MAKEFLAGS=" -j4"
- SOURCE_DATE_EPOCH="1700277423"
+ SOURCE_DATE_EPOCH="1700402002"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmVZAEAACgkQm2ih6Lm2
-N1wlcxAAnloldnnQ1M5ILFck8RrkHC2EPpEydFa7FoCfvTyGGxiKNiGLW0nO6iXw
-y2MAkrD1Oq5pxylcY+9fCIeES8vdApnqTM/qnKeSCQhC1Q6anMXtKt+AUGde4hD/
-Wv+S2/a60hDZJe7Y6xeizZTit1cJAdzDr05UYrzfOr3naf3XXQCI8ptWDudMs3sQ
-rUoO5vSxo38W+6TJ1b5GP9pT3QFOPCe2mCrurKUsq3V2DBc5rGXjTD8x9VV9nlwR
-4CuYfR4Jxr45LO6coTtvlzKeWUCY6/hakbdOzCkqYR/L8F8N5DX5JpHX78vEuHGi
-B2sxHx1Jo0FFCRlrnVengG6zyy93zh6FS8uBxMT2Kn/bsTly3v58KjScOoBwlkku
-X9AJNEVEEeaOXf7bEsIogLrMIF0LuFwCnb+xOwbUCsWcUWqAG8Gtbjdtk2oHMgYZ
-yJ+xtPTTjADn5tZF846efKeKCtXTBPfxN/bC3LYpNjdsFWhy5LSlBrfIHfkLwzAb
-hLJ7LmBF3RUmNb3QfDB5FGC/76RbfsvTulZfUlw5eNByQQSEMh3P9GaETuOISkN5
-iFOIpeOyCM+CLBPgHy8sLIGOWwv98kZlKp9xONGfZ8RJGrm2U9YFtNtBgH4wYIt2
-ftJkHukdJBxIVTXccM+olmipRHDBlA/aMUmORecnW9cWB9Esk6A=
-=Vhd0
+iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmVaFjcACgkQm2ih6Lm2
+N1z0Dw/5AZ2gPdtJezNZVxJU3fQJ6eRZUMtgQg+Uage+jtNBQxTKwmNtxu+K8p2i
+yG/bKUx+i6y6pRb+QLFGAvIPI+Er9Jk5OIYzgAGRLl0FUn+CfzX4h9J5cyAKAbwI
+wzuGE5Swu3O37yA9A1aj90b/aMKjEEMMh6N9XH7ntGLdBKrDiNHTWn4DPtp3e5Ug
+zUDzrhKnGQUdLpKOfLxUNPMiA/faXCF+LenDqvwV13YmuL21DQ9D/MNmXZm8JxNH
+8TIlvSODs/8x1dI6ehTu728FsdADqk1LYTqZIC+l/m/Vz99rP5Gmci+bByR3Y0Ra
+bG0sw4N4dnUD/RZM8S7ZEQOYhSGFVtoUoWJNE3GRducaPVzdCQ5qWstEC6xmT7i9
+4WeyQmMU532ym5v3ccK3KgiXxw6gK+GG0WfVEnpaACohuY0S7gln/ZSgl5Q84k2G
+A7qCZvxZteeCO3td//GDTCJKL8pL/7Kgemmv41v/ClGkoED2L1zTISp5vo9W1uJq
+CEUJFeqWF3U9iPVJYmIwINM6n3wsjLBlOZPkYth0rumx34/d7cdWp4GwIv5vIKl7
+ZkmCd6djGU+soAys1F+PJKjFGJQ8A3Dd55yHVjBtm4bDlNPf7cl8NY+dy0djMNHF
+J5JcXZoQyjD3pSElaqiggj2R08Xnl/dI4Z13KQINJ5t+1q4S2lE=
+=Acg6
 -----END PGP SIGNATURE-----
