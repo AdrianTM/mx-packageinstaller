@@ -2,24 +2,23 @@ debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh clean --no-automatic-dbgsym --parallel 
    debian/rules override_dh_auto_clean
-make[1]: Entering directory '/media/dataext/development/working/mx-packageinstaller_23.11.06/mx-packageinstaller'
+make[1]: Entering directory '/media/dataext/development/working/mx-packageinstaller_23.11.07/mx-packageinstaller'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_auto_clean
 rm -f src/translations/*.qm
-make[1]: Leaving directory '/media/dataext/development/working/mx-packageinstaller_23.11.06/mx-packageinstaller'
+make[1]: Leaving directory '/media/dataext/development/working/mx-packageinstaller_23.11.07/mx-packageinstaller'
    dh_autoreconf_clean -O--no-automatic-dbgsym -O--parallel
    dh_clean -O--no-automatic-dbgsym -O--parallel
 dpkg-source: info: using source format '3.0 (native)'
-dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.06.tar.xz
-dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.06.dsc
+dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.07.tar.xz
+dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.07.dsc
 [0mI: Generating source changes file for original dsc[0m
 dpkg-genchanges: info: including full source code in upload
-[1;33mW: Build-result Directory /media/dataext/development/pbuilder/debian-buster-amd64/result/ does not exist[0m
 [1;33mW: cgroups are not available on the host, not using them.[0m
 [0mI: pbuilder: network access will be disabled during build[0m
-[0mI: Current time: Sat Nov 18 13:16:10 EST 2023[0m
-[0mI: pbuilder-time-stamp: 1700331370[0m
+[0mI: Current time: Sun Nov 19 09:05:07 EST 2023[0m
+[0mI: pbuilder-time-stamp: 1700402707[0m
 [0mI: Building the build Environment[0m
 [0mI: extracting base tarball [/media/dataext/development/pbuilder/debian-buster-amd64-base.tgz][0m
 [0mI: copying local configuration[0m
@@ -30,19 +29,18 @@ dpkg-genchanges: info: including full source code in upload
 [0mI: mounting /dev/pts filesystem[0m
 [0mI: redirecting /dev/ptmx to /dev/pts/ptmx[0m
 [0mI: policy-rc.d already exists[0m
-[0mI: created buildresult dir: /media/dataext/development/pbuilder/debian-buster-amd64/result/[0m
 [0mI: Obtaining the cached apt archive contents[0m
 [0mI: Copying source file[0m
-[0mI: copying [../mx-packageinstaller_23.11.06.dsc][0m
-[0mI: copying [../mx-packageinstaller_23.11.06.tar.xz][0m
+[0mI: copying [../mx-packageinstaller_23.11.07.dsc][0m
+[0mI: copying [../mx-packageinstaller_23.11.07.tar.xz][0m
 [0mI: Extracting source[0m
-dpkg-source: warning: extracting unsigned source package (mx-packageinstaller_23.11.06.dsc)
-dpkg-source: info: extracting mx-packageinstaller in mx-packageinstaller-23.11.06
-dpkg-source: info: unpacking mx-packageinstaller_23.11.06.tar.xz
+dpkg-source: warning: extracting unsigned source package (mx-packageinstaller_23.11.07.dsc)
+dpkg-source: info: extracting mx-packageinstaller in mx-packageinstaller-23.11.07
+dpkg-source: info: unpacking mx-packageinstaller_23.11.07.tar.xz
 [0mI: using fakeroot in build.[0m
 [0mI: Installing the build-deps[0m
 [0mI: -> Attempting to satisfy build-dependencies[0m
-Note, using file '/build/mx-packageinstaller_23.11.06.dsc' to get the build dependencies
+Note, using file '/build/mx-packageinstaller_23.11.07.dsc' to get the build dependencies
 Reading package lists...
 Building dependency tree...
 The following NEW packages will be installed:
@@ -85,216 +83,10 @@ The following NEW packages will be installed:
   qtchooser qttools5-dev-tools sensible-utils ucf x11-common x11proto-core-dev
   x11proto-damage-dev x11proto-dev x11proto-fixes-dev x11proto-xext-dev
   x11proto-xf86vidmode-dev xkb-data xorg-sgml-doctools xtrans-dev
-0 upgraded, 205 newly installed, 0 to remove and 0 not upgraded.
-Need to get 103 MB of archives.
-After this operation, 526 MB of additional disk space will be used.
-Get:1 http://ftp.us.debian.org/debian buster/main amd64 libbsd0 amd64 0.9.1-2+deb10u1 [99.5 kB]
-Get:2 http://ftp.us.debian.org/debian buster/main amd64 bsdmainutils amd64 11.1.2+b1 [191 kB]
-Get:3 http://ftp.us.debian.org/debian buster/main amd64 libuchardet0 amd64 0.0.6-3 [64.9 kB]
-Get:4 http://ftp.us.debian.org/debian buster/main amd64 groff-base amd64 1.22.4-3+deb10u1 [916 kB]
-Get:5 http://ftp.us.debian.org/debian buster/main amd64 libpipeline1 amd64 1.5.1-2 [31.2 kB]
-Get:6 http://ftp.us.debian.org/debian buster/main amd64 man-db amd64 2.8.5-2 [1274 kB]
-Get:7 http://ftp.us.debian.org/debian buster/main amd64 libglib2.0-0 amd64 2.58.3-2+deb10u3 [1259 kB]
-Get:8 http://ftp.us.debian.org/debian buster/main amd64 libcap2 amd64 1:2.25-2 [17.6 kB]
-Get:9 http://ftp.us.debian.org/debian buster/main amd64 libcap2-bin amd64 1:2.25-2 [28.8 kB]
-Get:10 http://ftp.us.debian.org/debian buster/main amd64 libgstreamer1.0-0 amd64 1.14.4-1 [2103 kB]
-Get:11 http://ftp.us.debian.org/debian buster/main amd64 liborc-0.4-0 amd64 1:0.4.28-3.1 [141 kB]
-Get:12 http://ftp.us.debian.org/debian buster/main amd64 iso-codes all 4.2-1 [2713 kB]
-Get:13 http://ftp.us.debian.org/debian buster/main amd64 libgstreamer-plugins-base1.0-0 amd64 1.14.4-2+deb10u1 [1936 kB]
-Get:14 http://ftp.us.debian.org/debian buster/main amd64 libhyphen0 amd64 2.8.8-7 [32.5 kB]
-Get:15 http://ftp.us.debian.org/debian buster/main amd64 libicu63 amd64 63.1-6+deb10u3 [8293 kB]
-Get:16 http://ftp.us.debian.org/debian buster/main amd64 libjpeg62-turbo amd64 1:1.5.2-2+deb10u1 [133 kB]
-Get:17 http://ftp.us.debian.org/debian buster/main amd64 libpng16-16 amd64 1.6.36-6 [292 kB]
-Get:18 http://ftp.us.debian.org/debian buster/main amd64 libdouble-conversion1 amd64 3.1.0-3 [39.4 kB]
-Get:19 http://ftp.us.debian.org/debian buster/main amd64 libpcre2-16-0 amd64 10.32-5 [202 kB]
-Get:20 http://ftp.us.debian.org/debian buster/main amd64 libqt5core5a amd64 5.11.3+dfsg1-1+deb10u5 [1946 kB]
-Get:21 http://ftp.us.debian.org/debian buster/main amd64 libexpat1 amd64 2.2.6-2+deb10u4 [108 kB]
-Get:22 http://ftp.us.debian.org/debian buster/main amd64 libfreetype6 amd64 2.9.1-3+deb10u3 [380 kB]
-Get:23 http://ftp.us.debian.org/debian buster/main amd64 sensible-utils all 0.0.12 [15.8 kB]
-Get:24 http://ftp.us.debian.org/debian buster/main amd64 ucf all 3.0038+nmu1 [69.0 kB]
-Get:25 http://ftp.us.debian.org/debian buster/main amd64 fonts-dejavu-core all 2.37-1 [1068 kB]
-Get:26 http://ftp.us.debian.org/debian buster/main amd64 fontconfig-config all 2.13.1-2 [280 kB]
-Get:27 http://ftp.us.debian.org/debian buster/main amd64 libfontconfig1 amd64 2.13.1-2 [346 kB]
-Get:28 http://ftp.us.debian.org/debian buster/main amd64 fontconfig amd64 2.13.1-2 [405 kB]
-Get:29 http://ftp.us.debian.org/debian buster/main amd64 libdrm-common all 2.4.97-1 [13.8 kB]
-Get:30 http://ftp.us.debian.org/debian buster/main amd64 libdrm2 amd64 2.4.97-1 [39.7 kB]
-Get:31 http://ftp.us.debian.org/debian buster/main amd64 libglvnd0 amd64 1.1.0-1 [48.6 kB]
-Get:32 http://ftp.us.debian.org/debian buster/main amd64 libwayland-server0 amd64 1.16.0-1 [32.5 kB]
-Get:33 http://ftp.us.debian.org/debian buster/main amd64 libgbm1 amd64 18.3.6-2+deb10u1 [67.8 kB]
-Get:34 http://ftp.us.debian.org/debian buster/main amd64 libglapi-mesa amd64 18.3.6-2+deb10u1 [66.3 kB]
-Get:35 http://ftp.us.debian.org/debian buster/main amd64 libwayland-client0 amd64 1.16.0-1 [26.4 kB]
-Get:36 http://ftp.us.debian.org/debian buster/main amd64 libx11-xcb1 amd64 2:1.6.7-1+deb10u2 [191 kB]
-Get:37 http://ftp.us.debian.org/debian buster/main amd64 libxau6 amd64 1:1.0.8-1+b2 [19.9 kB]
-Get:38 http://ftp.us.debian.org/debian buster/main amd64 libxdmcp6 amd64 1:1.1.2-3 [26.3 kB]
-Get:39 http://ftp.us.debian.org/debian buster/main amd64 libxcb1 amd64 1.13.1-2 [137 kB]
-Get:40 http://ftp.us.debian.org/debian buster/main amd64 libxcb-dri2-0 amd64 1.13.1-2 [101 kB]
-Get:41 http://ftp.us.debian.org/debian buster/main amd64 libxcb-dri3-0 amd64 1.13.1-2 [100 kB]
-Get:42 http://ftp.us.debian.org/debian buster/main amd64 libxcb-present0 amd64 1.13.1-2 [99.1 kB]
-Get:43 http://ftp.us.debian.org/debian buster/main amd64 libxcb-sync1 amd64 1.13.1-2 [103 kB]
-Get:44 http://ftp.us.debian.org/debian buster/main amd64 libxcb-xfixes0 amd64 1.13.1-2 [103 kB]
-Get:45 http://ftp.us.debian.org/debian buster/main amd64 libxshmfence1 amd64 1.3-1 [8820 B]
-Get:46 http://ftp.us.debian.org/debian buster/main amd64 libegl-mesa0 amd64 18.3.6-2+deb10u1 [135 kB]
-Get:47 http://ftp.us.debian.org/debian buster/main amd64 libegl1 amd64 1.1.0-1 [33.6 kB]
-Get:48 http://ftp.us.debian.org/debian buster/main amd64 libx11-data all 2:1.6.7-1+deb10u2 [299 kB]
-Get:49 http://ftp.us.debian.org/debian buster/main amd64 libx11-6 amd64 2:1.6.7-1+deb10u2 [757 kB]
-Get:50 http://ftp.us.debian.org/debian buster/main amd64 libxext6 amd64 2:1.3.3-1+b2 [52.5 kB]
-Get:51 http://ftp.us.debian.org/debian buster/main amd64 libxcb-glx0 amd64 1.13.1-2 [116 kB]
-Get:52 http://ftp.us.debian.org/debian buster/main amd64 libxfixes3 amd64 1:5.0.3-1 [21.9 kB]
-Get:53 http://ftp.us.debian.org/debian buster/main amd64 libxdamage1 amd64 1:1.1.4-3+b3 [14.9 kB]
-Get:54 http://ftp.us.debian.org/debian buster/main amd64 libxxf86vm1 amd64 1:1.1.4-1+b2 [20.8 kB]
-Get:55 http://ftp.us.debian.org/debian buster/main amd64 libdrm-amdgpu1 amd64 2.4.97-1 [27.3 kB]
-Get:56 http://ftp.us.debian.org/debian buster/main amd64 libpciaccess0 amd64 0.14-1 [53.5 kB]
-Get:57 http://ftp.us.debian.org/debian buster/main amd64 libdrm-intel1 amd64 2.4.97-1 [69.8 kB]
-Get:58 http://ftp.us.debian.org/debian buster/main amd64 libdrm-nouveau2 amd64 2.4.97-1 [26.3 kB]
-Get:59 http://ftp.us.debian.org/debian buster/main amd64 libdrm-radeon1 amd64 2.4.97-1 [31.1 kB]
-Get:60 http://ftp.us.debian.org/debian buster/main amd64 libelf1 amd64 0.176-1.1 [161 kB]
-Get:61 http://ftp.us.debian.org/debian buster/main amd64 libedit2 amd64 3.1-20181209-1 [94.0 kB]
-Get:62 http://ftp.us.debian.org/debian buster/main amd64 libllvm7 amd64 1:7.0.1-8+deb10u2 [13.1 MB]
-Get:63 http://ftp.us.debian.org/debian buster/main amd64 libsensors-config all 1:3.5.0-3 [31.6 kB]
-Get:64 http://ftp.us.debian.org/debian buster/main amd64 libsensors5 amd64 1:3.5.0-3 [52.6 kB]
-Get:65 http://ftp.us.debian.org/debian buster/main amd64 libgl1-mesa-dri amd64 18.3.6-2+deb10u1 [6685 kB]
-Get:66 http://ftp.us.debian.org/debian buster/main amd64 libglx-mesa0 amd64 18.3.6-2+deb10u1 [180 kB]
-Get:67 http://ftp.us.debian.org/debian buster/main amd64 libglx0 amd64 1.1.0-1 [30.0 kB]
-Get:68 http://ftp.us.debian.org/debian buster/main amd64 libgl1 amd64 1.1.0-1 [91.1 kB]
-Get:69 http://ftp.us.debian.org/debian buster/main amd64 libgraphite2-3 amd64 1.3.13-7 [80.7 kB]
-Get:70 http://ftp.us.debian.org/debian buster/main amd64 libharfbuzz0b amd64 2.3.1-1 [1187 kB]
-Get:71 http://ftp.us.debian.org/debian buster/main amd64 lsb-base all 10.2019051400 [28.4 kB]
-Get:72 http://ftp.us.debian.org/debian buster/main amd64 x11-common all 1:7.7+19 [251 kB]
-Get:73 http://ftp.us.debian.org/debian buster/main amd64 libice6 amd64 2:1.0.9-2 [58.7 kB]
-Get:74 http://ftp.us.debian.org/debian buster/main amd64 libevdev2 amd64 1.6.0+dfsg-1 [31.0 kB]
-Get:75 http://ftp.us.debian.org/debian buster/main amd64 libmtdev1 amd64 1.1.5-1+b1 [22.3 kB]
-Get:76 http://ftp.us.debian.org/debian buster/main amd64 libgudev-1.0-0 amd64 232-2 [13.6 kB]
-Get:77 http://ftp.us.debian.org/debian buster/main amd64 libwacom-common all 0.32-1 [39.1 kB]
-Get:78 http://ftp.us.debian.org/debian buster/main amd64 libwacom2 amd64 0.32-1 [18.8 kB]
-Get:79 http://ftp.us.debian.org/debian buster/main amd64 libinput-bin amd64 1.12.6-2+deb10u1 [16.9 kB]
-Get:80 http://ftp.us.debian.org/debian buster/main amd64 libinput10 amd64 1.12.6-2+deb10u1 [107 kB]
-Get:81 http://ftp.us.debian.org/debian buster/main amd64 libdbus-1-3 amd64 1.12.20-0+deb10u1 [215 kB]
-Get:82 http://ftp.us.debian.org/debian buster/main amd64 libqt5dbus5 amd64 5.11.3+dfsg1-1+deb10u5 [231 kB]
-Get:83 http://ftp.us.debian.org/debian buster/main amd64 libssl1.1 amd64 1.1.1n-0+deb10u3 [1551 kB]
-Get:84 http://ftp.us.debian.org/debian buster/main amd64 libqt5network5 amd64 5.11.3+dfsg1-1+deb10u5 [671 kB]
-Get:85 http://ftp.us.debian.org/debian buster/main amd64 libsm6 amd64 2:1.2.3-1 [35.1 kB]
-Get:86 http://ftp.us.debian.org/debian buster/main amd64 libxcb-icccm4 amd64 0.4.1-1.1 [27.4 kB]
-Get:87 http://ftp.us.debian.org/debian buster/main amd64 libxcb-shm0 amd64 1.13.1-2 [99.2 kB]
-Get:88 http://ftp.us.debian.org/debian buster/main amd64 libxcb-util0 amd64 0.3.8-3+b2 [23.0 kB]
-Get:89 http://ftp.us.debian.org/debian buster/main amd64 libxcb-image0 amd64 0.4.0-1+b2 [24.4 kB]
-Get:90 http://ftp.us.debian.org/debian buster/main amd64 libxcb-keysyms1 amd64 0.4.0-1+b2 [16.4 kB]
-Get:91 http://ftp.us.debian.org/debian buster/main amd64 libxcb-randr0 amd64 1.13.1-2 [110 kB]
-Get:92 http://ftp.us.debian.org/debian buster/main amd64 libxcb-render0 amd64 1.13.1-2 [109 kB]
-Get:93 http://ftp.us.debian.org/debian buster/main amd64 libxcb-render-util0 amd64 0.3.9-1+b1 [18.3 kB]
-Get:94 http://ftp.us.debian.org/debian buster/main amd64 libxcb-shape0 amd64 1.13.1-2 [99.5 kB]
-Get:95 http://ftp.us.debian.org/debian buster/main amd64 libxcb-xinerama0 amd64 1.13.1-2 [98.9 kB]
-Get:96 http://ftp.us.debian.org/debian buster/main amd64 libxcb-xkb1 amd64 1.13.1-2 [123 kB]
-Get:97 http://ftp.us.debian.org/debian buster/main amd64 libxi6 amd64 2:1.7.9-1 [82.6 kB]
-Get:98 http://ftp.us.debian.org/debian buster/main amd64 xkb-data all 2.26-2 [681 kB]
-Get:99 http://ftp.us.debian.org/debian buster/main amd64 libxkbcommon0 amd64 0.8.2-1 [123 kB]
-Get:100 http://ftp.us.debian.org/debian buster/main amd64 libxkbcommon-x11-0 amd64 0.8.2-1 [39.4 kB]
-Get:101 http://ftp.us.debian.org/debian buster/main amd64 libxrender1 amd64 1:0.9.10-1 [33.0 kB]
-Get:102 http://ftp.us.debian.org/debian buster/main amd64 libqt5gui5 amd64 5.11.3+dfsg1-1+deb10u5 [2843 kB]
-Get:103 http://ftp.us.debian.org/debian buster/main amd64 libqt5positioning5 amd64 5.11.3+dfsg-2 [191 kB]
-Get:104 http://ftp.us.debian.org/debian buster/main amd64 libavahi-common-data amd64 0.7-4+deb10u1 [122 kB]
-Get:105 http://ftp.us.debian.org/debian buster/main amd64 libavahi-common3 amd64 0.7-4+deb10u1 [54.4 kB]
-Get:106 http://ftp.us.debian.org/debian buster/main amd64 libavahi-client3 amd64 0.7-4+deb10u1 [58.2 kB]
-Get:107 http://ftp.us.debian.org/debian buster/main amd64 libkeyutils1 amd64 1.6-6 [15.0 kB]
-Get:108 http://ftp.us.debian.org/debian buster/main amd64 libkrb5support0 amd64 1.17-3+deb10u4 [65.9 kB]
-Get:109 http://ftp.us.debian.org/debian buster/main amd64 libk5crypto3 amd64 1.17-3+deb10u4 [122 kB]
-Get:110 http://ftp.us.debian.org/debian buster/main amd64 libkrb5-3 amd64 1.17-3+deb10u4 [369 kB]
-Get:111 http://ftp.us.debian.org/debian buster/main amd64 libgssapi-krb5-2 amd64 1.17-3+deb10u4 [158 kB]
-Get:112 http://ftp.us.debian.org/debian buster/main amd64 libcups2 amd64 2.2.10-6+deb10u6 [325 kB]
-Get:113 http://ftp.us.debian.org/debian buster/main amd64 libqt5widgets5 amd64 5.11.3+dfsg1-1+deb10u5 [2261 kB]
-Get:114 http://ftp.us.debian.org/debian buster/main amd64 libqt5printsupport5 amd64 5.11.3+dfsg1-1+deb10u5 [217 kB]
-Get:115 http://ftp.us.debian.org/debian buster/main amd64 libqt5qml5 amd64 5.11.3-4 [1222 kB]
-Get:116 http://ftp.us.debian.org/debian buster/main amd64 libqt5quick5 amd64 5.11.3-4 [1278 kB]
-Get:117 http://ftp.us.debian.org/debian buster/main amd64 libqt5sensors5 amd64 5.11.3-2 [116 kB]
-Get:118 http://ftp.us.debian.org/debian buster/main amd64 libqt5webchannel5 amd64 5.11.3-2 [48.8 kB]
-Get:119 http://ftp.us.debian.org/debian buster/main amd64 libsqlite3-0 amd64 3.27.2-3+deb10u1 [641 kB]
-Get:120 http://ftp.us.debian.org/debian buster/main amd64 libwebp6 amd64 0.6.1-2+deb10u1 [261 kB]
-Get:121 http://ftp.us.debian.org/debian buster/main amd64 libbrotli1 amd64 1.0.7-2+deb10u1 [269 kB]
-Get:122 http://ftp.us.debian.org/debian buster/main amd64 libwoff1 amd64 1.0.2-1 [43.2 kB]
-Get:123 http://ftp.us.debian.org/debian buster/main amd64 libxml2 amd64 2.9.4+dfsg1-7+deb10u4 [689 kB]
-Get:124 http://ftp.us.debian.org/debian buster/main amd64 libxslt1.1 amd64 1.1.32-2.2~deb10u1 [237 kB]
-Get:125 http://ftp.us.debian.org/debian buster/main amd64 libqt5webkit5 amd64 5.212.0~alpha2-21 [11.7 MB]
-Get:126 http://ftp.us.debian.org/debian buster/main amd64 libmagic-mgc amd64 1:5.35-4+deb10u2 [242 kB]
-Get:127 http://ftp.us.debian.org/debian buster/main amd64 libmagic1 amd64 1:5.35-4+deb10u2 [118 kB]
-Get:128 http://ftp.us.debian.org/debian buster/main amd64 file amd64 1:5.35-4+deb10u2 [66.4 kB]
-Get:129 http://ftp.us.debian.org/debian buster/main amd64 gettext-base amd64 0.19.8.1-9 [123 kB]
-Get:130 http://ftp.us.debian.org/debian buster/main amd64 libsigsegv2 amd64 2.12-2 [32.8 kB]
-Get:131 http://ftp.us.debian.org/debian buster/main amd64 m4 amd64 1.4.18-2 [203 kB]
-Get:132 http://ftp.us.debian.org/debian buster/main amd64 autoconf all 2.69-11 [341 kB]
-Get:133 http://ftp.us.debian.org/debian buster/main amd64 autotools-dev all 20180224.1 [77.0 kB]
-Get:134 http://ftp.us.debian.org/debian buster/main amd64 automake all 1:1.16.1-4 [771 kB]
-Get:135 http://ftp.us.debian.org/debian buster/main amd64 autopoint all 0.19.8.1-9 [434 kB]
-Get:136 http://ftp.us.debian.org/debian buster/main amd64 libtool all 2.4.6-9 [547 kB]
-Get:137 http://ftp.us.debian.org/debian buster/main amd64 dh-autoreconf all 19 [16.9 kB]
-Get:138 http://ftp.us.debian.org/debian buster/main amd64 libarchive-zip-perl all 1.64-1 [96.8 kB]
-Get:139 http://ftp.us.debian.org/debian buster/main amd64 libfile-stripnondeterminism-perl all 1.1.2-1 [19.8 kB]
-Get:140 http://ftp.us.debian.org/debian buster/main amd64 dh-strip-nondeterminism all 1.1.2-1 [13.0 kB]
-Get:141 http://ftp.us.debian.org/debian buster/main amd64 dwz amd64 0.12-3 [78.0 kB]
-Get:142 http://ftp.us.debian.org/debian buster/main amd64 libcroco3 amd64 0.6.12-3 [145 kB]
-Get:143 http://ftp.us.debian.org/debian buster/main amd64 libncurses6 amd64 6.1+20181013-2+deb10u2 [102 kB]
-Get:144 http://ftp.us.debian.org/debian buster/main amd64 gettext amd64 0.19.8.1-9 [1303 kB]
-Get:145 http://ftp.us.debian.org/debian buster/main amd64 intltool-debian all 0.35.0+20060710.5 [26.8 kB]
-Get:146 http://ftp.us.debian.org/debian buster/main amd64 po-debconf all 1.0.21 [248 kB]
-Get:147 http://ftp.us.debian.org/debian buster/main amd64 debhelper all 12.1.1 [1016 kB]
-Get:148 http://ftp.us.debian.org/debian buster/main amd64 libclang1-7 amd64 1:7.0.1-8+deb10u2 [5997 kB]
-Get:149 http://ftp.us.debian.org/debian buster/main amd64 libdrm-dev amd64 2.4.97-1 [131 kB]
-Get:150 http://ftp.us.debian.org/debian buster/main amd64 xorg-sgml-doctools all 1:1.11-1 [21.9 kB]
-Get:151 http://ftp.us.debian.org/debian buster/main amd64 x11proto-dev all 2018.4-4 [251 kB]
-Get:152 http://ftp.us.debian.org/debian buster/main amd64 x11proto-core-dev all 2018.4-4 [3128 B]
-Get:153 http://ftp.us.debian.org/debian buster/main amd64 libxau-dev amd64 1:1.0.8-1+b2 [23.1 kB]
-Get:154 http://ftp.us.debian.org/debian buster/main amd64 libxdmcp-dev amd64 1:1.1.2-3 [42.2 kB]
-Get:155 http://ftp.us.debian.org/debian buster/main amd64 xtrans-dev all 1.3.5-1 [100 kB]
-Get:156 http://ftp.us.debian.org/debian buster/main amd64 libpthread-stubs0-dev amd64 0.4-1 [5344 B]
-Get:157 http://ftp.us.debian.org/debian buster/main amd64 libxcb1-dev amd64 1.13.1-2 [174 kB]
-Get:158 http://ftp.us.debian.org/debian buster/main amd64 libx11-dev amd64 2:1.6.7-1+deb10u2 [825 kB]
-Get:159 http://ftp.us.debian.org/debian buster/main amd64 mesa-common-dev amd64 18.3.6-2+deb10u1 [611 kB]
-Get:160 http://ftp.us.debian.org/debian buster/main amd64 libglvnd-core-dev amd64 1.1.0-1 [13.2 kB]
-Get:161 http://ftp.us.debian.org/debian buster/main amd64 libgles1 amd64 1.1.0-1 [13.8 kB]
-Get:162 http://ftp.us.debian.org/debian buster/main amd64 libgles2 amd64 1.1.0-1 [19.0 kB]
-Get:163 http://ftp.us.debian.org/debian buster/main amd64 libopengl0 amd64 1.1.0-1 [33.4 kB]
-Get:164 http://ftp.us.debian.org/debian buster/main amd64 libglvnd-dev amd64 1.1.0-1 [5128 B]
-Get:165 http://ftp.us.debian.org/debian buster/main amd64 libx11-xcb-dev amd64 2:1.6.7-1+deb10u2 [193 kB]
-Get:166 http://ftp.us.debian.org/debian buster/main amd64 libxcb-dri3-dev amd64 1.13.1-2 [101 kB]
-Get:167 http://ftp.us.debian.org/debian buster/main amd64 libxcb-render0-dev amd64 1.13.1-2 [112 kB]
-Get:168 http://ftp.us.debian.org/debian buster/main amd64 libxcb-randr0-dev amd64 1.13.1-2 [114 kB]
-Get:169 http://ftp.us.debian.org/debian buster/main amd64 libxcb-shape0-dev amd64 1.13.1-2 [101 kB]
-Get:170 http://ftp.us.debian.org/debian buster/main amd64 libxcb-xfixes0-dev amd64 1.13.1-2 [105 kB]
-Get:171 http://ftp.us.debian.org/debian buster/main amd64 libxcb-sync-dev amd64 1.13.1-2 [104 kB]
-Get:172 http://ftp.us.debian.org/debian buster/main amd64 libxcb-present-dev amd64 1.13.1-2 [101 kB]
-Get:173 http://ftp.us.debian.org/debian buster/main amd64 libxshmfence-dev amd64 1.3-1 [8360 B]
-Get:174 http://ftp.us.debian.org/debian buster/main amd64 libxcb-dri2-0-dev amd64 1.13.1-2 [102 kB]
-Get:175 http://ftp.us.debian.org/debian buster/main amd64 libxcb-glx0-dev amd64 1.13.1-2 [122 kB]
-Get:176 http://ftp.us.debian.org/debian buster/main amd64 x11proto-fixes-dev all 1:2018.4-4 [3140 B]
-Get:177 http://ftp.us.debian.org/debian buster/main amd64 libxfixes-dev amd64 1:5.0.3-1 [23.8 kB]
-Get:178 http://ftp.us.debian.org/debian buster/main amd64 x11proto-damage-dev all 1:2018.4-4 [3140 B]
-Get:179 http://ftp.us.debian.org/debian buster/main amd64 libxdamage-dev amd64 1:1.1.4-3+b3 [14.6 kB]
-Get:180 http://ftp.us.debian.org/debian buster/main amd64 x11proto-xext-dev all 2018.4-4 [3128 B]
-Get:181 http://ftp.us.debian.org/debian buster/main amd64 libxext-dev amd64 2:1.3.3-1+b2 [107 kB]
-Get:182 http://ftp.us.debian.org/debian buster/main amd64 x11proto-xf86vidmode-dev all 2018.4-4 [3140 B]
-Get:183 http://ftp.us.debian.org/debian buster/main amd64 libxxf86vm-dev amd64 1:1.1.4-1+b2 [25.4 kB]
-Get:184 http://ftp.us.debian.org/debian buster/main amd64 libgl1-mesa-dev amd64 18.3.6-2+deb10u1 [48.0 kB]
-Get:185 http://ftp.us.debian.org/debian buster/main amd64 libglu1-mesa amd64 9.0.0-2.1+b3 [169 kB]
-Get:186 http://ftp.us.debian.org/debian buster/main amd64 libglu1-mesa-dev amd64 9.0.0-2.1+b3 [208 kB]
-Get:187 http://ftp.us.debian.org/debian buster/main amd64 libqt5concurrent5 amd64 5.11.3+dfsg1-1+deb10u5 [57.4 kB]
-Get:188 http://ftp.us.debian.org/debian buster/main amd64 libqt5xml5 amd64 5.11.3+dfsg1-1+deb10u5 [128 kB]
-Get:189 http://ftp.us.debian.org/debian buster/main amd64 libqt5designer5 amd64 5.11.3-4 [2783 kB]
-Get:190 http://ftp.us.debian.org/debian buster/main amd64 libqt5designercomponents5 amd64 5.11.3-4 [711 kB]
-Get:191 http://ftp.us.debian.org/debian buster/main amd64 libqt5sql5 amd64 5.11.3+dfsg1-1+deb10u5 [145 kB]
-Get:192 http://ftp.us.debian.org/debian buster/main amd64 libqt5help5 amd64 5.11.3-4 [149 kB]
-Get:193 http://ftp.us.debian.org/debian buster/main amd64 libqt5quickwidgets5 amd64 5.11.3-4 [50.6 kB]
-Get:194 http://ftp.us.debian.org/debian buster/main amd64 libqt5sql5-sqlite amd64 5.11.3+dfsg1-1+deb10u5 [72.1 kB]
-Get:195 http://ftp.us.debian.org/debian buster/main amd64 libqt5test5 amd64 5.11.3+dfsg1-1+deb10u5 [150 kB]
-Get:196 http://ftp.us.debian.org/debian buster/main amd64 libvulkan1 amd64 1.1.97-2 [95.6 kB]
-Get:197 http://ftp.us.debian.org/debian buster/main amd64 libvulkan-dev amd64 1.1.97-2 [390 kB]
-Get:198 http://ftp.us.debian.org/debian buster/main amd64 qtchooser amd64 66-2 [26.3 kB]
-Get:199 http://ftp.us.debian.org/debian buster/main amd64 qdoc-qt5 amd64 5.11.3-4 [467 kB]
-Get:200 http://ftp.us.debian.org/debian buster/main amd64 qt5-assistant amd64 5.11.3-4 [758 kB]
-Get:201 http://ftp.us.debian.org/debian buster/main amd64 qt5-qmake-bin amd64 5.11.3+dfsg1-1+deb10u5 [1004 kB]
-Get:202 http://ftp.us.debian.org/debian buster/main amd64 qt5-qmake amd64 5.11.3+dfsg1-1+deb10u5 [213 kB]
-Get:203 http://ftp.us.debian.org/debian buster/main amd64 qtbase5-dev-tools amd64 5.11.3+dfsg1-1+deb10u5 [770 kB]
-Get:204 http://ftp.us.debian.org/debian buster/main amd64 qtbase5-dev amd64 5.11.3+dfsg1-1+deb10u5 [1014 kB]
-Get:205 http://ftp.us.debian.org/debian buster/main amd64 qttools5-dev-tools amd64 5.11.3-4 [1069 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 103 MB in 19s (5440 kB/s)
+0 upgraded, 205 newly installed, 0 to remove and 0 not upgraded.
+Need to get 0 B/103 MB of archives.
+After this operation, 526 MB of additional disk space will be used.
 Selecting previously unselected package libbsd0:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 11892 files and directories currently installed.)
 Preparing to unpack .../000-libbsd0_0.9.1-2+deb10u1_amd64.deb ...
@@ -1135,13 +927,10 @@ The following additional packages will be installed:
   libfakeroot
 The following NEW packages will be installed:
   fakeroot libfakeroot
-0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
-Need to get 132 kB of archives.
-After this operation, 373 kB of additional disk space will be used.
-Get:1 http://ftp.us.debian.org/debian buster/main amd64 libfakeroot amd64 1.23-1 [45.9 kB]
-Get:2 http://ftp.us.debian.org/debian buster/main amd64 fakeroot amd64 1.23-1 [85.8 kB]
 debconf: delaying package configuration, since apt-utils is not installed
-Fetched 132 kB in 0s (832 kB/s)
+0 upgraded, 2 newly installed, 0 to remove and 0 not upgraded.
+Need to get 0 B/132 kB of archives.
+After this operation, 373 kB of additional disk space will be used.
 Selecting previously unselected package libfakeroot:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 20898 files and directories currently installed.)
 Preparing to unpack .../libfakeroot_1.23-1_amd64.deb ...
@@ -1156,217 +945,10 @@ Processing triggers for man-db (2.8.5-2) ...
 Not building database; man-db/auto-update is not 'true'.
 Processing triggers for libc-bin (2.28-10+deb10u1) ...
 [0mI: Copying back the cached apt archive contents[0m
-[0mI: new cache content 'libegl1_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-glx0-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libxfixes-dev_1%3a5.0.3-1_amd64.deb' added[0m
-[0mI: new cache content 'qtchooser_66-2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-glx0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libglu1-mesa-dev_9.0.0-2.1+b3_amd64.deb' added[0m
-[0mI: new cache content 'dh-strip-nondeterminism_1.1.2-1_all.deb' added[0m
-[0mI: new cache content 'libfreetype6_2.9.1-3+deb10u3_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-icccm4_0.4.1-1.1_amd64.deb' added[0m
-[0mI: new cache content 'libxdmcp6_1%3a1.1.2-3_amd64.deb' added[0m
-[0mI: new cache content 'autoconf_2.69-11_all.deb' added[0m
-[0mI: new cache content 'libxshmfence1_1.3-1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-dri3-0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libglvnd-core-dev_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libwebp6_0.6.1-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libqt5concurrent5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libqt5dbus5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libgstreamer1.0-0_1.14.4-1_amd64.deb' added[0m
-[0mI: new cache content 'libqt5sensors5_5.11.3-2_amd64.deb' added[0m
-[0mI: new cache content 'autopoint_0.19.8.1-9_all.deb' added[0m
-[0mI: new cache content 'libvulkan1_1.1.97-2_amd64.deb' added[0m
-[0mI: new cache content 'libglx0_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'sensible-utils_0.0.12_all.deb' added[0m
-[0mI: new cache content 'libdouble-conversion1_3.1.0-3_amd64.deb' added[0m
-[0mI: new cache content 'libqt5quick5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-dri2-0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'x11proto-dev_2018.4-4_all.deb' added[0m
-[0mI: new cache content 'libopengl0_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'qtbase5-dev-tools_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'automake_1%3a1.16.1-4_all.deb' added[0m
-[0mI: new cache content 'libvulkan-dev_1.1.97-2_amd64.deb' added[0m
-[0mI: new cache content 'libdbus-1-3_1.12.20-0+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libmtdev1_1.1.5-1+b1_amd64.deb' added[0m
-[0mI: new cache content 'libpcre2-16-0_10.32-5_amd64.deb' added[0m
-[0mI: new cache content 'libexpat1_2.2.6-2+deb10u4_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-sync-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5webkit5_5.212.0~alpha2-21_amd64.deb' added[0m
-[0mI: new cache content 'lsb-base_10.2019051400_all.deb' added[0m
-[0mI: new cache content 'libpipeline1_1.5.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libicu63_63.1-6+deb10u3_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-xfixes0-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libssl1.1_1.1.1n-0+deb10u3_amd64.deb' added[0m
-[0mI: new cache content 'libncurses6_6.1+20181013-2+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'libxkbcommon0_0.8.2-1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-render0-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'debhelper_12.1.1_all.deb' added[0m
-[0mI: new cache content 'libqt5printsupport5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libsensors5_1%3a3.5.0-3_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-xkb1_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'x11proto-fixes-dev_1%3a2018.4-4_all.deb' added[0m
-[0mI: new cache content 'libclang1-7_1%3a7.0.1-8+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'dh-autoreconf_19_all.deb' added[0m
-[0mI: new cache content 'libdrm-nouveau2_2.4.97-1_amd64.deb' added[0m
-[0mI: new cache content 'libqt5widgets5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libtool_2.4.6-9_all.deb' added[0m
-[0mI: new cache content 'libgraphite2-3_1.3.13-7_amd64.deb' added[0m
-[0mI: new cache content 'x11proto-xext-dev_2018.4-4_all.deb' added[0m
-[0mI: new cache content 'libxcb-render-util0_0.3.9-1+b1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-shape0-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libpng16-16_1.6.36-6_amd64.deb' added[0m
-[0mI: new cache content 'libqt5test5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libdrm-common_2.4.97-1_all.deb' added[0m
-[0mI: new cache content 'qdoc-qt5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'xorg-sgml-doctools_1%3a1.11-1_all.deb' added[0m
-[0mI: new cache content 'x11proto-core-dev_2018.4-4_all.deb' added[0m
-[0mI: new cache content 'libavahi-client3_0.7-4+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libgssapi-krb5-2_1.17-3+deb10u4_amd64.deb' added[0m
-[0mI: new cache content 'libbsd0_0.9.1-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libmagic1_1%3a5.35-4+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5help5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'libsqlite3-0_3.27.2-3+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libglu1-mesa_9.0.0-2.1+b3_amd64.deb' added[0m
-[0mI: new cache content 'libdrm-radeon1_2.4.97-1_amd64.deb' added[0m
-[0mI: new cache content 'libxext6_2%3a1.3.3-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5xml5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libglx-mesa0_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'intltool-debian_0.35.0+20060710.5_all.deb' added[0m
-[0mI: new cache content 'libgl1_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libfile-stripnondeterminism-perl_1.1.2-1_all.deb' added[0m
-[0mI: new cache content 'libavahi-common3_0.7-4+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'autotools-dev_20180224.1_all.deb' added[0m
-[0mI: new cache content 'xkb-data_2.26-2_all.deb' added[0m
-[0mI: new cache content 'libarchive-zip-perl_1.64-1_all.deb' added[0m
-[0mI: new cache content 'libk5crypto3_1.17-3+deb10u4_amd64.deb' added[0m
-[0mI: new cache content 'ucf_3.0038+nmu1_all.deb' added[0m
-[0mI: new cache content 'qtbase5-dev_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libjpeg62-turbo_1%3a1.5.2-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libdrm-intel1_2.4.97-1_amd64.deb' added[0m
-[0mI: new cache content 'x11-common_1%3a7.7+19_all.deb' added[0m
-[0mI: new cache content 'libqt5designercomponents5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'libkrb5support0_1.17-3+deb10u4_amd64.deb' added[0m
-[0mI: new cache content 'libuchardet0_0.0.6-3_amd64.deb' added[0m
-[0mI: new cache content 'libsensors-config_1%3a3.5.0-3_all.deb' added[0m
-[0mI: new cache content 'xtrans-dev_1.3.5-1_all.deb' added[0m
-[0mI: new cache content 'libwacom2_0.32-1_amd64.deb' added[0m
-[0mI: new cache content 'libdrm-amdgpu1_2.4.97-1_amd64.deb' added[0m
-[0mI: new cache content 'file_1%3a5.35-4+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'gettext-base_0.19.8.1-9_amd64.deb' added[0m
-[0mI: new cache content 'libxdamage-dev_1%3a1.1.4-3+b3_amd64.deb' added[0m
-[0mI: new cache content 'libxi6_2%3a1.7.9-1_amd64.deb' added[0m
-[0mI: new cache content 'fakeroot_1.23-1_amd64.deb' added[0m
-[0mI: new cache content 'libxml2_2.9.4+dfsg1-7+deb10u4_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-util0_0.3.8-3+b2_amd64.deb' added[0m
-[0mI: new cache content 'libwoff1_1.0.2-1_amd64.deb' added[0m
-[0mI: new cache content 'libkrb5-3_1.17-3+deb10u4_amd64.deb' added[0m
-[0mI: new cache content 'libglvnd0_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'dwz_0.12-3_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-present-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libwayland-server0_1.16.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libsm6_2%3a1.2.3-1_amd64.deb' added[0m
-[0mI: new cache content 'libsigsegv2_2.12-2_amd64.deb' added[0m
-[0mI: new cache content 'liborc-0.4-0_1%3a0.4.28-3.1_amd64.deb' added[0m
-[0mI: new cache content 'libhyphen0_2.8.8-7_amd64.deb' added[0m
-[0mI: new cache content 'qttools5-dev-tools_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'libwayland-client0_1.16.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libx11-data_2%3a1.6.7-1+deb10u2_all.deb' added[0m
-[0mI: new cache content 'libxext-dev_2%3a1.3.3-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libpthread-stubs0-dev_0.4-1_amd64.deb' added[0m
-[0mI: new cache content 'libxrender1_1%3a0.9.10-1_amd64.deb' added[0m
-[0mI: new cache content 'libkeyutils1_1.6-6_amd64.deb' added[0m
-[0mI: new cache content 'm4_1.4.18-2_amd64.deb' added[0m
-[0mI: new cache content 'libglvnd-dev_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'man-db_2.8.5-2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-xinerama0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libelf1_0.176-1.1_amd64.deb' added[0m
-[0mI: new cache content 'libcap2_1%3a2.25-2_amd64.deb' added[0m
-[0mI: new cache content 'libxdmcp-dev_1%3a1.1.2-3_amd64.deb' added[0m
-[0mI: new cache content 'libice6_2%3a1.0.9-2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-keysyms1_0.4.0-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libcups2_2.2.10-6+deb10u6_amd64.deb' added[0m
-[0mI: new cache content 'libqt5sql5-sqlite_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libevdev2_1.6.0+dfsg-1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-sync1_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libfakeroot_1.23-1_amd64.deb' added[0m
-[0mI: new cache content 'bsdmainutils_11.1.2+b1_amd64.deb' added[0m
-[0mI: new cache content 'libinput-bin_1.12.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libx11-xcb1_2%3a1.6.7-1+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'qt5-qmake_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libavahi-common-data_0.7-4+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-present0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'qt5-assistant_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'groff-base_1.22.4-3+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libgles2_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libxshmfence-dev_1.3-1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-shm0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libxxf86vm1_1%3a1.1.4-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libx11-6_2%3a1.6.7-1+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'fontconfig-config_2.13.1-2_all.deb' added[0m
-[0mI: new cache content 'libegl-mesa0_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libxxf86vm-dev_1%3a1.1.4-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb1-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-image0_0.4.0-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libgbm1_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'mesa-common-dev_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libqt5gui5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-render0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libpciaccess0_0.14-1_amd64.deb' added[0m
-[0mI: new cache content 'libqt5quickwidgets5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'libfontconfig1_2.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libglib2.0-0_2.58.3-2+deb10u3_amd64.deb' added[0m
-[0mI: new cache content 'libwacom-common_0.32-1_all.deb' added[0m
-[0mI: new cache content 'libedit2_3.1-20181209-1_amd64.deb' added[0m
-[0mI: new cache content 'libgl1-mesa-dev_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libqt5core5a_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libbrotli1_1.0.7-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'fontconfig_2.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libcap2-bin_1%3a2.25-2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5designer5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'qt5-qmake-bin_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-shape0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libgstreamer-plugins-base1.0-0_1.14.4-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libcroco3_0.6.12-3_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-dri2-0-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libxkbcommon-x11-0_0.8.2-1_amd64.deb' added[0m
-[0mI: new cache content 'libxslt1.1_1.1.32-2.2~deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libxfixes3_1%3a5.0.3-1_amd64.deb' added[0m
-[0mI: new cache content 'libharfbuzz0b_2.3.1-1_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-randr0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5network5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'po-debconf_1.0.21_all.deb' added[0m
-[0mI: new cache content 'libx11-xcb-dev_2%3a1.6.7-1+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-xfixes0_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'fonts-dejavu-core_2.37-1_all.deb' added[0m
-[0mI: new cache content 'libdrm2_2.4.97-1_amd64.deb' added[0m
-[0mI: new cache content 'iso-codes_4.2-1_all.deb' added[0m
-[0mI: new cache content 'libqt5webchannel5_5.11.3-2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-randr0-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'gettext_0.19.8.1-9_amd64.deb' added[0m
-[0mI: new cache content 'libllvm7_1%3a7.0.1-8+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5qml5_5.11.3-4_amd64.deb' added[0m
-[0mI: new cache content 'libdrm-dev_2.4.97-1_amd64.deb' added[0m
-[0mI: new cache content 'libgl1-mesa-dri_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libgles1_1.1.0-1_amd64.deb' added[0m
-[0mI: new cache content 'libmagic-mgc_1%3a5.35-4+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5positioning5_5.11.3+dfsg-2_amd64.deb' added[0m
-[0mI: new cache content 'libglapi-mesa_18.3.6-2+deb10u1_amd64.deb' added[0m
-[0mI: new cache content 'libxau6_1%3a1.0.8-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libqt5sql5_5.11.3+dfsg1-1+deb10u5_amd64.deb' added[0m
-[0mI: new cache content 'libxdamage1_1%3a1.1.4-3+b3_amd64.deb' added[0m
-[0mI: new cache content 'x11proto-damage-dev_1%3a2018.4-4_all.deb' added[0m
-[0mI: new cache content 'x11proto-xf86vidmode-dev_2018.4-4_all.deb' added[0m
-[0mI: new cache content 'libgudev-1.0-0_232-2_amd64.deb' added[0m
-[0mI: new cache content 'libxau-dev_1%3a1.0.8-1+b2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb1_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libx11-dev_2%3a1.6.7-1+deb10u2_amd64.deb' added[0m
-[0mI: new cache content 'libxcb-dri3-dev_1.13.1-2_amd64.deb' added[0m
-[0mI: new cache content 'libinput10_1.12.6-2+deb10u1_amd64.deb' added[0m
 [0mI: Building the package[0m
-[0mI: Running cd /build/mx-packageinstaller-23.11.06/ && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-buildpackage -us -uc  -B -j4 && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-genchanges -S  > ../mx-packageinstaller_23.11.06_source.changes[0m
+[0mI: Running cd /build/mx-packageinstaller-23.11.07/ && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-buildpackage -us -uc  -B -j4 && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-genchanges -S  > ../mx-packageinstaller_23.11.07_source.changes[0m
 dpkg-buildpackage: info: source package mx-packageinstaller
-dpkg-buildpackage: info: source version 23.11.06
+dpkg-buildpackage: info: source version 23.11.07
 dpkg-buildpackage: info: source distribution mx
 dpkg-buildpackage: info: source changed by Dolphin Oracle <dolphinoracle@gmail.com>
  dpkg-source --before-build .
@@ -1376,12 +958,12 @@ debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh clean --no-automatic-dbgsym --parallel 
    debian/rules override_dh_auto_clean
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.07'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_auto_clean
 rm -f src/translations/*.qm
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.07'
    dh_autoreconf_clean -O--no-automatic-dbgsym -O--parallel
    dh_clean -O--no-automatic-dbgsym -O--parallel
  debian/rules build-arch
@@ -1391,10 +973,10 @@ dh build-arch --no-automatic-dbgsym --parallel
    dh_update_autotools_config -a -O--no-automatic-dbgsym -O--parallel
    dh_autoreconf -a -O--no-automatic-dbgsym -O--parallel
    dh_auto_configure -a -O--no-automatic-dbgsym -O--parallel
-	qmake -makefile "QMAKE_CFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" QMAKE_LFLAGS_RELEASE=-Wl,-z,relro QMAKE_LFLAGS_DEBUG=-Wl,-z,relro QMAKE_STRIP=: PREFIX=/usr
-Info: creating stash file /build/mx-packageinstaller-23.11.06/.qmake.stash
+	qmake -makefile "QMAKE_CFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" QMAKE_LFLAGS_RELEASE=-Wl,-z,relro QMAKE_LFLAGS_DEBUG=-Wl,-z,relro QMAKE_STRIP=: PREFIX=/usr
+Info: creating stash file /build/mx-packageinstaller-23.11.07/.qmake.stash
    debian/rules override_dh_auto_build
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.07'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 lrelease translations/*.ts
@@ -1771,28 +1353,28 @@ Updating 'translations/mx-packageinstaller_zh_TW.qm'...
     Ignored 65 untranslated source text(s)
 dh_auto_build -- QMAKE=qmake-qt5 LRELEASE=lrelease-qt5 QMAKE_OPTS="DEFINES+=NO_DEBUG_ON_CONSOLE"
 	make -j4 QMAKE=qmake-qt5 LRELEASE=lrelease-qt5 QMAKE_OPTS=DEFINES\+=NO_DEBUG_ON_CONSOLE
-make[2]: Entering directory '/build/mx-packageinstaller-23.11.06'
+make[2]: Entering directory '/build/mx-packageinstaller-23.11.07'
 /usr/lib/qt5/bin/uic mainwindow.ui -o ui_mainwindow.h
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o main.o main.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o lockfile.o lockfile.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o versionnumber.o versionnumber.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o aptcache.o aptcache.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o remotes.o remotes.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o about.o about.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o cmd.o cmd.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o main.o main.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o lockfile.o lockfile.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o versionnumber.o versionnumber.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o aptcache.o aptcache.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o remotes.o remotes.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o about.o about.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o cmd.o cmd.cpp
 /usr/lib/qt5/bin/rcc -name images images.qrc -o qrc_images.cpp
-g++ -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o mainwindow.o mainwindow.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o qrc_images.o qrc_images.cpp
-/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.06/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.06 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
-/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.06/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.06 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include remotes.h -o moc_remotes.cpp
-/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.06/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.06 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include cmd.h -o moc_cmd.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_mainwindow.o moc_mainwindow.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_remotes.o moc_remotes.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.06=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_cmd.o moc_cmd.cpp
+g++ -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o mainwindow.o mainwindow.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o qrc_images.o qrc_images.cpp
+/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.07/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.07 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.07/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.07 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include remotes.h -o moc_remotes.cpp
+/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.07/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.07 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include cmd.h -o moc_cmd.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_mainwindow.o moc_mainwindow.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_cmd.o moc_cmd.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.07=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_remotes.o moc_remotes.cpp
 g++ -Wl,-z,relro -o mx-packageinstaller main.o mainwindow.o lockfile.o versionnumber.o aptcache.o remotes.o about.o cmd.o qrc_images.o moc_mainwindow.o moc_remotes.o moc_cmd.o   -lQt5Widgets -lQt5Gui -lQt5Xml -lQt5Network -lQt5Core -lGL -lpthread 
-make[2]: Leaving directory '/build/mx-packageinstaller-23.11.06'
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.06'
+make[2]: Leaving directory '/build/mx-packageinstaller-23.11.07'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.07'
    dh_auto_test -a -O--no-automatic-dbgsym -O--parallel
    create-stamp debian/debhelper-build-stamp
  fakeroot debian/rules binary-arch
@@ -1802,16 +1384,16 @@ dh binary-arch --no-automatic-dbgsym --parallel
    dh_testroot -a -O--no-automatic-dbgsym -O--parallel
    dh_prep -a -O--no-automatic-dbgsym -O--parallel
    debian/rules override_dh_auto_install
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.07'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_auto_install
-	make -j4 install DESTDIR=/build/mx-packageinstaller-23.11.06/debian/mx-packageinstaller AM_UPDATE_INFO_DIR=no INSTALL_ROOT=/build/mx-packageinstaller-23.11.06/debian/mx-packageinstaller
-make[2]: Entering directory '/build/mx-packageinstaller-23.11.06'
+	make -j4 install DESTDIR=/build/mx-packageinstaller-23.11.07/debian/mx-packageinstaller AM_UPDATE_INFO_DIR=no INSTALL_ROOT=/build/mx-packageinstaller-23.11.07/debian/mx-packageinstaller
+make[2]: Entering directory '/build/mx-packageinstaller-23.11.07'
 make[2]: Nothing to be done for 'install'.
-make[2]: Leaving directory '/build/mx-packageinstaller-23.11.06'
+make[2]: Leaving directory '/build/mx-packageinstaller-23.11.07'
 dh_link usr/bin/mx-packageinstaller usr/bin/mxpi-launcher
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.07'
    dh_install -a -O--no-automatic-dbgsym -O--parallel
    dh_installdocs -a -O--no-automatic-dbgsym -O--parallel
    dh_installchangelogs -a -O--no-automatic-dbgsym -O--parallel
@@ -1828,20 +1410,20 @@ make[1]: Leaving directory '/build/mx-packageinstaller-23.11.06'
    dh_strip -a -O--no-automatic-dbgsym -O--parallel
    dh_makeshlibs -a -O--no-automatic-dbgsym -O--parallel
    debian/rules override_dh_shlibdeps
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.07'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_shlibdeps -- -xvirtualbox-guest-x11 --ignore-missing-info
 dpkg-shlibdeps: warning: package could avoid a useless dependency if debian/mx-packageinstaller/usr/bin/mx-packageinstaller was not linked against libGL.so.1 (it uses none of the library's symbols)
 dpkg-shlibdeps: warning: package could avoid a useless dependency if debian/mx-packageinstaller/usr/bin/mx-packageinstaller was not linked against libpthread.so.0 (it uses none of the library's symbols)
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.06'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.07'
    dh_installdeb -a -O--no-automatic-dbgsym -O--parallel
    dh_gencontrol -a -O--no-automatic-dbgsym -O--parallel
    dh_md5sums -a -O--no-automatic-dbgsym -O--parallel
    dh_builddeb -a -O--no-automatic-dbgsym -O--parallel
-dpkg-deb: building package 'mx-packageinstaller' in '../mx-packageinstaller_23.11.06_amd64.deb'.
+dpkg-deb: building package 'mx-packageinstaller' in '../mx-packageinstaller_23.11.07_amd64.deb'.
  dpkg-genbuildinfo --build=any
- dpkg-genchanges --build=any >../mx-packageinstaller_23.11.06_amd64.changes
+ dpkg-genchanges --build=any >../mx-packageinstaller_23.11.07_amd64.changes
 dpkg-genchanges: info: binary-only arch-specific upload (source code and arch-indep packages not included)
  dpkg-source --after-build .
 dpkg-buildpackage: info: binary-only upload (no source included)
@@ -1854,6 +1436,6 @@ dpkg-genchanges: info: including full source code in upload
 [0mI: unmounting proc filesystem[0m
 [0mI: unmounting sys filesystem[0m
 [0mI: cleaning the build env [0m
-[0mI: removing directory /media/dataext/development/pbuilder/build/54306 and its subdirectories[0m
-[0mI: Current time: Sat Nov 18 13:16:55 EST 2023[0m
-[0mI: pbuilder-time-stamp: 1700331415[0m
+[0mI: removing directory /media/dataext/development/pbuilder/build/39633 and its subdirectories[0m
+[0mI: Current time: Sun Nov 19 09:05:33 EST 2023[0m
+[0mI: pbuilder-time-stamp: 1700402733[0m
