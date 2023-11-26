@@ -1837,6 +1837,8 @@ QStringList MainWindow::listInstalled()
     conn = connect(&cmd, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
     str.remove(":i386");
     str.remove(":amd64");
+    str.remove(":arm64");
+    str.remove(":armhf");
     return str.split("\n");
 }
 
