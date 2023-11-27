@@ -1,3 +1,9 @@
+mx-packageinstaller (23.11.08) mx; urgency=medium
+
+  * add arm64 and armhf filters for marking items installed
+
+ -- Dolphin Oracle <dolphinoracle@gmail.com>  Sun, 26 Nov 2023 22:22:54 -0500
+
 mx-packageinstaller (23.11.07) mx; urgency=medium
 
   * fix version number
