@@ -1,0 +1,45 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Sun, 26 Nov 2023 22:22:54 -0500
+Source: mx-packageinstaller
+Binary: mx-packageinstaller
+Architecture: arm64
+Version: 23.11.08
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: Dolphin Oracle <dolphinoracle@gmail.com>
+Description:
+ mx-packageinstaller - MX Package Installer
+Changes:
+ mx-packageinstaller (23.11.08) mx; urgency=medium
+ .
+   * add arm64 and armhf filters for marking items installed
+Checksums-Sha1:
+ 6110f7c8208ba50676e4543797aa65a21ea8e675 11035 mx-packageinstaller_23.11.08_arm64.buildinfo
+ 630bc65e25c368e7b2bfdecccb859d5ef9504ee7 366440 mx-packageinstaller_23.11.08_arm64.deb
+Checksums-Sha256:
+ 90e980650289d982d01861376b4912dfa3196f644e7cfaac5e537d7df6ba5f8c 11035 mx-packageinstaller_23.11.08_arm64.buildinfo
+ 838338e1e4ba23e7a2979184f01381ff6c1bb13cc5d44341d09372b69a271130 366440 mx-packageinstaller_23.11.08_arm64.deb
+Files:
+ d13408b68e2a08291663c4d2e8f87cf3 11035 admin optional mx-packageinstaller_23.11.08_arm64.buildinfo
+ 5cc72b849fbf5722d947326f927b1d09 366440 admin optional mx-packageinstaller_23.11.08_arm64.deb
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmVkDhgACgkQm2ih6Lm2
+N1wrmA/+LE/i1UB9cFFSK9xggppGzkzQps97A0RhzIKlk5rSTC8ZjvPY4/spGeuu
+X0AqyZkmHSrEKUGM0p90zqAKnvoXwovYUl7jSAiKaeHaeaQ1U1h7TfOvZM7czDBK
++/tboaDPsAoL3MOC4PzeWX08qd21iA5tE3FLIY09ai8Pl6ahFj/iMM/RmWksUki3
+CyKgkPQtm2X5C8Ua+0bg9lGUzEA5UZ0eYqXTRH1GYYaz4I9Yqi1OhdYkHXpUNgTS
+j1NqMJF96qTM+kkR6iIwAkPoTbduzk8WR5ouA8T8dhlCRvJk5nTNopLgqO2DfJoG
+YTnbH2biYtzIgFfEmKC2z3KCK4RC6EBne4oQQt2OPTwD1s209U3pVy9SQFjaT/FD
+Aq4K/ypL06tLQ0puJ79nGW+J9Qn1hs8TsRHXDNX+xiboLjvUmHX9M9ib7ZR32agF
+MYtqARFfoXntOswJpN2rIbdeSOHbRkC4v/MDP3jUFb1ExNwMi8xkTXFyXh9qphKH
++fRCOJuuuNxwuL6F44APE1JEbCzduVVLqr3jtLyYw+/gjgCAXeqFH6Q3rQagn5o+
+zX1YEFduCJMYEu6uTaFYEObcRVa6E/+dtF8pTfA6Fh/o9bJW67kKbxn8VibKAb8Z
+IL/oDOYXxR1M3cvAVGpoo5OmqkOem6LBeT6yhaLsyCVnr0y5ZTk=
+=inrB
+-----END PGP SIGNATURE-----
