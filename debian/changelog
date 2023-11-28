@@ -1,3 +1,9 @@
+mx-packageinstaller (23.11.09) mx; urgency=medium
+
+  * change arm64 pm filter tag to armsixtyfour
+
+ -- Dolphin Oracle <dolphinoracle@gmail.com>  Mon, 27 Nov 2023 20:09:56 -0500
+
 mx-packageinstaller (23.11.08) mx; urgency=medium
 
   * add arm64 and armhf filters for marking items installed
