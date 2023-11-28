@@ -2,23 +2,23 @@ debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh clean --no-automatic-dbgsym --parallel 
    debian/rules override_dh_auto_clean
-make[1]: Entering directory '/media/dataext/development/working/mx-packageinstaller_23.11.08/mx-packageinstaller'
+make[1]: Entering directory '/media/dataext/development/working/mx-packageinstaller_23.11.09/mx-packageinstaller'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_auto_clean
 rm -f src/translations/*.qm
-make[1]: Leaving directory '/media/dataext/development/working/mx-packageinstaller_23.11.08/mx-packageinstaller'
+make[1]: Leaving directory '/media/dataext/development/working/mx-packageinstaller_23.11.09/mx-packageinstaller'
    dh_autoreconf_clean -O--no-automatic-dbgsym -O--parallel
    dh_clean -O--no-automatic-dbgsym -O--parallel
 dpkg-source: info: using source format '3.0 (native)'
-dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.08.tar.xz
-dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.08.dsc
+dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.09.tar.xz
+dpkg-source: info: building mx-packageinstaller in mx-packageinstaller_23.11.09.dsc
 [0mI: Generating source changes file for original dsc[0m
 dpkg-genchanges: info: including full source code in upload
 [1;33mW: cgroups are not available on the host, not using them.[0m
 [0mI: pbuilder: network access will be disabled during build[0m
-[0mI: Current time: Sun Nov 26 22:32:53 EST 2023[0m
-[0mI: pbuilder-time-stamp: 1701055973[0m
+[0mI: Current time: Mon Nov 27 20:16:10 EST 2023[0m
+[0mI: pbuilder-time-stamp: 1701134170[0m
 [0mI: Building the build Environment[0m
 [0mI: extracting base tarball [/media/dataext/development/pbuilder/debian-buster-amd64-base.tgz][0m
 [0mI: copying local configuration[0m
@@ -31,16 +31,16 @@ dpkg-genchanges: info: including full source code in upload
 [0mI: policy-rc.d already exists[0m
 [0mI: Obtaining the cached apt archive contents[0m
 [0mI: Copying source file[0m
-[0mI: copying [../mx-packageinstaller_23.11.08.dsc][0m
-[0mI: copying [../mx-packageinstaller_23.11.08.tar.xz][0m
+[0mI: copying [../mx-packageinstaller_23.11.09.dsc][0m
+[0mI: copying [../mx-packageinstaller_23.11.09.tar.xz][0m
 [0mI: Extracting source[0m
-dpkg-source: warning: extracting unsigned source package (mx-packageinstaller_23.11.08.dsc)
-dpkg-source: info: extracting mx-packageinstaller in mx-packageinstaller-23.11.08
-dpkg-source: info: unpacking mx-packageinstaller_23.11.08.tar.xz
+dpkg-source: warning: extracting unsigned source package (mx-packageinstaller_23.11.09.dsc)
+dpkg-source: info: extracting mx-packageinstaller in mx-packageinstaller-23.11.09
+dpkg-source: info: unpacking mx-packageinstaller_23.11.09.tar.xz
 [0mI: using fakeroot in build.[0m
 [0mI: Installing the build-deps[0m
 [0mI: -> Attempting to satisfy build-dependencies[0m
-Note, using file '/build/mx-packageinstaller_23.11.08.dsc' to get the build dependencies
+Note, using file '/build/mx-packageinstaller_23.11.09.dsc' to get the build dependencies
 Reading package lists...
 Building dependency tree...
 The following NEW packages will be installed:
@@ -946,9 +946,9 @@ Not building database; man-db/auto-update is not 'true'.
 Processing triggers for libc-bin (2.28-10+deb10u1) ...
 [0mI: Copying back the cached apt archive contents[0m
 [0mI: Building the package[0m
-[0mI: Running cd /build/mx-packageinstaller-23.11.08/ && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-buildpackage -us -uc  -B -j4 && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-genchanges -S  > ../mx-packageinstaller_23.11.08_source.changes[0m
+[0mI: Running cd /build/mx-packageinstaller-23.11.09/ && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-buildpackage -us -uc  -B -j4 && env PATH="/usr/sbin:/usr/bin:/sbin:/bin" HOME="/nonexistent" dpkg-genchanges -S  > ../mx-packageinstaller_23.11.09_source.changes[0m
 dpkg-buildpackage: info: source package mx-packageinstaller
-dpkg-buildpackage: info: source version 23.11.08
+dpkg-buildpackage: info: source version 23.11.09
 dpkg-buildpackage: info: source distribution mx
 dpkg-buildpackage: info: source changed by Dolphin Oracle <dolphinoracle@gmail.com>
  dpkg-source --before-build .
@@ -958,12 +958,12 @@ debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh clean --no-automatic-dbgsym --parallel 
    debian/rules override_dh_auto_clean
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.09'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_auto_clean
 rm -f src/translations/*.qm
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.09'
    dh_autoreconf_clean -O--no-automatic-dbgsym -O--parallel
    dh_clean -O--no-automatic-dbgsym -O--parallel
  debian/rules build-arch
@@ -973,10 +973,10 @@ dh build-arch --no-automatic-dbgsym --parallel
    dh_update_autotools_config -a -O--no-automatic-dbgsym -O--parallel
    dh_autoreconf -a -O--no-automatic-dbgsym -O--parallel
    dh_auto_configure -a -O--no-automatic-dbgsym -O--parallel
-	qmake -makefile "QMAKE_CFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" QMAKE_LFLAGS_RELEASE=-Wl,-z,relro QMAKE_LFLAGS_DEBUG=-Wl,-z,relro QMAKE_STRIP=: PREFIX=/usr
-Info: creating stash file /build/mx-packageinstaller-23.11.08/.qmake.stash
+	qmake -makefile "QMAKE_CFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_RELEASE=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" "QMAKE_CXXFLAGS_DEBUG=-g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2" QMAKE_LFLAGS_RELEASE=-Wl,-z,relro QMAKE_LFLAGS_DEBUG=-Wl,-z,relro QMAKE_STRIP=: PREFIX=/usr
+Info: creating stash file /build/mx-packageinstaller-23.11.09/.qmake.stash
    debian/rules override_dh_auto_build
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.09'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 lrelease translations/*.ts
@@ -1353,28 +1353,28 @@ Updating 'translations/mx-packageinstaller_zh_TW.qm'...
     Ignored 65 untranslated source text(s)
 dh_auto_build -- QMAKE=qmake-qt5 LRELEASE=lrelease-qt5 QMAKE_OPTS="DEFINES+=NO_DEBUG_ON_CONSOLE"
 	make -j4 QMAKE=qmake-qt5 LRELEASE=lrelease-qt5 QMAKE_OPTS=DEFINES\+=NO_DEBUG_ON_CONSOLE
-make[2]: Entering directory '/build/mx-packageinstaller-23.11.08'
+make[2]: Entering directory '/build/mx-packageinstaller-23.11.09'
 /usr/lib/qt5/bin/uic mainwindow.ui -o ui_mainwindow.h
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o main.o main.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o lockfile.o lockfile.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o versionnumber.o versionnumber.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o aptcache.o aptcache.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o remotes.o remotes.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o about.o about.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o cmd.o cmd.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o main.o main.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o lockfile.o lockfile.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o versionnumber.o versionnumber.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o aptcache.o aptcache.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o remotes.o remotes.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o about.o about.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o cmd.o cmd.cpp
 /usr/lib/qt5/bin/rcc -name images images.qrc -o qrc_images.cpp
-g++ -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o mainwindow.o mainwindow.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o qrc_images.o qrc_images.cpp
-/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.08/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.08 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
-/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.08/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.08 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include remotes.h -o moc_remotes.cpp
-/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.08/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.08 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include cmd.h -o moc_cmd.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_mainwindow.o moc_mainwindow.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_cmd.o moc_cmd.cpp
-g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.08=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_remotes.o moc_remotes.cpp
+g++ -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o mainwindow.o mainwindow.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o qrc_images.o qrc_images.cpp
+/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.09/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.09 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include mainwindow.h -o moc_mainwindow.cpp
+/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.09/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.09 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include remotes.h -o moc_remotes.cpp
+/usr/lib/qt5/bin/moc -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB --include /build/mx-packageinstaller-23.11.09/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -I/build/mx-packageinstaller-23.11.09 -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtWidgets -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtXml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I/usr/include/c++/8 -I/usr/include/x86_64-linux-gnu/c++/8 -I/usr/include/c++/8/backward -I/usr/lib/gcc/x86_64-linux-gnu/8/include -I/usr/local/include -I/usr/lib/gcc/x86_64-linux-gnu/8/include-fixed -I/usr/include/x86_64-linux-gnu -I/usr/include cmd.h -o moc_cmd.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_mainwindow.o moc_mainwindow.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_cmd.o moc_cmd.cpp
+g++ -c -pipe -g -O2 -fdebug-prefix-map=/build/mx-packageinstaller-23.11.09=. -fstack-protector-strong -Wformat -Werror=format-security -Wdate-time -D_FORTIFY_SOURCE=2 -std=gnu++1z -Wall -W -D_REENTRANT -fPIC -DQT_DEPRECATED_WARNINGS -DQT_NO_DEBUG -DQT_WIDGETS_LIB -DQT_GUI_LIB -DQT_XML_LIB -DQT_NETWORK_LIB -DQT_CORE_LIB -I. -isystem /usr/include/x86_64-linux-gnu/qt5 -isystem /usr/include/x86_64-linux-gnu/qt5/QtWidgets -isystem /usr/include/x86_64-linux-gnu/qt5/QtGui -isystem /usr/include/x86_64-linux-gnu/qt5/QtXml -isystem /usr/include/x86_64-linux-gnu/qt5/QtNetwork -isystem /usr/include/x86_64-linux-gnu/qt5/QtCore -I. -isystem /usr/include/libdrm -I. -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-g++ -o moc_remotes.o moc_remotes.cpp
 g++ -Wl,-z,relro -o mx-packageinstaller main.o mainwindow.o lockfile.o versionnumber.o aptcache.o remotes.o about.o cmd.o qrc_images.o moc_mainwindow.o moc_remotes.o moc_cmd.o   -lQt5Widgets -lQt5Gui -lQt5Xml -lQt5Network -lQt5Core -lGL -lpthread 
-make[2]: Leaving directory '/build/mx-packageinstaller-23.11.08'
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.08'
+make[2]: Leaving directory '/build/mx-packageinstaller-23.11.09'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.09'
    dh_auto_test -a -O--no-automatic-dbgsym -O--parallel
    create-stamp debian/debhelper-build-stamp
  fakeroot debian/rules binary-arch
@@ -1384,16 +1384,16 @@ dh binary-arch --no-automatic-dbgsym --parallel
    dh_testroot -a -O--no-automatic-dbgsym -O--parallel
    dh_prep -a -O--no-automatic-dbgsym -O--parallel
    debian/rules override_dh_auto_install
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.09'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_auto_install
-	make -j4 install DESTDIR=/build/mx-packageinstaller-23.11.08/debian/mx-packageinstaller AM_UPDATE_INFO_DIR=no INSTALL_ROOT=/build/mx-packageinstaller-23.11.08/debian/mx-packageinstaller
-make[2]: Entering directory '/build/mx-packageinstaller-23.11.08'
+	make -j4 install DESTDIR=/build/mx-packageinstaller-23.11.09/debian/mx-packageinstaller AM_UPDATE_INFO_DIR=no INSTALL_ROOT=/build/mx-packageinstaller-23.11.09/debian/mx-packageinstaller
+make[2]: Entering directory '/build/mx-packageinstaller-23.11.09'
 make[2]: Nothing to be done for 'install'.
-make[2]: Leaving directory '/build/mx-packageinstaller-23.11.08'
+make[2]: Leaving directory '/build/mx-packageinstaller-23.11.09'
 dh_link usr/bin/mx-packageinstaller usr/bin/mxpi-launcher
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.09'
    dh_install -a -O--no-automatic-dbgsym -O--parallel
    dh_installdocs -a -O--no-automatic-dbgsym -O--parallel
    dh_installchangelogs -a -O--no-automatic-dbgsym -O--parallel
@@ -1410,20 +1410,20 @@ make[1]: Leaving directory '/build/mx-packageinstaller-23.11.08'
    dh_strip -a -O--no-automatic-dbgsym -O--parallel
    dh_makeshlibs -a -O--no-automatic-dbgsym -O--parallel
    debian/rules override_dh_shlibdeps
-make[1]: Entering directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Entering directory '/build/mx-packageinstaller-23.11.09'
 debian/rules:25: warning: overriding recipe for target 'override_dh_auto_install'
 debian/rules:16: warning: ignoring old recipe for target 'override_dh_auto_install'
 dh_shlibdeps -- -xvirtualbox-guest-x11 --ignore-missing-info
 dpkg-shlibdeps: warning: package could avoid a useless dependency if debian/mx-packageinstaller/usr/bin/mx-packageinstaller was not linked against libGL.so.1 (it uses none of the library's symbols)
 dpkg-shlibdeps: warning: package could avoid a useless dependency if debian/mx-packageinstaller/usr/bin/mx-packageinstaller was not linked against libpthread.so.0 (it uses none of the library's symbols)
-make[1]: Leaving directory '/build/mx-packageinstaller-23.11.08'
+make[1]: Leaving directory '/build/mx-packageinstaller-23.11.09'
    dh_installdeb -a -O--no-automatic-dbgsym -O--parallel
    dh_gencontrol -a -O--no-automatic-dbgsym -O--parallel
    dh_md5sums -a -O--no-automatic-dbgsym -O--parallel
    dh_builddeb -a -O--no-automatic-dbgsym -O--parallel
-dpkg-deb: building package 'mx-packageinstaller' in '../mx-packageinstaller_23.11.08_amd64.deb'.
+dpkg-deb: building package 'mx-packageinstaller' in '../mx-packageinstaller_23.11.09_amd64.deb'.
  dpkg-genbuildinfo --build=any
- dpkg-genchanges --build=any >../mx-packageinstaller_23.11.08_amd64.changes
+ dpkg-genchanges --build=any >../mx-packageinstaller_23.11.09_amd64.changes
 dpkg-genchanges: info: binary-only arch-specific upload (source code and arch-indep packages not included)
  dpkg-source --after-build .
 dpkg-buildpackage: info: binary-only upload (no source included)
@@ -1436,6 +1436,6 @@ dpkg-genchanges: info: including full source code in upload
 [0mI: unmounting proc filesystem[0m
 [0mI: unmounting sys filesystem[0m
 [0mI: cleaning the build env [0m
-[0mI: removing directory /media/dataext/development/pbuilder/build/115692 and its subdirectories[0m
-[0mI: Current time: Sun Nov 26 22:33:21 EST 2023[0m
-[0mI: pbuilder-time-stamp: 1701056001[0m
+[0mI: removing directory /media/dataext/development/pbuilder/build/64240 and its subdirectories[0m
+[0mI: Current time: Mon Nov 27 20:16:37 EST 2023[0m
+[0mI: pbuilder-time-stamp: 1701134197[0m
