@@ -614,11 +614,11 @@ void MainWindow::processDoc(const QDomDocument &doc)
     } else if (arch == QLatin1String("armhf")) {
         mod_arch = "armhf";
     } else if (arch == QLatin1String("arm64")) {
-        mod_arch = "arm64";
+        mod_arch = "armsixtyfour";
     } else {
         return;
     }
-
+    
     // skip non-installable packages
     if (!installable.contains(mod_arch) && installable != QLatin1String("all")) {
         return;
