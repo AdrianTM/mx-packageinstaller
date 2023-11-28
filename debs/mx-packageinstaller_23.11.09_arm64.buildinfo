@@ -4,18 +4,18 @@ Hash: SHA512
 Format: 1.0
 Source: mx-packageinstaller
 Binary: mx-packageinstaller
-Architecture: i386
-Version: 23.11.08
+Architecture: arm64
+Version: 23.11.09
 Checksums-Md5:
- 7d4aca5239a2379f915a72d590db591a 392744 mx-packageinstaller_23.11.08_i386.deb
+ bd8eef1795036b53fe2329b282a7388e 366420 mx-packageinstaller_23.11.09_arm64.deb
 Checksums-Sha1:
- 5e602b92bf510739d38235dcedbc9ca807fca054 392744 mx-packageinstaller_23.11.08_i386.deb
+ d8625dba7db35b676956cf5b6c884e8b3c191220 366420 mx-packageinstaller_23.11.09_arm64.deb
 Checksums-Sha256:
- f8a675ccf482a7fb8ded0daa646bc47fa869755582bdbe79f372d4a9cdb28a13 392744 mx-packageinstaller_23.11.08_i386.deb
+ e89f30086d30bc354ac7decac6483e0d9f73e2348e35bc3a621f781632176d30 366420 mx-packageinstaller_23.11.09_arm64.deb
 Build-Origin: Debian
-Build-Architecture: i386
-Build-Date: Mon, 27 Nov 2023 03:30:10 +0000
-Build-Path: /build/mx-packageinstaller-23.11.08
+Build-Architecture: arm64
+Build-Date: Tue, 28 Nov 2023 01:16:07 +0000
+Build-Path: /build/mx-packageinstaller-23.11.09
 Installed-Build-Depends:
  autoconf (= 2.69-11),
  automake (= 1:1.16.1-4),
@@ -25,8 +25,8 @@ Installed-Build-Depends:
  base-passwd (= 3.5.46),
  bash (= 5.0-4),
  binutils (= 2.31.1-16),
+ binutils-aarch64-linux-gnu (= 2.31.1-16),
  binutils-common (= 2.31.1-16),
- binutils-i686-linux-gnu (= 2.31.1-16),
  bsdmainutils (= 11.1.2+b1),
  bsdutils (= 1:2.33.1-0.1),
  build-essential (= 12.6),
@@ -99,9 +99,11 @@ Installed-Build-Depends:
  libdrm-amdgpu1 (= 2.4.97-1),
  libdrm-common (= 2.4.97-1),
  libdrm-dev (= 2.4.97-1),
- libdrm-intel1 (= 2.4.97-1),
+ libdrm-etnaviv1 (= 2.4.97-1),
+ libdrm-freedreno1 (= 2.4.97-1),
  libdrm-nouveau2 (= 2.4.97-1),
  libdrm-radeon1 (= 2.4.97-1),
+ libdrm-tegra0 (= 2.4.97-1),
  libdrm2 (= 2.4.97-1),
  libedit2 (= 3.1-20181209-1),
  libegl-mesa0 (= 18.3.6-2+deb10u1),
@@ -159,6 +161,7 @@ Installed-Build-Depends:
  libkrb5-3 (= 1.17-3+deb10u4),
  libkrb5support0 (= 1.17-3+deb10u4),
  libllvm7 (= 1:7.0.1-8+deb10u2),
+ liblsan0 (= 8.3.0-6),
  liblz4-1 (= 1.8.3-1+deb10u1),
  liblzma5 (= 5.2.4-1+deb10u1),
  libmagic-mgc (= 1:5.35-4+deb10u2),
@@ -166,7 +169,6 @@ Installed-Build-Depends:
  libmount1 (= 2.33.1-0.1),
  libmpc3 (= 1.1.0-1),
  libmpfr6 (= 4.0.2-1),
- libmpx2 (= 8.3.0-6),
  libmtdev1 (= 1.1.5-1+b1),
  libncurses6 (= 6.1+20181013-2+deb10u2),
  libncursesw6 (= 6.1+20181013-2+deb10u2),
@@ -178,7 +180,6 @@ Installed-Build-Depends:
  libpam-modules-bin (= 1.3.1-5),
  libpam-runtime (= 1.3.1-5),
  libpam0g (= 1.3.1-5),
- libpciaccess0 (= 0.14-1),
  libpcre2-16-0 (= 10.32-5),
  libpcre3 (= 2:8.39-12),
  libperl5.28 (= 5.28.1-6+deb10u1),
@@ -206,7 +207,6 @@ Installed-Build-Depends:
  libqt5webkit5 (= 5.212.0~alpha2-21),
  libqt5widgets5 (= 5.11.3+dfsg1-1+deb10u5),
  libqt5xml5 (= 5.11.3+dfsg1-1+deb10u5),
- libquadmath0 (= 8.3.0-6),
  libseccomp2 (= 2.3.3-4),
  libselinux1 (= 2.8-1+b1),
  libsensors-config (= 1:3.5.0-3),
@@ -222,6 +222,7 @@ Installed-Build-Depends:
  libtasn1-6 (= 4.13-3),
  libtinfo6 (= 6.1+20181013-2+deb10u2),
  libtool (= 2.4.6-9),
+ libtsan0 (= 8.3.0-6),
  libubsan1 (= 8.3.0-6),
  libuchardet0 (= 0.0.6-3),
  libudev1 (= 241-7~deb10u8),
@@ -334,21 +335,21 @@ Environment:
  LANG="C"
  LC_ALL="C"
  MAKEFLAGS=" -j4"
- SOURCE_DATE_EPOCH="1701055374"
+ SOURCE_DATE_EPOCH="1701133796"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmVkDhgACgkQm2ih6Lm2
-N1wgDQ//UgYfeWTHWNl/4rrj0IJGQFiDAbv5tkoiR/VOTb2Q8qQ+shDCC8E5LZxO
-6ZIaFvX/GHeALgCwVXtIQPLaNzWgGi+3JhVQN/n2Lyv6mmzNdjVqrZi/1IxJsx8U
-1D3DH3xiGUl2sMLiN3WX1bPbfECPN9soyrknSXMvl1Je6IsZSBMLGnCbpUdAi0ry
-Iy7alf874dwA0k/dX2vUkX3UXg7rRQEmQYdS4w49Cvlvom0LBZp5x5ee2KjHa+2I
-G2Gnt6RdbRAQwOgweNyzcvbwBAu9nignySZSvt5UvJ2P25q0Jd3TfnDhiUUObTTh
-W7Qs1KqThO6wlz/Ku3SRTM2eH8kms1Yucq3WiCq/U50lvRb1UFOJFexOOOz/V3MI
-Zf411TZNOHmpqaK3TEDlSFECxeT1xT4rMq66seZ+9aMiAAF1JqehIF7y/sAv30A6
-n3EMGImeKN/E1Zk6gHYLyNMicNhFZwkq2Hw9fGGk2ZOdVJeNzoiMAMc7EcA06x5g
-IBdKg1gQPZBhSLuR3xp9/mZQQLWbRfZP9z3Eg+kCcgMZGAMBHx1yvBmwl+qLsAY2
-8jKAOlTQvgTLofOcgsi+wV4/DYkiZGIXqlDs7SmEYUCo9QReh5K6heoyEgmufWMN
-a4xoQ0flzHQm/kT13YYvQ5hhEsU6iRgecEPM7H/6QUWPo5dnDos=
-=LkNw
+iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmVlQNkACgkQm2ih6Lm2
+N1wWtxAArQmS9CvnCYOdEysdnBWfytoozl+jtYWGg8CHGpbBN1R8Ly6zrt/4NWtZ
+1dhycpM5+DXegeTmvKXg//Kj+yAX0DAGeyU/5X3+lvVf6S6X8+h9b5d5DMEvmSBf
+tSpY4wkmvflgf19lt6Sz4YrPMWAT66ONKlffKgyYQUV0zFGAq2DS3QKZaBp1CW1G
+Z3aqg/iizAoOZyb/7MO+Hea1Pr2RlKAUeHrSis72oGedmiy5TTbKiyNLc4obxfP+
+Lw+4y8z1147MQPFlW2xkYvztDUlvl2K+bTUDsIrDuTZyTtnEbKxj4yMBH/ThOLz7
+mLReBHPYDeN2QSrNzCqjQuclXQPrRu/HgkA0HldJ7+SoEGhjg7Ofj0ww9LR2ZcFa
+ZPdMuH/yzPqkipu8DHVzcP74BY50VsW6uoBZhU5k6COKNUp9E4Jf3pPajwez1cpv
+A1pfj3uNlAhqt0QXpVblmfMa4K+s+0ScFpAl6S963WkQBxaEvXOXectx3V48iYGB
+cpS5+lXUk+mX10cqMDtLeICyaNANBCiNMbM1RCypBRZiYXPVjZUsLIm3e/yd79MU
+UNZiHtn9mD6euwsmtS1dYLXHX+zP2lOUZ3EzkpsjFa+4BxDL+M78At/sUemyJ8td
+3aliPOyiR+kVmpoW1I8GEyRw4mVK8Av32VZqh54msiBBsJpBG54=
+=bUeL
 -----END PGP SIGNATURE-----
