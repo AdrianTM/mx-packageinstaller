@@ -276,16 +276,16 @@ bool MainWindow::updateApt()
 quint64 MainWindow::convert(const QString &size)
 {
     QString number = size.section(QChar(160), 0, 0);
-    QString unit = size.section(QChar(160), 1);
+    QString unit = size.section(QChar(160), 1).toUpper();
     double value = number.toDouble();
     if (unit == QLatin1String("KB")) {
-        return value * KiB;
+        return static_cast<quint64>(value * KiB);
     } else if (unit == QLatin1String("MB")) {
-        return value * MiB;
+        return static_cast<quint64>(value * MiB);
     } else if (unit == QLatin1String("GB")) {
-        return value * GiB;
+        return static_cast<quint64>(value * GiB);
     } else { // for "bytes"
-        return value;
+        return static_cast<quint64>(value);
     }
 }
 
@@ -308,22 +308,19 @@ void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    QString name;
-    QString size;
     QStringList list;
-    QStringList runtimes;
-    quint64 total {0};
     if (fp_ver < VersionNumber("1.0.1")) { // older version doesn't display all apps
                                            // and runtimes without specifying them
         list = cmd.getOut("flatpak -d list  " + FPuser + "--app |tr -s ' ' |cut -f1,5,6 -d' '").split("\n");
-        runtimes = cmd.getOut("flatpak -d list " + FPuser + "--runtime|tr -s ' '|cut -f1,5,6 -d' '").split("\n");
+        QStringList runtimes
+            = cmd.getOut("flatpak -d list " + FPuser + "--runtime|tr -s ' '|cut -f1,5,6 -d' '").split("\n");
         if (!runtimes.isEmpty()) {
             list << runtimes;
         }
         for (QTreeWidgetItemIterator it(ui->treeFlatpak); (*it) != nullptr; ++it) {
             for (const QString &item : qAsConst(list)) {
-                name = item.section(" ", 0, 0);
-                size = item.section(" ", 1);
+                QString name = item.section(" ", 0, 0);
+                QString size = item.section(" ", 1);
                 if (name == (*it)->text(FlatCol::FullName)) {
                     (*it)->setText(FlatCol::Size, size);
                 }
@@ -335,8 +332,8 @@ void MainWindow::listSizeInstalledFP()
         list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split("\n");
     }
 
-    total = std::accumulate(list.cbegin(), list.cend(), 0,
-                            [](quint64 acc, const QString &item) { return acc + convert(item.section("\t", 1)); });
+    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
+                                 [](quint64 acc, const QString &item) { return acc + convert(item.section("\t", 1)); });
     ui->labelNumSize->setText(convert(total));
 }
 
@@ -618,7 +615,7 @@ void MainWindow::processDoc(const QDomDocument &doc)
     } else {
         return;
     }
-    
+
     // skip non-installable packages
     if (!installable.contains(mod_arch) && installable != QLatin1String("all")) {
         return;
