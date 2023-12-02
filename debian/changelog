@@ -1,3 +1,9 @@
+mx-packageinstaller (23.12) mx; urgency=medium
+
+  * Fix: listed size of install flatpaks
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 02 Dec 2023 14:27:24 -0500
+
 mx-packageinstaller (23.11.09) mx; urgency=medium
 
   * change arm64 pm filter tag to armsixtyfour
