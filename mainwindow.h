@@ -134,8 +134,8 @@ public:
     bool updateApt();
     static bool isFilteredName(const QString &name);
     static int getDebianVerNum();
-    static quint64 convert(const QString &size);
-    static QString convert(quint64 bytes);
+    static uint64_t convert(const QString &size);
+    static QString convert(uint64_t bytes);
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();

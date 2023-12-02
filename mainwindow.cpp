@@ -273,24 +273,24 @@ bool MainWindow::updateApt()
 }
 
 // Convert different size units to bytes
-quint64 MainWindow::convert(const QString &size)
+uint64_t MainWindow::convert(const QString &size)
 {
     QString number = size.section(QChar(160), 0, 0);
     QString unit = size.section(QChar(160), 1).toUpper();
     double value = number.toDouble();
     if (unit == QLatin1String("KB")) {
-        return static_cast<quint64>(value * KiB);
+        return static_cast<uint64_t>(value * KiB);
     } else if (unit == QLatin1String("MB")) {
-        return static_cast<quint64>(value * MiB);
+        return static_cast<uint64_t>(value * MiB);
     } else if (unit == QLatin1String("GB")) {
-        return static_cast<quint64>(value * GiB);
+        return static_cast<uint64_t>(value * GiB);
     } else { // for "bytes"
-        return static_cast<quint64>(value);
+        return static_cast<uint64_t>(value);
     }
 }
 
 // Convert to string (#bytes, KiB, MiB, and GiB)
-QString MainWindow::convert(quint64 bytes)
+QString MainWindow::convert(uint64_t bytes)
 {
     auto size = static_cast<double>(bytes);
     if (bytes < KiB) {
@@ -332,8 +332,9 @@ void MainWindow::listSizeInstalledFP()
         list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split("\n");
     }
 
-    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
-                                 [](quint64 acc, const QString &item) { return acc + convert(item.section("\t", 1)); });
+    auto total = std::accumulate(list.cbegin(), list.cend(), uint64_t(0), [](uint64_t acc, const QString &item) {
+        return acc + convert(item.section("\t", 1));
+    });
     ui->labelNumSize->setText(convert(total));
 }
 
