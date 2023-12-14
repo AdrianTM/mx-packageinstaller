@@ -122,7 +122,7 @@ void MainWindow::setup()
     test_initially_enabled
         = cmd.run("apt-get update --print-uris | grep -m1 -qE '/mx/testrepo/dists/" + ver_name + "/test/'");
 
-    this->setWindowTitle(tr("MX Package Installer"));
+    setWindowTitle(tr("MX Package Installer"));
     ui->tabWidget->setCurrentIndex(Tab::Popular);
     ui->treeEnabled->hideColumn(TreeCol::Status); // Status of the package: installed, upgradable, etc
     ui->treeMXtest->hideColumn(TreeCol::Status);
@@ -174,8 +174,8 @@ void MainWindow::setup()
     const QSize size = this->size();
     if (settings.contains("geometry")) {
         restoreGeometry(settings.value("geometry").toByteArray());
-        if (this->isMaximized()) { // add option to resize if maximized
-            this->resize(size);
+        if (isMaximized()) { // add option to resize if maximized
+            resize(size);
             centerWindow();
         }
     }
@@ -342,7 +342,7 @@ void MainWindow::listSizeInstalledFP()
 void MainWindow::blockInterfaceFP(bool block)
 {
     if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
-        for (int tab = 0; tab < 4; ++tab) {
+        for (int tab = 0; tab < ui->tabWidget->count() - 1; ++tab) {
             ui->tabWidget->setTabEnabled(tab, !block);
         }
     }
@@ -730,8 +730,7 @@ void MainWindow::displayPopularApps() const
                                .at(0); // find first match; add the child there
         }
         // add package name as childItem to treePopularApps
-        QTreeWidgetItem *childItem {nullptr};
-        childItem = new QTreeWidgetItem(topLevelItem);
+        auto *childItem = new QTreeWidgetItem(topLevelItem);
         childItem->setText(PopCol::Name, name);
         childItem->setIcon(PopCol::Info, QIcon::fromTheme("dialog-information"));
         childItem->setFlags(childItem->flags() | Qt::ItemIsUserCheckable);
@@ -1724,9 +1723,9 @@ void MainWindow::cancelDownload()
 void MainWindow::centerWindow()
 {
     auto screenGeometry = QApplication::primaryScreen()->geometry();
-    auto x = (screenGeometry.width() - this->width()) / 2;
-    auto y = (screenGeometry.height() - this->height()) / 2;
-    this->move(x, y);
+    auto x = (screenGeometry.width() - width()) / 2;
+    auto y = (screenGeometry.height() - height()) / 2;
+    move(x, y);
 }
 
 void MainWindow::clearUi()
@@ -2032,7 +2031,7 @@ void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeW
     QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg, QMessageBox::Close);
 
     // make it wider
-    auto *horizontalSpacer = new QSpacerItem(this->width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(info.layout());
     layout->addItem(horizontalSpacer, 0, 1);
     info.exec();
@@ -2139,7 +2138,7 @@ void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
     info.setDetailedText(details.trimmed());
 
     // make it wider
-    auto *horizontalSpacer = new QSpacerItem(this->width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(info.layout());
     layout->addItem(horizontalSpacer, 0, 1);
     info.exec();
@@ -2305,16 +2304,16 @@ void MainWindow::on_pushInstall_clicked()
 
 void MainWindow::on_pushAbout_clicked()
 {
-    this->hide();
+    hide();
     displayAboutMsgBox(
-        tr("About %1").arg(this->windowTitle()),
-        "<p align=\"center\"><b><h2>" + this->windowTitle() + "</h2></b></p><p align=\"center\">" + tr("Version: ")
+        tr("About %1").arg(windowTitle()),
+        "<p align=\"center\"><b><h2>" + windowTitle() + "</h2></b></p><p align=\"center\">" + tr("Version: ")
             + QCoreApplication::applicationVersion() + "</p><p align=\"center\"><h3>"
             + tr("Package Installer for MX Linux")
             + R"(</h3></p><p align="center"><a href="http://mxlinux.org">http://mxlinux.org</a><br /></p><p align="center">)"
             + tr("Copyright (c) MX Linux") + "<br /><br /></p>",
-        QStringLiteral("/usr/share/doc/mx-packageinstaller/license.html"), tr("%1 License").arg(this->windowTitle()));
-    this->show();
+        QStringLiteral("/usr/share/doc/mx-packageinstaller/license.html"), tr("%1 License").arg(windowTitle()));
+    show();
 }
 
 void MainWindow::on_pushHelp_clicked()
@@ -2325,7 +2324,7 @@ void MainWindow::on_pushHelp_clicked()
     if (lang.startsWith(QLatin1String("fr"))) {
         url = "https://mxlinux.org/wiki/help-files/help-mx-installateur-de-paquets";
     }
-    displayDoc(url, tr("%1 Help").arg(this->windowTitle()));
+    displayDoc(url, tr("%1 Help").arg(windowTitle()));
 }
 
 // Resize columns when expanding

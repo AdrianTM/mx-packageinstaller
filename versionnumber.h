@@ -18,9 +18,7 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-
-#ifndef VERSIONNUMBER_H
-#define VERSIONNUMBER_H
+#pragma once
 
 #include <QMetaType>
 #include <QStringList>
@@ -106,5 +104,3 @@ private:
 };
 
 Q_DECLARE_METATYPE(VersionNumber)
-
-#endif
