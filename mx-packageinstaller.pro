@@ -49,14 +49,14 @@ HEADERS  += \
     versionnumber.h \
     aptcache.h \
     remotes.h \
-    version.h \
     about.h \
     cmd.h
 
 FORMS    += \
     mainwindow.ui
 
-TRANSLATIONS += translations/mx-packageinstaller_en.ts
+TRANSLATIONS += \
+    translations/mx-packageinstaller_en.ts
 
 RESOURCES += \
     images.qrc
