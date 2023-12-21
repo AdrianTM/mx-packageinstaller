@@ -34,6 +34,7 @@ TEMPLATE = app
 DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
+    log.cpp \
     main.cpp \
     mainwindow.cpp \
     lockfile.cpp \
@@ -44,6 +45,7 @@ SOURCES += \
     cmd.cpp
 
 HEADERS  += \
+    log.h \
     mainwindow.h \
     lockfile.h \
     versionnumber.h \
