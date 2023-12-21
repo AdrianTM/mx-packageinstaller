@@ -57,7 +57,6 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
       reply(nullptr)
 {
     qDebug().noquote() << QCoreApplication::applicationName() << "version:" << QCoreApplication::applicationVersion();
-
     ui->setupUi(this);
     setProgressDialog();
 

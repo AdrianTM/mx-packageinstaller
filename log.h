@@ -30,8 +30,8 @@ class Log
 public:
     explicit Log(const QString &file_name = "/tmp/mxpi.log");
     static QString getLog();
-    static void messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg);
+    static void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg);
 
 private:
-    inline static QFile logFile {"/tmp/mxpi.log"};
+    inline static QFile logFile;
 };

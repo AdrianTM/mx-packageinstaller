@@ -33,10 +33,9 @@ Log::Log(const QString &file_name)
     qInstallMessageHandler(Log::messageHandler);
 }
 
-void Log::messageHandler(QtMsgType type, const QMessageLogContext &context, const QString &msg)
+void Log::messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
     QTextStream term_out(stdout);
-
     if (msg.contains(QLatin1String("\r"))) {
         term_out << msg;
         return;
@@ -47,22 +46,22 @@ void Log::messageHandler(QtMsgType type, const QMessageLogContext &context, cons
     out << QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss.zzz "));
     switch (type) {
     case QtInfoMsg:
-        out << QStringLiteral("INF ");
+        out << QStringLiteral("INF");
         break;
     case QtDebugMsg:
-        out << QStringLiteral("DBG ");
+        out << QStringLiteral("DBG");
         break;
     case QtWarningMsg:
-        out << QStringLiteral("WRN ");
+        out << QStringLiteral("WRN");
         break;
     case QtCriticalMsg:
-        out << QStringLiteral("CRT ");
+        out << QStringLiteral("CRT");
         break;
     case QtFatalMsg:
-        out << QStringLiteral("FTL ");
+        out << QStringLiteral("FTL");
         break;
     }
-    out << context.category << QStringLiteral(": ") << msg << QStringLiteral("\n");
+    out << QStringLiteral(": ") << msg << QStringLiteral("\n");
 }
 
 QString Log::getLog()

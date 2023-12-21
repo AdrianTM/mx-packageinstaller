@@ -108,7 +108,6 @@ int main(int argc, char *argv[])
         }
     }
     Log startLog;
-    qDebug() << "LOG" << Log::getLog();
     MainWindow w(parser);
     w.show();
     return QApplication::exec();
