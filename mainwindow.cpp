@@ -71,9 +71,11 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
     QTimer::singleShot(0, this, [this] {
         setup();
         QApplication::processEvents();
-        AptCache cache;
-        enabled_list = cache.getCandidates();
-        displayPackages();
+        {
+            AptCache cache;
+            enabled_list = cache.getCandidates();
+            displayPackages();
+        }
         if (arch != "i386" && checkInstalled("flatpak")) {
             if (!Cmd().run("flatpak remote-list --columns=name | grep -q flathub", true)) {
                 Cmd().runAsRoot(
