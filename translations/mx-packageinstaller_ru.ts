@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="125"/>
+        <location filename="../mainwindow.cpp" line="126"/>
         <source>MX Package Installer</source>
         <translation>MX Установщик пакетов</translation>
     </message>
@@ -384,37 +384,37 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="110"/>
+        <location filename="../mainwindow.cpp" line="111"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
         <translation>Вкладка Флатпака отключена для 32-битной системы.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="115"/>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>Could not find MX sources.</source>
         <translation>Не удалось найти источники MX.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="211"/>
+        <location filename="../mainwindow.cpp" line="212"/>
         <source>Uninstalling packages...</source>
         <translation>Удаление пакетов...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
+        <location filename="../mainwindow.cpp" line="217"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Выполняются предварительные действия удаления...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="236"/>
+        <location filename="../mainwindow.cpp" line="237"/>
         <source>Running post-uninstall operations...</source>
         <translation>Действия, предусмотренные после деинсталляции, теперь выполняются...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="254"/>
+        <location filename="../mainwindow.cpp" line="255"/>
         <source>Refreshing sources...</source>
         <translation>Обновляются источники...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="268"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <location filename="../mainwindow.cpp" line="1202"/>
         <location filename="../mainwindow.cpp" line="1336"/>
         <location filename="../mainwindow.cpp" line="1486"/>
@@ -436,17 +436,17 @@
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="270"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Возникла проблема при обновлении источников. Возможно, некоторые источники не предоставили обновления. Для подробной информации проверьте:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="675"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>Cancel</source>
         <translation>Отмена</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="682"/>
+        <location filename="../mainwindow.cpp" line="683"/>
         <source>Please wait...</source>
         <translation>Пожалуйста, ждите...</translation>
     </message>
@@ -852,7 +852,7 @@ Close the program, or wait until it is done processing and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="78"/>
+        <location filename="../main.cpp" line="79"/>
         <source>MX Package Installer is a tool used for managing packages on MX Linux
     - installs popular programs from different sources
     - installs programs from the MX Test repo
@@ -865,23 +865,23 @@ Close the program, or wait until it is done processing and try again.</source>
     - установка Флэтпаков</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="86"/>
+        <location filename="../main.cpp" line="87"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
         <translation>Пропустить онлайн-проверку, если она ложно сообщает об отсутствии доступа к интернету.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="96"/>
-        <location filename="../main.cpp" line="104"/>
+        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="105"/>
         <source>Error</source>
         <translation>Ошибка</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="98"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Программа запущена суперпользователем. Для использования программы войдите в систему как обычный пользователь.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="106"/>
         <source>You must run this program with admin access.</source>
         <translation type="unfinished"></translation>
     </message>

@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="125"/>
+        <location filename="../mainwindow.cpp" line="126"/>
         <source>MX Package Installer</source>
         <translation>MX Instalador de Paquetes</translation>
     </message>
@@ -384,37 +384,37 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="110"/>
+        <location filename="../mainwindow.cpp" line="111"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
         <translation>La pestaña Flatpak está desactivada en 32 bits.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="115"/>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>Could not find MX sources.</source>
         <translation>No se encontraron fuentes MX.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="211"/>
+        <location filename="../mainwindow.cpp" line="212"/>
         <source>Uninstalling packages...</source>
         <translation>Desinstalando paquetes...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
+        <location filename="../mainwindow.cpp" line="217"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Ejecutando las operaciones de predesinstalación...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="236"/>
+        <location filename="../mainwindow.cpp" line="237"/>
         <source>Running post-uninstall operations...</source>
         <translation>Ejecutando operaciones posteriores a la desinstalación...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="254"/>
+        <location filename="../mainwindow.cpp" line="255"/>
         <source>Refreshing sources...</source>
         <translation>Actualizando fuentes...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="268"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <location filename="../mainwindow.cpp" line="1202"/>
         <location filename="../mainwindow.cpp" line="1336"/>
         <location filename="../mainwindow.cpp" line="1486"/>
@@ -436,17 +436,17 @@
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="270"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Hubo un problema al actualizar las fuentes. Es posible que algunas fuentes no hayan proporcionado actualizaciones. Para obtener más información, consulte: </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="675"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>Cancel</source>
         <translation>Cancelar</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="682"/>
+        <location filename="../mainwindow.cpp" line="683"/>
         <source>Please wait...</source>
         <translation>Por favor, espere...</translation>
     </message>
@@ -853,7 +853,7 @@ Close the program, or wait until it is done processing and try again.</source>
 Cierre el programa o espere a que termine el proceso e inténtelo de nuevo.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="78"/>
+        <location filename="../main.cpp" line="79"/>
         <source>MX Package Installer is a tool used for managing packages on MX Linux
     - installs popular programs from different sources
     - installs programs from the MX Test repo
@@ -866,23 +866,23 @@ Cierre el programa o espere a que termine el proceso e inténtelo de nuevo.</tra
     - instala flatpaks</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="86"/>
+        <location filename="../main.cpp" line="87"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
         <translation>Omitir la comprobación en línea si informa falsamente de la falta de acceso a Internet.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="96"/>
-        <location filename="../main.cpp" line="104"/>
+        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="105"/>
         <source>Error</source>
         <translation>Error</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="98"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Parece que ha iniciado sesión como root, cierre la sesión e inicie sesión como usuario normal para usar este programa.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="106"/>
         <source>You must run this program with admin access.</source>
         <translation>Debe ejecutar este programa con acceso de administrador.</translation>
     </message>

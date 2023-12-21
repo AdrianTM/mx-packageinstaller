@@ -5,7 +5,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
-        <location filename="../mainwindow.cpp" line="125"/>
+        <location filename="../mainwindow.cpp" line="126"/>
         <source>MX Package Installer</source>
         <translation>MX Namestilnik paketov</translation>
     </message>
@@ -63,7 +63,7 @@
     <message>
         <location filename="../mainwindow.ui" line="173"/>
         <source>Enabled Repos</source>
-        <translation>Vključeni repozitoriji</translation>
+        <translation>Vklopljena skladišča</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="237"/>
@@ -170,7 +170,7 @@
         <location filename="../mainwindow.ui" line="752"/>
         <location filename="../mainwindow.ui" line="814"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation>= nadgradljiv paket. V izbranem repozitoriju je na voljo novejša različica.</translation>
+        <translation>= nadgradljiv paket. V izbranem skladišču je na voljo novejša različica.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="458"/>
@@ -190,7 +190,7 @@
     <message>
         <location filename="../mainwindow.ui" line="493"/>
         <source>MX Test Repo</source>
-        <translation>MX testni repozitorij</translation>
+        <translation>MX testno skladišče</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="796"/>
@@ -216,7 +216,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1165"/>
         <source>Remote (repo):</source>
-        <translation>Oddaljeno (repozitorij):</translation>
+        <translation>Oddaljeno (skladišče):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
@@ -384,37 +384,37 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="110"/>
+        <location filename="../mainwindow.cpp" line="111"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation>Flatpak zavihek ni na voljo za 32-bitov</translation>
+        <translation>Flatpak zavihek je onemogočen za 32-bitov</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="115"/>
+        <location filename="../mainwindow.cpp" line="116"/>
         <source>Could not find MX sources.</source>
         <translation>Nisem našel MX virov.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="211"/>
+        <location filename="../mainwindow.cpp" line="212"/>
         <source>Uninstalling packages...</source>
         <translation>Odstranjevanje paketov</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="216"/>
+        <location filename="../mainwindow.cpp" line="217"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Izvedba opravil pred odstranitvijo...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="236"/>
+        <location filename="../mainwindow.cpp" line="237"/>
         <source>Running post-uninstall operations...</source>
         <translation>Izvajam opravila po namestitvi...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="254"/>
+        <location filename="../mainwindow.cpp" line="255"/>
         <source>Refreshing sources...</source>
         <translation>Osvežujem vire...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="268"/>
+        <location filename="../mainwindow.cpp" line="269"/>
         <location filename="../mainwindow.cpp" line="1202"/>
         <location filename="../mainwindow.cpp" line="1336"/>
         <location filename="../mainwindow.cpp" line="1486"/>
@@ -436,17 +436,17 @@
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="269"/>
+        <location filename="../mainwindow.cpp" line="270"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Prišlo je do težav pri osveževanju virov. Nekateri viri morda niso pravilno podali posodobitev. Za več informacij preveri:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="675"/>
+        <location filename="../mainwindow.cpp" line="676"/>
         <source>Cancel</source>
         <translation>Prekini</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="682"/>
+        <location filename="../mainwindow.cpp" line="683"/>
         <source>Please wait...</source>
         <translation>Prosimo, počakajte...</translation>
     </message>
@@ -459,12 +459,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="874"/>
         <source> in the enabled repos</source>
-        <translation>v omogočenih repozitorijih</translation>
+        <translation>v omogočenih skladiščih</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="876"/>
         <source>Not available in the enabled repos</source>
-        <translation>Ni na voljo v omogočenih repozitorijih</translation>
+        <translation>Ni na voljo v omogočenih skladiščih</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="886"/>
@@ -486,17 +486,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="1027"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Ste na tem, da bi uporabljali testne repozitorije, katerih paketi so namenjeni zgolj preizkušanju. Obstaja možnost, da bodo ti pokvarili vaš sistem, zato svetujemo, da naredite varnostno kopijo svojega sistema in da naenkrat namestite ali posodobite le po en paket. Prosimo, da posredujete povratne informacije na forumu, zato da bo lahko paket ovrednoten in prestavljen v glavni repozitorij.</translation>
+        <translation>Ste na tem, da bi uporabljali testna skladišča, katerih paketi so namenjeni zgolj preizkušanju. Obstaja možnost, da bodo ti pokvarili vaš sistem, zato svetujemo, da naredite varnostno kopijo svojega sistema in da naenkrat namestite ali posodobite le po en paket. Prosimo, da posredujete povratne informacije na forumu, zato da bo lahko paket ovrednoten in prestavljen v glavno skladišče.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1036"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Ste na tem, da boste uporabili Debian backporte, ki vsebujejo pakete iz naslednjih izdaj Debiana (poimenovano &apos;testing&apos;) in ki so prilagojeni za rabo s stabilnim Debianom. Niso preizkušeni tako intenzivno, kot stabilne izdaje za Debian ali MX Linux in so lahko nezdružljivi z drugimi komponentami stabilnega Debiana. Uporabite previdno!</translation>
+        <translation>Ste na tem, da boste uporabili Debian backporte, ki vsebujejo pakete iz naslednjih izdaj Debiana (poimenovane &apos;testing&apos;) in ki so prilagojeni za rabo s stabilnim Debianom. Niso preizkušeni tako intenzivno, kot stabilne izdaje za Debian ali MX Linux in so lahko nezdružljivi z drugimi komponentami stabilnega Debiana. Uporabljajte previdno!</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1044"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux vsebuje ta repozitorij flatpakov zgolj zato, da bi ustregel določenim uporabnikom in ni odgovoren za njihovo funkcionalnost. Za več informacij preverite flatpaks Wiki.</translation>
+        <translation>MX Linux vsebuje to skladišče flatpakov zgolj zato, da bi ustregel določenim uporabnikom in ni odgovoren za njihovo funkcionalnost. Za več informacij preverite flatpaks Wiki.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1052"/>
@@ -534,12 +534,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1265"/>
         <source>Post-processing...</source>
-        <translation>Po-procesiranje...</translation>
+        <translation>Zaključna obdelava...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1297"/>
         <source>Pre-processing for </source>
-        <translation>Pred-procesiranje...</translation>
+        <translation>Priprava obdelave...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1312"/>
@@ -549,7 +549,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1319"/>
         <source>Post-processing for </source>
-        <translation>Po-procesiranje za</translation>
+        <translation>Zaključna obdelava za</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1487"/>
@@ -607,7 +607,7 @@
         <location filename="../mainwindow.cpp" line="3062"/>
         <location filename="../mainwindow.cpp" line="3084"/>
         <source>Processing finished successfully.</source>
-        <translation>Procesiranje je bilo uspešno zaključeno.</translation>
+        <translation>Obdelava je bilo uspešno zaključeno.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2263"/>
@@ -764,7 +764,7 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Dodaj ali odstrani flatpak oddaljni dostop (repozitorije) ali namesti flatpakref URL ali pot</translation>
+        <translation>Dodaj ali odstrani flatpak oddaljni dostop (skladišča) ali namesti flatpakref URL ali pot</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
@@ -850,10 +850,10 @@ Skrbno preglejte seznam paketov, ki bodo odstranjeni.</translation>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
         <translation>Dpgk/apt podatkovno bazo je zaklenil drug program: %1
-Zaprite ta program ali počakajte, da konča s procesiranjem in poskusite znova.</translation>
+Zaprite ta program ali počakajte, da konča z obdelavo in poskusite znova.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="78"/>
+        <location filename="../main.cpp" line="79"/>
         <source>MX Package Installer is a tool used for managing packages on MX Linux
     - installs popular programs from different sources
     - installs programs from the MX Test repo
@@ -861,28 +861,28 @@ Zaprite ta program ali počakajte, da konča s procesiranjem in poskusite znova.
     - installs flatpaks</source>
         <translation>MX Namestilnik paketov je orodje za upravljanje paketov v okolju MX Linux
     - namesti priljubljene programe iz različnih virov
-    - namesti programe iz MX testnega repozitorija
-    - namesti programe iz Debian Backport repozitorija
+    - namesti programe iz MX testnega skladišča
+    - namesti programe iz Debian Backport skladišča
     - namesti flatpak pakete</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="86"/>
+        <location filename="../main.cpp" line="87"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
         <translation>Preskoči spletno preverjanje, če napačno javlja odsotnost spletne povezave.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="96"/>
-        <location filename="../main.cpp" line="104"/>
+        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="105"/>
         <source>Error</source>
         <translation>Napaka</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="97"/>
+        <location filename="../main.cpp" line="98"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Prijavljeni ste kot korenski uporabnik. Izpišite se in se ponovno prijavite kot običajen uporabnik, če želite uporabljati ta program.</translation>
     </message>
     <message>
-        <location filename="../main.cpp" line="105"/>
+        <location filename="../main.cpp" line="106"/>
         <source>You must run this program with admin access.</source>
         <translation>Ta program je potrebno zagnati s skrbniškim dostopom</translation>
     </message>
