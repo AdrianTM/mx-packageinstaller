@@ -799,21 +799,31 @@ void MainWindow::displayPackages()
     QTreeWidget *newtree {nullptr}; // new pointer to avoid overwriting current "tree"
 
     QMap<QString, QStringList> list;
+
     if (tree == ui->treeMXtest) {
+        if (!dirtyTest) {
+            return;
+        }
         list = mx_list;
         newtree = ui->treeMXtest;
         dirtyTest = false;
     } else if (tree == ui->treeBackports) {
+        if (!dirtyBackports) {
+            return;
+        }
         list = backports_list;
         newtree = ui->treeBackports;
         dirtyBackports = false;
-    } else { // for ui-treeEnabled, ui->treePopularApps, ui->treeFlatpak
+    } else {
+        if (!dirtyEnabledRepos) {
+            return;
+        }
         list = enabled_list;
         newtree = ui->treeEnabled;
         dirtyEnabledRepos = false;
     }
-
     newtree->blockSignals(true);
+    newtree->clear();
 
     // create a list of apps, create a hash with app_name, app_info
     auto hashInstalled = listInstalledVersions();
@@ -880,9 +890,8 @@ void MainWindow::displayPackages()
         newtree->resizeColumnToContents(i);
     }
     if (newtree == ui->treeEnabled) {
-        Cmd shell;
         ui->pushRemoveOrphan->setVisible(
-            shell.run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
+            Cmd().run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
     }
     updateInterface();
     newtree->blockSignals(false);
@@ -1507,6 +1516,9 @@ bool MainWindow::downloadAndUnzip(const QString &url, const QString &repo_name, 
 bool MainWindow::buildPackageLists(bool force_download)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    if (force_download) {
+        setDirty();
+    }
     clearUi();
     if (!downloadPackageList(force_download)) {
         ifDownloadFailed();
@@ -1810,9 +1822,7 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
 QStringList MainWindow::listInstalled()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    disconnect(conn);
-    QString str = cmd.getOut("dpkg --get-selections | grep -v deinstall | cut -f1", true);
-    conn = connect(&cmd, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
+    QString str = Cmd().getOut("dpkg --get-selections | grep -v deinstall | cut -f1", true);
     str.remove(":i386");
     str.remove(":amd64");
     str.remove(":arm64");
@@ -2224,25 +2234,8 @@ void MainWindow::showOutput()
 void MainWindow::on_pushInstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    // qDebug() << "change list"  << .join(" ");
     showOutput();
-
-    if (tree == ui->treePopularApps) {
-        bool success = installPopularApps();
-        if (!enabled_list.isEmpty()) { // clear cache to update list if it already exists
-            buildPackageLists();
-        }
-        if (success) {
-            setDirty();
-            refreshPopularApps();
-            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-            ui->tabWidget->setCurrentWidget(tree->parentWidget());
-        } else {
-            refreshPopularApps();
-            QMessageBox::critical(this, tr("Error"),
-                                  tr("Problem detected while installing, please inspect the console output."));
-        }
-    } else if (tree == ui->treeFlatpak) {
+    if (tree == ui->treeFlatpak) {
         // confirmation dialog
         if (!confirmActions(change_list.join(" "), "install")) {
             displayFlatpaks(true);
@@ -2268,7 +2261,7 @@ void MainWindow::on_pushInstall_clicked()
                                   tr("Problem detected while installing, please inspect the console output."));
         }
     } else {
-        bool success = installSelected();
+        bool success = tree == ui->treePopularApps ? installPopularApps() : installSelected();
         setDirty();
         buildPackageLists();
         refreshPopularApps();
@@ -2395,19 +2388,14 @@ void MainWindow::on_pushUninstall_clicked()
         names = change_list.join(" ");
     }
 
+    bool success = uninstall(names, preuninstall, postuninstall);
     setDirty();
-    if (uninstall(names, preuninstall, postuninstall)) {
-        if (!enabled_list.isEmpty()) { // update list if it already exists
-            buildPackageLists();
-        }
-        refreshPopularApps();
+    buildPackageLists();
+    refreshPopularApps();
+    if (success) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(tree->parentWidget());
     } else {
-        if (!enabled_list.isEmpty()) { // update list if it already exists
-            buildPackageLists();
-        }
-        refreshPopularApps();
         QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling the program"));
     }
     enableTabs(true);
@@ -2420,7 +2408,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
 
-    // reset checkboxes when tab changes
+    // Reset checkboxes when tab changes
     if (tree != ui->treePopularApps) {
         tree->blockSignals(true);
         tree->clearSelection();
@@ -2431,7 +2419,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         tree->blockSignals(false);
     }
 
-    // save the search text
+    // Save the search text
     QString search_str;
     int filter_idx = 0;
     if (tree == ui->treePopularApps) {
@@ -2862,16 +2850,16 @@ void MainWindow::on_pushUpgradeAll_clicked()
             names += (*it)->text(TreeCol::Name) + " ";
         }
     }
-    if (install(names)) {
-        buildPackageLists();
+    bool success = install(names);
+    setDirty();
+    buildPackageLists();
+    if (success) {
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(tree->parentWidget());
     } else {
-        buildPackageLists();
         QMessageBox::critical(this, tr("Error"),
                               tr("Problem detected while installing, please inspect the console output."));
     }
-
     enableTabs(true);
 }
 
@@ -3080,18 +3068,14 @@ void MainWindow::on_pushRemoveOrphan_clicked()
                          tr("Potentially dangerous operation.\nPlease make sure you check "
                             "carefully the list of packages to be removed."));
     showOutput();
-    if (uninstall(names)) {
-        if (!enabled_list.isEmpty()) { // update list if it already exists
-            buildPackageLists();
-        }
-        refreshPopularApps();
+    bool success = uninstall(names);
+    setDirty();
+    buildPackageLists();
+    refreshPopularApps();
+    if (success) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(tree->parentWidget());
     } else {
-        if (!enabled_list.isEmpty()) { // update list if it already exists
-            buildPackageLists();
-        }
-        refreshPopularApps();
         QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling the program"));
     }
     enableTabs(true);
