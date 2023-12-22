@@ -959,6 +959,9 @@ void MainWindow::displayFlatpaks(bool force_update)
                 version = item.section("\t", 0, 0);
                 item = item.section("\t", 1, 1).section("/", 1);
             }
+            if (version.isEmpty()) {
+                version = item.section("/", -1);
+            }
             long_name = item.section("/", 0, 0);
             short_name = long_name.section(".", -1);
             if (short_name == QLatin1String("Locale") || short_name == QLatin1String("Sources")
