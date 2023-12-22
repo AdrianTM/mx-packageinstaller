@@ -148,14 +148,14 @@ void MainWindow::setup()
     loadPmFiles();
     refreshPopularApps();
 
-    // connect search boxes
+    // Connect search boxes
     connect(ui->searchPopular, &QLineEdit::textChanged, this, &MainWindow::findPopular);
     connect(ui->searchBoxEnabled, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
     connect(ui->searchBoxMX, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
     connect(ui->searchBoxBP, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
     connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
 
-    // connect combo filters
+    // Connect combo filters
     connect(ui->comboFilterEnabled, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterMX, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterBP, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
@@ -181,7 +181,7 @@ void MainWindow::setup()
         }
     }
 
-    // check/uncheck tree items spacebar press or double-click
+    // Check/uncheck tree items spacebar press or double-click
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
     connect(shortcutToggle, &QShortcut::activated, this, &MainWindow::checkUnckeckItem);
 
@@ -203,7 +203,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
 
     bool success = true;
-    // simulate install of selections and present for confirmation
+    // Simulate install of selections and present for confirmation
     // if user selects cancel, break routine but return success to avoid error message
     if (!confirmActions(names, "remove")) {
         return true;
@@ -241,7 +241,6 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         }
         success = cmd.runAsRoot(postuninstall);
     }
-
     return success;
 }
 
@@ -427,11 +426,9 @@ int MainWindow::getDebianVerNum()
 QString MainWindow::getDebianVerName()
 {
     int ver = getDebianVerNum();
-    QHash<int, QString> releaseNames {{Release::Jessie, "jessie"},
-                                      {Release::Stretch, "stretch"},
-                                      {Release::Buster, "buster"},
-                                      {Release::Bullseye, "bullseye"},
-                                      {Release::Bookworm, "bookworm"}};
+    QHash<int, QString> releaseNames {{Release::Jessie, "jessie"},     {Release::Stretch, "stretch"},
+                                      {Release::Buster, "buster"},     {Release::Bullseye, "bullseye"},
+                                      {Release::Bookworm, "bookworm"}, {Release::Trixie, "trixie"}};
     if (!releaseNames.contains(ver)) {
         qWarning() << "Error: Invalid Debian version, assumes Bullseye";
         return "bullseye";
@@ -441,55 +438,38 @@ QString MainWindow::getDebianVerName()
 
 QString MainWindow::getLocalizedName(const QDomElement &element) const
 {
-    // pass one, find fully localized string, e.g. "pt_BR"
-    for (auto child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
-        if (child.tagName() == locale.name() && !child.text().trimmed().isEmpty()) {
-            return child.text().trimmed();
-        }
-    }
+    const QString &localeName = locale.name();
+    QStringList tagCandidates
+        = {localeName, localeName.section('_', 0, 0), QStringLiteral("en"), QStringLiteral("en_US")};
 
-    // pass two, find language, e.g. "pt"
-    for (auto child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
-        if (child.tagName() == locale.name().section("_", 0, 0) && !child.text().trimmed().isEmpty()) {
-            return child.text().trimmed();
-        }
-    }
-
-    // pass three, return "en" or "en_US"
-    for (auto child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
-        if ((child.tagName() == QLatin1String("en") || child.tagName() == QLatin1String("en_US"))
-            && !child.text().trimmed().isEmpty()) {
-            return child.text().trimmed();
+    for (const auto &tag : tagCandidates) {
+        for (auto child = element.firstChildElement(); !child.isNull(); child = child.nextSiblingElement()) {
+            if (child.tagName() == tag && !child.text().trimmed().isEmpty()) {
+                return child.text().trimmed();
+            }
         }
     }
 
     auto child = element.firstChildElement();
-    if (child.isNull()) {
-        return element.text().trimmed(); // if no language tags are present
-    } else {
-        return child.text().trimmed(); // return first language tag if neither the specified locale
-                                       // nor "en" is found.
-    }
+    return child.isNull() ? element.text().trimmed() : child.text().trimmed();
 }
 
 QString MainWindow::categoryTranslation(const QString &item)
 {
-    if (locale.name() == QLatin1String("en_US")) { // no need for translation
-        return item;
+    if (locale.name() == QLatin1String("en_US")) {
+        return item; // no need for translation
     }
+    QStringList tagCandidates = {locale.name(), locale.name().section("_", 0, 0)};
+    for (const auto &tag : tagCandidates) {
+        dictionary.beginGroup(item);
+        QString translation = dictionary.value(tag).toString().toLatin1();
+        dictionary.endGroup();
 
-    dictionary.beginGroup(item);
-
-    QString trans = dictionary.value(locale.name()).toString().toLatin1(); // try pt_BR format
-    if (trans.isEmpty()) {
-        trans = dictionary.value(locale.name().section("_", 0, 0)).toString().toLatin1(); // try pt format
-        if (trans.isEmpty()) {
-            dictionary.endGroup();
-            return item; // return original item if no translation found
+        if (!translation.isEmpty()) {
+            return translation;
         }
     }
-    dictionary.endGroup();
-    return trans;
+    return item; // return original item if no translation found
 }
 
 void MainWindow::updateBar()
@@ -500,15 +480,17 @@ void MainWindow::updateBar()
 
 void MainWindow::checkUnckeckItem()
 {
-    if (const auto &t_widget = qobject_cast<QTreeWidget *>(focusWidget())) {
-        if (t_widget->currentItem() == nullptr || t_widget->currentItem()->childCount() > 0) {
-            return;
-        }
-        int col
-            = (t_widget == ui->treePopularApps) ? static_cast<int>(PopCol::Check) : static_cast<int>(TreeCol::Check);
-        auto new_state = (t_widget->currentItem()->checkState(col) == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
-        t_widget->currentItem()->setCheckState(col, new_state);
+    QTreeWidget *currentTreeWidget = qobject_cast<QTreeWidget *>(focusWidget());
+
+    if (!currentTreeWidget || !currentTreeWidget->currentItem() || currentTreeWidget->currentItem()->childCount() > 0) {
+        return;
     }
+    const int col = (currentTreeWidget == ui->treePopularApps) ? static_cast<int>(PopCol::Check)
+                                                               : static_cast<int>(TreeCol::Check);
+    Qt::CheckState newCheckState
+        = (currentTreeWidget->currentItem()->checkState(col) == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
+
+    currentTreeWidget->currentItem()->setCheckState(col, newCheckState);
 }
 
 void MainWindow::outputAvailable(const QString &output)
@@ -525,18 +507,18 @@ void MainWindow::outputAvailable(const QString &output)
 void MainWindow::loadPmFiles()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+
+    const QString pmFolderPath = "/usr/share/mx-packageinstaller-pkglist";
+    const QStringList pmFileList = QDir(pmFolderPath).entryList(QStringList("*.pm"));
+
     QDomDocument doc;
 
-    const QStringList filter("*.pm");
-    const QDir dir("/usr/share/mx-packageinstaller-pkglist");
-    const QStringList pmfilelist = dir.entryList(filter);
-
-    for (const QString &file_name : pmfilelist) {
-        QFile file(dir.absolutePath() + "/" + file_name);
-        if (!file.open(QFile::ReadOnly | QFile::Text)) {
-            qDebug() << "Could not open: " << file.fileName();
+    for (const QString &fileName : pmFileList) {
+        QFile file(pmFolderPath + "/" + fileName);
+        if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+            qDebug() << "Could not open file:" << file.fileName();
         } else if (!doc.setContent(&file)) {
-            qDebug() << "Could not load document: " << file_name << "-- not valid XML?";
+            qDebug() << "Could not load document:" << fileName << "-- not valid XML?";
         } else {
             processDoc(doc);
         }
@@ -547,85 +529,61 @@ void MainWindow::loadPmFiles()
 // Process dom documents (from .pm files)
 void MainWindow::processDoc(const QDomDocument &doc)
 {
-    /*  Items order in list:
-            0 "category"
-            1 "name"
-            2 "description"
-            3 "installable"
-            4 "screenshot"
-            5 "preinstall"
-            6 "install_package_names"
-            7 "postinstall"
-            8 "uninstall_package_names"
-            9 "postuninstall"
-           10 "preuninstall"
-    */
-
-    QString category;
-    QString name;
-    QString description;
-    QString installable;
-    QString screenshot;
-    QString preinstall;
-    QString postinstall;
-    QString preuninstall;
-    QString postuninstall;
-    QString install_names;
-    QString uninstall_names;
-    QStringList list;
-
+    QHash<QString, QString> values;
     QDomElement root = doc.firstChildElement("app");
     QDomElement element = root.firstChildElement();
-
     while (!element.isNull()) {
-        if (element.tagName() == QLatin1String("category")) {
-            category = categoryTranslation(element.text().trimmed());
-        } else if (element.tagName() == QLatin1String("name")) {
-            name = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("description")) {
-            description = getLocalizedName(element);
-        } else if (element.tagName() == QLatin1String("installable")) {
-            installable = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("screenshot")) {
-            screenshot = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("preinstall")) {
-            preinstall = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("install_package_names")) {
-            install_names = element.text().trimmed();
-            install_names.replace(QLatin1String("\n"), QLatin1String(" "));
-        } else if (element.tagName() == QLatin1String("postinstall")) {
-            postinstall = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("uninstall_package_names")) {
-            uninstall_names = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("postuninstall")) {
-            postuninstall = element.text().trimmed();
-        } else if (element.tagName() == QLatin1String("preuninstall")) {
-            preuninstall = element.text().trimmed();
+        const QString tagName = element.tagName();
+        QString trimmedText = element.text().trimmed();
+
+        if (tagName == QLatin1String("category")) {
+            values["category"] = categoryTranslation(trimmedText);
+        } else if (tagName == QLatin1String("name")) {
+            values["name"] = trimmedText;
+        } else if (tagName == QLatin1String("description")) {
+            values["description"] = getLocalizedName(element);
+        } else if (tagName == QLatin1String("installable")) {
+            values["installable"] = trimmedText;
+        } else if (tagName == QLatin1String("screenshot")) {
+            values["screenshot"] = trimmedText;
+        } else if (tagName == QLatin1String("preinstall")) {
+            values["preinstall"] = trimmedText;
+        } else if (tagName == QLatin1String("install_package_names")) {
+            values["install_names"] = trimmedText.replace(QLatin1String("\n"), QLatin1String(" "));
+        } else if (tagName == QLatin1String("postinstall")) {
+            values["postinstall"] = trimmedText;
+        } else if (tagName == QLatin1String("uninstall_package_names")) {
+            values["uninstall_names"] = trimmedText;
+        } else if (tagName == QLatin1String("postuninstall")) {
+            values["postuninstall"] = trimmedText;
+        } else if (tagName == QLatin1String("preuninstall")) {
+            values["preuninstall"] = trimmedText;
         }
         element = element.nextSiblingElement();
     }
-
-    QString mod_arch; // modified arch to match .pm files format
-    if (arch == QLatin1String("amd64")) {
-        mod_arch = "64";
-    } else if (arch == QLatin1String("i386")) {
-        mod_arch = "32";
-    } else if (arch == QLatin1String("armhf")) {
-        mod_arch = "armhf";
-    } else if (arch == QLatin1String("arm64")) {
-        mod_arch = "armsixtyfour";
-    } else {
+    const QString modArch = mapArchToFormat(arch);
+    if (!isPackageInstallable(values["installable"], modArch)) {
         return;
     }
+    popular_apps << QStringList {values["category"],      values["name"],          values["description"],
+                                 values["installable"],   values["screenshot"],    values["preinstall"],
+                                 values["postinstall"],   values["install_names"], values["uninstall_names"],
+                                 values["postuninstall"], values["preuninstall"]};
+}
 
-    // skip non-installable packages
-    if (!installable.contains(mod_arch) && installable != QLatin1String("all")) {
-        return;
-    }
+QString MainWindow::mapArchToFormat(const QString &arch)
+{
+    static const QHash<QString, QString> archMapping = {{QLatin1String("amd64"), "64"},
+                                                        {QLatin1String("i386"), "32"},
+                                                        {QLatin1String("armhf"), "armhf"},
+                                                        {QLatin1String("arm64"), "armsixtyfour"}};
 
-    list << category << name << description << installable << screenshot << preinstall << postinstall << install_names
-         << uninstall_names << postuninstall << preuninstall;
-    popular_apps << list;
+    return archMapping.value(arch, QString());
+}
+
+bool MainWindow::isPackageInstallable(const QString &installable, const QString &modArch)
+{
+    return installable.contains(modArch) || installable == QLatin1String("all");
 }
 
 void MainWindow::refreshPopularApps()
@@ -643,26 +601,30 @@ void MainWindow::refreshPopularApps()
 // In case of duplicates add extra name to disambiguate
 void MainWindow::removeDuplicatesFP()
 {
-    // find and mark duplicates
     QTreeWidgetItemIterator it(ui->treeFlatpak);
-    QString current;
-    QString next;
+    QTreeWidgetItem *prevItem = nullptr;
+    QSet<QString> namesSet;
+
+    // Find and mark duplicates
     while ((*it) != nullptr) {
-        current = ((*it))->text(FlatCol::Name);
-        if ((*(++it)) != nullptr) {
-            next = ((*it))->text(FlatCol::Name);
-            if (next == current) {
-                --it;
-                (*(it))->setText(FlatCol::Duplicate, "true");
-                ++it;
-                (*it)->setText(FlatCol::Duplicate, "true");
+        QString currentName = (*it)->text(FlatCol::Name);
+        if (namesSet.contains(currentName)) {
+            // Mark both occurrences as duplicate
+            if (prevItem) {
+                prevItem->setText(FlatCol::Duplicate, "true");
             }
+            (*it)->setText(FlatCol::Duplicate, "true");
+        } else {
+            namesSet.insert(currentName);
         }
+        prevItem = *it;
+        ++it;
     }
-    // rename duplicate to use more context
+    // Rename duplicates to use more context
     for (QTreeWidgetItemIterator it(ui->treeFlatpak); (*it) != nullptr; ++it) {
-        if ((*(it))->text(FlatCol::Duplicate) == QLatin1String("true")) {
-            (*it)->setText(FlatCol::Name, (*it)->text(FlatCol::LongName).section(".", -2));
+        if ((*it)->text(FlatCol::Duplicate) == QLatin1String("true")) {
+            QString longName = (*it)->text(FlatCol::LongName);
+            (*it)->setText(FlatCol::Name, longName.section(".", -2));
         }
     }
 }
@@ -689,14 +651,21 @@ void MainWindow::setProgressDialog()
 
 void MainWindow::setSearchFocus()
 {
-    if (ui->tabWidget->currentIndex() == Tab::EnabledRepos) {
+    switch (ui->tabWidget->currentIndex()) {
+    case Tab::EnabledRepos:
         ui->searchBoxEnabled->setFocus();
-    } else if (ui->tabWidget->currentIndex() == Tab::Test) {
+        break;
+    case Tab::Test:
         ui->searchBoxMX->setFocus();
-    } else if (ui->tabWidget->currentIndex() == Tab::Backports) {
+        break;
+    case Tab::Backports:
         ui->searchBoxBP->setFocus();
-    } else if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+        break;
+    case Tab::Flatpak:
         ui->searchBoxFlatpak->setFocus();
+        break;
+    default:
+        break;
     }
 }
 
@@ -1781,7 +1750,7 @@ void MainWindow::cleanup()
 
 QString MainWindow::getVersion(const QString &name)
 {
-    return cmd.getOut("dpkg-query -f '${Version}' -W " + name);
+    return Cmd().getOut("dpkg-query -f '${Version}' -W " + name);
 }
 
 // Return true if all the packages listed are installed

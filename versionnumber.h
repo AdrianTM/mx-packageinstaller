@@ -89,12 +89,12 @@ public:
     bool operator!=(const VersionNumber &value) const;
 
 private:
-    QString str; // full version string
+    QString str; // Full version string
     int epoch {};
-    QStringList upstream_version; // a string list of characters, numbers are grouped together
+    QStringList upstream_version; // A string list of characters, numbers are grouped together
     QStringList debian_revision;
 
-    static QStringList groupDigits(const QString &value); // add characters to separate elements, groups digits together
+    static QStringList groupDigits(const QString &value); // Add characters to separate elements, groups digits together
     void setStrings(const QString &value);
 
     [[nodiscard]] int compare(const VersionNumber &first,

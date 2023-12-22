@@ -263,9 +263,11 @@ private:
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
-    bool isOnline();
+    QString mapArchToFormat(const QString &arch);
     bool downloadAndUnzip(const QString &url, QFile &file);
     bool downloadAndUnzip(const QString &url, const QString &repo_name, const QString &branch, const QString &format,
                           QFile &file);
     bool downloadFile(const QString &url, QFile &file);
+    bool isOnline();
+    bool isPackageInstallable(const QString &installable, const QString &modArch);
 };
