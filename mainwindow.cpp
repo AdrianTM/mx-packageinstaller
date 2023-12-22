@@ -684,7 +684,7 @@ void MainWindow::displayPopularApps() const
         const QString &postuninstall = list.at(Popular::PostUninstall);
         const QString &preuninstall = list.at(Popular::PreUninstall);
 
-        // add package category if treePopularApps doesn't already have it
+        // Add package category if treePopularApps doesn't already have it
         if (ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Icon).isEmpty()) {
             topLevelItem = new QTreeWidgetItem();
             topLevelItem->setText(PopCol::Icon, category);
@@ -699,7 +699,7 @@ void MainWindow::displayPopularApps() const
             topLevelItem = ui->treePopularApps->findItems(category, Qt::MatchFixedString, PopCol::Icon)
                                .at(0); // find first match; add the child there
         }
-        // add package name as childItem to treePopularApps
+        // Add package name as childItem to treePopularApps
         auto *childItem = new QTreeWidgetItem(topLevelItem);
         childItem->setText(PopCol::Name, name);
         childItem->setIcon(PopCol::Info, QIcon::fromTheme("dialog-information"));
@@ -707,10 +707,11 @@ void MainWindow::displayPopularApps() const
         childItem->setCheckState(PopCol::Check, Qt::Unchecked);
         childItem->setText(PopCol::Description, description);
         childItem->setText(PopCol::InstallNames, install_names);
-        childItem->setText(PopCol::UninstallNames, uninstall_names); // not displayed
-        childItem->setText(PopCol::Screenshot, screenshot);          // not displayed
-        childItem->setText(PopCol::PostUninstall, postuninstall);    // not displayed
-        childItem->setText(PopCol::PreUninstall, preuninstall);      // not displayed
+
+        childItem->setData(PopCol::UninstallNames, Qt::UserRole, uninstall_names);
+        childItem->setData(PopCol::Screenshot, Qt::UserRole, screenshot);
+        childItem->setData(PopCol::PostUninstall, Qt::UserRole, postuninstall);
+        childItem->setData(PopCol::PreUninstall, Qt::UserRole, preuninstall);
 
         if (checkInstalled(uninstall_names)) {
             childItem->setIcon(PopCol::Check, QIcon::fromTheme("package-installed-updated",
@@ -2048,7 +2049,7 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
         msg += tr("Packages to be installed: ") + install_names;
     }
 
-    QUrl url = item->text(PopCol::Screenshot); // screenshot url
+    QUrl url = item->data(PopCol::Screenshot, Qt::UserRole).toString(); // screenshot url
 
     if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none")) {
         qDebug() << "no screenshot for: " << title;
@@ -2333,9 +2334,9 @@ void MainWindow::on_pushUninstall_clicked()
     if (tree == ui->treePopularApps) {
         for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
             if ((*it)->checkState(PopCol::Check) == Qt::Checked) {
-                names += (*it)->text(PopCol::UninstallNames).replace(QLatin1String("\n"), QLatin1String(" ")) + " ";
-                postuninstall += (*it)->text(PopCol::PostUninstall) + "\n";
-                preuninstall += (*it)->text(PopCol::PreUninstall) + "\n";
+                names += (*it)->data(PopCol::UninstallNames, Qt::UserRole).toString().replace("\n", " ") + " ";
+                postuninstall += (*it)->data(PopCol::PostUninstall, Qt::UserRole).toString() + "\n";
+                preuninstall += (*it)->data(PopCol::PreUninstall, Qt::UserRole).toString() + "\n";
             }
         }
     } else if (tree == ui->treeFlatpak) {
