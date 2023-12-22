@@ -799,9 +799,6 @@ void MainWindow::displayPackages()
         list = enabled_list;
         newtree = ui->treeEnabled;
         dirtyEnabledRepos = false;
-        if (tree == ui->treeEnabled) {
-            newtree->setColumnHidden(TreeCol::Displayed, true);
-        }
     }
 
     newtree->blockSignals(true);

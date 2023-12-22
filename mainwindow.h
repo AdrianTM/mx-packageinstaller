@@ -69,7 +69,7 @@ enum {
 } // namespace PopCol
 namespace TreeCol
 {
-enum { Check, Name, Version, Description, Status, Displayed };
+enum { Check, Name, Version, Description, Status };
 }
 namespace FlatCol
 {
