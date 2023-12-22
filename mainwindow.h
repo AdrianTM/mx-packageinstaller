@@ -47,6 +47,11 @@ namespace Ui
 class MainWindow;
 }
 
+namespace Status
+{
+enum { NotInstalled, Installed, Upgradable };
+}
+
 namespace Tab
 {
 enum { Popular, EnabledRepos, Test, Backports, Flatpak, Output };

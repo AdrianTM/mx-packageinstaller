@@ -321,7 +321,7 @@ void MainWindow::listSizeInstalledFP()
             for (const QString &item : qAsConst(list)) {
                 QString name = item.section(" ", 0, 0);
                 QString size = item.section(" ", 1);
-                if (name == (*it)->text(FlatCol::FullName)) {
+                if (name == (*it)->data(FlatCol::FullName, Qt::UserRole)) {
                     (*it)->setText(FlatCol::Size, size);
                 }
             }
@@ -362,8 +362,20 @@ void MainWindow::updateInterface()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    auto upgr_list = tree->findItems("upgradable", Qt::MatchExactly, TreeCol::Status);
-    auto inst_list = tree->findItems("installed", Qt::MatchExactly, TreeCol::Status);
+    QList<QTreeWidgetItem *> upgr_list;
+    for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
+        if (userData == Status::Upgradable) {
+            upgr_list.append(*it);
+        }
+    }
+    QList<QTreeWidgetItem *> inst_list;
+    for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
+        if (userData == Status::Installed) {
+            inst_list.append(*it);
+        }
+    }
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
         (*it)->setHidden(false);
     }
@@ -611,9 +623,9 @@ void MainWindow::removeDuplicatesFP()
         if (namesSet.contains(currentName)) {
             // Mark both occurrences as duplicate
             if (prevItem) {
-                prevItem->setText(FlatCol::Duplicate, "true");
+                prevItem->setData(FlatCol::Duplicate, Qt::UserRole, true);
             }
-            (*it)->setText(FlatCol::Duplicate, "true");
+            (*it)->setData(FlatCol::Duplicate, Qt::UserRole, true);
         } else {
             namesSet.insert(currentName);
         }
@@ -622,7 +634,7 @@ void MainWindow::removeDuplicatesFP()
     }
     // Rename duplicates to use more context
     for (QTreeWidgetItemIterator it(ui->treeFlatpak); (*it) != nullptr; ++it) {
-        if ((*it)->text(FlatCol::Duplicate) == QLatin1String("true")) {
+        if ((*it)->data(FlatCol::Duplicate, Qt::UserRole).toBool()) {
             QString longName = (*it)->text(FlatCol::LongName);
             (*it)->setText(FlatCol::Name, longName.section(".", -2));
         }
@@ -747,12 +759,12 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 
     int total = 0;
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
-        if (list.contains((*it)->text(FlatCol::FullName))) {
+        if (list.contains((*it)->data(FlatCol::FullName, Qt::UserRole).toString())) {
             ++total;
             (*it)->setHidden(false);
             (*it)->setData(0, Qt::UserRole, true); // Displayed flag
             if ((*it)->checkState(FlatCol::Check) == Qt::Checked
-                && (*it)->text(FlatCol::Status) == QLatin1String("installed")) {
+                && (*it)->data(FlatCol::Status, Qt::UserRole) == Status::Installed) {
                 ui->pushUninstall->setEnabled(true);
                 ui->pushInstall->setEnabled(false);
             } else {
@@ -764,7 +776,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
             (*it)->setData(0, Qt::UserRole, false); // Displayed flag
             if ((*it)->checkState(FlatCol::Check) == Qt::Checked) {
                 (*it)->setCheckState(FlatCol::Check, Qt::Unchecked); // uncheck hidden item
-                change_list.removeOne((*it)->text(FlatCol::FullName));
+                change_list.removeOne((*it)->data(FlatCol::FullName, Qt::UserRole).toString());
             }
         }
         if (change_list.isEmpty()) { // reset comboFilterFlatpak if nothing is selected
@@ -843,7 +855,7 @@ void MainWindow::displayPackages()
                     (*it)->setToolTip(i, tr("Not available in the enabled repos"));
                 }
             }
-            (*it)->setText(TreeCol::Status, "not installed");
+            (*it)->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
         } else {
             ++inst_count;
             if (installed >= repo_candidate) {
@@ -852,7 +864,7 @@ void MainWindow::displayPackages()
                 for (int i = 0; i < newtree->columnCount(); ++i) {
                     (*it)->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
                 }
-                (*it)->setText(TreeCol::Status, "installed");
+                (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
             } else {
                 (*it)->setIcon(TreeCol::Check, QIcon::fromTheme("package-installed-outdated",
                                                                 QIcon(":/icons/package-installed-outdated.png")));
@@ -860,7 +872,7 @@ void MainWindow::displayPackages()
                     (*it)->setToolTip(i, tr("Version ") + installed.toString() + tr(" installed"));
                 }
                 ++upgr_count;
-                (*it)->setText(TreeCol::Status, "upgradable");
+                (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Upgradable);
             }
         }
     }
@@ -942,14 +954,14 @@ void MainWindow::displayFlatpaks(bool force_update)
             widget_item->setText(FlatCol::LongName, long_name);
             widget_item->setText(FlatCol::Version, version);
             widget_item->setText(FlatCol::Size, size);
-            widget_item->setText(FlatCol::FullName, item); // Full string
+            widget_item->setData(FlatCol::FullName, Qt::UserRole, item); // Full string
             QStringList installed_all {installed_apps_fp + installed_runtimes_fp};
             if (installed_all.contains(item)) {
                 widget_item->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
                                                                       QIcon(":/icons/package-installed-updated.png")));
-                widget_item->setText(FlatCol::Status, "installed");
+                widget_item->setData(FlatCol::Status, Qt::UserRole, Status::Installed);
             } else {
-                widget_item->setText(FlatCol::Status, "not installed");
+                widget_item->setData(FlatCol::Status, Qt::UserRole, Status::NotInstalled);
             }
             widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
         }
@@ -1786,11 +1798,9 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
     if (name_list.isEmpty()) {
         return false;
     }
-
-    QList<QTreeWidgetItem *> item_list;
     for (const QString &name : name_list) {
-        item_list = tree->findItems(name, Qt::MatchExactly, TreeCol::Name);
-        if (item_list.isEmpty() || item_list.at(0)->text(TreeCol::Status) != QLatin1String("upgradable")) {
+        auto item_list = tree->findItems(name, Qt::MatchExactly, TreeCol::Name);
+        if (item_list.isEmpty() || item_list.at(0)->data(TreeCol::Status, Qt::UserRole) != Status::Upgradable) {
             return false;
         }
     }
@@ -1801,7 +1811,7 @@ QStringList MainWindow::listInstalled()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     disconnect(conn);
-    QString str = cmd.getOut("dpkg --get-selections | grep -v deinstall | cut -f1");
+    QString str = cmd.getOut("dpkg --get-selections | grep -v deinstall | cut -f1", true);
     conn = connect(&cmd, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
     str.remove(":i386");
     str.remove(":amd64");
@@ -2546,7 +2556,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                                                                        QIcon(":/icons/package-installed-updated.png")));
                         item->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
                     }
-                    item->setText(TreeCol::Status, "installed");
+                    item->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
                 }
             }
             fp_ver = getVersion("flatpak");
@@ -2631,14 +2641,20 @@ void MainWindow::filterChanged(const QString &arg1)
         } else if (arg1 == tr("All installed")) {
             displayFilteredFP(installed_apps_fp + installed_runtimes_fp);
         } else if (arg1 == tr("Not installed")) {
-            found_items = tree->findItems("not installed", Qt::MatchExactly, FlatCol::Status);
-            QStringList new_list;
+            QList<QTreeWidgetItem *> foundItems;
             for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
-                if (found_items.contains(*it)) {
-                    new_list << (*it)->text(FlatCol::FullName);
+                auto userData = (*it)->data(FlatCol::Status, Qt::UserRole);
+                if (userData == Status::NotInstalled) {
+                    foundItems.append(*it);
                 }
             }
-            displayFilteredFP(new_list);
+            QStringList newList;
+            for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+                if (foundItems.contains(*it)) {
+                    newList << (*it)->data(FlatCol::FullName, Qt::UserRole).toString();
+                }
+            }
+            displayFilteredFP(newList);
         }
         findPackageOther();
         setSearchFocus();
@@ -2657,13 +2673,27 @@ void MainWindow::filterChanged(const QString &arg1)
         return;
     }
 
-    if (arg1 == tr("Upgradable")) {
-        found_items = tree->findItems("upgradable", Qt::MatchExactly, TreeCol::Status);
-    } else if (arg1 == tr("Installed")) {
-        found_items = tree->findItems("installed", Qt::MatchExactly, TreeCol::Status);
-        found_items += tree->findItems("upgradable", Qt::MatchExactly, TreeCol::Status);
-    } else if (arg1 == tr("Not installed")) {
-        found_items = tree->findItems("not installed", Qt::MatchExactly, TreeCol::Status);
+    const QMap<QString, int> statusMap {{tr("Upgradable"), Status::Upgradable},
+                                        {tr("Installed"), Status::Installed},
+                                        {tr("Not installed"), Status::NotInstalled}};
+
+    auto find = [&found_items](const QTreeWidgetItemIterator &it, int status) {
+        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
+        if (userData == status) {
+            found_items.append(*it);
+        }
+    };
+
+    auto itStatus = statusMap.find(arg1);
+    if (itStatus != statusMap.end()) {
+        for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+            if (itStatus.value() == Status::Installed
+                && (*it)->data(TreeCol::Status, Qt::UserRole) != Status::Installed) {
+                find(it, Status::Upgradable);
+            } else {
+                find(it, itStatus.value());
+            }
+        }
     }
 
     change_list.clear();
@@ -2733,7 +2763,7 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
             && indexFilterFP.isEmpty()) { // remember the Flatpak combo location first time this is called
             indexFilterFP = ui->comboFilterFlatpak->currentText();
         }
-        newapp = (item->text(FlatCol::FullName));
+        newapp = (item->data(FlatCol::FullName, Qt::UserRole).toString());
     } else {
         newapp = (item->text(TreeCol::Name));
     }
@@ -2752,7 +2782,7 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
              // on an installed item only installed items should be displayed and the other way
              // round
         ui->pushInstall->setText(tr("Install"));
-        if (item->text(FlatCol::Status) == QLatin1String("installed")) {
+        if (item->data(FlatCol::Status, Qt::UserRole) == Status::Installed) {
             if (item->checkState(FlatCol::Check) == Qt::Checked
                 && ui->comboFilterFlatpak->currentText() != tr("All installed")) {
                 ui->comboFilterFlatpak->setCurrentText(tr("All installed"));
@@ -2819,15 +2849,19 @@ void MainWindow::on_pushUpgradeAll_clicked()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
 
-    auto found_items = ui->treeEnabled->findItems("upgradable", Qt::MatchExactly, TreeCol::Status);
-
+    QList<QTreeWidgetItem *> foundItems;
+    for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
+        if (userData == Status::Upgradable) {
+            foundItems.append(*it);
+        }
+    }
     QString names;
     for (QTreeWidgetItemIterator it(ui->treeEnabled); (*it) != nullptr; ++it) {
-        if (found_items.contains(*it)) {
+        if (foundItems.contains(*it)) {
             names += (*it)->text(TreeCol::Name) + " ";
         }
     }
-
     if (install(names)) {
         buildPackageLists();
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
