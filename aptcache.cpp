@@ -14,21 +14,19 @@ AptCache::AptCache()
 void AptCache::loadCacheFiles()
 {
     // Exclude Debian backports and MX testrepo and temp repos
-    const QRegularExpression packages_filter("(.*binary-" + getArch()
-                                             + "_Packages)|"
-                                               "(.*binary-.*_Packages(?!.*debian_.*-backports_.*_Packages)"
-                                               "(?!.*mx_testrepo.*_test_.*_Packages)"
-                                               "(?!.*mx_repo.*_temp_.*_Packages))");
-
-    QDirIterator it(dir);
-    QList<QString> matchingFiles;
-    while (it.hasNext()) {
-        QString fileName = it.next();
-        if (packages_filter.match(fileName).hasMatch()) {
+    const QRegularExpression packagesFilter("(.*binary-" + getArch()
+                                            + "_Packages)|"
+                                              "(.*binary-.*_Packages(?!.*debian_.*-backports_.*_Packages)"
+                                              "(?!.*mx_testrepo.*_test_.*_Packages)"
+                                              "(?!.*mx_repo.*_temp_.*_Packages))");
+    QStringList matchingFiles;
+    const QStringList files = QDir(dir).entryList(QDir::Files);
+    for (const QString &fileName : qAsConst(files)) {
+        if (packagesFilter.match(fileName).hasMatch()) {
             matchingFiles.append(fileName);
         }
     }
-    for (const QString &fileName : matchingFiles) {
+    for (const QString &fileName : qAsConst(matchingFiles)) {
         if (!readFile(fileName)) {
             qDebug() << "error reading a cache file";
         }
