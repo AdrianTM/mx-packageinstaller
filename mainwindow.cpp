@@ -361,6 +361,8 @@ void MainWindow::blockInterfaceFP(bool block)
 void MainWindow::updateInterface()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
+    progress->hide();
 
     QList<QTreeWidgetItem *> upgr_list;
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
@@ -400,9 +402,6 @@ void MainWindow::updateInterface()
         ui->pushForceUpdateBP->setEnabled(true);
         ui->searchBoxBP->setFocus();
     }
-
-    QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
-    progress->hide();
 }
 
 int MainWindow::getDebianVerNum()
@@ -487,7 +486,7 @@ QString MainWindow::categoryTranslation(const QString &item)
 void MainWindow::updateBar()
 {
     QApplication::processEvents();
-    bar->setValue((bar->value() + 1) % bar->maximum());
+    bar->setValue((bar->value() + 1) % bar->maximum() + 1);
 }
 
 void MainWindow::checkUnckeckItem()
@@ -2512,6 +2511,10 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         setCurrentTree();
         ui->searchBoxFlatpak->setFocus();
         if (!firstRunFP) {
+            ui->searchBoxBP->setText(search_str);
+            if (!ui->searchBoxBP->text().isEmpty()) {
+                findPackageOther();
+            }
             return;
         }
         displayWarning("flatpaks");
@@ -2557,7 +2560,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                     timer.start(100ms);
                 }
             } else if (!displayPackagesIsRunning) {
-                displayFlatpaks(false);
+                blockInterfaceFP(false);
             }
             setCursor(QCursor(Qt::ArrowCursor));
             QMessageBox::warning(this, tr("Needs re-login"),
@@ -2580,9 +2583,12 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 timer.start(100ms);
             }
         } else if (!displayPackagesIsRunning) {
-            displayFlatpaks(false);
+            blockInterfaceFP(false);
         }
         ui->searchBoxBP->setText(search_str);
+        if (!ui->searchBoxBP->text().isEmpty()) {
+            findPackageOther();
+        }
         firstRunFP = false;
         break;
     case Tab::Output:
