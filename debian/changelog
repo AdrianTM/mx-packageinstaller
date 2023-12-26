@@ -1,3 +1,9 @@
+mx-packageinstaller (23.12.04) mx; urgency=medium
+
+  * Add the package architecture to the list of temporary testrepo sources
+
+ -- fehlix <fehlix@mxlinux.org>  Tue, 26 Dec 2023 08:51:02 -0500
+
 mx-packageinstaller (23.12.03) mx; urgency=medium
 
   * Fix: switching to flatpak tab was locking the interfaces in some cases
