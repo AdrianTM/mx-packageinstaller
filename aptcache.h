@@ -7,16 +7,21 @@
 static const QHash<QString, QString> arch_names {
     {"x86_64", "amd64"}, {"i386", "i386"}, {"arm", "armhf"}, {"arm64", "arm64"}};
 
+struct PackageInfo {
+    QString version;
+    QString description;
+};
+
 class AptCache
 {
 public:
     AptCache();
 
-    QMap<QString, QStringList> getCandidates();
+    QMap<QString, PackageInfo> getCandidates();
     static QString getArch();
 
 private:
-    QMap<QString, QStringList> candidates;
+    QMap<QString, PackageInfo> candidates;
     QString files_content;
     const QDir dir {"/var/lib/apt/lists/"};
 

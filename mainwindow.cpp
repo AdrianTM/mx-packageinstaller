@@ -796,7 +796,7 @@ void MainWindow::displayPackages()
 
     QTreeWidget *newtree {nullptr}; // new pointer to avoid overwriting current "tree"
 
-    QMap<QString, QStringList> list;
+    QMap<QString, PackageInfo> list;
 
     if (tree == ui->treeMXtest) {
         if (!dirtyTest) {
@@ -829,8 +829,8 @@ void MainWindow::displayPackages()
         auto *widget_item = new QTreeWidgetItem(newtree);
         widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
         widget_item->setText(TreeCol::Name, i.key());
-        widget_item->setText(TreeCol::Version, i.value().at(0));
-        widget_item->setText(TreeCol::Description, i.value().at(1));
+        widget_item->setText(TreeCol::Version, i.value().version);
+        widget_item->setText(TreeCol::Description, i.value().description);
         widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
     }
 
@@ -857,7 +857,7 @@ void MainWindow::displayPackages()
         if (installed.toString().isEmpty()) {
             for (int i = 0; i < newtree->columnCount(); ++i) {
                 if (enabled_list.contains(app_name)) {
-                    (*it)->setToolTip(i, tr("Version ") + enabled_list.value(app_name).at(0)
+                    (*it)->setToolTip(i, tr("Version ") + enabled_list.value(app_name).version
                                              + tr(" in the enabled repos"));
                 } else {
                     (*it)->setToolTip(i, tr("Not available in the enabled repos"));
@@ -1378,9 +1378,11 @@ bool MainWindow::installSelected()
                 suite = "mx15";
             }
             cmd.runAsRoot("apt-get update --print-uris | tac | "
-                          "grep -m1 -oE 'https?://.*/mx/repo/dists/" + suite +
-                          "/main' | sed 's:^:deb [arch='$(dpkg --print-architecture)'] :; "
-                          "s:/repo/dists/:/testrepo :; s:/main: test:' > " + temp_list);
+                          "grep -m1 -oE 'https?://.*/mx/repo/dists/"
+                          + suite
+                          + "/main' | sed 's:^:deb [arch='$(dpkg --print-architecture)'] :; "
+                            "s:/repo/dists/:/testrepo :; s:/main: test:' > "
+                          + temp_list);
         }
         updateApt();
     } else if (tree == ui->treeBackports) {
@@ -1684,7 +1686,7 @@ bool MainWindow::readPackageList(bool force_download)
     QString file_content = file.readAll();
     file.close();
 
-    QMap<QString, QStringList> *map {};
+    QMap<QString, PackageInfo> *map {};
     map = (tree == ui->treeMXtest) ? &mx_list : &backports_list;
     map->clear();
     QString package;

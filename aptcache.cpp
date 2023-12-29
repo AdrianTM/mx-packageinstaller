@@ -34,7 +34,7 @@ void AptCache::loadCacheFiles()
     parseContent();
 }
 
-QMap<QString, QStringList> AptCache::getCandidates()
+QMap<QString, PackageInfo> AptCache::getCandidates()
 {
     return candidates;
 }
@@ -70,7 +70,8 @@ void AptCache::parseContent()
             description = line.midRef(13).trimmed();
             if (match_arch) {
                 if (candidates.constFind(package.toString()) == candidates.constEnd()
-                    || VersionNumber(candidates.value(package.toString()).at(0)) < VersionNumber(version.toString())) {
+                    || VersionNumber(candidates.value(package.toString()).version)
+                           < VersionNumber(version.toString())) {
                     candidates.insert(package.toString(), {version.toString(), description.toString()});
                 }
             }

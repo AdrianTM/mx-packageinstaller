@@ -37,6 +37,7 @@
 #include <QTimer>
 #include <QTreeWidgetItem>
 
+#include "aptcache.h"
 #include "cmd.h"
 #include "lockfile.h"
 #include "remotes.h"
@@ -113,57 +114,6 @@ public:
     explicit MainWindow(const QCommandLineParser &arg_parser, QWidget *parent = nullptr);
     ~MainWindow() override;
 
-    QString categoryTranslation(const QString &item);
-    static QString getDebianVerName();
-    [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
-    QString getVersion(const QString &name);
-    QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String(""));
-    QStringList listInstalled();
-    QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
-    bool buildPackageLists(bool force_download = false);
-    [[nodiscard]] bool checkInstalled(const QString &names) const;
-    [[nodiscard]] bool checkInstalled(const QStringList &name_list) const;
-    [[nodiscard]] bool checkUpgradable(const QStringList &name_list) const;
-    bool confirmActions(const QString &names, const QString &action);
-    bool downloadPackageList(bool force_download = false);
-    bool install(const QString &names);
-    bool installBatch(const QStringList &name_list);
-    bool installPopularApp(const QString &name);
-    bool installPopularApps();
-    bool installSelected();
-    bool readPackageList(bool force_download = false);
-    bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""),
-                   const QString &postuninstall = QLatin1String(""));
-    bool updateApt();
-    static bool isFilteredName(const QString &name);
-    static int getDebianVerNum();
-    static uint64_t convert(const QString &size);
-    static QString convert(uint64_t bytes);
-    void blockInterfaceFP(bool block);
-    void buildChangeList(QTreeWidgetItem *item);
-    void cancelDownload();
-    void centerWindow();
-    void clearUi();
-    void displayFilteredFP(QStringList list, bool raw = false);
-    void displayFlatpaks(bool force_update = false);
-    void displayPackages();
-    void displayPopularApps() const;
-    void displayWarning(const QString &repo);
-    void enableTabs(bool enable);
-    void ifDownloadFailed();
-    void listFlatpakRemotes();
-    void listSizeInstalledFP();
-    void loadPmFiles();
-    void processDoc(const QDomDocument &doc);
-    void refreshPopularApps();
-    void removeDuplicatesFP();
-    void setCurrentTree();
-    void setDirty();
-    void setProgressDialog();
-    void setSearchFocus();
-    void setup();
-    void updateInterface();
-
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
@@ -238,9 +188,9 @@ private:
     QHash<QString, VersionNumber> listInstalledVersions();
     QList<QStringList> popular_apps;
     QLocale locale;
-    QMap<QString, QStringList> backports_list;
-    QMap<QString, QStringList> mx_list;
-    QMap<QString, QStringList> enabled_list;
+    QMap<QString, PackageInfo> backports_list;
+    QMap<QString, PackageInfo> mx_list;
+    QMap<QString, PackageInfo> enabled_list;
     QMetaObject::Connection conn;
     QProgressBar *bar {};
     QProgressDialog *progress {};
@@ -268,11 +218,62 @@ private:
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
+    QString categoryTranslation(const QString &item);
+    [[nodiscard]] QString getVersion(const QString &name);
     QString mapArchToFormat(const QString &arch);
+    QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String(""));
+    QStringList listInstalled();
+    QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
+    [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
+    [[nodiscard]] bool checkInstalled(const QString &names) const;
+    [[nodiscard]] bool checkInstalled(const QStringList &name_list) const;
+    [[nodiscard]] bool checkUpgradable(const QStringList &name_list) const;
+    [[nodiscard]] bool isOnline();
+    [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch);
+    [[nodiscard]] static QString getDebianVerName();
+    [[nodiscard]] static bool isFilteredName(const QString &name);
+    [[nodiscard]] static int getDebianVerNum();
+    bool buildPackageLists(bool force_download = false);
+    bool confirmActions(const QString &names, const QString &action);
     bool downloadAndUnzip(const QString &url, QFile &file);
     bool downloadAndUnzip(const QString &url, const QString &repo_name, const QString &branch, const QString &format,
                           QFile &file);
     bool downloadFile(const QString &url, QFile &file);
-    bool isOnline();
-    bool isPackageInstallable(const QString &installable, const QString &modArch);
+    bool downloadPackageList(bool force_download = false);
+    bool install(const QString &names);
+    bool installBatch(const QStringList &name_list);
+    bool installPopularApp(const QString &name);
+    bool installPopularApps();
+    bool installSelected();
+    bool readPackageList(bool force_download = false);
+    bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""),
+                   const QString &postuninstall = QLatin1String(""));
+    bool updateApt();
+    static QString convert(quint64 bytes);
+    static quint64 convert(const QString &size);
+    void blockInterfaceFP(bool block);
+    void buildChangeList(QTreeWidgetItem *item);
+    void cancelDownload();
+    void centerWindow();
+    void clearUi();
+    void displayFilteredFP(QStringList list, bool raw = false);
+    void displayFlatpaks(bool force_update = false);
+    void displayPackages();
+    void displayPopularApps() const;
+    void displayWarning(const QString &repo);
+    void enableTabs(bool enable);
+    void hideLibs();
+    void ifDownloadFailed();
+    void listFlatpakRemotes();
+    void listSizeInstalledFP();
+    void loadPmFiles();
+    void processDoc(const QDomDocument &doc);
+    void refreshPopularApps();
+    void removeDuplicatesFP();
+    void setCurrentTree();
+    void setDirty();
+    void setProgressDialog();
+    void setSearchFocus();
+    void setup();
+    void updateInterface();
 };
