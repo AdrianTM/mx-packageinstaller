@@ -1389,7 +1389,6 @@ bool MainWindow::installSelected()
                       + temp_list);
         updateApt();
     }
-    getDebianVerNum();
     bool result = install(names);
     if (tree == ui->treeBackports || (tree == ui->treeMXtest && !test_initially_enabled)) {
         if (Cmd().runAsRoot("rm " + temp_list)) {
