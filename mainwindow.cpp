@@ -1655,6 +1655,17 @@ void MainWindow::enableTabs(bool enable)
     }
 }
 
+void MainWindow::hideLibs()
+{
+    if (tree != ui->treeFlatpak && ui->checkHideLibs->isChecked()) {
+        for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+            if (isFilteredName((*it)->text(TreeCol::Name))) {
+                (*it)->setHidden(true);
+            }
+        }
+    }
+}
+
 // Process downloaded *Packages.gz files
 bool MainWindow::readPackageList(bool force_download)
 {
@@ -2209,18 +2220,19 @@ void MainWindow::findPackageOther()
     if (word.length() == 1) {
         return;
     }
-
-    auto found_items = tree->findItems(word, Qt::MatchContains, TreeCol::Name);
-    if (tree != ui->treeFlatpak) { // not for treeFlatpak as it has a different column structure
+    QList<QTreeWidgetItem *> found_items;
+    if (tree != ui->treeFlatpak) {
+        found_items = tree->findItems(word, Qt::MatchContains, TreeCol::Name);
         found_items << tree->findItems(word, Qt::MatchContains, TreeCol::Description);
+    } else {
+        found_items = tree->findItems(word, Qt::MatchContains, FlatCol::LongName);
     }
-
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
-        (*it)->setHidden((*it)->data(0, Qt::UserRole) == false || !found_items.contains(*it));
-        // Hide libs
-        if (tree != ui->treeFlatpak && ui->checkHideLibs->isChecked() && isFilteredName((*it)->text(TreeCol::Name))) {
-            (*it)->setHidden(true);
-        }
+        bool shouldHide = (*it)->data(0, Qt::UserRole) == false || !found_items.contains(*it);
+        (*it)->setHidden(shouldHide);
+    }
+    if (tree != ui->treeFlatpak) {
+        hideLibs();
     }
 }
 
