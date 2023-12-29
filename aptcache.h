@@ -4,7 +4,7 @@
 #include <QMap>
 
 // Pair of arch names returned by QSysInfo::currentCpuArchitecture() and corresponding DEB_BUILD_ARCH formats
-static const QHash<QString, QString> arch_names {
+static const QMap<QString, QString> arch_names {
     {"x86_64", "amd64"}, {"i386", "i386"}, {"arm", "armhf"}, {"arm64", "arm64"}};
 
 struct PackageInfo {
@@ -17,7 +17,7 @@ class AptCache
 public:
     AptCache();
 
-    QMap<QString, PackageInfo> getCandidates();
+    QMap<QString, PackageInfo> getCandidates() const;
     static QString getArch();
 
 private:

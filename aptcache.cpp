@@ -34,7 +34,7 @@ void AptCache::loadCacheFiles()
     parseContent();
 }
 
-QMap<QString, PackageInfo> AptCache::getCandidates()
+QMap<QString, PackageInfo> AptCache::getCandidates() const
 {
     return candidates;
 }

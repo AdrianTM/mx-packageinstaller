@@ -57,6 +57,7 @@ namespace Tab
 {
 enum { Popular, EnabledRepos, Test, Backports, Flatpak, Output };
 }
+
 namespace PopCol
 {
 enum {
@@ -73,38 +74,39 @@ enum {
     MAX
 };
 } // namespace PopCol
+
 namespace TreeCol
 {
 enum { Check, Name, Version, Description, Status };
 }
+
 namespace FlatCol
 {
 enum { Check, Name, LongName, Version, Size, Status, Duplicate, FullName };
 }
-namespace Popular
-{
-enum {
-    Category,
-    Name,
-    Description,
-    Installable,
-    Screenshot,
-    Preinstall,
-    Postinstall,
-    InstallNames,
-    UninstallNames,
-    PostUninstall,
-    PreUninstall
-};
-} // namespace Popular
+
 namespace Release
 {
 enum { Jessie = 8, Stretch, Buster, Bullseye, Bookworm, Trixie };
 }
 
-constexpr int KiB = 1024;
-constexpr int MiB = KiB * 1024;
-constexpr int GiB = MiB * 1024;
+struct PopularInfo {
+    QString category;
+    QString name;
+    QString description;
+    QString installable;
+    QString screenshot;
+    QString preInstall;
+    QString postInstall;
+    QString installNames;
+    QString uninstallNames;
+    QString postUninstall;
+    QString preUninstall;
+};
+
+constexpr uint KiB = 1024;
+constexpr uint MiB = KiB * 1024;
+constexpr uint GiB = MiB * 1024;
 
 class MainWindow : public QDialog
 {
@@ -170,28 +172,26 @@ private:
     Ui::MainWindow *ui;
 
     QString indexFilterFP;
-    bool displayPackagesIsRunning {false};
-    bool displayFlatpaksIsRunning {false};
     bool dirtyBackports {true};
     bool dirtyEnabledRepos {true};
     bool dirtyTest {true};
+    bool displayFlatpaksIsRunning {false};
+    bool displayPackagesIsRunning {false};
     bool firstRunFP {true};
-    bool test_initially_enabled {};
-    bool updated_once {};
-    bool warning_backports {};
-    bool warning_flatpaks {};
-    bool warning_test {};
-    int height_app {};
+    bool test_initially_enabled {false};
+    bool updated_once {false};
+    bool warning_backports {false};
+    bool warning_flatpaks {false};
+    bool warning_test {false};
 
     Cmd cmd;
     LockFile *lock_file {};
     QHash<QString, VersionNumber> listInstalledVersions();
-    QList<QStringList> popular_apps;
+    QList<PopularInfo> popular_apps;
     QLocale locale;
     QMap<QString, PackageInfo> backports_list;
     QMap<QString, PackageInfo> mx_list;
     QMap<QString, PackageInfo> enabled_list;
-    QMetaObject::Connection conn;
     QProgressBar *bar {};
     QProgressDialog *progress {};
     QPushButton *pushCancel {};
@@ -210,7 +210,7 @@ private:
     QStringList installed_runtimes_fp;
     QTemporaryDir tmp_dir;
     QTimer timer;
-    QTreeWidget *tree {}; // current/calling tree
+    QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
     VersionNumber fp_ver;
     const QCommandLineParser &args;
@@ -218,21 +218,22 @@ private:
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
-    QString categoryTranslation(const QString &item);
-    [[nodiscard]] QString getVersion(const QString &name);
-    QString mapArchToFormat(const QString &arch);
-    QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String(""));
-    QStringList listInstalled();
-    QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
+    [[nodiscard]] QString categoryTranslation(const QString &item);
+    [[nodiscard]] QString getArchOption() const;
     [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
+    [[nodiscard]] QString getVersion(const QString &name) const;
+    [[nodiscard]] QString mapArchToFormat(const QString &arch) const;
+    [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
+    [[nodiscard]] QStringList listInstalled() const;
+    [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
     [[nodiscard]] bool checkInstalled(const QString &names) const;
     [[nodiscard]] bool checkInstalled(const QStringList &name_list) const;
     [[nodiscard]] bool checkUpgradable(const QStringList &name_list) const;
     [[nodiscard]] bool isOnline();
-    [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch);
+    [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;
     [[nodiscard]] static QString getDebianVerName();
     [[nodiscard]] static bool isFilteredName(const QString &name);
-    [[nodiscard]] static int getDebianVerNum();
+    [[nodiscard]] static uchar getDebianVerNum();
     bool buildPackageLists(bool force_download = false);
     bool confirmActions(const QString &names, const QString &action);
     bool downloadAndUnzip(const QString &url, QFile &file);
@@ -261,19 +262,22 @@ private:
     void displayPackages();
     void displayPopularApps() const;
     void displayWarning(const QString &repo);
-    void enableTabs(bool enable);
-    void hideLibs();
-    void ifDownloadFailed();
-    void listFlatpakRemotes();
+    void enableTabs(bool enable) const;
+    void hideColumns() const;
+    void hideLibs() const;
+    void ifDownloadFailed() const;
+    void listFlatpakRemotes() const;
     void listSizeInstalledFP();
     void loadPmFiles();
     void processDoc(const QDomDocument &doc);
     void refreshPopularApps();
-    void removeDuplicatesFP();
+    void removeDuplicatesFP() const;
+    void setConnections() const;
     void setCurrentTree();
     void setDirty();
+    void setIcons() const;
     void setProgressDialog();
-    void setSearchFocus();
+    void setSearchFocus() const;
     void setup();
-    void updateInterface();
+    void updateInterface() const;
 };
