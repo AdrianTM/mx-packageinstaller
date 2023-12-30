@@ -725,7 +725,6 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
             }
         }
     }
-
     uint total = 0;
     for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
         if (list.contains((*it)->data(FlatCol::FullName, Qt::UserRole).toString())) {
@@ -2478,6 +2477,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         break;
     case Tab::Flatpak:
+        lastItemClicked = nullptr;
         ui->searchBoxFlatpak->setText(search_str);
         enableTabs(true);
         setCurrentTree();
