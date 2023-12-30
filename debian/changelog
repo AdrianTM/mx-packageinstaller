@@ -1,3 +1,11 @@
+mx-packageinstaller (23.12.05) mx; urgency=medium
+
+  * Fix: crash that happened in some conditions when switching tabs
+  * Fix: enable interface when installing flatpak app
+  * Fix: more consistent experience when switching tabs
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 30 Dec 2023 14:36:32 -0500
+
 mx-packageinstaller (23.12.04) mx; urgency=medium
 
   * Add the package architecture to the list of temporary testrepo sources
