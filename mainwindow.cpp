@@ -2377,16 +2377,14 @@ void MainWindow::on_tabWidget_currentChanged(int index)
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Console Output"));
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
+    currentTree->blockSignals(true);
 
     // Reset checkboxes when tab changes
     if (currentTree != ui->treePopularApps) {
-        currentTree->blockSignals(true);
         currentTree->clearSelection();
-
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
             (*it)->setCheckState(0, Qt::Unchecked);
         }
-        currentTree->blockSignals(false);
     }
 
     // Save the search text
@@ -2426,6 +2424,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                     QMessageBox::critical(
                         this, tr("Error"),
                         tr("Could not download the list of packages. Please check your APT sources."));
+                    currentTree->blockSignals(false);
                     return;
                 }
             }
@@ -2450,6 +2449,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             if (!buildPackageLists()) {
                 QMessageBox::critical(this, tr("Error"),
                                       tr("Could not download the list of packages. Please check your APT sources."));
+                currentTree->blockSignals(false);
                 return;
             }
         }
@@ -2468,6 +2468,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             if (!buildPackageLists()) {
                 QMessageBox::critical(this, tr("Error"),
                                       tr("Could not download the list of packages. Please check your APT sources."));
+                currentTree->blockSignals(false);
                 return;
             }
         }
@@ -2490,6 +2491,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             if (!displayFlatpaksIsRunning) {
                 filterChanged(ui->comboFilterFlatpak->currentText());
             }
+            currentTree->blockSignals(false);
             return;
         }
         firstRunFP = false;
@@ -2516,6 +2518,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 ui->tabWidget->setCurrentIndex(Tab::Popular);
                 setCursor(QCursor(Qt::ArrowCursor));
                 enableTabs(true);
+                currentTree->blockSignals(false);
                 return;
             }
             fp_ver = getVersion("flatpak");
@@ -2567,6 +2570,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     }
     ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
+    currentTree->blockSignals(false);
 }
 
 void MainWindow::filterChanged(const QString &arg1)
