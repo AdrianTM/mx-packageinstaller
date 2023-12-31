@@ -2488,6 +2488,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         ui->searchBoxFlatpak->setText(search_str);
         enableTabs(true);
         setCurrentTree();
+        displayWarning("flatpaks");
         ui->searchBoxFlatpak->setFocus();
         if (!firstRunFP && checkInstalled("flatpak")) {
             ui->searchBoxBP->setText(search_str);
@@ -2501,7 +2502,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             return;
         }
         firstRunFP = false;
-        displayWarning("flatpaks");
         blockInterfaceFP(true);
         if (!checkInstalled("flatpak")) {
             int ans = QMessageBox::question(this, tr("Flatpak not installed"),
