@@ -2412,6 +2412,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchPopular->text().isEmpty()) {
             findPopular();
         }
+        currentTree->blockSignals(false);
         break;
     case Tab::EnabledRepos:
         ui->searchBoxEnabled->setText(search_str);
@@ -2438,6 +2439,9 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchBoxEnabled->text().isEmpty()) {
             findPackageOther();
         }
+        if (!displayPackagesIsRunning) {
+            currentTree->blockSignals(false);
+        }
         break;
     case Tab::Test:
         ui->searchBoxMX->setText(search_str);
@@ -2457,6 +2461,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchBoxMX->text().isEmpty()) {
             findPackageOther();
         }
+        currentTree->blockSignals(false);
         break;
     case Tab::Backports:
         ui->searchBoxBP->setText(search_str);
@@ -2476,6 +2481,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!ui->searchBoxBP->text().isEmpty()) {
             findPackageOther();
         }
+        currentTree->blockSignals(false);
         break;
     case Tab::Flatpak:
         lastItemClicked = nullptr;
@@ -2570,7 +2576,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         break;
     }
     ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
-    currentTree->blockSignals(false);
 }
 
 void MainWindow::filterChanged(const QString &arg1)
