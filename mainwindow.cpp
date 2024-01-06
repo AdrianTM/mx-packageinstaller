@@ -1919,7 +1919,9 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
     Cmd shell;
     const QStringList &list = shell.getOut("dpkg -l | grep '^ii'", true).split("\n");
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
-        qDebug() << "Error: dpkg command returned an error, please run 'dpkg --list' in terminal and check the output.";
+        QMessageBox::critical(
+            this, tr("Error"),
+            tr("dpkg command returned an error, please run 'dpkg --list' in terminal and check the output."));
         exit(EXIT_FAILURE);
     }
     for (const QString &line : list) {
