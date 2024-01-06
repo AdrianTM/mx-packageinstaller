@@ -2904,7 +2904,7 @@ void MainWindow::on_checkHideLibsBP_clicked(bool checked)
 }
 
 // On change flatpak remote
-void MainWindow::on_comboRemote_activated()
+void MainWindow::on_comboRemote_activated(int /*index*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     lastItemClicked = nullptr;
