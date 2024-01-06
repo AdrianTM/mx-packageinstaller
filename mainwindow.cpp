@@ -1799,7 +1799,14 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
 QStringList MainWindow::listInstalled() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    QString str = Cmd().getOut("dpkg --get-selections | grep -v deinstall | cut -f1", true);
+    Cmd shell;
+    QString str = shell.getOut("dpkg --get-selections | grep -v deinstall | cut -f1", true);
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+        QMessageBox::critical(
+            nullptr, tr("Error"),
+            tr("dpkg command returned an error, please run 'dpkg --list' in terminal and check the output."));
+        exit(EXIT_FAILURE);
+    }
     str.remove(":i386");
     str.remove(":amd64");
     str.remove(":arm64");
