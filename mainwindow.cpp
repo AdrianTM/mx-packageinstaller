@@ -1916,7 +1916,12 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     QHash<QString, VersionNumber> result;
-    const QStringList &list = Cmd().getOut("dpkg -l | grep '^ii'", true).split("\n");
+    Cmd shell;
+    const QStringList &list = shell.getOut("dpkg -l | grep '^ii'", true).split("\n");
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+        qDebug() << "Error: dpkg command returned an error, please run 'dpkg --list' in terminal and check the output.";
+        exit(EXIT_FAILURE);
+    }
     for (const QString &line : list) {
         QStringList item = line.split(QRegularExpression("\\s{2,}"));
         QString name = item.at(1);
