@@ -451,6 +451,7 @@ QString MainWindow::getArchOption() const
 void MainWindow::updateBar()
 {
     QApplication::processEvents();
+    bar->setValue((bar->value() + 1) % bar->maximum() + 1);
 }
 
 void MainWindow::checkUnckeckItem()
@@ -622,7 +623,7 @@ void MainWindow::setProgressDialog()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     progress = new QProgressDialog(this);
     bar = new QProgressBar(progress);
-    bar->setRange(0, 0);
+    bar->setMaximum(bar->maximum());
     pushCancel = new QPushButton(tr("Cancel"));
     connect(pushCancel, &QPushButton::clicked, this, &MainWindow::cancelDownload);
     progress->setWindowModality(Qt::WindowModal);
