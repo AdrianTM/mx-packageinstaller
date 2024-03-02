@@ -1,3 +1,10 @@
+mx-packageinstaller (24.2) mx; urgency=medium
+
+  * Update translations
+  * Fix: showing wrong arch in Popular section
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 01 Mar 2024 21:14:04 -0500
+
 mx-packageinstaller (24.1) mx; urgency=medium
 
   * Increase timeout for online check
