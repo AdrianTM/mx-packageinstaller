@@ -555,7 +555,7 @@ QString MainWindow::mapArchToFormat(const QString &arch) const
 
 bool MainWindow::isPackageInstallable(const QString &installable, const QString &modArch) const
 {
-    return installable.contains(modArch) || installable == QLatin1String("all");
+    return installable.split(',').contains(modArch) || installable == "all";
 }
 
 void MainWindow::refreshPopularApps()
