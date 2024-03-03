@@ -1330,9 +1330,7 @@ bool MainWindow::installSelected()
             }
             cmd.runAsRoot("apt-get update --print-uris | tac | "
                           "grep -m1 -oE 'https?://.*/mx/repo/dists/"
-                          + suite
-                          + "/main' | sed 's:^:deb [arch='$(dpkg --print-architecture)'] :; "
-                            "s:/repo/dists/:/testrepo :; s:/main: test:' > "
+                          + suite + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > "
                           + temp_list);
         }
         updateApt();
