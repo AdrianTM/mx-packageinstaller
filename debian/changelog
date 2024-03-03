@@ -1,6 +1,6 @@
-mx-packageinstaller (24.3) mx; urgency=medium
+mx-packageinstaller (24.3.01) mx; urgency=medium
 
-  * Fix: remove architecture from testrepo, since it would stop installing wine and other programs that need i386 arch
+  * Fix: remove architecture from testrepo for amd64, since it would stop installing wine and other programs that need i386 arch
 
  -- Adrian <adrian@mxlinux.org>  Sun, 03 Mar 2024 10:06:07 -0500
 

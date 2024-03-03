@@ -1328,10 +1328,19 @@ bool MainWindow::installSelected()
                                                        // version name for newer versions
                 suite = "mx15";
             }
-            cmd.runAsRoot("apt-get update --print-uris | tac | "
-                          "grep -m1 -oE 'https?://.*/mx/repo/dists/"
-                          + suite + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > "
-                          + temp_list);
+            if (arch == "amd64") {
+                cmd.runAsRoot("apt-get update --print-uris | tac | "
+                              "grep -m1 -oE 'https?://.*/mx/repo/dists/"
+                              + suite + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > "
+                              + temp_list);
+            } else {
+                cmd.runAsRoot("apt-get update --print-uris | tac | "
+                              "grep -m1 -oE 'https?://.*/mx/repo/dists/"
+                              + suite
+                              + "/main' | sed 's:^:deb [arch='$(dpkg --print-architecture)'] :; "
+                                "s:/repo/dists/:/testrepo :; s:/main: test:' > "
+                              + temp_list);
+            }
         }
         updateApt();
     } else if (currentTree == ui->treeBackports) {
