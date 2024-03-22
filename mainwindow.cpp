@@ -1580,7 +1580,7 @@ bool MainWindow::downloadPackageList(bool force_download)
             pushCancel->setDisabled(true);
             QFile outputFile("allPackages");
             if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
-                qWarning() << "Could not open: " << outputFile;
+                qWarning() << "Could not open: " << outputFile.fileName();
             }
 
             QTextStream outStream(&outputFile);
