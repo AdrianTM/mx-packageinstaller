@@ -564,7 +564,7 @@
         <location filename="../mainwindow.cpp" line="1812"/>
         <location filename="../mainwindow.cpp" line="1936"/>
         <source>dpkg command returned an error, please run &apos;dpkg --list&apos; in terminal and check the output.</source>
-        <translation type="unfinished"></translation>
+        <translation>dpkg parancs hibát adott vissza, kérem futtassa a &apos;dpkg --list&apos; parancsot a terminálban és ellenőrizze a kimenetet</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2011"/>

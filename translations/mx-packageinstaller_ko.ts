@@ -1,33 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="de">
+<TS version="2.1" language="ko">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
         <location filename="../mainwindow.cpp" line="125"/>
         <source>MX Package Installer</source>
-        <translation>MX-Paketinstallation</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
         <source>Popular Applications</source>
-        <translation>Beliebte Anwendungen</translation>
+        <translation>인기 애플리케이션</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="73"/>
         <source>Category</source>
-        <translation>Kategorie</translation>
+        <translation>카테고리</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="83"/>
         <source>Package</source>
-        <translation>Paket</translation>
+        <translation>패키지</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
         <source>Info</source>
-        <translation>Info</translation>
+        <translation>정보</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>
@@ -35,12 +35,12 @@
         <location filename="../mainwindow.ui" line="660"/>
         <location filename="../mainwindow.ui" line="1030"/>
         <source>Description</source>
-        <translation>Beschreibung</translation>
+        <translation>상세설명</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="101"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Beliebte Pakete verwalten&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;인기 패키지 관리&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="120"/>
@@ -49,7 +49,7 @@
         <location filename="../mainwindow.ui" line="1055"/>
         <location filename="../mainwindow.ui" line="1274"/>
         <source>search</source>
-        <translation>Suche </translation>
+        <translation>검색</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="149"/>
@@ -58,65 +58,65 @@
         <location filename="../mainwindow.ui" line="1118"/>
         <location filename="../mainwindow.ui" line="1245"/>
         <source>= Installed packages</source>
-        <translation>= Installierte Pakete</translation>
+        <translation>= 설치된 패키지</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="173"/>
         <source>Enabled Repos</source>
-        <translation>Aktivierte Paketquellen</translation>
+        <translation>활성화된 저장소</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="237"/>
         <source>Remove orphan packages</source>
-        <translation>Verwaiste Pakete entfernen</translation>
+        <translation>고아된 패키지 제거</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="264"/>
         <location filename="../mainwindow.ui" line="1337"/>
         <source>Upgrade All</source>
-        <translation>Alle aktualisieren</translation>
+        <translation>전체 업그레이드</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="278"/>
         <location filename="../mainwindow.ui" line="558"/>
         <location filename="../mainwindow.ui" line="886"/>
         <source>Installed:</source>
-        <translation>Installiert:</translation>
+        <translation>설치됨</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="301"/>
         <location filename="../mainwindow.ui" line="508"/>
         <location filename="../mainwindow.ui" line="907"/>
         <source>Total packages:</source>
-        <translation>Pakete gesamt:</translation>
+        <translation>전체 패키지:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="315"/>
         <location filename="../mainwindow.ui" line="615"/>
         <location filename="../mainwindow.ui" line="947"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation>Auch »empfohlene« Pakete installieren</translation>
+        <translation>추천 패키지를 함께 설치</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="322"/>
         <location filename="../mainwindow.ui" line="588"/>
         <location filename="../mainwindow.ui" line="879"/>
         <source>Upgradable:</source>
-        <translation>Aktualisierbar:</translation>
+        <translation>업그레이드 가능:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="329"/>
         <location filename="../mainwindow.ui" line="522"/>
         <location filename="../mainwindow.ui" line="914"/>
         <source>Hide library and developer packages</source>
-        <translation>Bibliotheken und Entwicklerpakete verstecken</translation>
+        <translation>라이브러리와 개발자 패키지 감추기</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="351"/>
         <location filename="../mainwindow.ui" line="544"/>
         <location filename="../mainwindow.ui" line="966"/>
         <source>Refresh list</source>
-        <translation>Liste aktualisieren</translation>
+        <translation>항목 새로고침</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="390"/>
@@ -124,7 +124,7 @@
         <location filename="../mainwindow.ui" line="1085"/>
         <location filename="../mainwindow.ui" line="1197"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Pakete anhand ihres Status filtern.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;패키지 상태에 따라 필터&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="393"/>
@@ -135,7 +135,7 @@
         <location filename="../mainwindow.ui" line="1092"/>
         <location filename="../mainwindow.cpp" line="2651"/>
         <source>All packages</source>
-        <translation>Alle Pakete</translation>
+        <translation>전체 패키지</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="402"/>
@@ -143,7 +143,7 @@
         <location filename="../mainwindow.ui" line="1097"/>
         <location filename="../mainwindow.cpp" line="2663"/>
         <source>Installed</source>
-        <translation>Installiert</translation>
+        <translation>설치됨</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="407"/>
@@ -151,7 +151,7 @@
         <location filename="../mainwindow.ui" line="1102"/>
         <location filename="../mainwindow.cpp" line="2662"/>
         <source>Upgradable</source>
-        <translation>Aktualisierbar</translation>
+        <translation>업그레이드 가능</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="412"/>
@@ -163,21 +163,21 @@
         <location filename="../mainwindow.cpp" line="2779"/>
         <location filename="../mainwindow.cpp" line="2780"/>
         <source>Not installed</source>
-        <translation>Nicht installiert</translation>
+        <translation>미설치</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="432"/>
         <location filename="../mainwindow.ui" line="752"/>
         <location filename="../mainwindow.ui" line="814"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation>= Aktualisierbares Paket. Eine neuere Version ist bei der ausgewählten Paketquelle verfügbar.</translation>
+        <translation>= 업그레이드 가능 패키지. 선택된 저장소에 새 버전이 있습니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="458"/>
         <location filename="../mainwindow.ui" line="650"/>
         <location filename="../mainwindow.ui" line="1020"/>
         <source>Package Name</source>
-        <translation>Paketname</translation>
+        <translation>패키지명</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="463"/>
@@ -185,69 +185,69 @@
         <location filename="../mainwindow.ui" line="1025"/>
         <location filename="../mainwindow.ui" line="1469"/>
         <source>Version</source>
-        <translation>Version</translation>
+        <translation>버전</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="493"/>
         <source>MX Test Repo</source>
-        <translation>MX-Test-Paketquellen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="796"/>
         <source>Debian Backports</source>
-        <translation>Debian Backports</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1142"/>
         <source>Flatpaks</source>
-        <translation>Flatpaks</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1148"/>
         <location filename="../mainwindow.ui" line="1152"/>
         <source>For all users</source>
-        <translation>Für alle Benutzer</translation>
+        <translation>전체 사용자용</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1157"/>
         <source>For current user</source>
-        <translation>Für aktuellen Benutzer</translation>
+        <translation>현재 사용자용</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1165"/>
         <source>Remote (repo):</source>
-        <translation>Flatpak-Paketquellen:</translation>
+        <translation>원격 (repo):</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1200"/>
         <location filename="../mainwindow.ui" line="1204"/>
         <location filename="../mainwindow.cpp" line="2611"/>
         <source>All apps</source>
-        <translation>Alle Anwendungen</translation>
+        <translation>전체 앱</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1209"/>
         <location filename="../mainwindow.cpp" line="2616"/>
         <source>All runtimes</source>
-        <translation>Alle Laufzeitbibliotheken</translation>
+        <translation>전체 런타임</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1214"/>
         <location filename="../mainwindow.cpp" line="2621"/>
         <source>All available</source>
-        <translation>Alle verfügbaren</translation>
+        <translation>가용한 항목</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1219"/>
         <location filename="../mainwindow.cpp" line="2609"/>
         <source>Installed apps</source>
-        <translation>Installierte Anwendungen</translation>
+        <translation>설치된 앱</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1224"/>
         <location filename="../mainwindow.cpp" line="2607"/>
         <source>Installed runtimes</source>
-        <translation>Installierte Laufzeitbibliotheken</translation>
+        <translation>설치된 런타임</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1229"/>
@@ -255,64 +255,64 @@
         <location filename="../mainwindow.cpp" line="2772"/>
         <location filename="../mainwindow.cpp" line="2773"/>
         <source>All installed</source>
-        <translation>Es wurde alles installiert</translation>
+        <translation>설치된 항목</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1316"/>
         <source>Total items </source>
-        <translation>Gesamtanzahl</translation>
+        <translation>전체 아이템</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1330"/>
         <source>Installed apps:</source>
-        <translation>Installierte Anwendungen:</translation>
+        <translation>설치된 앱:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1383"/>
         <source>Advanced</source>
-        <translation>Fortgeschritten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1413"/>
         <source>Total installed size:</source>
-        <translation>Gesamte Installationsgröße:</translation>
+        <translation>전체 설치 용량:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1427"/>
         <source>Remove unused runtimes</source>
-        <translation>Nicht benötigte Laufzeitbibliotheken entfernen</translation>
+        <translation>사용되지 않는 런타임 제거</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1459"/>
         <source>Short Name</source>
-        <translation>Kurzname</translation>
+        <translation>짧은 이름</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1464"/>
         <source>Full Package Name</source>
-        <translation>Völlständiger Paketname</translation>
+        <translation>패키지 이름</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1474"/>
         <source>Size</source>
-        <translation>Größe</translation>
+        <translation>용량</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
         <location filename="../mainwindow.cpp" line="2396"/>
         <location filename="../mainwindow.cpp" line="2560"/>
         <source>Console Output</source>
-        <translation>Konsolenausgabe</translation>
+        <translation>콘솔 출력</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1510"/>
         <source>Enter</source>
-        <translation>Eingabetaste</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1521"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Hier antworten oder einfach die Eingabetaste betätigen.</translation>
+        <translation>여기에서 답하거나 엔터를 누르세요.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1580"/>
@@ -321,97 +321,97 @@
         <location filename="../mainwindow.cpp" line="2769"/>
         <location filename="../mainwindow.cpp" line="3034"/>
         <source>Install</source>
-        <translation>Installieren</translation>
+        <translation>설치</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1587"/>
         <source>Alt+I</source>
-        <translation>Alt+I</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1606"/>
         <source>Quit application</source>
-        <translation>Anwendung beenden</translation>
+        <translation>종료</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1609"/>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1616"/>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1648"/>
         <source>About this application</source>
-        <translation>Über dieses Programm</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1651"/>
         <source>About...</source>
-        <translation>Über...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1658"/>
         <source>Alt+B</source>
-        <translation>Alt+B</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1696"/>
         <source>Display help </source>
-        <translation>Hilfe anzeigen</translation>
+        <translation>도움말 표시</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1699"/>
         <source>Help</source>
-        <translation>Hilfe</translation>
+        <translation>도움말</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1706"/>
         <source>Alt+H</source>
-        <translation>Alt+H</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1722"/>
         <source>Uninstall</source>
-        <translation>Deinstallieren</translation>
+        <translation>설치 제거</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1729"/>
         <source>Alt+U</source>
-        <translation>Alt+U</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="112"/>
         <source>Flatpak tab is disabled on 32-bit.</source>
-        <translation>Die flatpak-Registerkarte ist für 32-bit-Versionen deaktiviert.</translation>
+        <translation>32-bit 환경에서는 Flatpak 탭이 비활성화 됩니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="117"/>
         <source>Could not find MX sources.</source>
-        <translation>MX-Quellen wurden nicht gefunden.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="176"/>
         <source>Uninstalling packages...</source>
-        <translation>Deinstalliere Pakete...</translation>
+        <translation>설치된 패키지를 제거합니다...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="181"/>
         <source>Running pre-uninstall operations...</source>
-        <translation>Deinstallation wird vorbereitet...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="201"/>
         <source>Running post-uninstall operations...</source>
-        <translation>Vordefinierte Aktionen nach dem Deinstallieren werden ausgeführt ....</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="218"/>
         <source>Refreshing sources...</source>
-        <translation>Quellen werden neu eingelesen....</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="232"/>
@@ -434,155 +434,155 @@
         <location filename="../mainwindow.cpp" line="3056"/>
         <location filename="../mainwindow.cpp" line="3077"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>에러</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="233"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation>Ein Problem ist beim Aktualisieren der Quellen aufgetreten. Einige Quellen könnten nicht aktualisiert worden sein. Für mehr Informationen siehe:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="626"/>
         <source>Cancel</source>
-        <translation>Abbruch</translation>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="633"/>
         <source>Please wait...</source>
-        <translation>Bitte warten...</translation>
+        <translation>기다려 주세요...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="825"/>
         <location filename="../mainwindow.cpp" line="845"/>
         <source>Version </source>
-        <translation>Version</translation>
+        <translation>버전</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="826"/>
         <source> in the enabled repos</source>
-        <translation>in den freigeschalteten Paketquellen</translation>
+        <translation>활성화된 저장소 내</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="828"/>
         <source>Not available in the enabled repos</source>
-        <translation>In den freigeschalteten Paketquellen nicht verfügbar</translation>
+        <translation>설치된 저장소에 없습니다</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="838"/>
         <source>Latest version </source>
-        <translation>Neueste Version</translation>
+        <translation>최신 버전</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="838"/>
         <source> already installed</source>
-        <translation>ist bereits installiert</translation>
+        <translation>이미 설치됨</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="845"/>
         <source> installed</source>
-        <translation>installiert</translation>
+        <translation>설치</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="973"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Sie sind im Begriff, die MX-Testpaketquelle zu nutzen, dessen Pakete nur zu Testzwecken verfügbar sind. Es ist möglich, daß diese Pakete das System unbrauchbar machen; deshalb wird empfohlen, eine Sicherung des Systems anzulegen und immer nur einzelne Pakete zu installieren oder zu aktualisieren. Bitte geben Sie auch Rückmeldungen im Forum ab, damit das jeweilige Paket evaluiert werden kann, bevor es in die stabile Version übernommen wird.</translation>
+        <translation>MX Test 저장소 사용을 선택하셨습니다. MX Test 저장소의 패키지는 테스트 목적으로만 제공됩니다. 여기서 설치되는 패키지는 사용자의 시스템을 손상시킬 수 있습니다. 따라서 설치 전 시스템 백업을 권장하며, 한 번에 하나의 패키지만 설치하거나 업데이트 하시길 권장합니다. 메인 저장소로 이동되기 전에 검증될 수 있도록 포럼에 피드백을 제공해 주시길 바랍니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="982"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Sie sind dabei, Debian Backports zu benutzen, welches Pakete aus der nächsten Debian Freigabe (&quot;testing&quot;) enthält, die zur Nutzung in Debian Stable angepasst und neu kompiliert wurden. Diese Pakete konnten nicht so intensiv wie in der stabilen Freigabe von Debian und MX Linux getestet werden und werden ohne Garantie und mit dem Risiko der Inkompatibilität zu Komponenten aus Debian Stable zur Verfügung gestellt. Mit Vorsicht verwenden! </translation>
+        <translation>Debian Backports 사용을 선택하셨습니다. Debian Backports 에는 다음 버전의 Debian 배포에 선택되어 사용 안정성을 확보하기 위해 조정되거나 리컴파일 된(소위 &apos;검수 중&apos;인) 패키지를 포함하고 있습니다. 이 패키지들은 Debian 이나 MX Linux 의 안정화 버전만큼 폭넓게 검증되지 않았으며, 원 상태 그대로 제공되기에 Debian 안정화 버전에서 제공되는 다른 컴포넌트들과 호환되지 않을 위험이 있습니다. 사용 시 유의하시길 바랍니다!</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="990"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux enthält diese Paketquelle von Flatpaks nur aus Gründen der Benutzerfreundlichkeit und ist nicht verantwortlich für die Funktionalität der einzelnen Flatpaks. Nähere Infos dazu stehen im Wiki.</translation>
+        <translation>MX Linux는 단지 사용자 편의를 위해 이 flatpaks 저장소를 포함하고 있습니다. 따라서, 각 flatpaks의 기능에 대해 책임지지 않습니다. 자세한 내용은 Wiki에서 확인하시길 바랍니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="998"/>
         <location filename="../mainwindow.cpp" line="3065"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation>경고</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1002"/>
         <source>Do not show this message again</source>
-        <translation>Diese Meldung nicht mehr anzeigen</translation>
+        <translation>이 메시지를 다시 표시하지 않음</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1097"/>
         <source>Remove</source>
-        <translation>Entfernen</translation>
+        <translation>제거</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1113"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation>Die folgenden Pakete wurden ausgewählt. Zur Anzeige einer Übersicht aller Änderungen klicken Sie bitte auf »Details anzeigen«.</translation>
+        <translation>아래 패키지들을 선택하셨습니다. 변경사항을 살펴보시려면 Show Details 버튼을 클릭하세요.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1149"/>
         <location filename="../mainwindow.cpp" line="1278"/>
         <location filename="../mainwindow.cpp" line="1500"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation>Internet ist nicht verfügbar. Die  Paketeliste kann nicht heruntergeladen werden.</translation>
+        <translation>인터넷이 연결되지 않아 패키지 목록을 다운로드 할 수 없습니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1152"/>
         <source>Installing packages...</source>
-        <translation>Installiere Pakete...</translation>
+        <translation>패키지를 설치하고 있습니다...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1207"/>
         <source>Post-processing...</source>
-        <translation>Nachbearbeitung...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1239"/>
         <source>Pre-processing for </source>
-        <translation>Vorverarbeitung für</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1254"/>
         <source>Installing </source>
-        <translation>Installiere</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1261"/>
         <source>Post-processing for </source>
-        <translation>Nachbearbeitung für</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1437"/>
         <source>There was an error writing file: %1. Please check if you have enough free space on your drive</source>
-        <translation>Beim Schreiben der Datei %1 gab es einen Fehler. Bitte prüfen Sie, ob genügend freier Speicherplatz auf dem Laufwerk vorhanden ist</translation>
+        <translation>파일 쓰기 오류: %1. 드라이브에 충분한 여유 공간이 있는지 확인해 주세요.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1508"/>
         <source>Downloading package info...</source>
-        <translation>Lade Paketinformationen herunter...</translation>
+        <translation>패키지 정보 다운로드 중...</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1812"/>
         <location filename="../mainwindow.cpp" line="1936"/>
         <source>dpkg command returned an error, please run &apos;dpkg --list&apos; in terminal and check the output.</source>
-        <translation>Der dpkg-Befehl hat einen Fehler zurückgegeben, führen Sie bitte &apos;dpkg --list&apos; im Terminal aus und überprüfen Sie die Ausgabe.</translation>
+        <translation>dpkg 명령 오류, 터미널에서 &apos;dpkg --list&apos; 를 실행하여 출력된 내용을 확인하시길 바랍니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2011"/>
         <location filename="../mainwindow.cpp" line="2093"/>
         <location filename="../mainwindow.cpp" line="2116"/>
         <source>Package info</source>
-        <translation>Paketinformationen</translation>
+        <translation>패키지 정보</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2023"/>
         <location filename="../mainwindow.cpp" line="2998"/>
         <source>More &amp;info...</source>
-        <translation>Weitere &amp;Informationen...</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2054"/>
         <source>Packages to be installed: </source>
-        <translation>Zu installierende Pakete:</translation>
+        <translation>설치될 패키지:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2233"/>
@@ -595,7 +595,7 @@
         <location filename="../mainwindow.cpp" line="2955"/>
         <location filename="../mainwindow.cpp" line="3052"/>
         <source>Done</source>
-        <translation>Erledigt</translation>
+        <translation>완료</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2233"/>
@@ -610,7 +610,7 @@
         <location filename="../mainwindow.cpp" line="3052"/>
         <location filename="../mainwindow.cpp" line="3074"/>
         <source>Processing finished successfully.</source>
-        <translation>Die Installation war erfolgreich.</translation>
+        <translation>처리가 성공적으로 완료되었습니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2250"/>
@@ -619,121 +619,119 @@
         <location filename="../mainwindow.cpp" line="2932"/>
         <location filename="../mainwindow.cpp" line="2962"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation>Bei der Installation trat ein Problem auf; siehe Konsolenausgabe </translation>
+        <translation>설치 중 문제가 생겼습니다. 콘솔 출력을 확인해 보시길 바랍니다.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2272"/>
         <source>About %1</source>
-        <translation>Über %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2273"/>
         <source>Version: </source>
-        <translation>Version:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2275"/>
         <source>Package Installer for MX Linux</source>
-        <translation>Paket-Installation für MX Linux</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2277"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>Copyright (c) MX Linux</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2278"/>
         <source>%1 License</source>
-        <translation>%1 Lizenz</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2290"/>
         <source>%1 Help</source>
-        <translation>%1 Hilfe</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2372"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation>Es gab ein Problem beim Deinstallieren. Bitte die Ausgabe überprüfen.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2385"/>
         <location filename="../mainwindow.cpp" line="3074"/>
         <source>Success</source>
-        <translation>Erfolg</translation>
+        <translation>성공</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2388"/>
         <location filename="../mainwindow.cpp" line="3077"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation>Beim Deinstallieren des Programms trat ein Problem auf</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2446"/>
         <location filename="../mainwindow.cpp" line="2474"/>
         <location filename="../mainwindow.cpp" line="2494"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
-        <translation>Die Liste der Pakete konnte nicht heruntergeladen werden. Bitte überprüfen Sie Ihre APT-Quellen.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2526"/>
         <location filename="../mainwindow.cpp" line="2542"/>
         <source>Flatpak not installed</source>
-        <translation>Flatpak nicht installiert</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2527"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>Flatpak ist noch nicht installiert.
-Mit OK die Installation einleiten?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2542"/>
         <source>Flatpak was not installed</source>
-        <translation>Flatpak wurde nicht installiert</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2564"/>
         <source>Needs re-login</source>
-        <translation>Erneutes Anmelden erforderlich</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2565"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation>Erst nach dem Ab-/Neuanmelden werden installierte Anwendungen im Menü sichtbar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2766"/>
         <source>Upgrade</source>
-        <translation>Aktualisieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2886"/>
         <source>Quit?</source>
-        <translation>Beenden? </translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2887"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>Der Prozess läuft noch, das Beenden könnte das System in einen instabilen Zustand versetzen.&lt;p&gt;&lt;b&gt;Sind Sie sicher, daß Sie das MX-Paketinstallationsprogrammn beenden möchten?&lt;/b&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="3032"/>
         <source>Reinstall</source>
-        <translation>Erneut installieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="3057"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation>Während des letzten Vorgangs wurde ein Problem festgestellt. Bitte überprüfen Sie die Konsolenausgabe.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="3066"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation>Der Vorgang ist potentiell riskant
-Bitte überprüfen Sie sorgfältig die Liste der zum Entfernen vorgesehenen Pakete.</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -741,82 +739,82 @@ Bitte überprüfen Sie sorgfältig die Liste der zum Entfernen vorgesehenen Pake
     <message>
         <location filename="../remotes.cpp" line="13"/>
         <source>Manage Flatpak Remotes</source>
-        <translation>Flatpak-Paketquellen verwalten</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="22"/>
         <source>For all users</source>
-        <translation>Für alle Benutzer</translation>
+        <translation>전체 사용자용</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For current user</source>
-        <translation>Für aktuellen Benutzer</translation>
+        <translation>현재 사용자용</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="29"/>
         <source>enter Flatpak remote URL</source>
-        <translation>Flatpak-Paketquellen-URL eingeben</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="32"/>
         <source>enter Flatpakref location to install app</source>
-        <translation>Flatpakref Pfad/URL zur Installation eingeben</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="34"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Flatpak-Paketquellen hinzufügen oder entfernen, oder Installation von Flatpak-Apps mit Flatpakref (Pfad/URL)</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="43"/>
         <source>Remove remote</source>
-        <translation>Flatpak-Paketquelle entfernen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="48"/>
         <source>Add remote</source>
-        <translation>Flatpak-Paketquelle hinzufügen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="53"/>
         <source>Install app</source>
-        <translation>Anwendung installieren</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="58"/>
         <source>Close</source>
-        <translation>Schließen</translation>
+        <translation>닫기</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Not removable</source>
-        <translation>Nicht entfernbar</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="76"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation>Flathub ist die Flatpak-Haupt-Paketquelle und kann nicht entfernt werden</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="95"/>
         <source>Error adding remote</source>
-        <translation>Fehler beim Hinzufügen der Paketquelle</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="96"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation>Konnte die Paketquelle nicht hinzufügen - der Befehl endete mit einem Fehler. Bitte die Paketquellen-URL überprüfen und nochmal versuchen.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation>Erfolg</translation>
+        <translation>성공</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Remote added successfully</source>
-        <translation>Flatpak-Paketquelle erfolgreich hinzugefügt</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -824,35 +822,34 @@ Bitte überprüfen Sie sorgfältig die Liste der zum Entfernen vorgesehenen Pake
     <message>
         <location filename="../about.cpp" line="71"/>
         <source>License</source>
-        <translation>Lizenz</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../about.cpp" line="72"/>
         <location filename="../about.cpp" line="82"/>
         <source>Changelog</source>
-        <translation>Änderungsprotokoll</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../about.cpp" line="73"/>
         <source>Cancel</source>
-        <translation>Abbrechen</translation>
+        <translation>취소</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="95"/>
         <source>&amp;Close</source>
-        <translation>&amp;Schließen</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../lockfile.cpp" line="50"/>
         <source>Warning</source>
-        <translation>Warnung</translation>
+        <translation>경고</translation>
     </message>
     <message>
         <location filename="../lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation>Die dpkg/apt-Datenbank ist durch ein anderes Programm gesperrt: %1
-Bitte das Programm schließen oder warten, bis es fertig ist und es dann erneut versuchen.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="78"/>
@@ -861,32 +858,28 @@ Bitte das Programm schließen oder warten, bis es fertig ist und es dann erneut 
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation>MX-Paketinstallation ist eine Anwendung zur Verwaltung von Paketen in MX-Linux
-    - installiert beliebte Programme aus verschiedenen Quellen
-    - installiert Programme aus der MX-Test-Paketquelle
-    - installiert Programme aus der Debian-Backports-Paketquelley
-    - installiert Flatpak-Dateien</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="86"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
-        <translation>Den Online-Check überspringen, wenn fälschlicherweise gemeldet wird, dass kein Internetzugang vorhanden ist.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="96"/>
         <location filename="../main.cpp" line="104"/>
         <source>Error</source>
-        <translation>Fehler</translation>
+        <translation>에러</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="97"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>Sie sind als Administrator am System angemeldet. Bitte melden Sie sich ab und dann als normaler Benutzer wieder an, um dieses Programm zu verwenden.</translation>
+        <translation>루트 권한으로 로그인한 상태로 보입니다. 이 프로그램을 사용하시려면 로그아웃 후 일반 사용자로 로그인해 주세요.</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="105"/>
         <source>You must run this program with admin access.</source>
-        <translation>Diese Anwendung muss mit Administratorrechten ausgeführt werden.</translation>
+        <translation>어드민 권한으로 이 프로그램을 실행해야 합니다.</translation>
     </message>
 </context>
 </TS>
