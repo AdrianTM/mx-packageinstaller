@@ -1241,9 +1241,9 @@ bool MainWindow::installPopularApp(const QString &name)
             return false;
         }
         if (!cmd.runAsRoot(preinstall)) {
-            QFile file("/etc/apt/sources.list.d/mxpitemp.list"); // remove temp source list if it exists
-            if (file.exists()) {
-                file.remove();
+            if (QFile::exists(temp_list)) {
+                QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
+                Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
                 updateApt();
             }
             return false;
@@ -1263,6 +1263,11 @@ bool MainWindow::installPopularApp(const QString &name)
             return false;
         }
         cmd.runAsRoot(postinstall);
+    }
+    if (QFile::exists(temp_list)) {
+        QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
+        Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+        updateApt();
     }
     return result;
 }
@@ -1324,8 +1329,8 @@ bool MainWindow::installSelected()
         // Add testrepo unless already enabled
         if (!test_initially_enabled) {
             QString suite = ver_name;
-            if (ver_name == QLatin1String("jessie")) { // use 'mx15' for Stretch based MX, user
-                                                       // version name for newer versions
+            if (ver_name == "jessie") { // use 'mx15' for Stretch based MX, user
+                                        // version name for newer versions
                 suite = "mx15";
             }
             if (arch == "amd64") {
@@ -1349,8 +1354,10 @@ bool MainWindow::installSelected()
         updateApt();
     }
     bool result = install(names);
-    if (currentTree == ui->treeBackports || (currentTree == ui->treeMXtest && !test_initially_enabled)) {
-        if (Cmd().runAsRoot("rm " + temp_list)) {
+    if (currentTree == ui->treeBackports || currentTree == ui->treeMXtest) {
+        if (QFile::exists(temp_list)) {
+            QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
+            Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
             updateApt();
         }
     }
@@ -1456,7 +1463,7 @@ bool MainWindow::downloadAndUnzip(const QString &url, QFile &file)
                       + QFileInfo(file.fileName()).baseName()); // rm unzipped file
         return false;
     } else {
-        QString unzip = (QFileInfo(file).suffix() == QLatin1String("gz")) ? "gunzip -f " : "unxz -f ";
+        QString unzip = (QFileInfo(file).suffix() == "gz") ? "gunzip -f " : "unxz -f ";
 
         if (!cmd.run(unzip + file.fileName())) {
             qDebug() << "Could not unzip file:" << file.fileName();
@@ -1608,7 +1615,7 @@ void MainWindow::enableTabs(bool enable) const
     for (uchar tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
     }
-    if (arch == QLatin1String("i386")) {
+    if (arch == "i386") {
         ui->tabWidget->setTabEnabled(Tab::Flatpak, false);
     }
 }
@@ -1743,11 +1750,11 @@ void MainWindow::cleanup()
     if (cmd.state() != QProcess::NotRunning) {
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }
+    QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
     if (QFile::exists(temp_list)) {
-        Cmd().runAsRoot("rm " + temp_list);
+        Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
         Cmd().runAsRoot("apt-get update&");
     }
-    QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
     Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib copy_log", true);
     settings.setValue("geometry", saveGeometry());
 }
