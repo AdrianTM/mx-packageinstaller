@@ -1,4 +1,4 @@
-mx-packageinstaller (24.4) mx; urgency=medium
+mx-packageinstaller (24.4.01) mx; urgency=medium
 
   * Ensure mxpitemp.list file is removed after installation and when MXPI exits
 
