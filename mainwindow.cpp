@@ -1409,9 +1409,8 @@ bool MainWindow::isOnline()
         reply = manager.head(request);
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-        connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error),
-                [&error](QNetworkReply::NetworkError err) { error = err; }); // errorOccured only in Qt >= 5.15
-        connect(reply, QOverload<QNetworkReply::NetworkError>::of(&QNetworkReply::error), &loop, &QEventLoop::quit);
+        connect(reply, &QNetworkReply::errorOccurred, [&error](QNetworkReply::NetworkError err) { error = err; });
+        connect(reply, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
         auto timeout = settings.value("timeout", 7000).toUInt();
         QTimer::singleShot(timeout, &loop, [&loop, &error] {
             error = QNetworkReply::TimeoutError;
