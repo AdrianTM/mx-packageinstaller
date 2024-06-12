@@ -1,6 +1,7 @@
-mx-packageinstaller (24.6) mx; urgency=medium
+mx-packageinstaller (24.6.01) mx; urgency=medium
 
   * Fix: changing flatpak repo from the combo box
+  * Add flatpak-verified repo
 
  -- Adrian <adrian@mxlinux.org>  Wed, 12 Jun 2024 11:15:41 -0400
 
