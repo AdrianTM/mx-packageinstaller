@@ -77,11 +77,11 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
             displayPackages();
         }
         if (arch != "i386" && checkInstalled("flatpak")) {
-            if (!Cmd().run("flatpak remote-list --columns=name | grep -qw flathub", true)) {
+            if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub", true)) {
                 Cmd().runAsRoot(
                     "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             }
-            if (!Cmd().run("flatpak remote-list --columns=name | grep -qw flathub-verified", true)) {
+            if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub-verified", true)) {
                 Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
                                 "https://flathub.org/repo/flathub.flatpakrepo");
             }
