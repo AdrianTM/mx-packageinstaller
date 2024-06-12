@@ -1,3 +1,9 @@
+mx-packageinstaller (24.6) mx; urgency=medium
+
+  * Fix: changing flatpak repo from the combo box
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 12 Jun 2024 11:15:41 -0400
+
 mx-packageinstaller (24.5) mx; urgency=medium
 
   * Reduce memory usage

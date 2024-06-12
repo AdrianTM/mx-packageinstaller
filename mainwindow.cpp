@@ -1027,12 +1027,12 @@ void MainWindow::ifDownloadFailed() const
 void MainWindow::listFlatpakRemotes() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    QString currentRemote = ui->comboRemote->currentText();
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
     QStringList list = Cmd().getOut("flatpak remote-list " + FPuser + "| cut -f1").remove(' ').split('\n');
     ui->comboRemote->addItems(list);
-    // Set flathub default
-    ui->comboRemote->setCurrentIndex(ui->comboRemote->findText("flathub"));
+    ui->comboRemote->setCurrentText(currentRemote.isEmpty() ? "flathub" : currentRemote);
     ui->comboRemote->blockSignals(false);
 }
 
