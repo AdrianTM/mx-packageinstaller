@@ -444,7 +444,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="636"/>
         <source>Cancel</source>
-        <translation>Prekini</translation>
+        <translation>Prekliči</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="643"/>
