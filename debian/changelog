@@ -1,9 +1,3 @@
-mx-packageinstaller (24.6.03) mx; urgency=medium
-
-  * Fix: enabling/disabling extra partition
-
- -- Adrian <adrian@mxlinux.org>  Thu, 20 Jun 2024 09:37:38 -0400
-
 mx-packageinstaller (24.6.02) mx; urgency=medium
 
   * Add flatpak-verified repo
