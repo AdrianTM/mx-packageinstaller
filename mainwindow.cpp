@@ -671,21 +671,6 @@ void MainWindow::displayPopularApps() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    const QString icon_upgradable {"package-installed-outdated"};
-    const QString icon_installed {"package-installed-updated"};
-
-    const QIcon backup_icon_upgradable = QIcon(":/icons/package-installed-outdated.png");
-    const QIcon backup_icon_installed = QIcon(":/icons/package-installed-updated.png");
-
-    bool force_backup_icon = false;
-    if ( QIcon::fromTheme(icon_upgradable, backup_icon_upgradable).name().compare(
-         QIcon::fromTheme(icon_installed, backup_icon_installed).name()) == 0 ) {
-         force_backup_icon = true;
-    }
-    const QIcon qicon_installed = force_backup_icon
-                                ? backup_icon_installed
-                                : QIcon::fromTheme(icon_installed, backup_icon_installed);
-
     QMap<QString, QTreeWidgetItem *> categoryMap;
 
     for (const auto &item : popular_apps) {
@@ -790,24 +775,6 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 void MainWindow::displayPackages()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-
-    const QString icon_upgradable {"package-installed-outdated"};
-    const QString icon_installed {"package-installed-updated"};
-
-    const QIcon backup_icon_upgradable = QIcon(":/icons/package-installed-outdated.png");
-    const QIcon backup_icon_installed = QIcon(":/icons/package-installed-updated.png");
-
-    bool force_backup_icon = false;
-    if ( QIcon::fromTheme(icon_upgradable, backup_icon_upgradable).name().compare(
-         QIcon::fromTheme(icon_installed, backup_icon_installed).name()) == 0 ) {
-         force_backup_icon = true;
-    }
-    const QIcon qicon_upgradable = force_backup_icon
-                                 ? backup_icon_upgradable
-                                 : QIcon::fromTheme(icon_upgradable, backup_icon_upgradable);
-    const QIcon qicon_installed = force_backup_icon
-                                ? backup_icon_installed
-                                : QIcon::fromTheme(icon_installed, backup_icon_installed);
 
     displayPackagesIsRunning = true;
 
@@ -1961,23 +1928,22 @@ void MainWindow::setDirty()
     dirtyBackports = dirtyEnabledRepos = dirtyTest = true;
 }
 
-void MainWindow::setIcons() const
+void MainWindow::setIcons()
 {
+
     const QString icon_upgradable {"package-installed-outdated"};
-    const QIcon backup_icon_upgradable = QIcon(":/icons/package-installed-outdated.png");
     const QString icon_installed {"package-installed-updated"};
-    const QIcon backup_icon_installed = QIcon(":/icons/package-installed-updated.png");
-    bool force_backup_icon = false;
-    if ( QIcon::fromTheme(icon_upgradable, backup_icon_upgradable).name().compare(
-         QIcon::fromTheme(icon_installed, backup_icon_installed).name()) == 0 ) {
-         force_backup_icon = true;
-    }
-    const QIcon qicon_upgradable = force_backup_icon
-                                 ? backup_icon_upgradable
-                                 : QIcon::fromTheme(icon_upgradable, backup_icon_upgradable);
-    const QIcon qicon_installed = force_backup_icon
-                                ? backup_icon_installed
-                                : QIcon::fromTheme(icon_installed, backup_icon_installed);
+
+    const QIcon backup_icon_upgradable(":/icons/package-installed-outdated.png");
+    const QIcon backup_icon_installed(":/icons/package-installed-updated.png");
+
+    const QIcon theme_icon_upgradable = QIcon::fromTheme(icon_upgradable, backup_icon_upgradable);
+    const QIcon theme_icon_installed = QIcon::fromTheme(icon_installed, backup_icon_installed);
+
+    const bool force_backup_icon = (theme_icon_upgradable.cacheKey() == theme_icon_installed.cacheKey());
+
+    qicon_installed = force_backup_icon ? backup_icon_installed : theme_icon_installed;
+    qicon_upgradable = force_backup_icon ? backup_icon_upgradable : theme_icon_upgradable;
 
     ui->iconUpgradable->setIcon(qicon_upgradable);
     ui->iconUpgradable_2->setIcon(ui->iconUpgradable->icon());
