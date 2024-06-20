@@ -13,20 +13,20 @@ Build-Depends: debhelper (>= 10), qtbase5-dev, qttools5-dev-tools
 Package-List:
  mx-packageinstaller deb admin optional arch=any
 Checksums-Sha1:
- 5c2cd3684f72b9ca9d55714641edb146fc60697b 304824 mx-packageinstaller_24.6.03.tar.xz
+ 975ce4d7b4d74c818f9717ad2659e6812b3a6be4 305272 mx-packageinstaller_24.6.03.tar.xz
 Checksums-Sha256:
- e49cf5901c8c2c8e3b096e32b22bf38a774c61bac80f36cdd928afe5759659be 304824 mx-packageinstaller_24.6.03.tar.xz
+ 18c161565b1f7b0cae0f43b80c2b39848c6a3bfd5201d3fa7a012e0c4c8ba0b8 305272 mx-packageinstaller_24.6.03.tar.xz
 Files:
- 9cd439a5b64b0082190a544465e1ded3 304824 mx-packageinstaller_24.6.03.tar.xz
+ b69bbc2602d9c0d3b063cfedd7f51b4f 305272 mx-packageinstaller_24.6.03.tar.xz
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmZ0MP0THGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumJ8eCADR/b6IrRbfepBYXMEz0BVOM7nnMzcT
-jvg0AyMa53W0mWVPV+w8Mye0LTfkC3x+Bbm0xevk6rOklfQ1fSVK8dpF3+1UXF8X
-7LiadyNScptu9rnXQ//qZ/fqrWiNiIAAgT8LEmiUUqgY3PM4Og0gngJRXmhDsC3y
-ZZ2M5SkMzAjJ67XElNkB049lIAhdLNxmQAsgCzLr3O7DCOXrQqAov0/+cM+1IlRp
-seHp+uQnJf7xbOyeAAorkwLrBJNMyZBIHGMOR5Si/ba7/cy1sjxl/AT3go/U6q5M
-3YqP2cYY5Jd2CDuFg7Y4CP8WPThj4XoNnVCWuvLctkdJvuca5Tm2tKGx
-=mXo7
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmZ0jNcTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumKFsB/4qf7w8cN3xFMHEZmaeJdvQWCTF2z/m
+9Ki7a3MKwFIdy7hbwbo9EJRzWs/1d8CVM5bVGeKce/s4veYJff/naoROpt2iWCWk
+Q+pE0/lNItWTh2zHIviG+NKb2ITiAFP7CN5Sit3PPAfwkIxfOnpXPEf4dCXE/tTx
+ttJVrHVrL91/BChhAK/as1zvUY89NfE2/EldO2lpJ5eUf4LWax3KWAIyPaXzJMT5
+QUq7uRgOaHriNL9aWRnzuLMnCMxTqMy6ppJTG0P4z9Ce0+vnk/HwrHc5heHntVIt
+UxkoHpA9UGTPWaLR/1QQCbmrYjTMR2rRBWnTpAddZEOqa5gH6a7OJAQb
+=KhP9
 -----END PGP SIGNATURE-----
