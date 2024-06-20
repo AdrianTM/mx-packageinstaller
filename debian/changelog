@@ -1,4 +1,4 @@
-mx-packageinstaller (24.6.03) mx; urgency=medium
+mx-packageinstaller (24.6.04) mx; urgency=medium
 
   * Fix: fallback for identical theme icons for installed and upgradable packages
 
