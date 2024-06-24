@@ -1,3 +1,9 @@
+mx-packageinstaller (24.6.07) mx; urgency=medium
+
+  * Update backup icons
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 23 Jun 2024 22:49:49 -0400
+
 mx-packageinstaller (24.6.06) mx; urgency=medium
 
   * Fix: revert back to property comparison of qicon name() instead of cacheKey()
