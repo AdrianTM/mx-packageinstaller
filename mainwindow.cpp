@@ -1653,6 +1653,7 @@ void MainWindow::hideColumns() const
 
 void MainWindow::hideLibs() const
 {
+    currentTree->setUpdatesEnabled(false);
     if (currentTree != ui->treeFlatpak && ui->checkHideLibs->isChecked()) {
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
             if (isFilteredName((*it)->text(TreeCol::Name))) {
@@ -1660,6 +1661,7 @@ void MainWindow::hideLibs() const
             }
         }
     }
+    currentTree->setUpdatesEnabled(true);
 }
 
 // Process downloaded *Packages.gz files
@@ -2256,6 +2258,7 @@ void MainWindow::findPackageOther()
     if (word.length() == 1) {
         return;
     }
+    currentTree->setUpdatesEnabled(false);
     QList<QTreeWidgetItem *> found_items;
     if (currentTree != ui->treeFlatpak) {
         found_items = currentTree->findItems(word, Qt::MatchContains, TreeCol::Name);
@@ -2270,6 +2273,7 @@ void MainWindow::findPackageOther()
     if (currentTree != ui->treeFlatpak) {
         hideLibs();
     }
+    currentTree->setUpdatesEnabled(true);
 }
 
 void MainWindow::showOutput()
@@ -2663,6 +2667,7 @@ void MainWindow::filterChanged(const QString &arg1)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     currentTree->blockSignals(true);
+    currentTree->setUpdatesEnabled(false);
 
     QList<QTreeWidgetItem *> foundItems;
     if (currentTree == ui->treeFlatpak) {
@@ -2760,6 +2765,8 @@ void MainWindow::filterChanged(const QString &arg1)
     }
     findPackageOther();
     setSearchFocus();
+
+    currentTree->setUpdatesEnabled(true);
     currentTree->blockSignals(false);
 }
 
@@ -2882,6 +2889,7 @@ void MainWindow::on_pushForceUpdateBP_clicked()
 // Hide/unhide lib/-dev packages
 void MainWindow::on_checkHideLibs_toggled(bool checked)
 {
+    ui->treeEnabled->setUpdatesEnabled(false);
     ui->checkHideLibsMX->setChecked(checked);
     ui->checkHideLibsBP->setChecked(checked);
 
@@ -2889,6 +2897,7 @@ void MainWindow::on_checkHideLibs_toggled(bool checked)
         (*it)->setHidden(isFilteredName((*it)->text(TreeCol::Name)) && checked);
     }
     filterChanged(ui->comboFilterEnabled->currentText());
+    ui->treeEnabled->setUpdatesEnabled(true);
 }
 
 void MainWindow::on_pushUpgradeAll_clicked()
