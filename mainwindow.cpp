@@ -808,15 +808,13 @@ void MainWindow::displayPackages()
     newtree->clear();
 
     // Create a list of apps, create a hash with app_name, app_info
-    QList<QTreeWidgetItem *> items;
     for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
-        auto *widget_item = new QTreeWidgetItem();
+        auto *widget_item = new QTreeWidgetItem(newtree);
         widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
         widget_item->setText(TreeCol::Name, it.key());
         widget_item->setText(TreeCol::Version, it.value().version);
         widget_item->setText(TreeCol::Description, it.value().description);
         widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
-        items.append(widget_item);
     }
 
     // Add installed apps that are not available in the list
@@ -824,20 +822,14 @@ void MainWindow::displayPackages()
         if (list->contains(it.key())) {
             continue;
         }
-        auto *widget_item = new QTreeWidgetItem();
+        auto *widget_item = new QTreeWidgetItem(newtree);
         widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
         widget_item->setText(TreeCol::Name, it.key());
         widget_item->setText(TreeCol::Version, it.value().version);
         widget_item->setText(TreeCol::Description, it.value().description);
         widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
-        items.append(widget_item);
     }
-
-    std::sort(items.begin(), items.end(),
-              [](QTreeWidgetItem *a, QTreeWidgetItem *b) { return a->text(TreeCol::Name) < b->text(TreeCol::Name); });
-
-    // Add sorted items to the tree
-    newtree->addTopLevelItems(items);
+    newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
 
     // Process the entire list of apps and count upgradable and installable
     int upgr_count = 0;
