@@ -817,6 +817,19 @@ void MainWindow::displayPackages()
         widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
     }
 
+    // Add installed apps that are not available in the list
+    for (auto it = installed_packages.constBegin(); it != installed_packages.constEnd(); ++it) {
+        if (list->contains(it.key())) {
+            continue;
+        }
+        auto *widget_item = new QTreeWidgetItem(newtree);
+        widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
+        widget_item->setText(TreeCol::Name, it.key());
+        widget_item->setText(TreeCol::Version, it.value().version);
+        widget_item->setText(TreeCol::Description, it.value().description);
+        widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
+    }
+
     // Process the entire list of apps and count upgradable and installable
     int upgr_count = 0;
     int inst_count = 0;
@@ -1821,24 +1834,38 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
     return true;
 }
 
-QStringList MainWindow::listInstalled() const
+QMap<QString, PackageInfo> MainWindow::listInstalled() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     Cmd shell;
-    QString str = shell.getOut("dpkg --get-selections | grep -v deinstall | cut -f1", true);
+    QString list = shell.getOut(
+        "dpkg-query -W -f='+${Status}+${Package} ${Version} ${binary:Synopsis}\n' | grep 'install ok installed'");
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         QMessageBox::critical(
             nullptr, tr("Error"),
             tr("dpkg command returned an error, please run 'dpkg --list' in terminal and check the output."));
         exit(EXIT_FAILURE);
     }
-    str.remove(":i386");
-    str.remove(":amd64");
-    str.remove(":arm64");
-    str.remove(":armhf");
-    return str.split('\n');
-}
 
+    QMap<QString, PackageInfo> installedPackages;
+    const auto lines = list.split('\n', Qt::SkipEmptyParts);
+    const QString statusPrefix = "+install ok installed+";
+
+    for (const QString &line : lines) {
+        if (line.startsWith(statusPrefix)) {
+            QString trimmedLine = line.mid(statusPrefix.length());
+            QStringList parts = trimmedLine.split(' ', Qt::SkipEmptyParts);
+            if (parts.size() >= 3) {
+                QString packageName = parts.takeFirst();
+                QString version = parts.takeFirst();
+                QString description = parts.join(' ');
+                installedPackages.insert(packageName, {version, description});
+            }
+        }
+    }
+
+    return installedPackages;
+}
 QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
