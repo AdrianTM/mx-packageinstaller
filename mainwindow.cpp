@@ -808,13 +808,15 @@ void MainWindow::displayPackages()
     newtree->clear();
 
     // Create a list of apps, create a hash with app_name, app_info
+    QList<QTreeWidgetItem *> items;
     for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
-        auto *widget_item = new QTreeWidgetItem(newtree);
+        auto *widget_item = new QTreeWidgetItem();
         widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
         widget_item->setText(TreeCol::Name, it.key());
         widget_item->setText(TreeCol::Version, it.value().version);
         widget_item->setText(TreeCol::Description, it.value().description);
         widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
+        items.append(widget_item);
     }
 
     // Add installed apps that are not available in the list
@@ -822,13 +824,20 @@ void MainWindow::displayPackages()
         if (list->contains(it.key())) {
             continue;
         }
-        auto *widget_item = new QTreeWidgetItem(newtree);
+        auto *widget_item = new QTreeWidgetItem();
         widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
         widget_item->setText(TreeCol::Name, it.key());
         widget_item->setText(TreeCol::Version, it.value().version);
         widget_item->setText(TreeCol::Description, it.value().description);
         widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
+        items.append(widget_item);
     }
+
+    std::sort(items.begin(), items.end(),
+              [](QTreeWidgetItem *a, QTreeWidgetItem *b) { return a->text(TreeCol::Name) < b->text(TreeCol::Name); });
+
+    // Add sorted items to the tree
+    newtree->addTopLevelItems(items);
 
     // Process the entire list of apps and count upgradable and installable
     int upgr_count = 0;
@@ -1838,23 +1847,21 @@ QMap<QString, PackageInfo> MainWindow::listInstalled() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     Cmd shell;
-    QString list = shell.getOut(
-        "dpkg-query -W -f='+${Status}+${Package} ${Version} ${binary:Synopsis}\n' | grep 'install ok installed'");
+    QString list = shell.getOut("dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\n'");
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         QMessageBox::critical(
             nullptr, tr("Error"),
-            tr("dpkg command returned an error, please run 'dpkg --list' in terminal and check the output."));
+            tr("dpkg-query command returned an error. Please run 'dpkg-query -W' in terminal and check the output."));
         exit(EXIT_FAILURE);
     }
 
     QMap<QString, PackageInfo> installedPackages;
     const auto lines = list.split('\n', Qt::SkipEmptyParts);
-    const QString statusPrefix = "+install ok installed+";
+    const QString statusPrefix = "ii ";
 
     for (const QString &line : lines) {
         if (line.startsWith(statusPrefix)) {
-            QString trimmedLine = line.mid(statusPrefix.length());
-            QStringList parts = trimmedLine.split(' ', Qt::SkipEmptyParts);
+            QStringList parts = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
             if (parts.size() >= 3) {
                 QString packageName = parts.takeFirst();
                 QString version = parts.takeFirst();
