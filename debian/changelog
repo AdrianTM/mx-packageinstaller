@@ -1,3 +1,10 @@
+mx-packageinstaller (24.7) mx; urgency=medium
+
+  * List all installed packages (even if not available in the selected
+    repo) to make it easier to remove them
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 08 Jul 2024 11:59:26 -0400
+
 mx-packageinstaller (24.6.07) mx; urgency=medium
 
   * Update backup icons
