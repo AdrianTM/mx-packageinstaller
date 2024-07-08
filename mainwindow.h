@@ -228,6 +228,8 @@ private:
     [[nodiscard]] QString mapArchToFormat(const QString &arch) const;
     [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
     [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
+    [[nodiscard]] QTreeWidgetItem *createTreeItem(const QString &name, const QString &version,
+                                                  const QString &description) const;
     [[nodiscard]] bool checkInstalled(const QString &names) const;
     [[nodiscard]] bool checkInstalled(const QStringList &name_list) const;
     [[nodiscard]] bool checkUpgradable(const QStringList &name_list) const;
@@ -238,6 +240,7 @@ private:
     [[nodiscard]] static uchar getDebianVerNum();
     bool buildPackageLists(bool force_download = false);
     bool confirmActions(const QString &names, const QString &action);
+
     bool downloadAndUnzip(const QString &url, QFile &file);
     bool downloadAndUnzip(const QString &url, const QString &repo_name, const QString &branch, const QString &format,
                           QFile &file);

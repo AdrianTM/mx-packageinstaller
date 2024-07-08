@@ -807,29 +807,23 @@ void MainWindow::displayPackages()
     newtree->blockSignals(true);
     newtree->clear();
 
-    // Create a list of apps, create a hash with app_name, app_info
-    for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
-        auto *widget_item = new QTreeWidgetItem(newtree);
-        widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
-        widget_item->setText(TreeCol::Name, it.key());
-        widget_item->setText(TreeCol::Version, it.value().version);
-        widget_item->setText(TreeCol::Description, it.value().description);
-        widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
-    }
+    newtree->setUpdatesEnabled(false); // Disable updates to prevent UI redraws during insertions
+    QList<QTreeWidgetItem *> items;
+    items.reserve(list->size() + installed_packages.size());
 
+    for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
+        items.append(createTreeItem(it.key(), it.value().version, it.value().description));
+    }
     // Add installed apps that are not available in the list
     for (auto it = installed_packages.constBegin(); it != installed_packages.constEnd(); ++it) {
-        if (list->contains(it.key())) {
-            continue;
+        if (!list->contains(it.key())) {
+            items.append(createTreeItem(it.key(), it.value().version, it.value().description));
         }
-        auto *widget_item = new QTreeWidgetItem(newtree);
-        widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
-        widget_item->setText(TreeCol::Name, it.key());
-        widget_item->setText(TreeCol::Version, it.value().version);
-        widget_item->setText(TreeCol::Description, it.value().description);
-        widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
     }
+
+    newtree->addTopLevelItems(items);
     newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
+    newtree->setUpdatesEnabled(true); // Re-enable updates after all insertions are done
 
     // Process the entire list of apps and count upgradable and installable
     int upgr_count = 0;
@@ -1934,6 +1928,18 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
         return {};
     }
     return list;
+}
+
+QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
+                                            const QString &description) const
+{
+    auto *widget_item = new QTreeWidgetItem();
+    widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
+    widget_item->setText(TreeCol::Name, name);
+    widget_item->setText(TreeCol::Version, version);
+    widget_item->setText(TreeCol::Description, description);
+    widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
+    return widget_item;
 }
 
 void MainWindow::setCurrentTree()
