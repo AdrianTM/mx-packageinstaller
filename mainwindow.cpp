@@ -268,7 +268,7 @@ void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    QStringList list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n');
+    QStringList list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
     auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
                                  [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
     ui->labelNumSize->setText(convert(total));
@@ -886,11 +886,9 @@ void MainWindow::displayFlatpaks(bool force_update)
         installed_runtimes_fp = listInstalledFlatpaks("--runtime");
         uint total_count = 0;
         QTreeWidgetItem *widget_item {nullptr};
-        QString version;
-        QString size;
         for (QString item : qAsConst(flatpaks)) {
-            size = item.section('\t', -1);
-            version = item.section('\t', 0, 0);
+            QString size = item.section('\t', -1);
+            QString version = item.section('\t', 0, 0);
             item = item.section('\t', 1, 1).section('/', 1);
             if (version.isEmpty()) {
                 version = item.section('/', -1);
@@ -924,7 +922,7 @@ void MainWindow::displayFlatpaks(bool force_update)
         ui->labelNumAppFP->setText(QString::number(total_count));
 
         uint total = 0;
-        if (installed_apps_fp != QStringList(QLatin1String(""))) {
+        if (installed_apps_fp != QStringList("")) {
             total = installed_apps_fp.count();
         }
         ui->labelNumInstFP->setText(QString::number(total));
@@ -1852,9 +1850,9 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 // List installed flatpaks by type: apps, runtimes, or all (if no type is provided)
 QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
-    QStringList list {
-        cmd.getOut("flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref").remove(' ').split('\n')};
-    if (list == QStringList("")) {
+    QStringList list {cmd.getOut("flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref")
+                          .split('\n', Qt::SkipEmptyParts)};
+    if (list.isEmpty()) {
         return {};
     }
     return list;
