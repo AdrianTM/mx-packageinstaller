@@ -1488,13 +1488,12 @@ bool MainWindow::downloadAndUnzip(const QString &url, QFile &file)
         QFile::remove(QFileInfo(file.fileName()).path() + '/'
                       + QFileInfo(file.fileName()).baseName()); // rm unzipped file
         return false;
-    } else {
-        QString unzip = (QFileInfo(file).suffix() == "gz") ? "gunzip -f " : "unxz -f ";
+    }
 
-        if (!cmd.run(unzip + file.fileName())) {
-            qDebug() << "Could not unzip file:" << file.fileName();
-            return false;
-        }
+    QString unzipCommand = (QFileInfo(file).suffix() == "gz") ? "gunzip -f " : "unxz -f ";
+    if (!cmd.run(unzipCommand + file.fileName())) {
+        qDebug() << "Could not unzip file:" << file.fileName();
+        return false;
     }
     return true;
 }
