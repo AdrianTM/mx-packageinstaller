@@ -441,8 +441,8 @@ void MainWindow::checkUncheckItem()
     if (!currentTreeWidget || !currentTreeWidget->currentItem() || currentTreeWidget->currentItem()->childCount() > 0) {
         return;
     }
-    const auto col = (currentTreeWidget == ui->treePopularApps) ? static_cast<uchar>(PopCol::Check)
-                                                                : static_cast<uchar>(TreeCol::Check);
+    const auto col = (currentTreeWidget == ui->treePopularApps) ? static_cast<int>(PopCol::Check)
+                                                                : static_cast<int>(TreeCol::Check);
     const auto newCheckState
         = (currentTreeWidget->currentItem()->checkState(col) == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
 
@@ -686,7 +686,7 @@ void MainWindow::displayPopularApps() const
         }
     }
 
-    for (uchar i = 0; i < ui->treePopularApps->columnCount(); ++i) {
+    for (int i = 0; i < ui->treePopularApps->columnCount(); ++i) {
         ui->treePopularApps->resizeColumnToContents(i);
     }
 
@@ -841,7 +841,7 @@ void MainWindow::displayPackages()
             }
         }
     }
-    for (uchar i = 0; i < newtree->columnCount(); ++i) {
+    for (int i = 0; i < newtree->columnCount(); ++i) {
         newtree->resizeColumnToContents(i);
     }
     if (newtree == ui->treeEnabled) {
@@ -928,7 +928,7 @@ void MainWindow::displayFlatpaks(bool force_update)
         ui->labelNumInstFP->setText(QString::number(total));
         ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
         removeDuplicatesFP();
-        for (uchar i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
+        for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
             ui->treeFlatpak->resizeColumnToContents(i);
         }
     }
@@ -1592,7 +1592,7 @@ bool MainWindow::downloadPackageList(bool force_download)
 
 void MainWindow::enableTabs(bool enable) const
 {
-    for (uchar tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
+    for (int tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
     }
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
@@ -2124,60 +2124,52 @@ void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
 
 void MainWindow::findPopular() const
 {
-    QString word = ui->searchPopular->text();
+    const QString word = ui->searchPopular->text();
     if (word.length() == 1) {
         return;
     }
 
+    ui->treePopularApps->setUpdatesEnabled(false);
+
     if (word.isEmpty()) {
         for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
-            (*it)->setExpanded(false);
-        }
-        ui->treePopularApps->reset();
-        for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
-            if ((*it)->parent() == nullptr) {
-                (*it)->setFirstColumnSpanned(true);
-            }
-        }
-        for (uchar i = 1; i < ui->treePopularApps->columnCount(); ++i) {
-            ui->treePopularApps->resizeColumnToContents(i);
-        }
-        return;
-    }
-    auto found_items = ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, PopCol::Name);
-    found_items << ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive,
-                                                  PopCol::Icon); // Category
-    found_items << ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, PopCol::Description);
-
-    // Hide/unhide items
-    for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
-        if ((*it)->parent()) {
-            if (found_items.contains(*it)) {
-                (*it)->setHidden(false);
-            } else {
-                (*it)->parent()->setHidden(true);
-                (*it)->setHidden(true);
-            }
-        }
-    }
-
-    // Process found items
-    for (const auto &item : qAsConst(found_items)) {
-        if (item->parent()) { // If child, expand parent
-            item->parent()->setExpanded(true);
-            item->parent()->setHidden(false);
-        } else { // if parent, expand children
-            item->setFirstColumnSpanned(true);
-            item->setExpanded(true);
+            QTreeWidgetItem *item = *it;
+            item->setExpanded(false);
             item->setHidden(false);
-            for (int i = 0; i < item->childCount(); ++i) {
-                item->child(i)->setHidden(false);
+            if (!item->parent()) {
+                item->setFirstColumnSpanned(true);
+            }
+        }
+    } else {
+        QSet<QTreeWidgetItem *> foundItems;
+        for (int column : {PopCol::Name, PopCol::Icon, PopCol::Description}) {
+            const auto items = ui->treePopularApps->findItems(word, Qt::MatchContains | Qt::MatchRecursive, column);
+            for (QTreeWidgetItem *item : items) {
+                foundItems.insert(item);
+                QTreeWidgetItem *parent = item->parent();
+                while (parent) {
+                    foundItems.insert(parent);
+                    parent = parent->parent();
+                }
+            }
+        }
+
+        for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
+            QTreeWidgetItem *item = *it;
+            const bool isFound = foundItems.contains(item);
+            item->setHidden(!isFound);
+            if (isFound && !item->parent()) {
+                item->setExpanded(true);
+                item->setFirstColumnSpanned(true);
             }
         }
     }
-    for (uchar i = 1; i < ui->treePopularApps->columnCount(); ++i) {
+
+    for (int i = 1; i < ui->treePopularApps->columnCount(); ++i) {
         ui->treePopularApps->resizeColumnToContents(i);
     }
+
+    ui->treePopularApps->setUpdatesEnabled(true);
 }
 
 void MainWindow::findPackageOther()
@@ -2193,17 +2185,35 @@ void MainWindow::findPackageOther()
         return;
     }
     currentTree->setUpdatesEnabled(false);
-    QList<QTreeWidgetItem *> found_items;
-    if (currentTree != ui->treeFlatpak) {
-        found_items = currentTree->findItems(word, Qt::MatchContains, TreeCol::Name);
-        found_items << currentTree->findItems(word, Qt::MatchContains, TreeCol::Description);
-    } else {
-        found_items = currentTree->findItems(word, Qt::MatchContains, FlatCol::LongName);
+
+    // Use a set to track found items for faster lookup
+    QSet<QTreeWidgetItem *> foundItems;
+    QList<QTreeWidgetItem *> items;
+
+    // Define the columns to search based on the current tree
+    QVector<int> searchColumns = currentTree != ui->treeFlatpak
+                                 ? QVector<int>({TreeCol::Name, TreeCol::Description})
+                                 : QVector<int>({FlatCol::LongName});
+
+    // Find items in the specified columns
+    for (int column : searchColumns) {
+        items.append(currentTree->findItems(word, Qt::MatchContains | Qt::MatchRecursive, column));
     }
-    for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-        bool shouldHide = (*it)->data(0, Qt::UserRole) == false || !found_items.contains(*it);
-        (*it)->setHidden(shouldHide);
+
+    // Insert found items and their ancestors into the set
+    for (QTreeWidgetItem *item : qAsConst(items)) {
+        while (item) {
+            foundItems.insert(item);
+            item = item->parent();
+        }
     }
+
+    // Iterate through all items and hide those not in the found set
+    for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
+        QTreeWidgetItem *item = *it;
+        item->setHidden(!foundItems.contains(item));
+    }
+
     if (currentTree != ui->treeFlatpak) {
         hideLibs();
     }
