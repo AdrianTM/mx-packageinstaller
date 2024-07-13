@@ -1925,10 +1925,13 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
         QMessageBox::critical(
             this, tr("Error"),
             tr("dpkg command returned an error, please run 'dpkg --list' in terminal and check the output."));
-        exit(EXIT_FAILURE);
+        return result;
     }
     for (const QString &line : list) {
         QStringList item = line.split(QRegularExpression("\\s{2,}"));
+        if (item.size() < 3) {
+            continue;
+        }
         QString name = item.at(1);
         name.remove(":i386").remove(":amd64");
         QString ver_str = item.at(2);
