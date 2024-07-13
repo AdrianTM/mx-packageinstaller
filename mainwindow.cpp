@@ -2191,9 +2191,8 @@ void MainWindow::findPackageOther()
     QList<QTreeWidgetItem *> items;
 
     // Define the columns to search based on the current tree
-    QVector<int> searchColumns = currentTree != ui->treeFlatpak
-                                 ? QVector<int>({TreeCol::Name, TreeCol::Description})
-                                 : QVector<int>({FlatCol::LongName});
+    QVector<int> searchColumns = currentTree != ui->treeFlatpak ? QVector<int>({TreeCol::Name, TreeCol::Description})
+                                                                : QVector<int>({FlatCol::LongName});
 
     // Find items in the specified columns
     for (int column : searchColumns) {
@@ -2211,7 +2210,8 @@ void MainWindow::findPackageOther()
     // Iterate through all items and hide those not in the found set
     for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
         QTreeWidgetItem *item = *it;
-        item->setHidden(!foundItems.contains(item));
+        bool shouldHide = item->data(0, Qt::UserRole) == false;
+        item->setHidden(!foundItems.contains(item) || shouldHide);
     }
 
     if (currentTree != ui->treeFlatpak) {
@@ -2448,9 +2448,8 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             }
         } else if (currentTree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
             if (!buildPackageLists()) {
-                QMessageBox::critical(
-                    this, tr("Error"),
-                    tr("Could not download the list of packages. Please check your APT sources."));
+                QMessageBox::critical(this, tr("Error"),
+                                      tr("Could not download the list of packages. Please check your APT sources."));
                 currentTree->blockSignals(false);
                 return;
             }
