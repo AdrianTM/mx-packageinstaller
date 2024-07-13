@@ -111,15 +111,8 @@ void MainWindow::setup()
     arch = AptCache::getArch();
     ver_name = getDebianVerName();
 
-    if (arch == "i386") {
-        ui->tabWidget->setTabEnabled(Tab::Flatpak, false); // setTabVisible is available only on Qt >= 5.15
-        ui->tabWidget->setTabToolTip(Tab::Flatpak, tr("Flatpak tab is disabled on 32-bit."));
-    }
-
-    if (!QFile::exists("/etc/apt/sources.list.d/mx.list")) {
-        ui->tabWidget->setTabEnabled(Tab::Test, false); // setTabVisible is available only on Qt >= 5.15
-        ui->tabWidget->setTabToolTip(Tab::Test, tr("Could not find MX sources."));
-    }
+    ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
+    ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
 
     lock_file = new LockFile("/var/lib/dpkg/lock");
 
@@ -1640,9 +1633,8 @@ void MainWindow::enableTabs(bool enable) const
     for (uchar tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
     }
-    if (arch == "i386") {
-        ui->tabWidget->setTabEnabled(Tab::Flatpak, false);
-    }
+    ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
+    ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
 }
 
 void MainWindow::hideColumns() const
