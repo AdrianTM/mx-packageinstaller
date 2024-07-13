@@ -2478,7 +2478,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             }
         }
         ui->comboFilterMX->setCurrentIndex(filter_idx);
-        if (!ui->searchBoxMX->text().isEmpty()) {
+        if (!search_str.isEmpty()) {
             findPackageOther();
         }
         currentTree->blockSignals(false);
@@ -2498,7 +2498,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             }
         }
         ui->comboFilterBP->setCurrentIndex(filter_idx);
-        if (!ui->searchBoxBP->text().isEmpty()) {
+        if (!search_str.isEmpty()) {
             findPackageOther();
         }
         currentTree->blockSignals(false);
@@ -2512,7 +2512,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         ui->searchBoxFlatpak->setFocus();
         if (!firstRunFP && checkInstalled("flatpak")) {
             ui->searchBoxBP->setText(search_str);
-            if (!ui->searchBoxBP->text().isEmpty()) {
+            if (!search_str.isEmpty()) {
                 findPackageOther();
             }
             if (!displayFlatpaksIsRunning) {
@@ -2583,7 +2583,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
             }
         }
         ui->searchBoxBP->setText(search_str);
-        if (!ui->searchBoxBP->text().isEmpty()) {
+        if (!search_str.isEmpty()) {
             findPackageOther();
         }
         break;
