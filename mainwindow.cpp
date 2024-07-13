@@ -1417,7 +1417,7 @@ bool MainWindow::isOnline()
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
     auto error = QNetworkReply::NoError;
-    for (const QString address : {"https://mxrepo.com", "https://google.com"}) {
+    for (const QString &address : {"https://mxrepo.com", "https://google.com"}) {
         error = QNetworkReply::NoError; // reset for each tried address
         QNetworkProxyQuery query {QUrl(address)};
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
@@ -1431,10 +1431,7 @@ bool MainWindow::isOnline()
         connect(reply, &QNetworkReply::errorOccurred, [&error](QNetworkReply::NetworkError err) { error = err; });
         connect(reply, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
         auto timeout = settings.value("timeout", 7000).toUInt();
-        QTimer::singleShot(timeout, &loop, [&loop, &error] {
-            error = QNetworkReply::TimeoutError;
-            loop.quit();
-        }); // manager.setTransferTimeout(time) // only in Qt >= 5.15
+        manager.setTransferTimeout(timeout);
         loop.exec();
         reply->disconnect();
         if (error == QNetworkReply::NoError) {
