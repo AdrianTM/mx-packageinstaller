@@ -585,9 +585,10 @@ void MainWindow::removeDuplicatesFP() const
     QTreeWidgetItemIterator it(ui->treeFlatpak);
     QTreeWidgetItem *prevItem = nullptr;
     QSet<QString> namesSet;
+    ui->treeFlatpak->setUpdatesEnabled(false);
 
     // Find and mark duplicates
-    while ((*it) != nullptr) {
+    while (*it) {
         QString currentName = (*it)->text(FlatCol::Name);
         if (namesSet.contains(currentName)) {
             // Mark both occurrences as duplicate
@@ -601,13 +602,17 @@ void MainWindow::removeDuplicatesFP() const
         prevItem = *it;
         ++it;
     }
+
+    it = QTreeWidgetItemIterator(ui->treeFlatpak); // Rewind iterator
     // Rename duplicates to use more context
-    for (QTreeWidgetItemIterator it(ui->treeFlatpak); (*it) != nullptr; ++it) {
+    while (*it) {
         if ((*it)->data(FlatCol::Duplicate, Qt::UserRole).toBool()) {
             QString longName = (*it)->text(FlatCol::LongName);
             (*it)->setText(FlatCol::Name, longName.section('.', -2));
         }
+        ++it;
     }
+    ui->treeFlatpak->setUpdatesEnabled(true);
 }
 
 void MainWindow::setConnections() const
@@ -672,6 +677,7 @@ void MainWindow::displayPopularApps() const
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     QMap<QString, QTreeWidgetItem *> categoryMap;
+    ui->treePopularApps->setUpdatesEnabled(false);
 
     for (const auto &item : popular_apps) {
         QTreeWidgetItem *topLevelItem = nullptr;
@@ -718,12 +724,14 @@ void MainWindow::displayPopularApps() const
     ui->treePopularApps->sortItems(PopCol::Icon, Qt::AscendingOrder);
     connect(ui->treePopularApps, &QTreeWidget::itemClicked, this, &MainWindow::displayPopularInfo,
             Qt::UniqueConnection);
+    ui->treePopularApps->setUpdatesEnabled(true);
 }
 
 void MainWindow::displayFilteredFP(QStringList list, bool raw)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->treeFlatpak->blockSignals(true);
+    ui->treeFlatpak->setUpdatesEnabled(false);
 
     QMutableStringListIterator i(list);
     if (raw) { // Raw format that needs to be edited
@@ -770,6 +778,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     ui->labelNumAppFP->setText(QString::number(total));
     ui->treeFlatpak->blockSignals(false);
     blockInterfaceFP(false);
+    ui->treeFlatpak->setUpdatesEnabled(true);
 }
 
 void MainWindow::displayPackages()
@@ -805,9 +814,9 @@ void MainWindow::displayPackages()
         dirtyEnabledRepos = false;
     }
     newtree->blockSignals(true);
+    newtree->setUpdatesEnabled(false);
     newtree->clear();
 
-    newtree->setUpdatesEnabled(false); // Disable updates to prevent UI redraws during insertions
     QList<QTreeWidgetItem *> items;
     items.reserve(list->size() + installed_packages.size());
 
@@ -823,8 +832,7 @@ void MainWindow::displayPackages()
 
     newtree->addTopLevelItems(items);
     newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
-    newtree->setUpdatesEnabled(true); // Re-enable updates after all insertions are done
-
+    newtree->setUpdatesEnabled(true);
     // Process the entire list of apps and count upgradable and installable
     int upgr_count = 0;
     int inst_count = 0;
@@ -885,6 +893,7 @@ void MainWindow::displayPackages()
 void MainWindow::displayFlatpaks(bool force_update)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    ui->treeFlatpak->setUpdatesEnabled(false);
     displayFlatpaksIsRunning = true;
     lastItemClicked = nullptr;
     if (flatpaks.isEmpty() || force_update) {
@@ -978,6 +987,7 @@ void MainWindow::displayFlatpaks(bool force_update)
     displayFlatpaksIsRunning = false;
     firstRunFP = false;
     blockInterfaceFP(false);
+    ui->treeFlatpak->setUpdatesEnabled(true);
 }
 
 void MainWindow::displayWarning(const QString &repo)
