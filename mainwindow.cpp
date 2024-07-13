@@ -1417,7 +1417,7 @@ bool MainWindow::isOnline()
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
     auto error = QNetworkReply::NoError;
-    for (const QString &address : {"https://mxrepo.com", "https://google.com"}) {
+    for (const QString address : {"https://mxrepo.com", "https://google.com"}) {
         error = QNetworkReply::NoError; // reset for each tried address
         QNetworkProxyQuery query {QUrl(address)};
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
@@ -1428,13 +1428,12 @@ bool MainWindow::isOnline()
         reply = manager.head(request);
         QEventLoop loop;
         connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-        connect(reply, &QNetworkReply::errorOccurred, [&error](QNetworkReply::NetworkError err) { error = err; });
         connect(reply, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
         auto timeout = settings.value("timeout", 7000).toUInt();
         manager.setTransferTimeout(timeout);
         loop.exec();
         reply->disconnect();
-        if (error == QNetworkReply::NoError) {
+        if (reply->error() == QNetworkReply::NoError) {
             return true;
         }
     }
@@ -1450,8 +1449,7 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
         return false;
     }
 
-    QNetworkRequest request;
-    request.setUrl(QUrl(url));
+    QNetworkRequest request {QUrl(url)};
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setRawHeader("User-Agent", QApplication::applicationName().toUtf8() + '/'
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
@@ -1459,24 +1457,25 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     reply = manager.get(request);
     QEventLoop loop;
 
-    bool success = true;
-    connect(reply, &QNetworkReply::readyRead, this,
-            [this, &file, &success] { success = (file.write(reply->readAll()) != 0); });
+    connect(reply, &QNetworkReply::readyRead, this, [&file, this]() {
+        if (file.write(reply->readAll()) == -1) {
+            qDebug() << "Failed to write data to file:" << file.fileName();
+            reply->abort();
+            file.close();
+            file.remove();
+        }
+    });
     connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
-    reply->disconnect();
-
-    if (!success) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("There was an error writing file: %1. Please check if you have "
-                                "enough free space on your drive")
-                                 .arg(file.fileName()));
-        exit(EXIT_FAILURE);
-    }
-
     file.close();
+
     if (reply->error() != QNetworkReply::NoError) {
-        qDebug() << "There was an error downloading the file:" << url;
+        QMessageBox::warning(
+            this, tr("Error"),
+            tr("There was an error writing file: %1. Please check if you have enough free space on your drive")
+                .arg(file.fileName()));
+        qDebug() << "There was an error downloading the file:" << url << "Error:" << reply->errorString();
+        file.remove();
         return false;
     }
     return true;
