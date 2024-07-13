@@ -105,7 +105,6 @@ void MainWindow::setup()
     font.setStyleHint(QFont::Monospace);
     ui->outputBox->setFont(font);
 
-    fp_ver = getVersion("flatpak");
     FPuser = "--system ";
 
     arch = AptCache::getArch();
@@ -269,30 +268,7 @@ void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    QStringList list;
-    if (fp_ver < VersionNumber("1.0.1")) { // Older version doesn't display all apps
-                                           // and runtimes without specifying them
-        list = cmd.getOut("flatpak -d list  " + FPuser + "--app |tr -s ' ' |cut -f1,5,6 -d' '").split('\n');
-        QStringList runtimes
-            = cmd.getOut("flatpak -d list " + FPuser + "--runtime|tr -s ' '|cut -f1,5,6 -d' '").split('\n');
-        if (!runtimes.isEmpty()) {
-            list << runtimes;
-        }
-        for (QTreeWidgetItemIterator it(ui->treeFlatpak); (*it) != nullptr; ++it) {
-            for (const QString &item : qAsConst(list)) {
-                QString name = item.section(' ', 0, 0);
-                QString size = item.section(' ', 1);
-                if (name == (*it)->data(FlatCol::FullName, Qt::UserRole)) {
-                    (*it)->setText(FlatCol::Size, size);
-                }
-            }
-        }
-    } else if (fp_ver < VersionNumber("1.2.4")) {
-        list = cmd.getOut("flatpak -d list " + FPuser + "|tr -s ' '|cut -f1,5").split('\n');
-    } else {
-        list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n');
-    }
-
+    QStringList list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n');
     auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
                                  [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
     ui->labelNumSize->setText(convert(total));
@@ -728,14 +704,8 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 
     QMutableStringListIterator i(list);
     if (raw) { // Raw format that needs to be edited
-        if (fp_ver < VersionNumber("1.2.4")) {
-            while (i.hasNext()) {
-                i.setValue(i.next().section('\t', 0, 0)); // Remove size
-            }
-        } else {
-            while (i.hasNext()) {
-                i.setValue(i.next().section('\t', 1, 1).section('/', 1)); // Remove version and size
-            }
+        while (i.hasNext()) {
+            i.setValue(i.next().section('\t', 1, 1).section('/', 1)); // Remove version and size
         }
     }
     uint total = 0;
@@ -919,15 +889,9 @@ void MainWindow::displayFlatpaks(bool force_update)
         QString version;
         QString size;
         for (QString item : qAsConst(flatpaks)) {
-            if (fp_ver < VersionNumber("1.2.4")) {
-                size = item.section('\t', 1, 1);
-                item = item.section('\t', 0, 0); // strip size
-                version = item.section('/', -1);
-            } else { // Buster and higher versions
-                size = item.section('\t', -1);
-                version = item.section('\t', 0, 0);
-                item = item.section('\t', 1, 1).section('/', 1);
-            }
+            size = item.section('\t', -1);
+            version = item.section('\t', 0, 0);
+            item = item.section('\t', 1, 1).section('/', 1);
             if (version.isEmpty()) {
                 version = item.section('/', -1);
             }
@@ -1787,11 +1751,12 @@ QString MainWindow::getVersion(const QString &name) const
 // Return true if all the packages listed are installed
 bool MainWindow::checkInstalled(const QVariant &names) const
 {
-    QStringList name_list = names.canConvert<QStringList>() ? names.toStringList()
-                        : names.toString().split('\n', Qt::SkipEmptyParts);
+    QStringList name_list
+        = names.canConvert<QStringList>() ? names.toStringList() : names.toString().split('\n', Qt::SkipEmptyParts);
 
-    return !name_list.isEmpty() && std::all_of(name_list.cbegin(), name_list.cend(),
-                       [this](const QString &name) { return installed_packages.contains(name.trimmed()); });
+    return !name_list.isEmpty() && std::all_of(name_list.cbegin(), name_list.cend(), [this](const QString &name) {
+        return installed_packages.contains(name.trimmed());
+    });
 }
 
 // Return true if all the items in the list are upgradable
@@ -1840,71 +1805,55 @@ QMap<QString, PackageInfo> MainWindow::listInstalled() const
 
     return installedPackages;
 }
+
 QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     static bool updated = false;
 
-    // Need to specify arch for older version (flatpak takes different format than dpkg)
     QString arch_fp = getArchOption();
     if (arch_fp.isEmpty()) {
         return {};
     }
 
-    bool success = false;
-    QStringList list;
     Cmd shell;
-    if (fp_ver < VersionNumber("1.0.1")) {
-        // List packages, strip first part remote/ or app/ no size for old flatpak
-        success = shell.run("flatpak -d remote-ls " + FPuser + remote + ' ' + arch_fp + type
-                            + R"( 2>/dev/null| cut -f1 | tr -s ' ' | cut -f1 -d' '|sed 's/^[^\/]*\///g' ")");
-        list = shell.readAllOutput().split('\n');
-    } else if (fp_ver < VersionNumber("1.2.4")) { // lower than Buster version
-        // List size too
-        success = shell.run("flatpak -d remote-ls " + FPuser + remote + ' ' + arch_fp + type
-                            + R"( 2>/dev/null| cut -f1,3 |tr -s ' ' | sed 's/^[^\/]*\///g' ")");
-        list = shell.readAllOutput().split('\n');
-    } else { // Buster version and above
-        if (!updated) {
-            success = shell.run("flatpak update --appstream");
-            updated = true;
+    // Update appstream only once per session
+    if (!updated) {
+        if (!shell.run("flatpak update --appstream")) {
+            qDebug() << "Failed to update flatpak appstream.";
         }
-        // List version too, unfortunatelly the resulting string structure is different depending on type option
-        if (type == QLatin1String("--app") || type.isEmpty()) {
-            success = shell.run("flatpak remote-ls " + FPuser + remote + ' ' + arch_fp
-                                + "--app --columns=ver,ref,installed-size 2>/dev/null");
-            list = shell.readAllOutput().split('\n');
-            if (list == QStringList("")) {
-                list = QStringList();
-            }
-        }
-        if (type == QLatin1String("--runtime") || type.isEmpty()) {
-            success = shell.run("flatpak remote-ls " + FPuser + remote + ' ' + arch_fp
-                                + "--runtime --columns=branch,ref,installed-size 2>/dev/null");
-            list += shell.readAllOutput().split('\n');
-            if (list == QStringList("")) {
-                list = QStringList();
-            }
-        }
+        updated = true;
     }
-    if (!success || list == QStringList("")) {
+
+    // Construct the base command for listing flatpaks
+    QString baseCommand = "flatpak remote-ls " + FPuser + remote + ' ' + arch_fp + "--columns=ver,ref,installed-size ";
+
+    // Append the type to the base command if specified
+    if (type == QLatin1String("--app")) {
+        baseCommand.append("--app ");
+    } else if (type == QLatin1String("--runtime")) {
+        baseCommand.append("--runtime ");
+    }
+    baseCommand.append("2>/dev/null");
+
+    QStringList list;
+    // Execute the command and process the output
+    if (shell.run(baseCommand)) {
+        list = shell.readAllOutput().split('\n', Qt::SkipEmptyParts);
+    }
+
+    if (list.isEmpty()) {
         qDebug() << QString("Could not list packages from %1 remote, or remote doesn't contain packages").arg(remote);
-        return {};
     }
+
     return list;
 }
 
 // List installed flatpaks by type: apps, runtimes, or all (if no type is provided)
 QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
-    QStringList list;
-    if (fp_ver < VersionNumber("1.2.4")) {
-        list << cmd.getOut("flatpak -d list " + FPuser + "2>/dev/null " + type + "|cut -f1|cut -f1 -d' '")
-                    .remove(' ')
-                    .split('\n');
-    } else {
-        list << cmd.getOut("flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref").remove(' ').split('\n');
-    }
+    QStringList list {
+        cmd.getOut("flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref").remove(' ').split('\n')};
     if (list == QStringList("")) {
         return {};
     }
@@ -2374,11 +2323,6 @@ void MainWindow::on_pushUninstall_clicked()
     } else if (currentTree == ui->treeFlatpak) {
         bool success = true;
 
-        // New version of flatpak takes a "-y" confirmation
-        QString conf = "-y ";
-        if (fp_ver < VersionNumber("1.0.1")) {
-            conf = QString();
-        }
         // Confirmation dialog
         if (!confirmActions(change_list.join(' '), "remove")) {
             displayFlatpaks(true);
@@ -2396,7 +2340,7 @@ void MainWindow::on_pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         for (const QString &app : qAsConst(change_list)) {
             enableOutput();
-            if (!cmd.run("socat SYSTEM:'flatpak uninstall " + FPuser + conf + ' ' + app
+            if (!cmd.run("socat SYSTEM:'flatpak uninstall " + FPuser + "-y " + app
                          + "',stderr STDIO")) { // success if all processed successfuly,
                                                 // failure if one failed
                 success = false;
@@ -2589,7 +2533,6 @@ void MainWindow::on_tabWidget_currentChanged(int index)
                 currentTree->blockSignals(false);
                 return;
             }
-            fp_ver = getVersion("flatpak");
             Cmd().runAsRoot("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
                             "https://flathub.org/repo/flathub.flatpakrepo");
@@ -3029,9 +2972,7 @@ void MainWindow::on_comboUser_activated(int index)
             cmd.run("flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
             cmd.run("flatpak --user remote-add --if-not-exists --subset=verified flathub-verified "
                     "https://flathub.org/repo/flathub.flatpakrepo");
-            if (fp_ver >= VersionNumber("1.2.4")) {
-                cmd.run("flatpak update --appstream");
-            }
+            cmd.run("flatpak update --appstream");
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }
@@ -3093,12 +3034,7 @@ void MainWindow::on_pushRemoveUnused_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    // New version of flatpak takes a "-y" confirmation
-    QString conf = "-y ";
-    if (fp_ver < VersionNumber("1.0.1")) {
-        conf = QString();
-    }
-    if (cmd.run("socat SYSTEM:'flatpak uninstall --unused " + conf + "',pty STDIO")) {
+    if (cmd.run("socat SYSTEM:'flatpak uninstall --unused -y',pty STDIO")) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));

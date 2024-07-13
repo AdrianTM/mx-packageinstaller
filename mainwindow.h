@@ -214,7 +214,6 @@ private:
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
-    VersionNumber fp_ver;
     const QCommandLineParser &args;
 
     QNetworkAccessManager manager;
