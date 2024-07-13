@@ -230,8 +230,7 @@ private:
     [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
     [[nodiscard]] QTreeWidgetItem *createTreeItem(const QString &name, const QString &version,
                                                   const QString &description) const;
-    [[nodiscard]] bool checkInstalled(const QString &names) const;
-    [[nodiscard]] bool checkInstalled(const QStringList &name_list) const;
+    [[nodiscard]] bool checkInstalled(const QVariant &names) const;
     [[nodiscard]] bool checkUpgradable(const QStringList &name_list) const;
     [[nodiscard]] bool isOnline();
     [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;

@@ -1785,31 +1785,13 @@ QString MainWindow::getVersion(const QString &name) const
 }
 
 // Return true if all the packages listed are installed
-bool MainWindow::checkInstalled(const QString &names) const
+bool MainWindow::checkInstalled(const QVariant &names) const
 {
-    if (names.isEmpty()) {
-        return false;
-    }
+    QStringList name_list = names.canConvert<QStringList>() ? names.toStringList()
+                        : names.toString().split('\n', Qt::SkipEmptyParts);
 
-    const auto names_list = names.split('\n');
-    return std::all_of(names_list.cbegin(), names_list.cend(),
-                       [&](const QString &name) { return installed_packages.contains(name.trimmed()); });
-}
-
-// Return true if all the packages in the list are installed
-bool MainWindow::checkInstalled(const QStringList &name_list) const
-{
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    if (name_list.isEmpty()) {
-        return false;
-    }
-
-    for (const QString &name : name_list) {
-        if (!installed_packages.contains(name)) {
-            return false;
-        }
-    }
-    return true;
+    return !name_list.isEmpty() && std::all_of(name_list.cbegin(), name_list.cend(),
+                       [this](const QString &name) { return installed_packages.contains(name.trimmed()); });
 }
 
 // Return true if all the items in the list are upgradable
