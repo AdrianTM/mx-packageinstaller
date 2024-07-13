@@ -589,10 +589,10 @@ void MainWindow::setConnections() const
     connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::cleanup, Qt::QueuedConnection);
     // Connect search boxes
     connect(ui->searchPopular, &QLineEdit::textChanged, this, &MainWindow::findPopular);
-    connect(ui->searchBoxEnabled, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
-    connect(ui->searchBoxMX, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
-    connect(ui->searchBoxBP, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
-    connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackageOther);
+    connect(ui->searchBoxEnabled, &QLineEdit::textChanged, this, &MainWindow::findPackage);
+    connect(ui->searchBoxMX, &QLineEdit::textChanged, this, &MainWindow::findPackage);
+    connect(ui->searchBoxBP, &QLineEdit::textChanged, this, &MainWindow::findPackage);
+    connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackage);
 
     // Connect combo filters
     connect(ui->comboFilterEnabled, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
@@ -2172,7 +2172,7 @@ void MainWindow::findPopular() const
     ui->treePopularApps->setUpdatesEnabled(true);
 }
 
-void MainWindow::findPackageOther()
+void MainWindow::findPackage()
 {
     // Retrieve the search word from the appropriate search box based on the current tree
     QString word = currentTree == ui->treeEnabled     ? ui->searchBoxEnabled->text()
@@ -2456,7 +2456,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         ui->comboFilterEnabled->setCurrentIndex(filter_idx);
         if (!ui->searchBoxEnabled->text().isEmpty()) {
-            findPackageOther();
+            findPackage();
         }
         if (!displayPackagesIsRunning) {
             currentTree->blockSignals(false);
@@ -2478,7 +2478,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         ui->comboFilterMX->setCurrentIndex(filter_idx);
         if (!search_str.isEmpty()) {
-            findPackageOther();
+            findPackage();
         }
         currentTree->blockSignals(false);
         break;
@@ -2498,7 +2498,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         ui->comboFilterBP->setCurrentIndex(filter_idx);
         if (!search_str.isEmpty()) {
-            findPackageOther();
+            findPackage();
         }
         currentTree->blockSignals(false);
         break;
@@ -2512,7 +2512,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         if (!firstRunFP && checkInstalled("flatpak")) {
             ui->searchBoxBP->setText(search_str);
             if (!search_str.isEmpty()) {
-                findPackageOther();
+                findPackage();
             }
             if (!displayFlatpaksIsRunning) {
                 filterChanged(ui->comboFilterFlatpak->currentText());
@@ -2583,7 +2583,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         }
         ui->searchBoxBP->setText(search_str);
         if (!search_str.isEmpty()) {
-            findPackageOther();
+            findPackage();
         }
         break;
     case Tab::Output:
@@ -2645,7 +2645,7 @@ void MainWindow::filterChanged(const QString &arg1)
             }
             displayFilteredFP(newList);
         }
-        findPackageOther();
+        findPackage();
         setSearchFocus();
         currentTree->blockSignals(false);
         return;
@@ -2655,7 +2655,7 @@ void MainWindow::filterChanged(const QString &arg1)
             (*it)->setData(0, Qt::UserRole, true);
             (*it)->setHidden(false);
         }
-        findPackageOther();
+        findPackage();
         setSearchFocus();
         currentTree->blockSignals(false);
         return;
@@ -2698,7 +2698,7 @@ void MainWindow::filterChanged(const QString &arg1)
             (*it)->setData(0, Qt::UserRole, false);
         }
     }
-    findPackageOther();
+    findPackage();
     setSearchFocus();
 
     currentTree->setUpdatesEnabled(true);

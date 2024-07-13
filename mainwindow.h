@@ -131,7 +131,7 @@ private slots:
     void displayPopularInfo(const QTreeWidgetItem *item, int column);
     void enableOutput();
     void filterChanged(const QString &arg1);
-    void findPackageOther();
+    void findPackage();
     void findPopular() const;
     void outputAvailable(const QString &output);
     void showOutput();
