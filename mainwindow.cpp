@@ -2441,20 +2441,18 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         enableTabs(true);
         setCurrentTree();
         change_list.clear();
-        if (!displayPackagesIsRunning) {
-            if (currentTree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
-                if (!buildPackageLists()) {
-                    QMessageBox::critical(
-                        this, tr("Error"),
-                        tr("Could not download the list of packages. Please check your APT sources."));
-                    currentTree->blockSignals(false);
-                    return;
-                }
-            }
-        } else {
+        if (displayPackagesIsRunning) {
             progress->show();
             if (!timer.isActive()) {
                 timer.start(100ms);
+            }
+        } else if (currentTree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
+            if (!buildPackageLists()) {
+                QMessageBox::critical(
+                    this, tr("Error"),
+                    tr("Could not download the list of packages. Please check your APT sources."));
+                currentTree->blockSignals(false);
+                return;
             }
         }
         ui->comboFilterEnabled->setCurrentIndex(filter_idx);
