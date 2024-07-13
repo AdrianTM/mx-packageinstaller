@@ -2014,6 +2014,11 @@ void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeW
 void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
 {
     auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
+    if (!t_widget) {
+        qWarning() << "No tree widget in focus";
+        return;
+    }
+
     auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
     if (tree == ui->treePopularApps) {
         if (t_widget->currentItem()->parent() == nullptr) { // Skip categories
