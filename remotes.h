@@ -4,8 +4,6 @@
 #include <QComboBox>
 #include <QDialog>
 
-#include <cmd.h>
-
 class ManageRemotes : public QDialog
 {
     Q_OBJECT
@@ -35,7 +33,6 @@ public slots:
 
 private:
     bool changed;
-    Cmd *cmd;
     QComboBox *comboRemote;
     QComboBox *comboUser;
     QLineEdit *editAddRemote;
