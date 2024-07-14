@@ -9,23 +9,25 @@
 AptCache::AptCache()
 {
     loadCacheFiles();
+    parseContent();
 }
 
 void AptCache::loadCacheFiles()
 {
     // Exclude Debian backports and MX testrepo and temp repos
-    const QRegularExpression packagesFilter("(.*binary-" + getArch()
+    const QString arch = getArch();
+    const QRegularExpression packagesFilter("(.*binary-" + arch
                                             + "_Packages)|"
                                               "(.*binary-.*_Packages(?!.*debian_.*-backports_.*_Packages)"
                                               "(?!.*mx_testrepo.*_test_.*_Packages)"
                                               "(?!.*mx_repo.*_temp_.*_Packages))");
-    const QStringList files = QDir(dir).entryList(QDir::Files);
-    for (const QString &fileName : files) {
+    QDirIterator it(dir.path(), QDir::Files);
+    while (it.hasNext()) {
+        const QString fileName = it.next();
         if (packagesFilter.match(fileName).hasMatch() && !readFile(fileName)) {
             qWarning() << "Error reading cache file:" << fileName;
         }
     }
-    parseContent();
 }
 
 QMap<QString, PackageInfo> AptCache::getCandidates() const
@@ -36,7 +38,8 @@ QMap<QString, PackageInfo> AptCache::getCandidates() const
 // Return DEB_BUILD_ARCH format which differs from what 'arch' or currentCpuArchitecture return
 QString AptCache::getArch()
 {
-    return arch_names.value(QSysInfo::currentCpuArchitecture());
+    static const QString arch = arch_names.value(QSysInfo::currentCpuArchitecture());
+    return arch;
 }
 
 void AptCache::parseContent()
@@ -49,7 +52,8 @@ void AptCache::parseContent()
     QString description;
     QString architecture;
 
-    const QRegularExpression re_arch(".*(" + getArch() + "|all).*");
+    const QString arch = getArch();
+    const QRegularExpression re_arch(".*(" + arch + "|all).*");
     bool match_arch = false;
 
     // Code assumes Description: is the last matched line
@@ -64,9 +68,9 @@ void AptCache::parseContent()
         } else if (line.startsWith(QLatin1String("Description:"))) {
             description = line.mid(13).trimmed();
             if (match_arch) {
-                auto it = candidates.constFind(package);
-                if (it == candidates.constEnd() || VersionNumber(it.value().version) < VersionNumber(version)) {
-                    candidates.insert(package, {version, description});
+                auto it = candidates.find(package);
+                if (it == candidates.end() || VersionNumber(it->version) < VersionNumber(version)) {
+                    candidates[package] = {version, description};
                 }
             }
         }
@@ -81,7 +85,7 @@ bool AptCache::readFile(const QString &file_name)
         qWarning() << "Could not open file: " << file.fileName();
         return false;
     }
-    files_content += file.readAll();
+    files_content += QLatin1String("\n") + file.readAll();
     file.close();
     return true;
 }
