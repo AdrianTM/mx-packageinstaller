@@ -606,8 +606,42 @@ void MainWindow::setConnections() const
     connect(ui->comboFilterMX, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterBP, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterFlatpak, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
-}
 
+    // Connect other UI elements to their respective slots
+    connect(ui->checkHideLibs, &QCheckBox::toggled, this, &MainWindow::checkHideLibs_toggled);
+    connect(ui->checkHideLibsBP, &QCheckBox::clicked, this, &MainWindow::checkHideLibsBP_clicked);
+    connect(ui->checkHideLibsMX, &QCheckBox::clicked, this, &MainWindow::checkHideLibsMX_clicked);
+    connect(ui->comboRemote, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::comboRemote_activated);
+    connect(ui->comboUser, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
+            &MainWindow::comboUser_currentIndexChanged);
+    connect(ui->lineEdit, &QLineEdit::returnPressed, this, &MainWindow::lineEdit_returnPressed);
+    connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAbout_clicked);
+    connect(ui->pushCancel, &QPushButton::clicked, this, &MainWindow::pushCancel_clicked);
+    connect(ui->pushEnter, &QPushButton::clicked, this, &MainWindow::pushEnter_clicked);
+    connect(ui->pushForceUpdateBP, &QPushButton::clicked, this, &MainWindow::pushForceUpdateBP_clicked);
+    connect(ui->pushForceUpdateEnabled, &QPushButton::clicked, this, &MainWindow::pushForceUpdateEnabled_clicked);
+    connect(ui->pushForceUpdateMX, &QPushButton::clicked, this, &MainWindow::pushForceUpdateMX_clicked);
+    connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelp_clicked);
+    connect(ui->pushInstall, &QPushButton::clicked, this, &MainWindow::pushInstall_clicked);
+    connect(ui->pushRemotes, &QPushButton::clicked, this, &MainWindow::pushRemotes_clicked);
+    connect(ui->pushRemoveOrphan, &QPushButton::clicked, this, &MainWindow::pushRemoveOrphan_clicked);
+    connect(ui->pushRemoveUnused, &QPushButton::clicked, this, &MainWindow::pushRemoveUnused_clicked);
+    connect(ui->pushUninstall, &QPushButton::clicked, this, &MainWindow::pushUninstall_clicked);
+    connect(ui->pushUpgradeAll, &QPushButton::clicked, this, &MainWindow::pushUpgradeAll_clicked);
+    connect(ui->pushUpgradeFP, &QPushButton::clicked, this, &MainWindow::pushUpgradeFP_clicked);
+    connect(ui->tabWidget, QOverload<int>::of(&QTabWidget::currentChanged), this,
+            &MainWindow::tabWidget_currentChanged);
+    connect(ui->treeBackports, &QTreeWidget::itemChanged, this, &MainWindow::treeBackports_itemChanged);
+    connect(ui->treeEnabled, &QTreeWidget::itemChanged, this, &MainWindow::treeEnabled_itemChanged);
+    connect(ui->treeFlatpak, &QTreeWidget::itemChanged, this, &MainWindow::treeFlatpak_itemChanged);
+    connect(ui->treeMXtest, &QTreeWidget::itemChanged, this, &MainWindow::treeMXtest_itemChanged);
+    connect(ui->treePopularApps, &QTreeWidget::customContextMenuRequested, this,
+            &MainWindow::treePopularApps_customContextMenuRequested);
+    connect(ui->treePopularApps, &QTreeWidget::itemChanged, this, &MainWindow::treePopularApps_itemChanged);
+    connect(ui->treePopularApps, &QTreeWidget::itemCollapsed, this, &MainWindow::treePopularApps_itemCollapsed);
+    connect(ui->treePopularApps, &QTreeWidget::itemExpanded, this, &MainWindow::treePopularApps_expanded);
+    connect(ui->treePopularApps, &QTreeWidget::itemExpanded, this, &MainWindow::treePopularApps_itemExpanded);
+}
 void MainWindow::setProgressDialog()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -2241,7 +2275,7 @@ void MainWindow::showOutput()
     enableTabs(false);
 }
 
-void MainWindow::on_pushInstall_clicked()
+void MainWindow::pushInstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
@@ -2286,7 +2320,7 @@ void MainWindow::on_pushInstall_clicked()
     enableTabs(true);
 }
 
-void MainWindow::on_pushAbout_clicked()
+void MainWindow::pushAbout_clicked()
 {
     hide();
     displayAboutMsgBox(
@@ -2300,7 +2334,7 @@ void MainWindow::on_pushAbout_clicked()
     show();
 }
 
-void MainWindow::on_pushHelp_clicked()
+void MainWindow::pushHelp_clicked()
 {
     QString lang = locale.bcp47Name();
     QString url {"/usr/share/doc/mx-packageinstaller/mx-package-installer.html"};
@@ -2312,27 +2346,27 @@ void MainWindow::on_pushHelp_clicked()
 }
 
 // Resize columns when expanding
-void MainWindow::on_treePopularApps_expanded()
+void MainWindow::treePopularApps_expanded()
 {
     ui->treePopularApps->resizeColumnToContents(PopCol::Name);
     ui->treePopularApps->resizeColumnToContents(PopCol::Description);
 }
 
-void MainWindow::on_treePopularApps_itemExpanded(QTreeWidgetItem *item)
+void MainWindow::treePopularApps_itemExpanded(QTreeWidgetItem *item)
 {
     item->setIcon(PopCol::Icon, QIcon::fromTheme("folder-open"));
     ui->treePopularApps->resizeColumnToContents(PopCol::Name);
     ui->treePopularApps->resizeColumnToContents(PopCol::Description);
 }
 
-void MainWindow::on_treePopularApps_itemCollapsed(QTreeWidgetItem *item)
+void MainWindow::treePopularApps_itemCollapsed(QTreeWidgetItem *item)
 {
     item->setIcon(PopCol::Icon, QIcon::fromTheme("folder"));
     ui->treePopularApps->resizeColumnToContents(PopCol::Name);
     ui->treePopularApps->resizeColumnToContents(PopCol::Description);
 }
 
-void MainWindow::on_pushUninstall_clicked()
+void MainWindow::pushUninstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
@@ -2358,7 +2392,7 @@ void MainWindow::on_pushUninstall_clicked()
             indexFilterFP.clear();
             listFlatpakRemotes();
             ui->comboRemote->setCurrentIndex(0);
-            on_comboRemote_activated();
+            comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
@@ -2380,7 +2414,7 @@ void MainWindow::on_pushUninstall_clicked()
             indexFilterFP.clear();
             listFlatpakRemotes();
             ui->comboRemote->setCurrentIndex(0);
-            on_comboRemote_activated();
+            comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
@@ -2406,7 +2440,7 @@ void MainWindow::on_pushUninstall_clicked()
     enableTabs(true);
 }
 
-void MainWindow::on_tabWidget_currentChanged(int index)
+void MainWindow::tabWidget_currentChanged(int index)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Console Output"));
@@ -2718,7 +2752,7 @@ void MainWindow::filterChanged(const QString &arg1)
     currentTree->blockSignals(false);
 }
 
-void MainWindow::on_treeEnabled_itemChanged(QTreeWidgetItem *item)
+void MainWindow::treeEnabled_itemChanged(QTreeWidgetItem *item)
 {
     if (item->checkState(TreeCol::Check) == Qt::Checked) {
         ui->treeEnabled->setCurrentItem(item);
@@ -2726,7 +2760,7 @@ void MainWindow::on_treeEnabled_itemChanged(QTreeWidgetItem *item)
     buildChangeList(item);
 }
 
-void MainWindow::on_treeMXtest_itemChanged(QTreeWidgetItem *item)
+void MainWindow::treeMXtest_itemChanged(QTreeWidgetItem *item)
 {
     if (item->checkState(TreeCol::Check) == Qt::Checked) {
         ui->treeMXtest->setCurrentItem(item);
@@ -2734,7 +2768,7 @@ void MainWindow::on_treeMXtest_itemChanged(QTreeWidgetItem *item)
     buildChangeList(item);
 }
 
-void MainWindow::on_treeBackports_itemChanged(QTreeWidgetItem *item)
+void MainWindow::treeBackports_itemChanged(QTreeWidgetItem *item)
 {
     if (item->checkState(TreeCol::Check) == Qt::Checked) {
         ui->treeBackports->setCurrentItem(item);
@@ -2742,7 +2776,7 @@ void MainWindow::on_treeBackports_itemChanged(QTreeWidgetItem *item)
     buildChangeList(item);
 }
 
-void MainWindow::on_treeFlatpak_itemChanged(QTreeWidgetItem *item)
+void MainWindow::treeFlatpak_itemChanged(QTreeWidgetItem *item)
 {
     if (item->checkState(FlatCol::Check) == Qt::Checked) {
         ui->treeFlatpak->setCurrentItem(item);
@@ -2813,7 +2847,7 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
 }
 
 // Force repo upgrade
-void MainWindow::on_pushForceUpdateEnabled_clicked()
+void MainWindow::pushForceUpdateEnabled_clicked()
 {
     ui->searchBoxEnabled->clear();
     ui->comboFilterEnabled->setCurrentIndex(0);
@@ -2821,7 +2855,7 @@ void MainWindow::on_pushForceUpdateEnabled_clicked()
     updateInterface();
 }
 
-void MainWindow::on_pushForceUpdateMX_clicked()
+void MainWindow::pushForceUpdateMX_clicked()
 {
     ui->searchBoxMX->clear();
     ui->comboFilterMX->setCurrentIndex(0);
@@ -2829,7 +2863,7 @@ void MainWindow::on_pushForceUpdateMX_clicked()
     updateInterface();
 }
 
-void MainWindow::on_pushForceUpdateBP_clicked()
+void MainWindow::pushForceUpdateBP_clicked()
 {
     ui->searchBoxBP->clear();
     ui->comboFilterBP->setCurrentIndex(0);
@@ -2838,7 +2872,7 @@ void MainWindow::on_pushForceUpdateBP_clicked()
 }
 
 // Hide/unhide lib/-dev packages
-void MainWindow::on_checkHideLibs_toggled(bool checked)
+void MainWindow::checkHideLibs_toggled(bool checked)
 {
     ui->treeEnabled->setUpdatesEnabled(false);
     ui->checkHideLibsMX->setChecked(checked);
@@ -2851,7 +2885,7 @@ void MainWindow::on_checkHideLibs_toggled(bool checked)
     ui->treeEnabled->setUpdatesEnabled(true);
 }
 
-void MainWindow::on_pushUpgradeAll_clicked()
+void MainWindow::pushUpgradeAll_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
@@ -2883,16 +2917,16 @@ void MainWindow::on_pushUpgradeAll_clicked()
 }
 
 // Pressing Enter or buttonEnter will do the same thing
-void MainWindow::on_pushEnter_clicked()
+void MainWindow::pushEnter_clicked()
 {
     if (currentTree == ui->treeFlatpak
         && ui->lineEdit->text().isEmpty()) { // Add "Y" as default response for flatpaks to work like apt-get
         cmd.write("y");
     }
-    on_lineEdit_returnPressed();
+    lineEdit_returnPressed();
 }
 
-void MainWindow::on_lineEdit_returnPressed()
+void MainWindow::lineEdit_returnPressed()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     cmd.write(ui->lineEdit->text().toUtf8() + '\n');
@@ -2901,7 +2935,7 @@ void MainWindow::on_lineEdit_returnPressed()
     ui->lineEdit->setFocus();
 }
 
-void MainWindow::on_pushCancel_clicked()
+void MainWindow::pushCancel_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (cmd.state() != QProcess::NotRunning) {
@@ -2917,27 +2951,27 @@ void MainWindow::on_pushCancel_clicked()
     QApplication::quit();
 }
 
-void MainWindow::on_checkHideLibsMX_clicked(bool checked)
+void MainWindow::checkHideLibsMX_clicked(bool checked)
 {
     ui->checkHideLibs->setChecked(checked);
     ui->checkHideLibsBP->setChecked(checked);
 }
 
-void MainWindow::on_checkHideLibsBP_clicked(bool checked)
+void MainWindow::checkHideLibsBP_clicked(bool checked)
 {
     ui->checkHideLibs->setChecked(checked);
     ui->checkHideLibsMX->setChecked(checked);
 }
 
 // On change flatpak remote
-void MainWindow::on_comboRemote_activated(int /*index*/)
+void MainWindow::comboRemote_activated(int /*index*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     lastItemClicked = nullptr;
     displayFlatpaks(true);
 }
 
-void MainWindow::on_pushUpgradeFP_clicked()
+void MainWindow::pushUpgradeFP_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
@@ -2956,7 +2990,7 @@ void MainWindow::on_pushUpgradeFP_clicked()
     enableTabs(true);
 }
 
-void MainWindow::on_pushRemotes_clicked()
+void MainWindow::pushRemotes_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     auto *dialog = new ManageRemotes(this);
@@ -2987,7 +3021,7 @@ void MainWindow::on_pushRemotes_clicked()
     }
 }
 
-void MainWindow::on_comboUser_currentIndexChanged(int index)
+void MainWindow::comboUser_currentIndexChanged(int index)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (index == 0) {
@@ -3011,7 +3045,7 @@ void MainWindow::on_comboUser_currentIndexChanged(int index)
     displayFlatpaks(true);
 }
 
-void MainWindow::on_treePopularApps_customContextMenuRequested(QPoint pos)
+void MainWindow::treePopularApps_customContextMenuRequested(QPoint pos)
 {
     auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
     if (t_widget->currentItem()->parent() == nullptr) { // skip categories
@@ -3028,11 +3062,11 @@ void MainWindow::on_treePopularApps_customContextMenuRequested(QPoint pos)
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
-        on_pushCancel_clicked();
+        pushCancel_clicked();
     }
 }
 
-void MainWindow::on_treePopularApps_itemChanged(QTreeWidgetItem *item)
+void MainWindow::treePopularApps_itemChanged(QTreeWidgetItem *item)
 {
     if (item->checkState(PopCol::Check) == Qt::Checked) {
         ui->treePopularApps->setCurrentItem(item);
@@ -3057,7 +3091,7 @@ void MainWindow::on_treePopularApps_itemChanged(QTreeWidgetItem *item)
     }
 }
 
-void MainWindow::on_pushRemoveUnused_clicked()
+void MainWindow::pushRemoveUnused_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
@@ -3076,7 +3110,7 @@ void MainWindow::on_pushRemoveUnused_clicked()
     enableTabs(true);
 }
 
-void MainWindow::on_pushRemoveOrphan_clicked()
+void MainWindow::pushRemoveOrphan_clicked()
 {
     QString names = cmd.getOutAsRoot(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')");
     QMessageBox::warning(this, tr("Warning"),
