@@ -185,7 +185,7 @@ private:
     bool warning_test {false};
 
     Cmd cmd;
-    LockFile *lock_file {};
+    LockFile lock_file {"/var/lib/dpkg/lock"};
     QHash<QString, VersionNumber> listInstalledVersions();
     QIcon qicon_installed;
     QIcon qicon_upgradable;

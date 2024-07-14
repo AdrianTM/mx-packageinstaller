@@ -118,8 +118,6 @@ void MainWindow::setup()
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
 
-    lock_file = new LockFile("/var/lib/dpkg/lock");
-
     test_initially_enabled
         = cmd.run("apt-get update --print-uris | grep -m1 -qE '/mx/testrepo/dists/" + ver_name + "/test/'");
 
@@ -181,7 +179,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         qDebug() << "Pre-uninstall";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Running pre-uninstall operations..."));
         enableOutput();
-        if (lock_file->isLockedGUI()) {
+        if (lock_file.isLockedGUI()) {
             return false;
         }
         success = cmd.runAsRoot(preuninstall);
@@ -189,7 +187,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
 
     if (success) {
         enableOutput();
-        if (lock_file->isLockedGUI()) {
+        if (lock_file.isLockedGUI()) {
             return false;
         }
         success = cmd.runAsRoot("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i "
@@ -201,7 +199,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         qDebug() << "Post-uninstall";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Running post-uninstall operations..."));
         enableOutput();
-        if (lock_file->isLockedGUI()) {
+        if (lock_file.isLockedGUI()) {
             return false;
         }
         success = cmd.runAsRoot(postuninstall);
@@ -212,7 +210,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
 bool MainWindow::updateApt()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    if (lock_file->isLockedGUI()) {
+    if (lock_file.isLockedGUI()) {
         return false;
     }
     ui->tabOutput->isVisible() // Don't display in output if calling to refresh from tabs
@@ -1160,7 +1158,7 @@ bool MainWindow::install(const QString &names)
         "DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde || echo gnome) "};
     QString aptget {"apt-get -o=Dpkg::Use-Pty=0 install -y "};
 
-    if (lock_file->isLockedGUI()) {
+    if (lock_file.isLockedGUI()) {
         return false;
     }
     QString recommends;
@@ -1204,7 +1202,7 @@ bool MainWindow::installBatch(const QStringList &name_list)
     if (postinstall != '\n') {
         qDebug() << "Post-install";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Post-processing..."));
-        if (lock_file->isLockedGUI()) {
+        if (lock_file.isLockedGUI()) {
             return false;
         }
         enableOutput();
@@ -1236,7 +1234,7 @@ bool MainWindow::installPopularApp(const QString &name)
     if (!preinstall.isEmpty()) {
         qDebug() << "Pre-install";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Pre-processing for ") + name);
-        if (lock_file->isLockedGUI()) {
+        if (lock_file.isLockedGUI()) {
             return false;
         }
         if (!cmd.runAsRoot(preinstall)) {
@@ -1258,7 +1256,7 @@ bool MainWindow::installPopularApp(const QString &name)
     if (!postinstall.isEmpty()) {
         qDebug() << "Post-install";
         ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Post-processing for ") + name);
-        if (lock_file->isLockedGUI()) {
+        if (lock_file.isLockedGUI()) {
             return false;
         }
         cmd.runAsRoot(postinstall);
