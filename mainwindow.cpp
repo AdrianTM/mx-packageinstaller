@@ -296,49 +296,51 @@ void MainWindow::blockInterfaceFP(bool block)
 void MainWindow::updateInterface() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-
-    QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
+    if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
+        return;
+    }
+    if (displayPackagesIsRunning) {
+        connect(this, &MainWindow::displayPackagesFinished, this, &MainWindow::updateInterface, Qt::UniqueConnection);
+        return;
+    }
+    QApplication::restoreOverrideCursor();
     progress->hide();
-
     QList<QTreeWidgetItem *> upgr_list;
-    for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
+    QList<QTreeWidgetItem *> inst_list;
+
+    for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
         auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
         if (userData == Status::Upgradable) {
             upgr_list.append(*it);
-        }
-    }
-
-    QList<QTreeWidgetItem *> inst_list;
-    for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
-        if (userData == Status::Installed) {
+        } else if (userData == Status::Installed) {
             inst_list.append(*it);
         }
-    }
-
-    for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
         (*it)->setHidden(false);
     }
 
-    if (currentTree == ui->treeEnabled) {
-        ui->labelNumApps->setText(QString::number(currentTree->topLevelItemCount()));
-        ui->labelNumUpgr->setText(QString::number(upgr_list.count()));
-        ui->labelNumInst->setText(QString::number(inst_list.count() + upgr_list.count()));
+    auto updateLabelsAndFocus = [&](QLabel *labelNumApps, QLabel *labelNumUpgr, QLabel *labelNumInst,
+                                    QPushButton *pushForceUpdate, QLineEdit *searchBox) {
+        labelNumApps->setText(QString::number(currentTree->topLevelItemCount()));
+        labelNumUpgr->setText(QString::number(upgr_list.count()));
+        labelNumInst->setText(QString::number(inst_list.count() + upgr_list.count()));
+        pushForceUpdate->setEnabled(true);
+        searchBox->setFocus();
+    };
+
+    switch (ui->tabWidget->currentIndex()) {
+    case Tab::EnabledRepos:
         ui->pushUpgradeAll->setVisible(!upgr_list.isEmpty());
-        ui->pushForceUpdateEnabled->setEnabled(true);
-        ui->searchBoxEnabled->setFocus();
-    } else if (currentTree == ui->treeMXtest) {
-        ui->labelNumApps_2->setText(QString::number(currentTree->topLevelItemCount()));
-        ui->labelNumUpgrMX->setText(QString::number(upgr_list.count()));
-        ui->labelNumInstMX->setText(QString::number(inst_list.count() + upgr_list.count()));
-        ui->pushForceUpdateMX->setEnabled(true);
-        ui->searchBoxMX->setFocus();
-    } else if (currentTree == ui->treeBackports) {
-        ui->labelNumApps_3->setText(QString::number(currentTree->topLevelItemCount()));
-        ui->labelNumUpgrBP->setText(QString::number(upgr_list.count()));
-        ui->labelNumInstBP->setText(QString::number(inst_list.count() + upgr_list.count()));
-        ui->pushForceUpdateBP->setEnabled(true);
-        ui->searchBoxBP->setFocus();
+        updateLabelsAndFocus(ui->labelNumApps, ui->labelNumUpgr, ui->labelNumInst, ui->pushForceUpdateEnabled,
+                             ui->searchBoxEnabled);
+        break;
+    case Tab::Test:
+        updateLabelsAndFocus(ui->labelNumApps_2, ui->labelNumUpgrMX, ui->labelNumInstMX, ui->pushForceUpdateMX,
+                             ui->searchBoxMX);
+        break;
+    case Tab::Backports:
+        updateLabelsAndFocus(ui->labelNumApps_3, ui->labelNumUpgrBP, ui->labelNumInstBP, ui->pushForceUpdateBP,
+                             ui->searchBoxBP);
+        break;
     }
 }
 
@@ -891,6 +893,7 @@ void MainWindow::displayPackages()
     }
     newtree->blockSignals(false);
     displayPackagesIsRunning = false;
+    emit displayPackagesFinished();
 }
 
 void MainWindow::displayFlatpaks(bool force_update)
@@ -1069,8 +1072,8 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     QString recommends_aptitude;
     QString aptitude_info;
 
-    const QString frontend {
-        "DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde || echo gnome) LANG=C "};
+    const QString frontend {"DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo "
+                            "kde || echo gnome) LANG=C "};
     const QString aptget {"apt-get -s -V -o=Dpkg::Use-Pty=0 "};
     const QString aptitude {"aptitude -sy -V -o=Dpkg::Use-Pty=0 "};
     if (currentTree == ui->treeFlatpak && names != "flatpak") {
@@ -1826,9 +1829,9 @@ QMap<QString, PackageInfo> MainWindow::listInstalled() const
     Cmd shell;
     QString list = shell.getOut("dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\n'");
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
-        QMessageBox::critical(
-            nullptr, tr("Error"),
-            tr("dpkg-query command returned an error. Please run 'dpkg-query -W' in terminal and check the output."));
+        QMessageBox::critical(nullptr, tr("Error"),
+                              tr("dpkg-query command returned an error. Please run 'dpkg-query -W' in terminal "
+                                 "and check the output."));
         exit(EXIT_FAILURE);
     }
 
@@ -3032,7 +3035,8 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            cmd.run("flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
+            cmd.run("flatpak --user remote-add --if-not-exists flathub "
+                    "https://flathub.org/repo/flathub.flatpakrepo");
             cmd.run("flatpak --user remote-add --if-not-exists --subset=verified flathub-verified "
                     "https://flathub.org/repo/flathub.flatpakrepo");
             cmd.run("flatpak update --appstream");

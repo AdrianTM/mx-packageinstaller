@@ -1,3 +1,10 @@
+mx-packageinstaller (24.7.05) mx; urgency=medium
+
+  * Wait for displayPackages to finish before updating the interface
+  * Selected user by default when managing remotes
+
+ -- Adrian <adrian@mxlinux.org>  Sun, 14 Jul 2024 18:11:12 -0400
+
 mx-packageinstaller (24.7.04) mx; urgency=medium
 
   * Performance improvements for search and filter change

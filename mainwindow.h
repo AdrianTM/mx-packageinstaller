@@ -119,6 +119,9 @@ public:
 protected:
     void keyPressEvent(QKeyEvent *event) override;
 
+signals:
+    void displayPackagesFinished();
+
 private slots:
     void checkUncheckItem();
     void cleanup();
