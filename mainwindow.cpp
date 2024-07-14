@@ -305,15 +305,18 @@ void MainWindow::updateInterface() const
     }
     QApplication::restoreOverrideCursor();
     progress->hide();
-    QList<QTreeWidgetItem *> upgr_list;
-    QList<QTreeWidgetItem *> inst_list;
+    int upgr_count = 0;
+    int inst_count = 0;
 
     for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
-        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
-        if (userData == Status::Upgradable) {
-            upgr_list.append(*it);
-        } else if (userData == Status::Installed) {
-            inst_list.append(*it);
+        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole).toInt();
+        switch (userData) {
+            case Status::Upgradable:
+                ++upgr_count;
+                break;
+            case Status::Installed:
+                ++inst_count;
+                break;
         }
         (*it)->setHidden(false);
     }
@@ -321,15 +324,15 @@ void MainWindow::updateInterface() const
     auto updateLabelsAndFocus = [&](QLabel *labelNumApps, QLabel *labelNumUpgr, QLabel *labelNumInst,
                                     QPushButton *pushForceUpdate, QLineEdit *searchBox) {
         labelNumApps->setText(QString::number(currentTree->topLevelItemCount()));
-        labelNumUpgr->setText(QString::number(upgr_list.count()));
-        labelNumInst->setText(QString::number(inst_list.count() + upgr_list.count()));
+        labelNumUpgr->setText(QString::number(upgr_count));
+        labelNumInst->setText(QString::number(inst_count + upgr_count));
         pushForceUpdate->setEnabled(true);
         searchBox->setFocus();
     };
 
     switch (ui->tabWidget->currentIndex()) {
     case Tab::EnabledRepos:
-        ui->pushUpgradeAll->setVisible(!upgr_list.isEmpty());
+        ui->pushUpgradeAll->setVisible(upgr_count > 0);
         updateLabelsAndFocus(ui->labelNumApps, ui->labelNumUpgr, ui->labelNumInst, ui->pushForceUpdateEnabled,
                              ui->searchBoxEnabled);
         break;
