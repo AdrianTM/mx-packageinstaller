@@ -99,13 +99,18 @@ void MainWindow::setup()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->blockSignals(true);
+    ui->tabWidget->setCurrentWidget(ui->tabPopular);
     ui->pushRemoveOrphan->setHidden(true);
 
     QFont font("monospace");
     font.setStyleHint(QFont::Monospace);
     ui->outputBox->setFont(font);
 
-    FPuser = "--system ";
+    QString defaultFSUser = settings.value("FlatpakUser", tr("For all users")).toString();
+    FPuser = defaultFSUser == tr("For all users") ? "--system " : "--user ";
+    ui->comboUser->blockSignals(true);
+    ui->comboUser->setCurrentText(defaultFSUser);
+    ui->comboUser->blockSignals(false);
 
     arch = AptCache::getArch();
     ver_name = getDebianVerName();
@@ -289,9 +294,11 @@ void MainWindow::blockInterfaceFP(bool block)
     block ? setCursor(QCursor(Qt::BusyCursor)) : setCursor(QCursor(Qt::ArrowCursor));
 }
 
+// Update interface when changing Tab::Enabled, MX, Backports
 void MainWindow::updateInterface() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+
     QApplication::setOverrideCursor(QCursor(Qt::ArrowCursor));
     progress->hide();
 
@@ -302,6 +309,7 @@ void MainWindow::updateInterface() const
             upgr_list.append(*it);
         }
     }
+
     QList<QTreeWidgetItem *> inst_list;
     for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
         auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
@@ -309,6 +317,7 @@ void MainWindow::updateInterface() const
             inst_list.append(*it);
         }
     }
+
     for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
         (*it)->setHidden(false);
     }
@@ -848,7 +857,6 @@ void MainWindow::displayPackages()
         ui->pushRemoveOrphan->setVisible(
             Cmd().run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
     }
-    updateInterface();
     newtree->blockSignals(false);
     displayPackagesIsRunning = false;
 }
@@ -1004,9 +1012,14 @@ void MainWindow::listFlatpakRemotes() const
     QString currentRemote = ui->comboRemote->currentText();
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
-    QStringList list = Cmd().getOut("flatpak remote-list " + FPuser + "| cut -f1").remove(' ').split('\n');
+    Cmd shell;
+    QStringList list = shell.getOut("flatpak remote-list " + FPuser + "| cut -f1").remove(' ').split('\n');
+    if (shell.exitCode() != 0) {
+        return;
+    }
     ui->comboRemote->addItems(list);
-    ui->comboRemote->setCurrentText(currentRemote.isEmpty() ? "flathub" : currentRemote);
+    QString savedRemote = firstRunFP ? settings.value("FlatpakRemote", "flathub").toString() : currentRemote;
+    ui->comboRemote->setCurrentText(savedRemote.isEmpty() ? "flathub" : savedRemote);
     ui->comboRemote->blockSignals(false);
 }
 
@@ -1739,6 +1752,8 @@ void MainWindow::cleanup()
     }
     Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib copy_log", true);
     settings.setValue("geometry", saveGeometry());
+    settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
+    settings.setValue("FlatpakUser", ui->comboUser->currentText());
 }
 
 QString MainWindow::getVersion(const QString &name) const
@@ -1852,7 +1867,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
     QStringList list {cmd.getOut("flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref")
                           .split('\n', Qt::SkipEmptyParts)};
-    if (list.isEmpty()) {
+    if (list == QStringList("")) {
         return {};
     }
     return list;
@@ -2509,6 +2524,7 @@ void MainWindow::on_tabWidget_currentChanged(int index)
         setCurrentTree();
         displayWarning("flatpaks");
         ui->searchBoxFlatpak->setFocus();
+        listFlatpakRemotes();
         if (!firstRunFP && checkInstalled("flatpak")) {
             ui->searchBoxBP->setText(search_str);
             if (!search_str.isEmpty()) {
@@ -2804,6 +2820,7 @@ void MainWindow::on_pushForceUpdateEnabled_clicked()
     ui->searchBoxEnabled->clear();
     ui->comboFilterEnabled->setCurrentIndex(0);
     buildPackageLists(true);
+    updateInterface();
 }
 
 void MainWindow::on_pushForceUpdateMX_clicked()
@@ -2811,6 +2828,7 @@ void MainWindow::on_pushForceUpdateMX_clicked()
     ui->searchBoxMX->clear();
     ui->comboFilterMX->setCurrentIndex(0);
     buildPackageLists(true);
+    updateInterface();
 }
 
 void MainWindow::on_pushForceUpdateBP_clicked()
@@ -2818,6 +2836,7 @@ void MainWindow::on_pushForceUpdateBP_clicked()
     ui->searchBoxBP->clear();
     ui->comboFilterBP->setCurrentIndex(0);
     buildPackageLists(true);
+    updateInterface();
 }
 
 // Hide/unhide lib/-dev packages
@@ -2970,7 +2989,7 @@ void MainWindow::on_pushRemotes_clicked()
     }
 }
 
-void MainWindow::on_comboUser_activated(int index)
+void MainWindow::on_comboUser_currentIndexChanged(int index)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (index == 0) {
