@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="he_IL">
+<TS version="2.1" language="nb_NO">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../mainwindow.ui" line="20"/>
         <location filename="../mainwindow.cpp" line="126"/>
         <source>MX Package Installer</source>
-        <translation>אשף התקנת החבילות של MX</translation>
+        <translation>MX-pakkeinstallatør</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="57"/>
         <source>Popular Applications</source>
-        <translation>יישומים נפוצים</translation>
+        <translation>Populære applikasjoner</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="73"/>
@@ -22,12 +22,12 @@
     <message>
         <location filename="../mainwindow.ui" line="83"/>
         <source>Package</source>
-        <translation>חבילה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="88"/>
         <source>Info</source>
-        <translation>מידע</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="93"/>
@@ -35,7 +35,7 @@
         <location filename="../mainwindow.ui" line="653"/>
         <location filename="../mainwindow.ui" line="1019"/>
         <source>Description</source>
-        <translation>תיאור</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="101"/>
@@ -49,7 +49,7 @@
         <location filename="../mainwindow.ui" line="1044"/>
         <location filename="../mainwindow.ui" line="1261"/>
         <source>search</source>
-        <translation>חיפוש</translation>
+        <translation>Søk</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="149"/>
@@ -74,21 +74,21 @@
         <location filename="../mainwindow.ui" line="261"/>
         <location filename="../mainwindow.ui" line="1324"/>
         <source>Upgrade All</source>
-        <translation>לשדרג הכול</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="274"/>
         <location filename="../mainwindow.ui" line="551"/>
         <location filename="../mainwindow.ui" line="876"/>
         <source>Installed:</source>
-        <translation>מותקנות:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="297"/>
         <location filename="../mainwindow.ui" line="502"/>
         <location filename="../mainwindow.ui" line="897"/>
         <source>Total packages:</source>
-        <translation>סך כל החבילות:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="311"/>
@@ -102,21 +102,21 @@
         <location filename="../mainwindow.ui" line="581"/>
         <location filename="../mainwindow.ui" line="869"/>
         <source>Upgradable:</source>
-        <translation>ניתנות לשדרוג:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="325"/>
         <location filename="../mainwindow.ui" line="516"/>
         <location filename="../mainwindow.ui" line="904"/>
         <source>Hide library and developer packages</source>
-        <translation>הסתרת ספריות וחבילות פיתוח</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="347"/>
         <location filename="../mainwindow.ui" line="538"/>
         <location filename="../mainwindow.ui" line="956"/>
         <source>Refresh list</source>
-        <translation>ריענון הרשימה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="385"/>
@@ -124,7 +124,7 @@
         <location filename="../mainwindow.ui" line="1074"/>
         <location filename="../mainwindow.ui" line="1185"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;סינון חבילות בהתאם למצב שלהן.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="388"/>
@@ -135,7 +135,7 @@
         <location filename="../mainwindow.ui" line="1081"/>
         <location filename="../mainwindow.cpp" line="2695"/>
         <source>All packages</source>
-        <translation>כל החבילות</translation>
+        <translation>Alle pakker</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="397"/>
@@ -143,7 +143,7 @@
         <location filename="../mainwindow.ui" line="1086"/>
         <location filename="../mainwindow.cpp" line="2700"/>
         <source>Installed</source>
-        <translation>מותקנות</translation>
+        <translation>Installert</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="402"/>
@@ -151,7 +151,7 @@
         <location filename="../mainwindow.ui" line="1091"/>
         <location filename="../mainwindow.cpp" line="2699"/>
         <source>Upgradable</source>
-        <translation>זמינות לשדרוג</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="407"/>
@@ -163,7 +163,7 @@
         <location filename="../mainwindow.cpp" line="2798"/>
         <location filename="../mainwindow.cpp" line="2799"/>
         <source>Not installed</source>
-        <translation>לא מותקנות</translation>
+        <translation>Ikke installert</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="427"/>
@@ -177,7 +177,7 @@
         <location filename="../mainwindow.ui" line="643"/>
         <location filename="../mainwindow.ui" line="1009"/>
         <source>Package Name</source>
-        <translation>שם חבילה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="457"/>
@@ -185,12 +185,12 @@
         <location filename="../mainwindow.ui" line="1014"/>
         <location filename="../mainwindow.ui" line="1453"/>
         <source>Version</source>
-        <translation>גירסה</translation>
+        <translation>Versjon</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="487"/>
         <source>MX Test Repo</source>
-        <translation>מאגר MX נסיוני</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="787"/>
@@ -200,7 +200,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1130"/>
         <source>Flatpaks</source>
-        <translation>חבילות Flatpak</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1136"/>
@@ -208,12 +208,12 @@
         <location filename="../mainwindow.cpp" line="109"/>
         <location filename="../mainwindow.cpp" line="110"/>
         <source>For all users</source>
-        <translation>לכל המשתמשים</translation>
+        <translation>For alle brukere</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1145"/>
         <source>For current user</source>
-        <translation>למשתמש הנוכחי</translation>
+        <translation>For nåværende bruker</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1153"/>
@@ -225,13 +225,13 @@
         <location filename="../mainwindow.ui" line="1192"/>
         <location filename="../mainwindow.cpp" line="2663"/>
         <source>All apps</source>
-        <translation>כל היישומים</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1197"/>
         <location filename="../mainwindow.cpp" line="2669"/>
         <source>All runtimes</source>
-        <translation>כל סביבות הריצה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1202"/>
@@ -243,7 +243,7 @@
         <location filename="../mainwindow.ui" line="1207"/>
         <location filename="../mainwindow.cpp" line="2660"/>
         <source>Installed apps</source>
-        <translation>יישומים מותקנים</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1212"/>
@@ -267,12 +267,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1317"/>
         <source>Installed apps:</source>
-        <translation>יישומים מותקנים:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1369"/>
         <source>Advanced</source>
-        <translation>אפשרויות מתקדמות</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1398"/>
@@ -292,12 +292,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1448"/>
         <source>Full Package Name</source>
-        <translation>שם החבילה המלא</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1458"/>
         <source>Size</source>
-        <translation>גודל</translation>
+        <translation>Størrelse</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1488"/>
@@ -309,7 +309,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1494"/>
         <source>Enter</source>
-        <translation>Enter</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1504"/>
@@ -323,37 +323,37 @@
         <location filename="../mainwindow.cpp" line="2788"/>
         <location filename="../mainwindow.cpp" line="3058"/>
         <source>Install</source>
-        <translation>התקנה</translation>
+        <translation>Installer</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1569"/>
         <source>Alt+I</source>
-        <translation>Alt+I</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1588"/>
         <source>Quit application</source>
-        <translation>מהיישום</translation>
+        <translation>Lukk programmet</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1591"/>
         <source>Close</source>
-        <translation>סגירה</translation>
+        <translation>Lukk</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1597"/>
         <source>Alt+C</source>
-        <translation>Alt+C</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1629"/>
         <source>About this application</source>
-        <translation>על אודות יישום זה</translation>
+        <translation>Om denne applikasjonen</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1632"/>
         <source>About...</source>
-        <translation>על אודות…</translation>
+        <translation>Om...</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1638"/>
@@ -363,12 +363,12 @@
     <message>
         <location filename="../mainwindow.ui" line="1676"/>
         <source>Display help </source>
-        <translation>הצגת עזרה</translation>
+        <translation>Vis hjelp</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1679"/>
         <source>Help</source>
-        <translation>עזרה</translation>
+        <translation>Hjelp</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1685"/>
@@ -378,17 +378,17 @@
     <message>
         <location filename="../mainwindow.ui" line="1701"/>
         <source>Uninstall</source>
-        <translation>הסרה</translation>
+        <translation>Avinstaller</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1707"/>
         <source>Alt+U</source>
-        <translation>Alt+U</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="177"/>
         <source>Uninstalling packages...</source>
-        <translation>כעת בהסרת החבילות…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="182"/>
@@ -403,7 +403,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="219"/>
         <source>Refreshing sources...</source>
-        <translation>כעת בריענון המקורות…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="233"/>
@@ -426,28 +426,28 @@
         <location filename="../mainwindow.cpp" line="3075"/>
         <location filename="../mainwindow.cpp" line="3096"/>
         <source>Error</source>
-        <translation>שגיאה</translation>
+        <translation>Feil</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="234"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation>אירעה תקלה בעדכון המקורות. יתכן שחלק מהמקורות לא סיפקו עדכונים. למידע נוסף:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="619"/>
         <source>Cancel</source>
-        <translation>ביטול</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="626"/>
         <source>Please wait...</source>
-        <translation>נא להמתין…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="828"/>
         <location filename="../mainwindow.cpp" line="846"/>
         <source>Version </source>
-        <translation>גירסה</translation>
+        <translation>Versjon</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="829"/>
@@ -462,17 +462,17 @@
     <message>
         <location filename="../mainwindow.cpp" line="840"/>
         <source>Latest version </source>
-        <translation>גירסה עדכנית</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="840"/>
         <source> already installed</source>
-        <translation>כבר מותקנת</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="846"/>
         <source> installed</source>
-        <translation>מותקנת</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="967"/>
@@ -493,17 +493,17 @@
         <location filename="../mainwindow.cpp" line="992"/>
         <location filename="../mainwindow.cpp" line="3084"/>
         <source>Warning</source>
-        <translation>אזהרה</translation>
+        <translation>Advarsel</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="996"/>
         <source>Do not show this message again</source>
-        <translation>לא להציג את ההודעה הזאת שוב</translation>
+        <translation>Ikke vis denne beskjeden igjen</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1096"/>
         <source>Remove</source>
-        <translation>הסרה</translation>
+        <translation>Fjern</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1112"/>
@@ -515,32 +515,32 @@
         <location filename="../mainwindow.cpp" line="1282"/>
         <location filename="../mainwindow.cpp" line="1500"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation>האינטרנט לא זמין, לא תהיה אפשרות להוריד את רשימת החבילות</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1151"/>
         <source>Installing packages...</source>
-        <translation>החבילות בהליכי התקנה…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1206"/>
         <source>Post-processing...</source>
-        <translation>עיבוד מלווה…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1238"/>
         <source>Pre-processing for </source>
-        <translation>עיבוד קדם עבור</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1253"/>
         <source>Installing </source>
-        <translation>בהליכי התקנה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1260"/>
         <source>Post-processing for </source>
-        <translation>עיבוד מלווה עבור</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1443"/>
@@ -550,7 +550,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1508"/>
         <source>Downloading package info...</source>
-        <translation>פרטי החבילה מתקבלים…</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1799"/>
@@ -567,7 +567,7 @@
         <location filename="../mainwindow.cpp" line="2107"/>
         <location filename="../mainwindow.cpp" line="2130"/>
         <source>Package info</source>
-        <translation>פרטי החבילה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2037"/>
@@ -578,7 +578,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="2068"/>
         <source>Packages to be installed: </source>
-        <translation>חבילות להתקנה:</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2256"/>
@@ -591,7 +591,7 @@
         <location filename="../mainwindow.cpp" line="2979"/>
         <location filename="../mainwindow.cpp" line="3071"/>
         <source>Done</source>
-        <translation>בוצע</translation>
+        <translation>Ferdig</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2256"/>
@@ -620,32 +620,32 @@
     <message>
         <location filename="../mainwindow.cpp" line="2295"/>
         <source>About %1</source>
-        <translation>על אודות %1</translation>
+        <translation>Om %1</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2296"/>
         <source>Version: </source>
-        <translation>גרסה:</translation>
+        <translation>Versjon:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2298"/>
         <source>Package Installer for MX Linux</source>
-        <translation>אשף התקנת חבילות עבור MX Linux</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2300"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>זכויות היוצרים (c) שמורות ל־MX Linux</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2301"/>
         <source>%1 License</source>
-        <translation>רישיון של %1</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2313"/>
         <source>%1 Help</source>
-        <translation>עזרה עבור %1</translation>
+        <translation>%1 Hjelp</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2390"/>
@@ -656,7 +656,7 @@
         <location filename="../mainwindow.cpp" line="2403"/>
         <location filename="../mainwindow.cpp" line="3093"/>
         <source>Success</source>
-        <translation>הצלחה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2406"/>
@@ -675,24 +675,23 @@
         <location filename="../mainwindow.cpp" line="2542"/>
         <location filename="../mainwindow.cpp" line="2558"/>
         <source>Flatpak not installed</source>
-        <translation>‏Flatpak לא מותקן</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2543"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>‏Flatpak לא מותקן כרגע.
-האם להתקינו?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2558"/>
         <source>Flatpak was not installed</source>
-        <translation>‏Flatpak לא הותקן</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2581"/>
         <source>Needs re-login</source>
-        <translation>נדרשת כניסה מחדש</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2582"/>
@@ -702,12 +701,12 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="2785"/>
         <source>Upgrade</source>
-        <translation>שדרוג</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2910"/>
         <source>Quit?</source>
-        <translation>לצאת?</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2911"/>
@@ -717,7 +716,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../mainwindow.cpp" line="3056"/>
         <source>Reinstall</source>
-        <translation>התקנה מחדש</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="3076"/>
@@ -736,17 +735,17 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="13"/>
         <source>Manage Flatpak Remotes</source>
-        <translation>ניהול מאגרי Flatpak מרוחקים</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="22"/>
         <source>For all users</source>
-        <translation>לכל המשתמשים</translation>
+        <translation>For alle brukere</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="23"/>
         <source>For current user</source>
-        <translation>למשתמש הנוכחי</translation>
+        <translation>For nåværende bruker</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="29"/>
@@ -766,27 +765,27 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="43"/>
         <source>Remove remote</source>
-        <translation>הסרת מאגר מרוחק</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="48"/>
         <source>Add remote</source>
-        <translation>הוספת מאגר מרוחק</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="53"/>
         <source>Install app</source>
-        <translation>התקנת יישום</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="58"/>
         <source>Close</source>
-        <translation>סגירה</translation>
+        <translation>Lukk</translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="75"/>
         <source>Not removable</source>
-        <translation>בלתי־ניתן למחיקה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="76"/>
@@ -796,7 +795,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="95"/>
         <source>Error adding remote</source>
-        <translation>שגיאה בעת הוספת המאגר המרוחק</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="96"/>
@@ -806,12 +805,12 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Success</source>
-        <translation>הצלחה</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../remotes.cpp" line="101"/>
         <source>Remote added successfully</source>
-        <translation>המאגר המרוחק נוסף בהצלחה</translation>
+        <translation type="unfinished"></translation>
     </message>
 </context>
 <context>
@@ -819,28 +818,28 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../about.cpp" line="71"/>
         <source>License</source>
-        <translation>רישיון</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../about.cpp" line="72"/>
         <location filename="../about.cpp" line="82"/>
         <source>Changelog</source>
-        <translation>יומן שינויים</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../about.cpp" line="73"/>
         <source>Cancel</source>
-        <translation>ביטול</translation>
+        <translation>Avbryt</translation>
     </message>
     <message>
         <location filename="../about.cpp" line="95"/>
         <source>&amp;Close</source>
-        <translation>&amp;סגירה</translation>
+        <translation>&amp;Lukk</translation>
     </message>
     <message>
         <location filename="../lockfile.cpp" line="50"/>
         <source>Warning</source>
-        <translation>אזהרה</translation>
+        <translation>Advarsel</translation>
     </message>
     <message>
         <location filename="../lockfile.cpp" line="51"/>
@@ -866,12 +865,12 @@ Close the program, or wait until it is done processing and try again.</source>
         <location filename="../main.cpp" line="96"/>
         <location filename="../main.cpp" line="104"/>
         <source>Error</source>
-        <translation>שגיאה</translation>
+        <translation>Feil</translation>
     </message>
     <message>
         <location filename="../main.cpp" line="97"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>כנראה שנכנסת למערכת בתור משתמש על (root), נא לצאת ולהיכנס כמשתמש רגיל כדי להשתמש בתוכנית הזאת.</translation>
+        <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../main.cpp" line="105"/>
