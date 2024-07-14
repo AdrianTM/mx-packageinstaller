@@ -2993,7 +2993,7 @@ void MainWindow::pushUpgradeFP_clicked()
 void MainWindow::pushRemotes_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    auto *dialog = new ManageRemotes(this);
+    auto *dialog = new ManageRemotes(this, FPuser);
     dialog->exec();
     if (dialog->isChanged()) {
         listFlatpakRemotes();

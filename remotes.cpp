@@ -9,12 +9,12 @@
 
 #include "cmd.h"
 
-ManageRemotes::ManageRemotes(QWidget *parent)
-    : QDialog(parent)
+ManageRemotes::ManageRemotes(QWidget *parent, const QString &user)
+    : QDialog(parent),
+      user(user)
 {
     setWindowTitle(tr("Manage Flatpak Remotes"));
     changed = false;
-    user = "--system ";
 
     auto *layout = new QGridLayout();
     setLayout(layout);
@@ -22,6 +22,11 @@ ManageRemotes::ManageRemotes(QWidget *parent)
     comboUser = new QComboBox(this);
     comboUser->addItem(tr("For all users"));
     comboUser->addItem(tr("For current user"));
+    if (user == "--system ") {
+        comboUser->setCurrentIndex(0);
+    } else {
+        comboUser->setCurrentIndex(1);
+    }
 
     comboRemote = new QComboBox(this);
 
