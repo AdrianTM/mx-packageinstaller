@@ -83,8 +83,8 @@ void ManageRemotes::removeItem()
         return;
     }
     changed = true;
-    const QString remote = comboRemote->currentText().section('\t', 0, 0);
-    QString user = comboRemote->currentText().section('\t', 1, 1);
+    const QString remote = comboRemote->currentText().section(" -- ", 0, 0);
+    QString user = comboRemote->currentText().section(" -- ", 1, 1);
     user = user.isEmpty() ? "" : user.prepend("--");
     Cmd().run("flatpak remote-delete " + remote + ' ' + user);
     comboRemote->removeItem(comboRemote->currentIndex());
@@ -134,6 +134,6 @@ void ManageRemotes::listFlatpakRemotes() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     comboRemote->clear();
-    QStringList list = Cmd().getOut("flatpak remote-list").split('\n');
+    QStringList list = Cmd().getOut("flatpak remote-list").replace('\t', " -- ").split('\n');
     comboRemote->addItems(list);
 }
