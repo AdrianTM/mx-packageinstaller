@@ -2604,102 +2604,101 @@ void MainWindow::filterChanged(const QString &arg1)
     currentTree->blockSignals(true);
     currentTree->setUpdatesEnabled(false);
 
-    QList<QTreeWidgetItem *> foundItems;
+    auto resetTree = [this]() {
+        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
+            (*it)->setData(0, Qt::UserRole, true);
+            (*it)->setHidden(false);
+            (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
+        }
+        findPackage();
+        setSearchFocus();
+        ui->pushInstall->setEnabled(false);
+        ui->pushUninstall->setEnabled(false);
+    };
+
+    auto uncheckAllItems = [this]() {
+        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
+            (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
+        }
+    };
+
+    auto handleFlatpakFilter = [this, uncheckAllItems](const QStringList &data, bool raw = true) {
+        uncheckAllItems();
+        displayFilteredFP(data, raw);
+    };
+
+    auto updateButtonStates = [this](bool installEnabled, bool uninstallEnabled) {
+        ui->pushInstall->setEnabled(installEnabled);
+        ui->pushUninstall->setEnabled(uninstallEnabled);
+    };
+
+    auto clearChangeListAndButtons = [this, updateButtonStates]() {
+        updateButtonStates(false, false);
+        change_list.clear();
+    };
+
     if (currentTree == ui->treeFlatpak) {
         if (arg1 == tr("Installed runtimes")) {
-            displayFilteredFP(installed_runtimes_fp);
+            handleFlatpakFilter(installed_runtimes_fp, false);
+            clearChangeListAndButtons();
         } else if (arg1 == tr("Installed apps")) {
-            displayFilteredFP(installed_apps_fp);
+            handleFlatpakFilter(installed_apps_fp, false);
+            clearChangeListAndButtons();
         } else if (arg1 == tr("All apps")) {
             if (flatpaks_apps.isEmpty()) {
                 flatpaks_apps = listFlatpaks(ui->comboRemote->currentText(), "--app");
             }
-            displayFilteredFP(flatpaks_apps, true);
+            handleFlatpakFilter(flatpaks_apps);
+            clearChangeListAndButtons();
         } else if (arg1 == tr("All runtimes")) {
             if (flatpaks_runtimes.isEmpty()) {
                 flatpaks_runtimes = listFlatpaks(ui->comboRemote->currentText(), "--runtime");
             }
-            displayFilteredFP(flatpaks_runtimes, true);
+            handleFlatpakFilter(flatpaks_runtimes);
+            clearChangeListAndButtons();
         } else if (arg1 == tr("All available")) {
-            int total = 0;
-            for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                ++total;
-                (*it)->setData(0, Qt::UserRole, true);
-                (*it)->setHidden(false);
-            }
-            ui->labelNumAppFP->setText(QString::number(total));
+            resetTree();
+            ui->labelNumAppFP->setText(QString::number(currentTree->topLevelItemCount()));
+            clearChangeListAndButtons();
         } else if (arg1 == tr("All installed")) {
             displayFilteredFP(installed_apps_fp + installed_runtimes_fp);
         } else if (arg1 == tr("Not installed")) {
             for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                auto userData = (*it)->data(FlatCol::Status, Qt::UserRole);
-                if (userData == Status::NotInstalled) {
-                    foundItems.append(*it);
+                bool isNotInstalled = (*it)->data(FlatCol::Status, Qt::UserRole) == Status::NotInstalled;
+                if (!isNotInstalled) {
+                    (*it)->setHidden(true);
+                    (*it)->setCheckState(FlatCol::Check, Qt::Unchecked);
+                    change_list.removeOne((*it)->data(FlatCol::FullName, Qt::UserRole).toString());
                 }
+                (*it)->setData(0, Qt::UserRole, isNotInstalled);
             }
-            QStringList newList;
+            ui->pushUninstall->setEnabled(false);
+        }
+        findPackage();
+        setSearchFocus();
+    } else if (arg1 == tr("All packages")) {
+        resetTree();
+        clearChangeListAndButtons();
+    } else {
+        const QMap<QString, int> statusMap {{tr("Upgradable"), Status::Upgradable},
+                                            {tr("Installed"), Status::Installed},
+                                            {tr("Not installed"), Status::NotInstalled}};
+
+        auto itStatus = statusMap.find(arg1);
+        if (itStatus != statusMap.end()) {
             for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                if (foundItems.contains(*it)) {
-                    newList << (*it)->data(FlatCol::FullName, Qt::UserRole).toString();
-                }
-            }
-            displayFilteredFP(newList);
-        }
-        findPackage();
-        setSearchFocus();
-        currentTree->blockSignals(false);
-        return;
-    }
-    if (arg1 == tr("All packages")) {
-        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-            (*it)->setData(0, Qt::UserRole, true);
-            (*it)->setHidden(false);
-        }
-        findPackage();
-        setSearchFocus();
-        currentTree->blockSignals(false);
-        return;
-    }
-
-    const QMap<QString, int> statusMap {{tr("Upgradable"), Status::Upgradable},
-                                        {tr("Installed"), Status::Installed},
-                                        {tr("Not installed"), Status::NotInstalled}};
-
-    auto find = [&foundItems](const QTreeWidgetItemIterator &it, int status) {
-        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole);
-        if (userData == status) {
-            foundItems.append(*it);
-        }
-    };
-
-    auto itStatus = statusMap.find(arg1);
-    if (itStatus != statusMap.end()) {
-        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-            if (itStatus.value() == Status::Installed
-                && (*it)->data(TreeCol::Status, Qt::UserRole) != Status::Installed) {
-                find(it, Status::Upgradable);
-            } else {
-                find(it, itStatus.value());
+                int itemStatus = (*it)->data(TreeCol::Status, Qt::UserRole).toInt();
+                bool shouldShow = (itStatus.value() == Status::Installed && itemStatus == Status::Upgradable)
+                                  || (itemStatus == itStatus.value());
+                (*it)->setHidden(!shouldShow);
+                (*it)->setData(0, Qt::UserRole, shouldShow);
             }
         }
+        uncheckAllItems();
+        findPackage();
+        setSearchFocus();
+        clearChangeListAndButtons();
     }
-
-    change_list.clear();
-    ui->pushUninstall->setEnabled(false);
-    ui->pushInstall->setEnabled(false);
-
-    for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-        (*it)->setCheckState(TreeCol::Check, Qt::Unchecked); // Uncheck all items
-        if (foundItems.contains(*it)) {
-            (*it)->setHidden(false);
-            (*it)->setData(0, Qt::UserRole, true); // Displayed
-        } else {
-            (*it)->setHidden(true);
-            (*it)->setData(0, Qt::UserRole, false);
-        }
-    }
-    findPackage();
-    setSearchFocus();
 
     currentTree->setUpdatesEnabled(true);
     currentTree->blockSignals(false);
