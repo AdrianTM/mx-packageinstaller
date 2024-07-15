@@ -239,6 +239,10 @@ private:
     [[nodiscard]] static QString getDebianVerName();
     [[nodiscard]] static bool isFilteredName(const QString &name);
     [[nodiscard]] static uchar getDebianVerNum();
+    [[nodiscard]] QList<QTreeWidgetItem *> createTreeItems(QMap<QString, PackageInfo> *list) const;
+    [[nodiscard]] QMap<QString, PackageInfo> *getCurrentList();
+    [[nodiscard]] QTreeWidget *getCurrentTree();
+
     bool buildPackageLists(bool force_download = false);
     bool confirmActions(const QString &names, const QString &action);
 
@@ -258,11 +262,13 @@ private:
     bool updateApt();
     static QString convert(quint64 bytes);
     static quint64 convert(const QString &size);
+    void addInstalledAppsToItems(QList<QTreeWidgetItem *> &items, QMap<QString, PackageInfo> *list) const;
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();
     void centerWindow();
     void clearUi();
+    void displayAutoRemoveOrphans(const QTreeWidget *newtree) const;
     void displayFilteredFP(QStringList list, bool raw = false);
     void displayFlatpaks(bool force_update = false);
     void displayPackages();
@@ -284,6 +290,10 @@ private:
     void setIcons();
     void setProgressDialog();
     void setSearchFocus() const;
+    void setToolTipForInstalled(QTreeWidgetItem *item, const VersionNumber &installed) const;
+    void setToolTipForNotInstalled(QTreeWidgetItem *item, const QString &app_name) const;
+    void setToolTipForUpgradable(QTreeWidgetItem *item, const VersionNumber &installed) const;
     void setup();
     void updateInterface() const;
+    void updateTreeItems(QTreeWidget *tree);
 };

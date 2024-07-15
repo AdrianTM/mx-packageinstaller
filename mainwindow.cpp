@@ -311,12 +311,12 @@ void MainWindow::updateInterface() const
     for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
         auto userData = (*it)->data(TreeCol::Status, Qt::UserRole).toInt();
         switch (userData) {
-            case Status::Upgradable:
-                ++upgr_count;
-                break;
-            case Status::Installed:
-                ++inst_count;
-                break;
+        case Status::Upgradable:
+            ++upgr_count;
+            break;
+        case Status::Installed:
+            ++inst_count;
+            break;
         }
         (*it)->setHidden(false);
     }
@@ -796,107 +796,164 @@ void MainWindow::displayPackages()
 
     displayPackagesIsRunning = true;
 
-    QTreeWidget *newtree {nullptr};
-
-    QMap<QString, PackageInfo> *list {nullptr};
-
-    if (currentTree == ui->treeMXtest) {
-        if (!dirtyTest) {
-            return;
-        }
-        list = &mx_list;
-        newtree = ui->treeMXtest;
-        dirtyTest = false;
-    } else if (currentTree == ui->treeBackports) {
-        if (!dirtyBackports) {
-            return;
-        }
-        list = &backports_list;
-        newtree = ui->treeBackports;
-        dirtyBackports = false;
-    } else {
-        if (!dirtyEnabledRepos) {
-            return;
-        }
-        list = &enabled_list;
-        newtree = ui->treeEnabled;
-        dirtyEnabledRepos = false;
+    auto *newtree = getCurrentTree();
+    if (!newtree) {
+        displayPackagesIsRunning = false;
+        return;
     }
+
+    QMap<QString, PackageInfo> *list = getCurrentList();
+    if (!list) {
+        displayPackagesIsRunning = false;
+        return;
+    }
+
     newtree->blockSignals(true);
     newtree->setUpdatesEnabled(false);
     newtree->clear();
 
+    auto items = createTreeItems(list);
+    addInstalledAppsToItems(items, list);
+
+    newtree->addTopLevelItems(items);
+    newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
+
+    updateTreeItems(newtree);
+    displayAutoRemoveOrphans(newtree);
+
+    newtree->blockSignals(false);
+    newtree->setUpdatesEnabled(true);
+    displayPackagesIsRunning = false;
+    emit displayPackagesFinished();
+}
+
+void MainWindow::displayAutoRemoveOrphans(const QTreeWidget *newtree) const
+{
+    if (newtree == ui->treeEnabled) {
+        ui->pushRemoveOrphan->setVisible(
+            Cmd().run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
+    }
+}
+
+QTreeWidget *MainWindow::getCurrentTree()
+{
+    if (currentTree == ui->treeMXtest) {
+        if (!dirtyTest) {
+            return nullptr;
+        }
+        dirtyTest = false;
+        return ui->treeMXtest;
+    } else if (currentTree == ui->treeBackports) {
+        if (!dirtyBackports) {
+            return nullptr;
+        }
+        dirtyBackports = false;
+        return ui->treeBackports;
+    } else {
+        if (!dirtyEnabledRepos) {
+            return nullptr;
+        }
+        dirtyEnabledRepos = false;
+        return ui->treeEnabled;
+    }
+}
+
+QMap<QString, PackageInfo> *MainWindow::getCurrentList()
+{
+    if (currentTree == ui->treeMXtest) {
+        return &mx_list;
+    } else if (currentTree == ui->treeBackports) {
+        return &backports_list;
+    } else {
+        return &enabled_list;
+    }
+}
+
+QList<QTreeWidgetItem *> MainWindow::createTreeItems(QMap<QString, PackageInfo> *list) const
+{
     QList<QTreeWidgetItem *> items;
     items.reserve(list->size() + installed_packages.size());
 
     for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
         items.append(createTreeItem(it.key(), it.value().version, it.value().description));
     }
-    // Add installed apps that are not available in the list
+
+    return items;
+}
+
+void MainWindow::addInstalledAppsToItems(QList<QTreeWidgetItem *> &items, QMap<QString, PackageInfo> *list) const
+{
     for (auto it = installed_packages.constBegin(); it != installed_packages.constEnd(); ++it) {
         if (!list->contains(it.key())) {
             items.append(createTreeItem(it.key(), it.value().version, it.value().description));
         }
     }
+}
 
-    newtree->addTopLevelItems(items);
-    newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
-    newtree->setUpdatesEnabled(true);
-    // Process the entire list of apps and count upgradable and installable
+void MainWindow::updateTreeItems(QTreeWidget *tree)
+{
     int upgr_count = 0;
     int inst_count = 0;
 
     auto hashInstalled = listInstalledVersions();
-    // Update tree
-    for (QTreeWidgetItemIterator it(newtree); (*it) != nullptr; ++it) {
+
+    for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
         const QString app_name = (*it)->text(TreeCol::Name);
         if (ui->checkHideLibs->isChecked() && isFilteredName(app_name)) {
             (*it)->setHidden(true);
         }
         const QString app_ver = (*it)->text(TreeCol::Version);
         const VersionNumber installed = hashInstalled.value(app_name);
-        // Candidate from the selected repo, might be different than the one from Enabled
         const VersionNumber repo_candidate(app_ver);
 
-        (*it)->setIcon(TreeCol::Check, QIcon()); // Reset update icon
+        (*it)->setIcon(TreeCol::Check, QIcon());
+
         if (installed.toString().isEmpty()) {
-            for (int i = 0; i < newtree->columnCount(); ++i) {
-                if (enabled_list.contains(app_name)) {
-                    (*it)->setToolTip(i, tr("Version ") + enabled_list.value(app_name).version
-                                             + tr(" in the enabled repos"));
-                } else {
-                    (*it)->setToolTip(i, tr("Not available in the enabled repos"));
-                }
-            }
+            setToolTipForNotInstalled(*it, app_name);
             (*it)->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
         } else {
             ++inst_count;
             if (installed >= repo_candidate) {
-                (*it)->setIcon(TreeCol::Check, qicon_installed);
-                for (int i = 0; i < newtree->columnCount(); ++i) {
-                    (*it)->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
-                }
+                setToolTipForInstalled(*it, installed);
                 (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
             } else {
-                (*it)->setIcon(TreeCol::Check, qicon_upgradable);
-                for (int i = 0; i < newtree->columnCount(); ++i) {
-                    (*it)->setToolTip(i, tr("Version ") + installed.toString() + tr(" installed"));
-                }
+                setToolTipForUpgradable(*it, installed);
                 ++upgr_count;
                 (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Upgradable);
             }
         }
     }
-    for (int i = 0; i < newtree->columnCount(); ++i) {
-        newtree->resizeColumnToContents(i);
+
+    for (int i = 0; i < tree->columnCount(); ++i) {
+        tree->resizeColumnToContents(i);
     }
-    if (newtree == ui->treeEnabled) {
-        ui->pushRemoveOrphan->setVisible(
-            Cmd().run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
+}
+
+void MainWindow::setToolTipForNotInstalled(QTreeWidgetItem *item, const QString &app_name) const
+{
+    for (int i = 0; i < item->treeWidget()->columnCount(); ++i) {
+        if (enabled_list.contains(app_name)) {
+            item->setToolTip(i, tr("Version ") + enabled_list.value(app_name).version + tr(" in the enabled repos"));
+        } else {
+            item->setToolTip(i, tr("Not available in the enabled repos"));
+        }
     }
-    newtree->blockSignals(false);
-    displayPackagesIsRunning = false;
-    emit displayPackagesFinished();
+}
+
+void MainWindow::setToolTipForInstalled(QTreeWidgetItem *item, const VersionNumber &installed) const
+{
+    item->setIcon(TreeCol::Check, qicon_installed);
+    for (int i = 0; i < item->treeWidget()->columnCount(); ++i) {
+        item->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
+    }
+}
+
+void MainWindow::setToolTipForUpgradable(QTreeWidgetItem *item, const VersionNumber &installed) const
+{
+    item->setIcon(TreeCol::Check, qicon_upgradable);
+    for (int i = 0; i < item->treeWidget()->columnCount(); ++i) {
+        item->setToolTip(i, tr("Version ") + installed.toString() + tr(" installed"));
+    }
 }
 
 void MainWindow::displayFlatpaks(bool force_update)
