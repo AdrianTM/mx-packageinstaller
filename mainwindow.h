@@ -275,15 +275,23 @@ private:
     void displayPopularApps() const;
     void displayWarning(const QString &repo);
     void enableTabs(bool enable) const;
+    void handleEnabledReposTab(const QString &search_str, int filter_idx);
+    void handleFlatpakTab(const QString &search_str);
+    void handleOutputTab();
+    void handleTab(const QString &search_str, int filter_idx, QComboBox *filterCombo, QLineEdit *searchBox,
+                   const QString &warningMessage, bool &dirtyFlag);
     void hideColumns() const;
     void hideLibs() const;
     void ifDownloadFailed() const;
+    void installFlatpak();
     void listFlatpakRemotes() const;
     void listSizeInstalledFP();
     void loadPmFiles();
     void processDoc(const QDomDocument &doc);
     void refreshPopularApps();
     void removeDuplicatesFP() const;
+    void resetCheckboxes();
+    void saveSearchText(QString &search_str, int &filter_idx);
     void setConnections() const;
     void setCurrentTree();
     void setDirty();

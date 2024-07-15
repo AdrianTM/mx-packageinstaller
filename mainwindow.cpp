@@ -2511,17 +2511,47 @@ void MainWindow::tabWidget_currentChanged(int index)
     ui->pushUninstall->setEnabled(false);
     currentTree->blockSignals(true);
 
-    // Reset checkboxes when tab changes
+    resetCheckboxes();
+    QString search_str;
+    int filter_idx = 0;
+    saveSearchText(search_str, filter_idx);
+
+    switch (index) {
+    case Tab::Popular: {
+        bool tempFlag = false;
+        handleTab(search_str, filter_idx, nullptr, ui->searchPopular, "", tempFlag);
+    } break;
+    case Tab::EnabledRepos:
+        handleEnabledReposTab(search_str, filter_idx);
+        break;
+    case Tab::Test:
+        handleTab(search_str, filter_idx, ui->comboFilterMX, ui->searchBoxMX, "test", dirtyTest);
+        break;
+    case Tab::Backports:
+        handleTab(search_str, filter_idx, ui->comboFilterBP, ui->searchBoxBP, "backports", dirtyBackports);
+        break;
+    case Tab::Flatpak:
+        handleFlatpakTab(search_str);
+        break;
+    case Tab::Output:
+        handleOutputTab();
+        break;
+    }
+    ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
+}
+
+void MainWindow::resetCheckboxes()
+{
     if (currentTree != ui->treePopularApps) {
         currentTree->clearSelection();
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
             (*it)->setCheckState(0, Qt::Unchecked);
         }
     }
+}
 
-    // Save the search text
-    QString search_str;
-    int filter_idx = 0;
+void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
+{
     if (currentTree == ui->treePopularApps) {
         search_str = ui->searchPopular->text();
     } else if (currentTree == ui->treeEnabled) {
@@ -2536,149 +2566,94 @@ void MainWindow::tabWidget_currentChanged(int index)
     } else if (currentTree == ui->treeFlatpak) {
         search_str = ui->searchBoxFlatpak->text();
     }
-    switch (index) {
-    case Tab::Popular:
-        ui->searchPopular->setText(search_str);
-        enableTabs(true);
-        setCurrentTree();
-        if (!ui->searchPopular->text().isEmpty()) {
-            findPopular();
+}
+
+void MainWindow::handleEnabledReposTab(const QString &search_str, int filter_idx)
+{
+    ui->searchBoxEnabled->setText(search_str);
+    enableTabs(true);
+    setCurrentTree();
+    change_list.clear();
+    if (displayPackagesIsRunning) {
+        progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
         }
-        currentTree->blockSignals(false);
-        break;
-    case Tab::EnabledRepos:
-        ui->searchBoxEnabled->setText(search_str);
-        enableTabs(true);
-        setCurrentTree();
-        change_list.clear();
-        if (displayPackagesIsRunning) {
-            progress->show();
-            if (!timer.isActive()) {
-                timer.start(100ms);
-            }
-        } else if (currentTree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
-            if (!buildPackageLists()) {
-                QMessageBox::critical(this, tr("Error"),
-                                      tr("Could not download the list of packages. Please check your APT sources."));
-                currentTree->blockSignals(false);
-                return;
-            }
-        }
-        ui->comboFilterEnabled->setCurrentIndex(filter_idx);
-        if (!ui->searchBoxEnabled->text().isEmpty()) {
-            findPackage();
-        }
-        if (!displayPackagesIsRunning) {
+    } else if (currentTree->topLevelItemCount() == 0 || dirtyEnabledRepos) {
+        if (!buildPackageLists()) {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Could not download the list of packages. Please check your APT sources."));
             currentTree->blockSignals(false);
+            return;
         }
-        break;
-    case Tab::Test:
-        ui->searchBoxMX->setText(search_str);
-        enableTabs(true);
-        setCurrentTree();
-        displayWarning("test");
-        change_list.clear();
-        if (currentTree->topLevelItemCount() == 0 || dirtyTest) {
-            if (!buildPackageLists()) {
-                QMessageBox::critical(this, tr("Error"),
-                                      tr("Could not download the list of packages. Please check your APT sources."));
-                currentTree->blockSignals(false);
-                return;
-            }
-        }
-        ui->comboFilterMX->setCurrentIndex(filter_idx);
-        if (!search_str.isEmpty()) {
-            findPackage();
-        }
+    }
+    ui->comboFilterEnabled->setCurrentIndex(filter_idx);
+    if (!ui->searchBoxEnabled->text().isEmpty()) {
+        findPackage();
+    }
+    if (!displayPackagesIsRunning) {
         currentTree->blockSignals(false);
-        break;
-    case Tab::Backports:
+    }
+}
+
+void MainWindow::handleTab(const QString &search_str, int filter_idx, QComboBox *filterCombo, QLineEdit *searchBox,
+                           const QString &warningMessage, bool &dirtyFlag)
+{
+    if (filterCombo) {
+        filterCombo->setCurrentIndex(filter_idx);
+    }
+    searchBox->setText(search_str);
+    enableTabs(true);
+    setCurrentTree();
+    if (!warningMessage.isEmpty()) {
+        displayWarning(warningMessage);
+    }
+    change_list.clear();
+    if (currentTree->topLevelItemCount() == 0 || dirtyFlag) {
+        if (!buildPackageLists()) {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("Could not download the list of packages. Please check your APT sources."));
+            currentTree->blockSignals(false);
+            return;
+        }
+    }
+    if (!search_str.isEmpty()) {
+        currentTree == ui->treePopularApps ? findPopular() : findPackage();
+    }
+    currentTree->blockSignals(false);
+}
+
+void MainWindow::handleFlatpakTab(const QString &search_str)
+{
+    lastItemClicked = nullptr;
+    ui->searchBoxFlatpak->setText(search_str);
+    enableTabs(true);
+    setCurrentTree();
+    displayWarning("flatpaks");
+    ui->searchBoxFlatpak->setFocus();
+    listFlatpakRemotes();
+    if (!firstRunFP && checkInstalled("flatpak")) {
         ui->searchBoxBP->setText(search_str);
-        enableTabs(true);
-        setCurrentTree();
-        displayWarning("backports");
-        change_list.clear();
-        if (currentTree->topLevelItemCount() == 0 || dirtyBackports) {
-            if (!buildPackageLists()) {
-                QMessageBox::critical(this, tr("Error"),
-                                      tr("Could not download the list of packages. Please check your APT sources."));
-                currentTree->blockSignals(false);
-                return;
-            }
-        }
-        ui->comboFilterBP->setCurrentIndex(filter_idx);
         if (!search_str.isEmpty()) {
             findPackage();
         }
+        if (!displayFlatpaksIsRunning) {
+            filterChanged(ui->comboFilterFlatpak->currentText());
+        }
         currentTree->blockSignals(false);
-        break;
-    case Tab::Flatpak:
-        lastItemClicked = nullptr;
-        ui->searchBoxFlatpak->setText(search_str);
-        enableTabs(true);
-        setCurrentTree();
-        displayWarning("flatpaks");
-        ui->searchBoxFlatpak->setFocus();
-        listFlatpakRemotes();
-        if (!firstRunFP && checkInstalled("flatpak")) {
-            ui->searchBoxBP->setText(search_str);
-            if (!search_str.isEmpty()) {
-                findPackage();
-            }
-            if (!displayFlatpaksIsRunning) {
-                filterChanged(ui->comboFilterFlatpak->currentText());
-            }
-            currentTree->blockSignals(false);
+        return;
+    }
+    firstRunFP = false;
+    blockInterfaceFP(true);
+    if (!checkInstalled("flatpak")) {
+        int ans = QMessageBox::question(this, tr("Flatpak not installed"),
+                                        tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
+        if (ans == QMessageBox::No) {
+            ui->tabWidget->setCurrentIndex(Tab::Popular);
             return;
         }
-        firstRunFP = false;
-        blockInterfaceFP(true);
-        if (!checkInstalled("flatpak")) {
-            int ans = QMessageBox::question(this, tr("Flatpak not installed"),
-                                            tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
-            if (ans == QMessageBox::No) {
-                ui->tabWidget->setCurrentIndex(Tab::Popular);
-                break;
-            }
-            ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
-            ui->tabWidget->setCurrentWidget(ui->tabOutput);
-            setCursor(QCursor(Qt::BusyCursor));
-            showOutput();
-            displayFlatpaksIsRunning = true;
-            install("flatpak");
-            installed_packages = listInstalled();
-            setDirty();
-            buildPackageLists();
-            if (!checkInstalled("flatpak")) {
-                QMessageBox::critical(this, tr("Flatpak not installed"), tr("Flatpak was not installed"));
-                ui->tabWidget->setCurrentIndex(Tab::Popular);
-                setCursor(QCursor(Qt::ArrowCursor));
-                enableTabs(true);
-                currentTree->blockSignals(false);
-                return;
-            }
-            Cmd().runAsRoot("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
-            Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
-                            "https://flathub.org/repo/flathub.flatpakrepo");
-            enableOutput();
-            listFlatpakRemotes();
-            if (displayFlatpaksIsRunning) {
-                progress->show();
-                if (!timer.isActive()) {
-                    timer.start(100ms);
-                }
-            }
-            setCursor(QCursor(Qt::ArrowCursor));
-            ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Console Output"));
-            ui->tabWidget->blockSignals(true);
-            displayFlatpaks(true);
-            ui->tabWidget->blockSignals(false);
-            QMessageBox::warning(this, tr("Needs re-login"),
-                                 tr("You might need to logout/login to see installed items in the menu"));
-            ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
-            enableTabs(true);
-            return;
-        }
+        installFlatpak();
+    } else {
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
         setCursor(QCursor(Qt::ArrowCursor));
@@ -2696,17 +2671,58 @@ void MainWindow::tabWidget_currentChanged(int index)
         if (!search_str.isEmpty()) {
             findPackage();
         }
-        break;
-    case Tab::Output:
-        ui->searchPopular->clear();
-        ui->searchBoxEnabled->clear();
-        ui->searchBoxMX->clear();
-        ui->searchBoxBP->clear();
-        ui->pushInstall->setDisabled(true);
-        ui->pushUninstall->setDisabled(true);
-        break;
     }
-    ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
+}
+
+void MainWindow::installFlatpak()
+{
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
+    ui->tabWidget->setCurrentWidget(ui->tabOutput);
+    setCursor(QCursor(Qt::BusyCursor));
+    showOutput();
+    displayFlatpaksIsRunning = true;
+    install("flatpak");
+    installed_packages = listInstalled();
+    setDirty();
+    buildPackageLists();
+    if (!checkInstalled("flatpak")) {
+        QMessageBox::critical(this, tr("Flatpak not installed"), tr("Flatpak was not installed"));
+        ui->tabWidget->setCurrentIndex(Tab::Popular);
+        setCursor(QCursor(Qt::ArrowCursor));
+        enableTabs(true);
+        currentTree->blockSignals(false);
+        return;
+    }
+    Cmd().runAsRoot("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
+    Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
+                    "https://flathub.org/repo/flathub.flatpakrepo");
+    enableOutput();
+    listFlatpakRemotes();
+    if (displayFlatpaksIsRunning) {
+        progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
+        }
+    }
+    setCursor(QCursor(Qt::ArrowCursor));
+    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Console Output"));
+    ui->tabWidget->blockSignals(true);
+    displayFlatpaks(true);
+    ui->tabWidget->blockSignals(false);
+    QMessageBox::warning(this, tr("Needs re-login"),
+                         tr("You might need to logout/login to see installed items in the menu"));
+    ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
+    enableTabs(true);
+}
+
+void MainWindow::handleOutputTab()
+{
+    ui->searchPopular->clear();
+    ui->searchBoxEnabled->clear();
+    ui->searchBoxMX->clear();
+    ui->searchBoxBP->clear();
+    ui->pushInstall->setDisabled(true);
+    ui->pushUninstall->setDisabled(true);
 }
 
 void MainWindow::filterChanged(const QString &arg1)
