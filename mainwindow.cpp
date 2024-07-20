@@ -1859,8 +1859,8 @@ QString MainWindow::getVersion(const QString &name) const
 // Return true if all the packages listed are installed
 bool MainWindow::checkInstalled(const QVariant &names) const
 {
-    QStringList name_list = names.canConvert<QString>() ? names.toString().split('\n', Qt::SkipEmptyParts)
-                                                         : names.toStringList();
+    QStringList name_list
+        = names.canConvert<QString>() ? names.toString().split('\n', Qt::SkipEmptyParts) : names.toStringList();
 
     return !name_list.isEmpty() && std::all_of(name_list.cbegin(), name_list.cend(), [this](const QString &name) {
         return installed_packages.contains(name.trimmed());
