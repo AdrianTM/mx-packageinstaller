@@ -1,3 +1,9 @@
+mx-packageinstaller (24.7.06) mx; urgency=medium
+
+  * Fix: displaying installed packages in the Popular tab
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 20 Jul 2024 12:19:55 -0400
+
 mx-packageinstaller (24.7.05) mx; urgency=medium
 
   * Wait for displayPackages to finish before updating the interface
@@ -8,7 +14,7 @@ mx-packageinstaller (24.7.05) mx; urgency=medium
 mx-packageinstaller (24.7.04) mx; urgency=medium
 
   * Performance improvements for search and filter change
-  * Save and restore flatpak repo and user choices
+  * Save and restore flatpak repo and user choice
   * Make sure all checkboxes are cleared when switching filters for flatpaks
   * Fix: don't update interface when loading Enabled repos in the background
 
