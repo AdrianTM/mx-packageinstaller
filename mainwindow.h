@@ -50,7 +50,7 @@ class MainWindow;
 
 namespace Status
 {
-enum { NotInstalled, Installed, Upgradable };
+enum { NotInstalled, Installed, Upgradable, Autoremovable };
 }
 
 namespace Tab
@@ -155,7 +155,7 @@ private slots:
     void pushHelp_clicked();
     void pushInstall_clicked();
     void pushRemotes_clicked();
-    void pushRemoveOrphan_clicked();
+    void pushRemoveAutoremovable_clicked();
     void pushRemoveUnused_clicked();
     void pushUninstall_clicked();
     void pushUpgradeAll_clicked();
@@ -181,6 +181,7 @@ private:
     bool displayFlatpaksIsRunning {false};
     bool displayPackagesIsRunning {false};
     bool firstRunFP {true};
+    bool hideLibsChecked {true};
     bool test_initially_enabled {false};
     bool updated_once {false};
     bool warning_backports {false};
@@ -256,6 +257,7 @@ private:
     bool installPopularApp(const QString &name);
     bool installPopularApps();
     bool installSelected();
+    bool markKeep();
     bool readPackageList(bool force_download = false);
     bool uninstall(const QString &names, const QString &preuninstall = QLatin1String(""),
                    const QString &postuninstall = QLatin1String(""));
@@ -268,7 +270,7 @@ private:
     void cancelDownload();
     void centerWindow();
     void clearUi();
-    void displayAutoRemoveOrphans(const QTreeWidget *newtree) const;
+    void displayAutoRemoveAutoremovable(const QTreeWidget *newtree);
     void displayFilteredFP(QStringList list, bool raw = false);
     void displayFlatpaks(bool force_update = false);
     void displayPackages();

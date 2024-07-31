@@ -100,7 +100,7 @@ void MainWindow::setup()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->blockSignals(true);
     ui->tabWidget->setCurrentWidget(ui->tabPopular);
-    ui->pushRemoveOrphan->setHidden(true);
+    ui->pushRemoveAutoremovable->setHidden(true);
 
     QFont font("monospace");
     font.setStyleHint(QFont::Monospace);
@@ -629,7 +629,7 @@ void MainWindow::setConnections() const
     connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelp_clicked);
     connect(ui->pushInstall, &QPushButton::clicked, this, &MainWindow::pushInstall_clicked);
     connect(ui->pushRemotes, &QPushButton::clicked, this, &MainWindow::pushRemotes_clicked);
-    connect(ui->pushRemoveOrphan, &QPushButton::clicked, this, &MainWindow::pushRemoveOrphan_clicked);
+    connect(ui->pushRemoveAutoremovable, &QPushButton::clicked, this, &MainWindow::pushRemoveAutoremovable_clicked);
     connect(ui->pushRemoveUnused, &QPushButton::clicked, this, &MainWindow::pushRemoveUnused_clicked);
     connect(ui->pushUninstall, &QPushButton::clicked, this, &MainWindow::pushUninstall_clicked);
     connect(ui->pushUpgradeAll, &QPushButton::clicked, this, &MainWindow::pushUpgradeAll_clicked);
@@ -819,7 +819,7 @@ void MainWindow::displayPackages()
     newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
 
     updateTreeItems(newtree);
-    displayAutoRemoveOrphans(newtree);
+    displayAutoRemoveAutoremovable(newtree);
 
     newtree->blockSignals(false);
     newtree->setUpdatesEnabled(true);
@@ -827,11 +827,22 @@ void MainWindow::displayPackages()
     emit displayPackagesFinished();
 }
 
-void MainWindow::displayAutoRemoveOrphans(const QTreeWidget *newtree) const
+void MainWindow::displayAutoRemoveAutoremovable(const QTreeWidget *newtree)
 {
     if (newtree == ui->treeEnabled) {
-        ui->pushRemoveOrphan->setVisible(
-            Cmd().run(R"lit(test -n "$(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' )")lit"));
+        QStringList names = cmd.getOutAsRoot(R"(apt-get --dry-run autoremove | grep -Po '^Remv \K[^ ]+' | tr '\n' ' ')")
+                                .split(' ', Qt::SkipEmptyParts);
+        if (!names.isEmpty()) {
+            ui->pushRemoveAutoremovable->setVisible(true);
+            for (const QString &name : names) {
+                auto matchingItems = newtree->findItems(name, Qt::MatchExactly | Qt::MatchRecursive, TreeCol::Name);
+                for (QTreeWidgetItem *item : matchingItems) {
+                    item->setData(TreeCol::Status, Qt::UserRole, Status::Autoremovable);
+                }
+            }
+        } else {
+            ui->pushRemoveAutoremovable->setVisible(false);
+        }
     }
 }
 
@@ -1458,6 +1469,15 @@ bool MainWindow::installSelected()
     change_list.clear();
     installed_packages = listInstalled();
     return result;
+}
+
+bool MainWindow::markKeep()
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
+    QString names = change_list.join(' ');
+    enableOutput();
+    return cmd.runAsRoot("apt-mark manual " + names);
 }
 
 bool MainWindow::isFilteredName(const QString &name)
@@ -2368,7 +2388,14 @@ void MainWindow::pushInstall_clicked()
                                   tr("Problem detected while installing, please inspect the console output."));
         }
     } else {
-        bool success = currentTree == ui->treePopularApps ? installPopularApps() : installSelected();
+        bool success = false;
+        if (currentTree == ui->treePopularApps) {
+            success = installPopularApps();
+        } else if (ui->comboFilterEnabled->currentText() == tr("Autoremovable")) {
+            success = markKeep();
+        } else {
+            success = installSelected();
+        }
         setDirty();
         buildPackageLists();
         refreshPopularApps();
@@ -2600,7 +2627,7 @@ void MainWindow::handleTab(const QString &search_str, int filter_idx, QComboBox 
                            const QString &warningMessage, bool &dirtyFlag)
 {
     if (filterCombo) {
-        filterCombo->setCurrentIndex(filter_idx);
+        filterCombo->setCurrentIndex(qMin(filter_idx, 2));
     }
     searchBox->setText(search_str);
     enableTabs(true);
@@ -2764,6 +2791,13 @@ void MainWindow::filterChanged(const QString &arg1)
         change_list.clear();
     };
 
+    auto blockSignalsForAll = [this](bool block) {
+        ui->checkHideLibs->blockSignals(block);
+        ui->checkHideLibsBP->blockSignals(block);
+        ui->checkHideLibsMX->blockSignals(block);
+    };
+
+    bool isAutoremovable = (arg1 == tr("Autoremovable"));
     if (currentTree == ui->treeFlatpak) {
         if (arg1 == tr("Installed runtimes")) {
             handleFlatpakFilter(installed_runtimes_fp, false);
@@ -2804,12 +2838,21 @@ void MainWindow::filterChanged(const QString &arg1)
         findPackage();
         setSearchFocus();
     } else if (arg1 == tr("All packages")) {
+        blockSignalsForAll(true);
+        ui->checkHideLibs->setChecked(!isAutoremovable && hideLibsChecked);
+        blockSignalsForAll(false);
         resetTree();
         clearChangeListAndButtons();
+        ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
     } else {
+        blockSignalsForAll(true);
+        ui->checkHideLibs->setChecked(!isAutoremovable && hideLibsChecked);
+        blockSignalsForAll(false);
+        ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
         const QMap<QString, int> statusMap {{tr("Upgradable"), Status::Upgradable},
                                             {tr("Installed"), Status::Installed},
-                                            {tr("Not installed"), Status::NotInstalled}};
+                                            {tr("Not installed"), Status::NotInstalled},
+                                            {tr("Autoremovable"), Status::Autoremovable}};
 
         auto itStatus = statusMap.find(arg1);
         if (itStatus != statusMap.end()) {
@@ -2894,6 +2937,9 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
     if (currentTree != ui->treeFlatpak) {
         ui->pushUninstall->setEnabled(checkInstalled(change_list));
         ui->pushInstall->setText(checkUpgradable(change_list) ? tr("Upgrade") : tr("Install"));
+        if (ui->comboFilterEnabled->currentText() == tr("Autoremovable")) {
+            ui->pushInstall->setText(tr("Mark keep"));
+        }
     } else { // For Flatpaks allow selection only of installed or not installed items so one clicks
              // on an installed item only installed items should be displayed and the other way round
         ui->pushInstall->setText(tr("Install"));
@@ -2954,6 +3000,7 @@ void MainWindow::pushForceUpdateBP_clicked()
 void MainWindow::checkHideLibs_toggled(bool checked)
 {
     ui->treeEnabled->setUpdatesEnabled(false);
+    hideLibsChecked = checked;
     ui->checkHideLibsMX->setChecked(checked);
     ui->checkHideLibsBP->setChecked(checked);
 
@@ -3190,7 +3237,7 @@ void MainWindow::pushRemoveUnused_clicked()
     enableTabs(true);
 }
 
-void MainWindow::pushRemoveOrphan_clicked()
+void MainWindow::pushRemoveAutoremovable_clicked()
 {
     QString names = cmd.getOutAsRoot(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')");
     QMessageBox::warning(this, tr("Warning"),
