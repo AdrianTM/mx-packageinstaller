@@ -1,4 +1,4 @@
-mx-packageinstaller (24.8) mx; urgency=medium
+mx-packageinstaller (24.8.01) mx; urgency=medium
 
   * Added an "Autoremovable" item in combo box filter to list autoremovable
     packages in the "Enabled" tab
@@ -6,6 +6,7 @@ mx-packageinstaller (24.8) mx; urgency=medium
     prevent them from being autoremoved
   * Renamed "remove orphan packages" to "autoremove packages"
   * Save combo box filter selection when changing tabs
+  * Disable MX test and Backpoards while loading Enabled sources at startup
 
  -- Adrian <adrian@mxlinux.org>  Wed, 31 Jul 2024 22:45:23 -0400
 
