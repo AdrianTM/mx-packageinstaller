@@ -33,7 +33,7 @@
         <location filename="../mainwindow.ui" line="93"/>
         <location filename="../mainwindow.ui" line="470"/>
         <location filename="../mainwindow.ui" line="661"/>
-        <location filename="../mainwindow.ui" line="1027"/>
+        <location filename="../mainwindow.ui" line="1032"/>
         <source>Description</source>
         <translation>Περιγραφή</translation>
     </message>
@@ -45,18 +45,18 @@
     <message>
         <location filename="../mainwindow.ui" line="120"/>
         <location filename="../mainwindow.ui" line="190"/>
-        <location filename="../mainwindow.ui" line="731"/>
-        <location filename="../mainwindow.ui" line="1052"/>
-        <location filename="../mainwindow.ui" line="1269"/>
+        <location filename="../mainwindow.ui" line="736"/>
+        <location filename="../mainwindow.ui" line="1057"/>
+        <location filename="../mainwindow.ui" line="1279"/>
         <source>search</source>
         <translation>αναζήτηση</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="149"/>
         <location filename="../mainwindow.ui" line="203"/>
-        <location filename="../mainwindow.ui" line="772"/>
-        <location filename="../mainwindow.ui" line="1115"/>
-        <location filename="../mainwindow.ui" line="1241"/>
+        <location filename="../mainwindow.ui" line="777"/>
+        <location filename="../mainwindow.ui" line="1125"/>
+        <location filename="../mainwindow.ui" line="1251"/>
         <source>= Installed packages</source>
         <translation>= Εγκατεστημένα πακέτα</translation>
     </message>
@@ -77,57 +77,57 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="264"/>
-        <location filename="../mainwindow.ui" line="1332"/>
+        <location filename="../mainwindow.ui" line="1342"/>
         <source>Upgrade All</source>
         <translation>Αναβάθμιση όλων</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="277"/>
         <location filename="../mainwindow.ui" line="559"/>
-        <location filename="../mainwindow.ui" line="884"/>
+        <location filename="../mainwindow.ui" line="889"/>
         <source>Installed:</source>
         <translation>Εγκατεστημένα:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="300"/>
         <location filename="../mainwindow.ui" line="510"/>
-        <location filename="../mainwindow.ui" line="905"/>
+        <location filename="../mainwindow.ui" line="910"/>
         <source>Total packages:</source>
         <translation>Όλα τα πακέτα:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="314"/>
         <location filename="../mainwindow.ui" line="616"/>
-        <location filename="../mainwindow.ui" line="945"/>
+        <location filename="../mainwindow.ui" line="950"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
         <translation>Εγκατάσταση και των &quot;προτεινόμενων&quot; πακέτων</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="321"/>
         <location filename="../mainwindow.ui" line="589"/>
-        <location filename="../mainwindow.ui" line="877"/>
+        <location filename="../mainwindow.ui" line="882"/>
         <source>Upgradable:</source>
         <translation>Για αναβάθμιση:</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="328"/>
         <location filename="../mainwindow.ui" line="524"/>
-        <location filename="../mainwindow.ui" line="912"/>
+        <location filename="../mainwindow.ui" line="917"/>
         <source>Hide library and developer packages</source>
         <translation>Απόκρυψη πακέτων βιβλιοθήκης και ανάπτυξης</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="350"/>
         <location filename="../mainwindow.ui" line="546"/>
-        <location filename="../mainwindow.ui" line="964"/>
+        <location filename="../mainwindow.ui" line="969"/>
         <source>Refresh list</source>
         <translation>Ανανέωση λίστας</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="388"/>
         <location filename="../mainwindow.ui" line="689"/>
-        <location filename="../mainwindow.ui" line="1082"/>
-        <location filename="../mainwindow.ui" line="1193"/>
+        <location filename="../mainwindow.ui" line="1087"/>
+        <location filename="../mainwindow.ui" line="1203"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Φίλτρο πακέτων ανάλογα με την κατάσταση τους.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -136,68 +136,70 @@
         <location filename="../mainwindow.ui" line="395"/>
         <location filename="../mainwindow.ui" line="692"/>
         <location filename="../mainwindow.ui" line="696"/>
-        <location filename="../mainwindow.ui" line="1085"/>
-        <location filename="../mainwindow.ui" line="1089"/>
-        <location filename="../mainwindow.cpp" line="2853"/>
+        <location filename="../mainwindow.ui" line="1090"/>
+        <location filename="../mainwindow.ui" line="1094"/>
+        <location filename="../mainwindow.cpp" line="2856"/>
         <source>All packages</source>
         <translation>Όλα τα πακέτα</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="400"/>
         <location filename="../mainwindow.ui" line="701"/>
-        <location filename="../mainwindow.ui" line="1094"/>
-        <location filename="../mainwindow.cpp" line="2866"/>
+        <location filename="../mainwindow.ui" line="1099"/>
+        <location filename="../mainwindow.cpp" line="2876"/>
         <source>Installed</source>
         <translation>Εγκατεστημένα</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="405"/>
         <location filename="../mainwindow.ui" line="706"/>
-        <location filename="../mainwindow.ui" line="1099"/>
-        <location filename="../mainwindow.cpp" line="2867"/>
+        <location filename="../mainwindow.ui" line="1104"/>
+        <location filename="../mainwindow.cpp" line="2877"/>
         <source>Upgradable</source>
         <translation>Αναβάθμιση</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="410"/>
         <location filename="../mainwindow.ui" line="711"/>
-        <location filename="../mainwindow.ui" line="1104"/>
-        <location filename="../mainwindow.ui" line="1230"/>
-        <location filename="../mainwindow.cpp" line="2839"/>
-        <location filename="../mainwindow.cpp" line="2868"/>
-        <location filename="../mainwindow.cpp" line="2970"/>
-        <location filename="../mainwindow.cpp" line="2971"/>
+        <location filename="../mainwindow.ui" line="1109"/>
+        <location filename="../mainwindow.ui" line="1240"/>
+        <location filename="../mainwindow.cpp" line="2842"/>
+        <location filename="../mainwindow.cpp" line="2878"/>
+        <location filename="../mainwindow.cpp" line="2980"/>
+        <location filename="../mainwindow.cpp" line="2981"/>
         <source>Not installed</source>
         <translation>Μη εγκατεστημένα</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="415"/>
+        <location filename="../mainwindow.ui" line="716"/>
+        <location filename="../mainwindow.ui" line="1114"/>
         <location filename="../mainwindow.cpp" line="2398"/>
-        <location filename="../mainwindow.cpp" line="2813"/>
-        <location filename="../mainwindow.cpp" line="2869"/>
-        <location filename="../mainwindow.cpp" line="2955"/>
+        <location filename="../mainwindow.cpp" line="2815"/>
+        <location filename="../mainwindow.cpp" line="2879"/>
+        <location filename="../mainwindow.cpp" line="2965"/>
         <source>Autoremovable</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="435"/>
-        <location filename="../mainwindow.ui" line="753"/>
-        <location filename="../mainwindow.ui" line="813"/>
+        <location filename="../mainwindow.ui" line="758"/>
+        <location filename="../mainwindow.ui" line="818"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
         <translation>= Πακέτο με δυνατότητα αναβάθμισης. Η νεότερη έκδοση είναι διαθέσιμη σε επιλεγμένο αποθετήριο.</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="460"/>
         <location filename="../mainwindow.ui" line="651"/>
-        <location filename="../mainwindow.ui" line="1017"/>
+        <location filename="../mainwindow.ui" line="1022"/>
         <source>Package Name</source>
         <translation>Όνομα πακέτου</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="465"/>
         <location filename="../mainwindow.ui" line="656"/>
-        <location filename="../mainwindow.ui" line="1022"/>
-        <location filename="../mainwindow.ui" line="1461"/>
+        <location filename="../mainwindow.ui" line="1027"/>
+        <location filename="../mainwindow.ui" line="1471"/>
         <source>Version</source>
         <translation>Έκδοση</translation>
     </message>
@@ -207,197 +209,197 @@
         <translation>Αποθετήριο MX Test</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="795"/>
+        <location filename="../mainwindow.ui" line="800"/>
         <source>Debian Backports</source>
         <translation>Debian Backports</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1138"/>
+        <location filename="../mainwindow.ui" line="1148"/>
         <source>Flatpaks</source>
         <translation>Flatpaks</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1144"/>
-        <location filename="../mainwindow.ui" line="1148"/>
+        <location filename="../mainwindow.ui" line="1154"/>
+        <location filename="../mainwindow.ui" line="1158"/>
         <location filename="../mainwindow.cpp" line="113"/>
         <location filename="../mainwindow.cpp" line="114"/>
         <source>For all users</source>
         <translation>Για όλους τους χρήστες</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1153"/>
+        <location filename="../mainwindow.ui" line="1163"/>
         <source>For current user</source>
         <translation>Για τον τρέχοντα χρήστη</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1161"/>
+        <location filename="../mainwindow.ui" line="1171"/>
         <source>Remote (repo):</source>
         <translation>Αποθετήριο:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1196"/>
-        <location filename="../mainwindow.ui" line="1200"/>
-        <location filename="../mainwindow.cpp" line="2821"/>
+        <location filename="../mainwindow.ui" line="1206"/>
+        <location filename="../mainwindow.ui" line="1210"/>
+        <location filename="../mainwindow.cpp" line="2824"/>
         <source>All apps</source>
         <translation>Όλες οι εφαρμογές</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1205"/>
-        <location filename="../mainwindow.cpp" line="2827"/>
+        <location filename="../mainwindow.ui" line="1215"/>
+        <location filename="../mainwindow.cpp" line="2830"/>
         <source>All runtimes</source>
         <translation>Όλες οι runtimes</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1210"/>
-        <location filename="../mainwindow.cpp" line="2833"/>
+        <location filename="../mainwindow.ui" line="1220"/>
+        <location filename="../mainwindow.cpp" line="2836"/>
         <source>All available</source>
         <translation>Όλες οι διαθέσιμες</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1215"/>
-        <location filename="../mainwindow.cpp" line="2818"/>
+        <location filename="../mainwindow.ui" line="1225"/>
+        <location filename="../mainwindow.cpp" line="2821"/>
         <source>Installed apps</source>
         <translation>Εγκατεστημένες εφαρμογές</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1220"/>
-        <location filename="../mainwindow.cpp" line="2815"/>
+        <location filename="../mainwindow.ui" line="1230"/>
+        <location filename="../mainwindow.cpp" line="2818"/>
         <source>Installed runtimes</source>
         <translation>Εγκατεστημένα runtimes</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1225"/>
-        <location filename="../mainwindow.cpp" line="2837"/>
-        <location filename="../mainwindow.cpp" line="2963"/>
-        <location filename="../mainwindow.cpp" line="2964"/>
+        <location filename="../mainwindow.ui" line="1235"/>
+        <location filename="../mainwindow.cpp" line="2840"/>
+        <location filename="../mainwindow.cpp" line="2973"/>
+        <location filename="../mainwindow.cpp" line="2974"/>
         <source>All installed</source>
         <translation>Όλα εγκατεστημένα</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1311"/>
+        <location filename="../mainwindow.ui" line="1321"/>
         <source>Total items </source>
         <translation>Συνολικά στοιχεία </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1325"/>
+        <location filename="../mainwindow.ui" line="1335"/>
         <source>Installed apps:</source>
         <translation>Εγκατεστημένες εφαρμογές:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1377"/>
+        <location filename="../mainwindow.ui" line="1387"/>
         <source>Advanced</source>
         <translation>Προχωρημένα</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1406"/>
+        <location filename="../mainwindow.ui" line="1416"/>
         <source>Total installed size:</source>
         <translation>Συνολικό μέγεθος:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1420"/>
+        <location filename="../mainwindow.ui" line="1430"/>
         <source>Remove unused runtimes</source>
         <translation>Αφαίρεση αχρησιμοποίητων runtimes</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1451"/>
+        <location filename="../mainwindow.ui" line="1461"/>
         <source>Short Name</source>
         <translation>Μικρό όνομα</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1456"/>
+        <location filename="../mainwindow.ui" line="1466"/>
         <source>Full Package Name</source>
         <translation>Πλήρες όνομα πακέτου</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1466"/>
+        <location filename="../mainwindow.ui" line="1476"/>
         <source>Size</source>
         <translation>Μέγεθος</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1496"/>
+        <location filename="../mainwindow.ui" line="1506"/>
         <location filename="../mainwindow.cpp" line="2540"/>
-        <location filename="../mainwindow.cpp" line="2748"/>
+        <location filename="../mainwindow.cpp" line="2750"/>
         <source>Console Output</source>
         <translation>Έξοδος κονσόλας</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1502"/>
+        <location filename="../mainwindow.ui" line="1512"/>
         <source>Enter</source>
         <translation>Enter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1512"/>
+        <location filename="../mainwindow.ui" line="1522"/>
         <source>Respond here, or just press Enter</source>
         <translation>Απαντήστε εδώ ή απλά πατήστε Enter</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1571"/>
+        <location filename="../mainwindow.ui" line="1581"/>
         <location filename="../mainwindow.cpp" line="1209"/>
-        <location filename="../mainwindow.cpp" line="2860"/>
-        <location filename="../mainwindow.cpp" line="2865"/>
-        <location filename="../mainwindow.cpp" line="2954"/>
-        <location filename="../mainwindow.cpp" line="2960"/>
-        <location filename="../mainwindow.cpp" line="3232"/>
+        <location filename="../mainwindow.cpp" line="2866"/>
+        <location filename="../mainwindow.cpp" line="2874"/>
+        <location filename="../mainwindow.cpp" line="2964"/>
+        <location filename="../mainwindow.cpp" line="2970"/>
+        <location filename="../mainwindow.cpp" line="3244"/>
         <source>Install</source>
         <translation>Εγκατάσταση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1577"/>
+        <location filename="../mainwindow.ui" line="1587"/>
         <source>Alt+I</source>
         <translation>Alt+I</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1596"/>
+        <location filename="../mainwindow.ui" line="1606"/>
         <source>Quit application</source>
         <translation>Κλείσιμο εφαρμογής</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1599"/>
+        <location filename="../mainwindow.ui" line="1609"/>
         <source>Close</source>
         <translation>Κλείσιμο</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1605"/>
+        <location filename="../mainwindow.ui" line="1615"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1637"/>
+        <location filename="../mainwindow.ui" line="1647"/>
         <source>About this application</source>
         <translation>Περί της εφαρμογής</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1640"/>
+        <location filename="../mainwindow.ui" line="1650"/>
         <source>About...</source>
         <translation>Περί...</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1646"/>
+        <location filename="../mainwindow.ui" line="1656"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1684"/>
+        <location filename="../mainwindow.ui" line="1694"/>
         <source>Display help </source>
         <translation>Εμφάνιση βοήθειας </translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1687"/>
+        <location filename="../mainwindow.ui" line="1697"/>
         <source>Help</source>
         <translation>Βοήθεια</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1693"/>
+        <location filename="../mainwindow.ui" line="1703"/>
         <source>Alt+H</source>
         <translation>Alt+H</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1709"/>
+        <location filename="../mainwindow.ui" line="1719"/>
         <source>Uninstall</source>
         <translation>Αφαίρεση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.ui" line="1715"/>
+        <location filename="../mainwindow.ui" line="1725"/>
         <source>Alt+U</source>
         <translation>Alt+U</translation>
     </message>
@@ -434,12 +436,12 @@
         <location filename="../mainwindow.cpp" line="2516"/>
         <location filename="../mainwindow.cpp" line="2532"/>
         <location filename="../mainwindow.cpp" line="2616"/>
-        <location filename="../mainwindow.cpp" line="2649"/>
-        <location filename="../mainwindow.cpp" line="3054"/>
-        <location filename="../mainwindow.cpp" line="3128"/>
-        <location filename="../mainwindow.cpp" line="3158"/>
-        <location filename="../mainwindow.cpp" line="3249"/>
-        <location filename="../mainwindow.cpp" line="3270"/>
+        <location filename="../mainwindow.cpp" line="2650"/>
+        <location filename="../mainwindow.cpp" line="3064"/>
+        <location filename="../mainwindow.cpp" line="3140"/>
+        <location filename="../mainwindow.cpp" line="3170"/>
+        <location filename="../mainwindow.cpp" line="3261"/>
+        <location filename="../mainwindow.cpp" line="3282"/>
         <source>Error</source>
         <translation>Σφάλμα</translation>
     </message>
@@ -506,7 +508,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1102"/>
-        <location filename="../mainwindow.cpp" line="3258"/>
+        <location filename="../mainwindow.cpp" line="3270"/>
         <source>Warning</source>
         <translation>Προσοχή</translation>
     </message>
@@ -586,7 +588,7 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2156"/>
-        <location filename="../mainwindow.cpp" line="3196"/>
+        <location filename="../mainwindow.cpp" line="3208"/>
         <source>More &amp;info...</source>
         <translation>Περισσότερες &amp;πληροφορίες...</translation>
     </message>
@@ -601,10 +603,10 @@
         <location filename="../mainwindow.cpp" line="2407"/>
         <location filename="../mainwindow.cpp" line="2491"/>
         <location filename="../mainwindow.cpp" line="2513"/>
-        <location filename="../mainwindow.cpp" line="3051"/>
-        <location filename="../mainwindow.cpp" line="3124"/>
-        <location filename="../mainwindow.cpp" line="3152"/>
-        <location filename="../mainwindow.cpp" line="3245"/>
+        <location filename="../mainwindow.cpp" line="3061"/>
+        <location filename="../mainwindow.cpp" line="3136"/>
+        <location filename="../mainwindow.cpp" line="3164"/>
+        <location filename="../mainwindow.cpp" line="3257"/>
         <source>Done</source>
         <translation>Ολοκληρώθηκε</translation>
     </message>
@@ -615,20 +617,20 @@
         <location filename="../mainwindow.cpp" line="2491"/>
         <location filename="../mainwindow.cpp" line="2513"/>
         <location filename="../mainwindow.cpp" line="2529"/>
-        <location filename="../mainwindow.cpp" line="3051"/>
-        <location filename="../mainwindow.cpp" line="3124"/>
-        <location filename="../mainwindow.cpp" line="3152"/>
-        <location filename="../mainwindow.cpp" line="3245"/>
-        <location filename="../mainwindow.cpp" line="3267"/>
+        <location filename="../mainwindow.cpp" line="3061"/>
+        <location filename="../mainwindow.cpp" line="3136"/>
+        <location filename="../mainwindow.cpp" line="3164"/>
+        <location filename="../mainwindow.cpp" line="3257"/>
+        <location filename="../mainwindow.cpp" line="3279"/>
         <source>Processing finished successfully.</source>
         <translation>Η επεξεργασία ολοκληρώθηκε με επιτυχία.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2392"/>
         <location filename="../mainwindow.cpp" line="2411"/>
-        <location filename="../mainwindow.cpp" line="3055"/>
-        <location filename="../mainwindow.cpp" line="3129"/>
-        <location filename="../mainwindow.cpp" line="3159"/>
+        <location filename="../mainwindow.cpp" line="3065"/>
+        <location filename="../mainwindow.cpp" line="3141"/>
+        <location filename="../mainwindow.cpp" line="3171"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Εντοπίστηκε πρόβλημα κατά την εγκατάσταση, παρακαλώ ελέγξτε την έξοδο κονσόλας.</translation>
     </message>
@@ -669,84 +671,84 @@
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2529"/>
-        <location filename="../mainwindow.cpp" line="3267"/>
+        <location filename="../mainwindow.cpp" line="3279"/>
         <source>Success</source>
         <translation>Επιτυχία</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2532"/>
-        <location filename="../mainwindow.cpp" line="3270"/>
+        <location filename="../mainwindow.cpp" line="3282"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Παρουσιάστηκε πρόβλημα κατά την απεγκατάσταση του προγράμματος</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2617"/>
-        <location filename="../mainwindow.cpp" line="2650"/>
+        <location filename="../mainwindow.cpp" line="2651"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>Δεν ήταν δυνατή η λήψη της λίστας των πακέτων. Παρακαλώ ελέγξτε τις πηγές σας.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2689"/>
-        <location filename="../mainwindow.cpp" line="2729"/>
+        <location filename="../mainwindow.cpp" line="2691"/>
+        <location filename="../mainwindow.cpp" line="2731"/>
         <source>Flatpak not installed</source>
         <translation>Το Flatpak δεν είναι εγκατεστημένο</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2690"/>
+        <location filename="../mainwindow.cpp" line="2692"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Το Flatpak δεν είναι εγκατεστημένο.
 Θέλετε να το εγκαταστήσετε;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2729"/>
+        <location filename="../mainwindow.cpp" line="2731"/>
         <source>Flatpak was not installed</source>
         <translation>Το Flatpak δεν εγκαταστάθηκε</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2752"/>
+        <location filename="../mainwindow.cpp" line="2754"/>
         <source>Needs re-login</source>
         <translation>Απαιτείται επανασύνδεση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2753"/>
+        <location filename="../mainwindow.cpp" line="2755"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Ίσως χρειαστεί να αποσυνδεθείτε/συνδεθείτε για να δείτε τα εγκατεστημένα στοιχεία στο μενού</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2860"/>
-        <location filename="../mainwindow.cpp" line="2865"/>
-        <location filename="../mainwindow.cpp" line="2956"/>
+        <location filename="../mainwindow.cpp" line="2866"/>
+        <location filename="../mainwindow.cpp" line="2874"/>
+        <location filename="../mainwindow.cpp" line="2966"/>
         <source>Mark keep</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2954"/>
+        <location filename="../mainwindow.cpp" line="2964"/>
         <source>Upgrade</source>
         <translation>Αναβάθμιση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3083"/>
+        <location filename="../mainwindow.cpp" line="3093"/>
         <source>Quit?</source>
         <translation>Έξοδος;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3084"/>
+        <location filename="../mainwindow.cpp" line="3094"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Εκτελείται ακόμα μια διαδικασία, η διακοπή της μπορεί να αφήσει το σύστημα σε ασταθή κατάσταση. &lt;p&gt;&lt;b&gt;Θέλετε σίγουρα να κλείσετε το MX Εγκατάσταση πακέτων;&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3230"/>
+        <location filename="../mainwindow.cpp" line="3242"/>
         <source>Reinstall</source>
         <translation>Επανεγκατάσταση</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3250"/>
+        <location filename="../mainwindow.cpp" line="3262"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Εντοπίστηκε πρόβλημα κατά τη διάρκεια της τελευταίας λειτουργίας, ελέγξτε την έξοδο της κονσόλας.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="3259"/>
+        <location filename="../mainwindow.cpp" line="3271"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Δυνητικά επικίνδυνη λειτουργία.
