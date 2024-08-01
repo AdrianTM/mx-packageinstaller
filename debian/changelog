@@ -1,3 +1,13 @@
+mx-packageinstaller (24.7.08) mx; urgency=medium
+
+  * Added an "Autoremovable" item in combo box filter to list autoremovable
+    packages in the "Enabled" tab
+  * Added option to mark autoremovable packages as "manual installed" to
+    prevent them from being autoremoved
+  * Renamed "remove orphan packages" to "autoremove packages"
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 31 Jul 2024 22:45:23 -0400
+
 mx-packageinstaller (24.7.07) mx; urgency=medium
 
   * Fix: displaying installed packages in the Popular tab
