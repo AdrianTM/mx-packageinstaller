@@ -1847,10 +1847,10 @@ void MainWindow::clearUi()
         ui->labelNumUpgrBP->clear();
         ui->treeBackports->clear();
     }
-    ui->comboFilterBP->setCurrentIndex(0);
-    ui->comboFilterFlatpak->setCurrentIndex(0);
-    ui->comboFilterMX->setCurrentIndex(0);
-    ui->comboFilterEnabled->setCurrentIndex(0);
+    ui->comboFilterBP->setCurrentIndex(savedComboIndex);
+    ui->comboFilterFlatpak->setCurrentIndex(savedComboIndex);
+    ui->comboFilterMX->setCurrentIndex(savedComboIndex);
+    ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
     blockSignals(false);
 }
 
@@ -2540,22 +2540,23 @@ void MainWindow::tabWidget_currentChanged(int index)
 
     resetCheckboxes();
     QString search_str;
-    int filter_idx = 0;
-    saveSearchText(search_str, filter_idx);
+    if (index != Tab::Output && index != Tab::Flatpak) {
+        saveSearchText(search_str, savedComboIndex);
+    }
 
     switch (index) {
     case Tab::Popular: {
         bool tempFlag = false;
-        handleTab(search_str, filter_idx, nullptr, ui->searchPopular, "", tempFlag);
+        handleTab(search_str, savedComboIndex, nullptr, ui->searchPopular, "", tempFlag);
     } break;
     case Tab::EnabledRepos:
-        handleEnabledReposTab(search_str, filter_idx);
+        handleEnabledReposTab(search_str, savedComboIndex);
         break;
     case Tab::Test:
-        handleTab(search_str, filter_idx, ui->comboFilterMX, ui->searchBoxMX, "test", dirtyTest);
+        handleTab(search_str, savedComboIndex, ui->comboFilterMX, ui->searchBoxMX, "test", dirtyTest);
         break;
     case Tab::Backports:
-        handleTab(search_str, filter_idx, ui->comboFilterBP, ui->searchBoxBP, "backports", dirtyBackports);
+        handleTab(search_str, savedComboIndex, ui->comboFilterBP, ui->searchBoxBP, "backports", dirtyBackports);
         break;
     case Tab::Flatpak:
         handleFlatpakTab(search_str);
@@ -2615,6 +2616,9 @@ void MainWindow::handleEnabledReposTab(const QString &search_str, int filter_idx
         }
     }
     ui->comboFilterEnabled->setCurrentIndex(filter_idx);
+    if (!displayPackagesIsRunning) {
+        filterChanged(ui->comboFilterEnabled->currentText());
+    }
     if (!ui->searchBoxEnabled->text().isEmpty()) {
         findPackage();
     }
@@ -2624,10 +2628,10 @@ void MainWindow::handleEnabledReposTab(const QString &search_str, int filter_idx
 }
 
 void MainWindow::handleTab(const QString &search_str, int filter_idx, QComboBox *filterCombo, QLineEdit *searchBox,
-                           const QString &warningMessage, bool &dirtyFlag)
+                           const QString &warningMessage, bool dirtyFlag)
 {
     if (filterCombo) {
-        filterCombo->setCurrentIndex(qMin(filter_idx, 2));
+        filterCombo->setCurrentIndex(filter_idx >= Status::Autoremovable ? 0 : filter_idx);
     }
     searchBox->setText(search_str);
     enableTabs(true);
@@ -2642,6 +2646,11 @@ void MainWindow::handleTab(const QString &search_str, int filter_idx, QComboBox 
                                   tr("Could not download the list of packages. Please check your APT sources."));
             currentTree->blockSignals(false);
             return;
+        }
+    }
+    if (Tab::Popular != ui->tabWidget->currentIndex()) {
+        if (savedComboIndex < Status::Autoremovable) {
+            filterChanged(ui->comboFilterEnabled->currentText());
         }
     }
     if (!search_str.isEmpty()) {
@@ -2838,6 +2847,7 @@ void MainWindow::filterChanged(const QString &arg1)
         findPackage();
         setSearchFocus();
     } else if (arg1 == tr("All packages")) {
+        savedComboIndex = 0;
         blockSignalsForAll(true);
         ui->checkHideLibs->setChecked(!isAutoremovable && hideLibsChecked);
         blockSignalsForAll(false);
@@ -2849,13 +2859,14 @@ void MainWindow::filterChanged(const QString &arg1)
         ui->checkHideLibs->setChecked(!isAutoremovable && hideLibsChecked);
         blockSignalsForAll(false);
         ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
-        const QMap<QString, int> statusMap {{tr("Upgradable"), Status::Upgradable},
-                                            {tr("Installed"), Status::Installed},
-                                            {tr("Not installed"), Status::NotInstalled},
-                                            {tr("Autoremovable"), Status::Autoremovable}};
+        const QHash<QString, int> statusMap {{tr("Installed"), Status::Installed},
+                                             {tr("Upgradable"), Status::Upgradable},
+                                             {tr("Not installed"), Status::NotInstalled},
+                                             {tr("Autoremovable"), Status::Autoremovable}};
 
         auto itStatus = statusMap.find(arg1);
         if (itStatus != statusMap.end()) {
+            savedComboIndex = itStatus.value();
             for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
                 int itemStatus = (*it)->data(TreeCol::Status, Qt::UserRole).toInt();
                 bool shouldShow = (itStatus.value() == Status::Installed && itemStatus == Status::Upgradable)

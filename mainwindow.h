@@ -50,7 +50,7 @@ class MainWindow;
 
 namespace Status
 {
-enum { NotInstalled, Installed, Upgradable, Autoremovable };
+enum { Installed = 1, Upgradable, NotInstalled, Autoremovable }; // Also used for filter combo index
 }
 
 namespace Tab
@@ -73,7 +73,7 @@ enum {
     PreUninstall,
     MAX
 };
-} // namespace PopCol
+} // Namespace PopCol
 
 namespace TreeCol
 {
@@ -187,6 +187,7 @@ private:
     bool warning_backports {false};
     bool warning_flatpaks {false};
     bool warning_test {false};
+    int savedComboIndex {0};
 
     Cmd cmd;
     LockFile lock_file {"/var/lib/dpkg/lock"};
@@ -281,7 +282,7 @@ private:
     void handleFlatpakTab(const QString &search_str);
     void handleOutputTab();
     void handleTab(const QString &search_str, int filter_idx, QComboBox *filterCombo, QLineEdit *searchBox,
-                   const QString &warningMessage, bool &dirtyFlag);
+                   const QString &warningMessage, bool dirtyFlag);
     void hideColumns() const;
     void hideLibs() const;
     void ifDownloadFailed() const;
