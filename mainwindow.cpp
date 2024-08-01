@@ -75,6 +75,8 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
             AptCache cache;
             enabled_list = cache.getCandidates();
             displayPackages();
+            ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabMXtest), true);
+            ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabBackports), true);
         }
         if (arch != "i386" && checkInstalled("flatpak")) {
             if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub", true)) {
@@ -100,6 +102,8 @@ void MainWindow::setup()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->blockSignals(true);
     ui->tabWidget->setCurrentWidget(ui->tabPopular);
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabMXtest), false);
+    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabBackports), false);
     ui->pushRemoveAutoremovable->setHidden(true);
 
     QFont font("monospace");
