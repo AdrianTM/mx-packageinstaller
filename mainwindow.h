@@ -271,18 +271,17 @@ private:
     void cancelDownload();
     void centerWindow();
     void clearUi();
-    void displayAutoRemoveAutoremovable(const QTreeWidget *newtree);
+    void displayAutoremovable(const QTreeWidget *newtree);
     void displayFilteredFP(QStringList list, bool raw = false);
     void displayFlatpaks(bool force_update = false);
     void displayPackages();
     void displayPopularApps() const;
     void displayWarning(const QString &repo);
     void enableTabs(bool enable) const;
-    void handleEnabledReposTab(const QString &search_str, int filter_idx);
+    void handleEnabledReposTab(const QString &search_str);
     void handleFlatpakTab(const QString &search_str);
     void handleOutputTab();
-    void handleTab(const QString &search_str, int filter_idx, QComboBox *filterCombo, QLineEdit *searchBox,
-                   const QString &warningMessage, bool dirtyFlag);
+    void handleTab(const QString &search_str, QLineEdit *searchBox, const QString &warningMessage, bool dirtyFlag);
     void hideColumns() const;
     void hideLibs() const;
     void ifDownloadFailed() const;

@@ -823,7 +823,7 @@ void MainWindow::displayPackages()
     newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
 
     updateTreeItems(newtree);
-    displayAutoRemoveAutoremovable(newtree);
+    displayAutoremovable(newtree);
 
     newtree->blockSignals(false);
     newtree->setUpdatesEnabled(true);
@@ -831,9 +831,9 @@ void MainWindow::displayPackages()
     emit displayPackagesFinished();
 }
 
-void MainWindow::displayAutoRemoveAutoremovable(const QTreeWidget *newtree)
+void MainWindow::displayAutoremovable(const QTreeWidget *newtree)
 {
-    if (newtree == ui->treeEnabled) {
+    if (newtree != ui->treePopularApps && newtree != ui->treeFlatpak) {
         QStringList names = cmd.getOutAsRoot(R"(apt-get --dry-run autoremove | grep -Po '^Remv \K[^ ]+' | tr '\n' ' ')")
                                 .split(' ', Qt::SkipEmptyParts);
         if (!names.isEmpty()) {
@@ -1852,9 +1852,9 @@ void MainWindow::clearUi()
         ui->treeBackports->clear();
     }
     ui->comboFilterBP->setCurrentIndex(savedComboIndex);
-    ui->comboFilterFlatpak->setCurrentIndex(savedComboIndex);
     ui->comboFilterMX->setCurrentIndex(savedComboIndex);
     ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
+    ui->comboFilterFlatpak->setCurrentIndex(0);
     blockSignals(false);
 }
 
@@ -2551,16 +2551,16 @@ void MainWindow::tabWidget_currentChanged(int index)
     switch (index) {
     case Tab::Popular: {
         bool tempFlag = false;
-        handleTab(search_str, savedComboIndex, nullptr, ui->searchPopular, "", tempFlag);
+        handleTab(search_str, nullptr, "", tempFlag);
     } break;
     case Tab::EnabledRepos:
-        handleEnabledReposTab(search_str, savedComboIndex);
+        handleEnabledReposTab(search_str);
         break;
     case Tab::Test:
-        handleTab(search_str, savedComboIndex, ui->comboFilterMX, ui->searchBoxMX, "test", dirtyTest);
+        handleTab(search_str, ui->searchBoxMX, "test", dirtyTest);
         break;
     case Tab::Backports:
-        handleTab(search_str, savedComboIndex, ui->comboFilterBP, ui->searchBoxBP, "backports", dirtyBackports);
+        handleTab(search_str, ui->searchBoxBP, "backports", dirtyBackports);
         break;
     case Tab::Flatpak:
         handleFlatpakTab(search_str);
@@ -2600,7 +2600,7 @@ void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
     }
 }
 
-void MainWindow::handleEnabledReposTab(const QString &search_str, int filter_idx)
+void MainWindow::handleEnabledReposTab(const QString &search_str)
 {
     ui->searchBoxEnabled->setText(search_str);
     enableTabs(true);
@@ -2619,8 +2619,10 @@ void MainWindow::handleEnabledReposTab(const QString &search_str, int filter_idx
             return;
         }
     }
-    ui->comboFilterEnabled->setCurrentIndex(filter_idx);
     if (!displayPackagesIsRunning) {
+        ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
+        ui->comboFilterMX->setCurrentIndex(savedComboIndex);
+        ui->comboFilterBP->setCurrentIndex(savedComboIndex);
         filterChanged(ui->comboFilterEnabled->currentText());
     }
     if (!ui->searchBoxEnabled->text().isEmpty()) {
@@ -2631,13 +2633,12 @@ void MainWindow::handleEnabledReposTab(const QString &search_str, int filter_idx
     }
 }
 
-void MainWindow::handleTab(const QString &search_str, int filter_idx, QComboBox *filterCombo, QLineEdit *searchBox,
-                           const QString &warningMessage, bool dirtyFlag)
+void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, const QString &warningMessage,
+                           bool dirtyFlag)
 {
-    if (filterCombo) {
-        filterCombo->setCurrentIndex(filter_idx >= Status::Autoremovable ? 0 : filter_idx);
+    if (searchBox) {
+        searchBox->setText(search_str);
     }
-    searchBox->setText(search_str);
     enableTabs(true);
     setCurrentTree();
     if (!warningMessage.isEmpty()) {
@@ -2653,9 +2654,10 @@ void MainWindow::handleTab(const QString &search_str, int filter_idx, QComboBox 
         }
     }
     if (Tab::Popular != ui->tabWidget->currentIndex()) {
-        if (savedComboIndex < Status::Autoremovable) {
-            filterChanged(ui->comboFilterEnabled->currentText());
-        }
+        ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
+        ui->comboFilterMX->setCurrentIndex(savedComboIndex);
+        ui->comboFilterBP->setCurrentIndex(savedComboIndex);
+        filterChanged(ui->comboFilterEnabled->currentText());
     }
     if (!search_str.isEmpty()) {
         currentTree == ui->treePopularApps ? findPopular() : findPackage();
@@ -2811,6 +2813,7 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     bool isAutoremovable = (arg1 == tr("Autoremovable"));
+    bool shouldHideLibs = !isAutoremovable && hideLibsChecked;
     if (currentTree == ui->treeFlatpak) {
         if (arg1 == tr("Installed runtimes")) {
             handleFlatpakFilter(installed_runtimes_fp, false);
@@ -2853,16 +2856,23 @@ void MainWindow::filterChanged(const QString &arg1)
     } else if (arg1 == tr("All packages")) {
         savedComboIndex = 0;
         blockSignalsForAll(true);
-        ui->checkHideLibs->setChecked(!isAutoremovable && hideLibsChecked);
+
+        ui->checkHideLibs->setChecked(shouldHideLibs);
+        ui->checkHideLibsMX->setChecked(shouldHideLibs);
+        ui->checkHideLibsBP->setChecked(shouldHideLibs);
         blockSignalsForAll(false);
         resetTree();
         clearChangeListAndButtons();
         ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
     } else {
         blockSignalsForAll(true);
-        ui->checkHideLibs->setChecked(!isAutoremovable && hideLibsChecked);
+        ui->checkHideLibs->setChecked(shouldHideLibs);
+        ui->checkHideLibsMX->setChecked(shouldHideLibs);
+        ui->checkHideLibsBP->setChecked(shouldHideLibs);
         blockSignalsForAll(false);
+
         ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
+
         const QHash<QString, int> statusMap {{tr("Installed"), Status::Installed},
                                              {tr("Upgradable"), Status::Upgradable},
                                              {tr("Not installed"), Status::NotInstalled},
@@ -3094,12 +3104,14 @@ void MainWindow::pushCancel_clicked()
 
 void MainWindow::checkHideLibsMX_clicked(bool checked)
 {
+    hideLibsChecked = checked;
     ui->checkHideLibs->setChecked(checked);
     ui->checkHideLibsBP->setChecked(checked);
 }
 
 void MainWindow::checkHideLibsBP_clicked(bool checked)
 {
+    hideLibsChecked = checked;
     ui->checkHideLibs->setChecked(checked);
     ui->checkHideLibsMX->setChecked(checked);
 }
