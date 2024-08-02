@@ -75,8 +75,8 @@ MainWindow::MainWindow(const QCommandLineParser &arg_parser, QWidget *parent)
             AptCache cache;
             enabled_list = cache.getCandidates();
             displayPackages();
-            ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabMXtest), true);
-            ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabBackports), true);
+            ui->tabWidget->setTabEnabled(Tab::Test, true);
+            ui->tabWidget->setTabEnabled(Tab::Backports, true);
         }
         if (arch != "i386" && checkInstalled("flatpak")) {
             if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub", true)) {
@@ -102,8 +102,8 @@ void MainWindow::setup()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->blockSignals(true);
     ui->tabWidget->setCurrentWidget(ui->tabPopular);
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabMXtest), false);
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabBackports), false);
+    ui->tabWidget->setTabEnabled(Tab::Test, false);
+    ui->tabWidget->setTabEnabled(Tab::Backports, false);
     ui->pushRemoveAutoremovable->setHidden(true);
 
     QFont font("monospace");
@@ -135,7 +135,7 @@ void MainWindow::setup()
     ui->searchPopular->setFocus();
     currentTree = ui->treePopularApps;
 
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), false);
+    ui->tabWidget->setTabEnabled(Tab::Output, false);
     ui->tabWidget->blockSignals(false);
     ui->pushUpgradeAll->setVisible(false);
 
@@ -176,12 +176,12 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         return true;
     }
 
-    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Uninstalling packages..."));
+    ui->tabWidget->setTabText(Tab::Output, tr("Uninstalling packages..."));
     enableOutput();
 
     if (!preuninstall.isEmpty()) {
         qDebug() << "Pre-uninstall";
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Running pre-uninstall operations..."));
+        ui->tabWidget->setTabText(Tab::Output, tr("Running pre-uninstall operations..."));
         enableOutput();
         if (lock_file.isLockedGUI()) {
             return false;
@@ -201,7 +201,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
 
     if (success && !postuninstall.isEmpty()) {
         qDebug() << "Post-uninstall";
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Running post-uninstall operations..."));
+        ui->tabWidget->setTabText(Tab::Output, tr("Running post-uninstall operations..."));
         enableOutput();
         if (lock_file.isLockedGUI()) {
             return false;
@@ -218,7 +218,7 @@ bool MainWindow::updateApt()
         return false;
     }
     ui->tabOutput->isVisible() // Don't display in output if calling to refresh from tabs
-        ? ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Refreshing sources..."))
+        ? ui->tabWidget->setTabText(Tab::Output, tr("Refreshing sources..."))
         : progress->show();
     if (!timer.isActive()) {
         timer.start(100ms);
@@ -1258,7 +1258,7 @@ bool MainWindow::install(const QString &names)
                               tr("Internet is not available, won't be able to download the list of packages"));
         return false;
     }
-    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Installing packages..."));
+    ui->tabWidget->setTabText(Tab::Output, tr("Installing packages..."));
 
     // Simulate install of selections and present for confirmation
     // if user selects cancel, break routine but return success to avoid error message
@@ -1313,7 +1313,7 @@ bool MainWindow::installBatch(const QStringList &name_list)
 
     if (postinstall != '\n') {
         qDebug() << "Post-install";
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Post-processing..."));
+        ui->tabWidget->setTabText(Tab::Output, tr("Post-processing..."));
         if (lock_file.isLockedGUI()) {
             return false;
         }
@@ -1345,7 +1345,7 @@ bool MainWindow::installPopularApp(const QString &name)
     // Preinstall
     if (!preinstall.isEmpty()) {
         qDebug() << "Pre-install";
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Pre-processing for ") + name);
+        ui->tabWidget->setTabText(Tab::Output, tr("Pre-processing for ") + name);
         if (lock_file.isLockedGUI()) {
             return false;
         }
@@ -1360,14 +1360,14 @@ bool MainWindow::installPopularApp(const QString &name)
     }
     // Install
     if (!install_names.isEmpty()) {
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Installing ") + name);
+        ui->tabWidget->setTabText(Tab::Output, tr("Installing ") + name);
         result = install(install_names);
     }
     enableOutput();
     // Postinstall
     if (!postinstall.isEmpty()) {
         qDebug() << "Post-install";
-        ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Post-processing for ") + name);
+        ui->tabWidget->setTabText(Tab::Output, tr("Post-processing for ") + name);
         if (lock_file.isLockedGUI()) {
             return false;
         }
@@ -1430,7 +1430,7 @@ bool MainWindow::installPopularApps()
 bool MainWindow::installSelected()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
+    ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = change_list.join(' ');
 
     // Change sources as needed
@@ -1478,7 +1478,7 @@ bool MainWindow::installSelected()
 bool MainWindow::markKeep()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
+    ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = change_list.join(' ');
     enableOutput();
     return cmd.runAsRoot("apt-mark manual " + names);
@@ -2357,7 +2357,7 @@ void MainWindow::findPackage()
 void MainWindow::showOutput()
 {
     ui->outputBox->clear();
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
+    ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
     enableTabs(false);
 }
@@ -2537,7 +2537,7 @@ void MainWindow::pushUninstall_clicked()
 void MainWindow::tabWidget_currentChanged(int index)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Console Output"));
+    ui->tabWidget->setTabText(Tab::Output, tr("Console Output"));
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
     currentTree->blockSignals(true);
@@ -2546,6 +2546,15 @@ void MainWindow::tabWidget_currentChanged(int index)
     QString search_str;
     saveSearchText(search_str, savedComboIndex);
 
+    auto setTabsEnabled = [this](bool enable) {
+        for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak}) {
+            if (tab != ui->tabWidget->currentIndex()) {
+                ui->tabWidget->setTabEnabled(tab, enable);
+            }
+        }
+    };
+
+    setTabsEnabled(false);
     switch (index) {
     case Tab::Popular: {
         bool tempFlag = false;
@@ -2567,6 +2576,7 @@ void MainWindow::tabWidget_currentChanged(int index)
         handleOutputTab();
         break;
     }
+    setTabsEnabled(true);
     ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
 }
 
@@ -2601,7 +2611,7 @@ void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
 void MainWindow::handleEnabledReposTab(const QString &search_str)
 {
     ui->searchBoxEnabled->setText(search_str);
-    enableTabs(true);
+    // enableTabs(true);
     setCurrentTree();
     change_list.clear();
     if (displayPackagesIsRunning) {
@@ -2637,7 +2647,6 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
     if (searchBox) {
         searchBox->setText(search_str);
     }
-    enableTabs(true);
     setCurrentTree();
     if (!warningMessage.isEmpty()) {
         displayWarning(warningMessage);
@@ -2667,7 +2676,6 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
 {
     lastItemClicked = nullptr;
     ui->searchBoxFlatpak->setText(search_str);
-    enableTabs(true);
     setCurrentTree();
     displayWarning("flatpaks");
     ui->searchBoxFlatpak->setFocus();
@@ -2716,7 +2724,7 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
 
 void MainWindow::installFlatpak()
 {
-    ui->tabWidget->setTabEnabled(ui->tabWidget->indexOf(ui->tabOutput), true);
+    ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
     setCursor(QCursor(Qt::BusyCursor));
     showOutput();
@@ -2745,7 +2753,7 @@ void MainWindow::installFlatpak()
         }
     }
     setCursor(QCursor(Qt::ArrowCursor));
-    ui->tabWidget->setTabText(ui->tabWidget->indexOf(ui->tabOutput), tr("Console Output"));
+    ui->tabWidget->setTabText(Tab::Output, tr("Console Output"));
     ui->tabWidget->blockSignals(true);
     displayFlatpaks(true);
     ui->tabWidget->blockSignals(false);
