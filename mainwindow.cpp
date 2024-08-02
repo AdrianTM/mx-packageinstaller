@@ -2544,14 +2544,12 @@ void MainWindow::tabWidget_currentChanged(int index)
 
     resetCheckboxes();
     QString search_str;
-    if (index != Tab::Output && index != Tab::Flatpak) {
-        saveSearchText(search_str, savedComboIndex);
-    }
+    saveSearchText(search_str, savedComboIndex);
 
     switch (index) {
     case Tab::Popular: {
         bool tempFlag = false;
-        handleTab(search_str, nullptr, "", tempFlag);
+        handleTab(search_str, ui->searchPopular, "", tempFlag);
     } break;
     case Tab::EnabledRepos:
         handleEnabledReposTab(search_str);
