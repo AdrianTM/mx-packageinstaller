@@ -834,7 +834,7 @@ void MainWindow::displayPackages()
 void MainWindow::displayAutoremovable(const QTreeWidget *newtree)
 {
     if (newtree != ui->treePopularApps && newtree != ui->treeFlatpak) {
-        QStringList names = cmd.getOutAsRoot(R"(apt-get --dry-run autoremove | grep -Po '^Remv \K[^ ]+' | tr '\n' ' ')")
+        QStringList names = cmd.getOut(R"(apt-get --dry-run autoremove | grep -Po '^Remv \K[^ ]+' | tr '\n' ' ')")
                                 .split(' ', Qt::SkipEmptyParts);
         if (!names.isEmpty()) {
             ui->pushRemoveAutoremovable->setVisible(true);
