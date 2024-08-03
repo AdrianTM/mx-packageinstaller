@@ -1,3 +1,9 @@
+mx-packageinstaller (24.8.06) UNRELEASED; urgency=medium
+
+  * Run apt-get --dry-run autoremove as normal user
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 03 Aug 2024 11:42:27 -0400
+
 mx-packageinstaller (24.8.05) mx; urgency=medium
 
   * Added an "Autoremovable" item in combo box filter to list autoremovable
