@@ -1,4 +1,4 @@
-mx-packageinstaller (24.8.06) UNRELEASED; urgency=medium
+mx-packageinstaller (24.8.07) mx; urgency=medium
 
   * Run apt-get --dry-run autoremove as normal user
 
