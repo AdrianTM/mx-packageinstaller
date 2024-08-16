@@ -917,9 +917,10 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
         if (ui->checkHideLibs->isChecked() && isFilteredName(app_name)) {
             (*it)->setHidden(true);
         }
-        const QString app_ver = (*it)->text(TreeCol::Version);
+        const QString app_ver = (*it)->text(TreeCol::RepoVersion);
         const VersionNumber installed = hashInstalled.value(app_name);
-        const VersionNumber repo_candidate(app_ver);
+        (*it)->setText(TreeCol::InstalledVersion, installed.toString());
+        const VersionNumber repo_candidate {app_ver};
 
         (*it)->setIcon(TreeCol::Check, QIcon());
 
@@ -1998,7 +1999,7 @@ QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &
     auto *widget_item = new QTreeWidgetItem();
     widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
     widget_item->setText(TreeCol::Name, name);
-    widget_item->setText(TreeCol::Version, version);
+    widget_item->setText(TreeCol::RepoVersion, version);
     widget_item->setText(TreeCol::Description, description);
     widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
     return widget_item;

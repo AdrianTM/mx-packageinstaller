@@ -77,7 +77,7 @@ enum {
 
 namespace TreeCol
 {
-enum { Check, Name, Version, Description, Status };
+enum { Check, Name, RepoVersion, InstalledVersion, Description, Status };
 }
 
 namespace FlatCol
