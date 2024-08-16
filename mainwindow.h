@@ -241,7 +241,7 @@ private:
     [[nodiscard]] static QString getDebianVerName();
     [[nodiscard]] static bool isFilteredName(const QString &name);
     [[nodiscard]] static uchar getDebianVerNum();
-    [[nodiscard]] QList<QTreeWidgetItem *> createTreeItems(QMap<QString, PackageInfo> *list) const;
+    [[nodiscard]] QList<QTreeWidgetItem *> createTreeItemsList(QMap<QString, PackageInfo> *list) const;
     [[nodiscard]] QMap<QString, PackageInfo> *getCurrentList();
     [[nodiscard]] QTreeWidget *getCurrentTree();
 
@@ -265,7 +265,6 @@ private:
     bool updateApt();
     static QString convert(quint64 bytes);
     static quint64 convert(const QString &size);
-    void addInstalledAppsToItems(QList<QTreeWidgetItem *> &items, QMap<QString, PackageInfo> *list) const;
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();

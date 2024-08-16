@@ -816,8 +816,7 @@ void MainWindow::displayPackages()
     newtree->setUpdatesEnabled(false);
     newtree->clear();
 
-    auto items = createTreeItems(list);
-    addInstalledAppsToItems(items, list);
+    auto items = createTreeItemsList(list);
 
     newtree->addTopLevelItems(items);
     newtree->sortItems(TreeCol::Name, Qt::AscendingOrder);
@@ -884,7 +883,7 @@ QMap<QString, PackageInfo> *MainWindow::getCurrentList()
     }
 }
 
-QList<QTreeWidgetItem *> MainWindow::createTreeItems(QMap<QString, PackageInfo> *list) const
+QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QMap<QString, PackageInfo> *list) const
 {
     QList<QTreeWidgetItem *> items;
     items.reserve(list->size() + installed_packages.size());
@@ -893,16 +892,13 @@ QList<QTreeWidgetItem *> MainWindow::createTreeItems(QMap<QString, PackageInfo> 
         items.append(createTreeItem(it.key(), it.value().version, it.value().description));
     }
 
-    return items;
-}
-
-void MainWindow::addInstalledAppsToItems(QList<QTreeWidgetItem *> &items, QMap<QString, PackageInfo> *list) const
-{
     for (auto it = installed_packages.constBegin(); it != installed_packages.constEnd(); ++it) {
         if (!list->contains(it.key())) {
-            items.append(createTreeItem(it.key(), it.value().version, it.value().description));
+            items.append(createTreeItem(it.key(), QString(), it.value().description));
         }
     }
+
+    return items;
 }
 
 void MainWindow::updateTreeItems(QTreeWidget *tree)
