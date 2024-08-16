@@ -1439,10 +1439,6 @@ bool MainWindow::installSelected()
         // Add testrepo unless already enabled
         if (!test_initially_enabled) {
             QString suite = ver_name;
-            if (ver_name == "jessie") { // use 'mx15' for Stretch based MX, user
-                                        // version name for newer versions
-                suite = "mx15";
-            }
             if (arch == "amd64") {
                 cmd.runAsRoot("apt-get update --print-uris | tac | "
                               "grep -m1 -oE 'https?://.*/mx/repo/dists/"
