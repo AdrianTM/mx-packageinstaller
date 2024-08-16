@@ -1,3 +1,9 @@
+mx-packageinstaller (24.8.08) UNRELEASED; urgency=medium
+
+  * Add an Installed Version alongside Repo Version column
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 16 Aug 2024 07:59:42 -0400
+
 mx-packageinstaller (24.8.07) mx; urgency=medium
 
   * Run apt-get --dry-run autoremove as normal user
