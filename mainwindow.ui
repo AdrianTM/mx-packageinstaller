@@ -1061,7 +1061,7 @@
          </column>
          <column>
           <property name="text">
-           <string>Version</string>
+           <string>Repo Version</string>
           </property>
          </column>
          <column>
