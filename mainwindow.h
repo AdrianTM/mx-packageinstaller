@@ -299,9 +299,6 @@ private:
     void setIcons();
     void setProgressDialog();
     void setSearchFocus() const;
-    void setToolTipForInstalled(QTreeWidgetItem *item, const VersionNumber &installed) const;
-    void setToolTipForNotInstalled(QTreeWidgetItem *item, const QString &app_name) const;
-    void setToolTipForUpgradable(QTreeWidgetItem *item, const VersionNumber &installed) const;
     void setup();
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);

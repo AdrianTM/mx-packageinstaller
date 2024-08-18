@@ -921,16 +921,15 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
         (*it)->setIcon(TreeCol::Check, QIcon());
 
         if (installed.toString().isEmpty()) {
-            setToolTipForNotInstalled(*it, app_name);
             (*it)->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
         } else {
             ++inst_count;
             if (installed >= repo_candidate) {
-                setToolTipForInstalled(*it, installed);
+                (*it)->setIcon(TreeCol::Check, qicon_installed);
                 (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
             } else {
-                setToolTipForUpgradable(*it, installed);
                 ++upgr_count;
+                (*it)->setIcon(TreeCol::Check, qicon_upgradable);
                 (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Upgradable);
             }
         }
