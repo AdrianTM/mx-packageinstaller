@@ -940,33 +940,6 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
     }
 }
 
-void MainWindow::setToolTipForNotInstalled(QTreeWidgetItem *item, const QString &app_name) const
-{
-    for (int i = 0; i < item->treeWidget()->columnCount(); ++i) {
-        if (enabled_list.contains(app_name)) {
-            item->setToolTip(i, tr("Version ") + enabled_list.value(app_name).version + tr(" in the enabled repos"));
-        } else {
-            item->setToolTip(i, tr("Not available in the enabled repos"));
-        }
-    }
-}
-
-void MainWindow::setToolTipForInstalled(QTreeWidgetItem *item, const VersionNumber &installed) const
-{
-    item->setIcon(TreeCol::Check, qicon_installed);
-    for (int i = 0; i < item->treeWidget()->columnCount(); ++i) {
-        item->setToolTip(i, tr("Latest version ") + installed.toString() + tr(" already installed"));
-    }
-}
-
-void MainWindow::setToolTipForUpgradable(QTreeWidgetItem *item, const VersionNumber &installed) const
-{
-    item->setIcon(TreeCol::Check, qicon_upgradable);
-    for (int i = 0; i < item->treeWidget()->columnCount(); ++i) {
-        item->setToolTip(i, tr("Version ") + installed.toString() + tr(" installed"));
-    }
-}
-
 void MainWindow::displayFlatpaks(bool force_update)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
