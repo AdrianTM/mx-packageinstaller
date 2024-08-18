@@ -1,6 +1,6 @@
 mx-packageinstaller (24.8.10) mx; urgency=medium
 
-  * Remove tooltips that show version since we diplay them in a separate
+  * Remove tooltips that show version since we display them in a separate
     column (reduces CPU and RAM utilization)
 
  -- Adrian <adrian@mxlinux.org>  Sun, 18 Aug 2024 12:55:29 -0400
