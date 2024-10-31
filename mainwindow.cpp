@@ -906,38 +906,49 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
     int upgr_count = 0;
     int inst_count = 0;
 
-    auto hashInstalled = listInstalledVersions();
+    tree->setUpdatesEnabled(false);
+
+    const bool hideLibs = ui->checkHideLibs->isChecked();
+    const auto hashInstalled = listInstalledVersions();
 
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
-        const QString app_name = (*it)->text(TreeCol::Name);
-        if (ui->checkHideLibs->isChecked() && isFilteredName(app_name)) {
-            (*it)->setHidden(true);
+        QTreeWidgetItem *item = *it;
+        const QString &app_name = item->text(TreeCol::Name);
+
+        if (hideLibs && isFilteredName(app_name)) {
+            item->setHidden(true);
         }
-        const QString app_ver = (*it)->text(TreeCol::RepoVersion);
+
+        const QString &app_ver = item->text(TreeCol::RepoVersion);
         const VersionNumber installed = hashInstalled.value(app_name);
-        (*it)->setText(TreeCol::InstalledVersion, installed.toString());
+        const QString installedStr = installed.toString();
+        item->setText(TreeCol::InstalledVersion, installedStr);
+
+        item->setIcon(TreeCol::Check, QIcon());
+
+        if (installedStr.isEmpty()) {
+            item->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
+            continue;
+        }
+
+        ++inst_count;
         const VersionNumber repo_candidate {app_ver};
 
-        (*it)->setIcon(TreeCol::Check, QIcon());
-
-        if (installed.toString().isEmpty()) {
-            (*it)->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
+        if (installed >= repo_candidate) {
+            item->setIcon(TreeCol::Check, qicon_installed);
+            item->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
         } else {
-            ++inst_count;
-            if (installed >= repo_candidate) {
-                (*it)->setIcon(TreeCol::Check, qicon_installed);
-                (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
-            } else {
-                ++upgr_count;
-                (*it)->setIcon(TreeCol::Check, qicon_upgradable);
-                (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Upgradable);
-            }
+            ++upgr_count;
+            item->setIcon(TreeCol::Check, qicon_upgradable);
+            item->setData(TreeCol::Status, Qt::UserRole, Status::Upgradable);
         }
     }
 
     for (int i = 0; i < tree->columnCount(); ++i) {
         tree->resizeColumnToContents(i);
     }
+
+    tree->setUpdatesEnabled(true);
 }
 
 void MainWindow::displayFlatpaks(bool force_update)
@@ -1522,10 +1533,10 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     file.close();
 
     if (reply->error() != QNetworkReply::NoError) {
-        QMessageBox::warning(
-            this, tr("Error"),
-            tr("There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive")
-                .arg(file.fileName()));
+        QMessageBox::warning(this, tr("Error"),
+                             tr("There was an error downloading or writing the file: %1. Please check your internet "
+                                "connection and free space on your drive")
+                                 .arg(file.fileName()));
         qDebug() << "There was an error downloading the file:" << url << "Error:" << reply->errorString();
         file.remove();
         return false;
@@ -2020,6 +2031,7 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
     QHash<QString, VersionNumber> result;
     Cmd shell;
     const QStringList &list = shell.getOut("dpkg -l | grep '^ii'", true).split('\n');
+
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         QMessageBox::critical(
             this, tr("Error"),
