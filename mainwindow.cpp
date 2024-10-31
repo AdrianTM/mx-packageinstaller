@@ -832,19 +832,20 @@ void MainWindow::displayPackages()
 
 void MainWindow::displayAutoremovable(const QTreeWidget *newtree)
 {
-    if (newtree != ui->treePopularApps && newtree != ui->treeFlatpak) {
-        QStringList names = cmd.getOut("LANG=C apt-get --dry-run autoremove | grep -Po '^Remv \\K[^ ]+'")
-                                .split('\n', Qt::SkipEmptyParts);
-        if (!names.isEmpty()) {
-            ui->pushRemoveAutoremovable->setVisible(true);
-            for (const QString &name : names) {
-                auto matchingItems = newtree->findItems(name, Qt::MatchExactly | Qt::MatchRecursive, TreeCol::Name);
-                for (QTreeWidgetItem *item : matchingItems) {
-                    item->setData(TreeCol::Status, Qt::UserRole, Status::Autoremovable);
-                }
-            }
-        } else {
-            ui->pushRemoveAutoremovable->setVisible(false);
+    if (newtree == ui->treePopularApps || newtree == ui->treeFlatpak) {
+        return;
+    }
+    QStringList names
+        = cmd.getOut("LANG=C apt-get --dry-run autoremove | grep -Po '^Remv \\K[^ ]+'").split('\n', Qt::SkipEmptyParts);
+
+    ui->pushRemoveAutoremovable->setVisible(!names.isEmpty());
+    if (names.isEmpty()) {
+        return;
+    }
+    QSet<QString> nameSet(names.begin(), names.end());
+    for (QTreeWidgetItemIterator it(const_cast<QTreeWidget *>(newtree)); *it; ++it) {
+        if (nameSet.contains((*it)->text(TreeCol::Name))) {
+            (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Autoremovable);
         }
     }
 }
