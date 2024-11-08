@@ -147,6 +147,10 @@ void MainWindow::setup()
             centerWindow();
         }
     }
+    const QString aptConfigOutput = cmd.getOut("apt-config shell APTOPT APT::Install-Recommends/b").trimmed();
+    ui->checkBoxInstallRecommends->setChecked(aptConfigOutput == "APTOPT='true'");
+    ui->checkBoxInstallRecommendsMX->setChecked(aptConfigOutput == "APTOPT='true'");
+    ui->checkBoxInstallRecommendsBP->setChecked(aptConfigOutput == "APTOPT='true'");
 
     // Check/uncheck tree items spacebar press or double-click
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
@@ -1135,16 +1139,18 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     if (currentTree == ui->treeFlatpak && names != "flatpak") {
         detailed_installed_names = change_list;
     } else if (currentTree == ui->treeBackports) {
-        recommends = (ui->checkBoxInstallRecommendsMXBP->isChecked()) ? "--install-recommends " : "";
+        recommends
+            = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         recommends_aptitude
-            = (ui->checkBoxInstallRecommendsMXBP->isChecked()) ? "--with-recommends " : "--without-recommends ";
+            = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--with-recommends " : "--without-recommends ";
         detailed_names = cmd.getOutAsRoot(
             frontend + aptget + action + ' ' + recommends + "-t " + ver_name + "-backports --reinstall " + names
             + R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
         aptitude_info = cmd.getOutAsRoot(frontend + aptitude + action + ' ' + recommends_aptitude + "-t " + ver_name
                                          + "-backports " + names + " |tail -2 |head -1");
     } else if (currentTree == ui->treeMXtest) {
-        recommends = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "";
+        recommends
+            = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         recommends_aptitude
             = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--with-recommends " : "--without-recommends ";
         detailed_names = cmd.getOutAsRoot(
@@ -1153,7 +1159,8 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
         aptitude_info = cmd.getOutAsRoot(frontend + aptitude + action + " -t mx " + recommends_aptitude + names
                                          + " |tail -2 |head -1");
     } else {
-        recommends = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "";
+        recommends
+            = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         recommends_aptitude
             = (ui->checkBoxInstallRecommends->isChecked()) ? "--with-recommends " : "--without-recommends ";
         detailed_names = cmd.getOutAsRoot(
@@ -1257,13 +1264,16 @@ bool MainWindow::install(const QString &names)
     QString recommends;
     bool success = false;
     if (currentTree == ui->treeBackports) {
-        recommends = (ui->checkBoxInstallRecommendsMXBP->isChecked()) ? "--install-recommends " : "";
+        recommends
+            = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         success = cmd.runAsRoot(frontend + aptget + recommends + "-t " + ver_name + "-backports --reinstall " + names);
     } else if (currentTree == ui->treeMXtest) {
-        recommends = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "";
+        recommends
+            = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         success = cmd.runAsRoot(frontend + aptget + recommends + " -t mx " + names);
     } else {
-        recommends = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "";
+        recommends
+            = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         success = cmd.runAsRoot(frontend + aptget + recommends + "--reinstall " + names);
     }
     return success;

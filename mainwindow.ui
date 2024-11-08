@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>0</number>
+      <number>1</number>
      </property>
      <property name="documentMode">
       <bool>false</bool>
@@ -982,7 +982,7 @@
              </spacer>
             </item>
             <item row="1" column="7" colspan="2">
-             <widget class="QCheckBox" name="checkBoxInstallRecommendsMXBP">
+             <widget class="QCheckBox" name="checkBoxInstallRecommendsBP">
               <property name="text">
                <string>Also Install &quot;Recommended&quot; Packages</string>
               </property>
