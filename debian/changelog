@@ -1,3 +1,10 @@
+mx-packageinstaller (24.11) mx; urgency=medium
+
+  * Check install recommended depends according to global settings
+  * Update translations
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 08 Nov 2024 14:32:35 -0500
+
 mx-packageinstaller (24.10) mx; urgency=medium
 
   * Fix: use https for downloading from mxrepo server
