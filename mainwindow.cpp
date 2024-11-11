@@ -280,9 +280,8 @@ void MainWindow::listSizeInstalledFP()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     QStringList list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
-    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0), [this](quint64 acc, const QString &item) {
-        return acc + convert(item.section('\t', 1));
-    });
+    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
+                                 [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
     ui->labelNumSize->setText(convert(total));
 }
 
@@ -2037,7 +2036,6 @@ void MainWindow::setCurrentTree()
     auto it = std::find_if(list.cbegin(), list.cend(), [](const auto &item) { return item->isVisible(); });
     if (it != list.end()) {
         currentTree = *it;
-        updateInterface();
         return;
     }
 }
@@ -2803,6 +2801,7 @@ void MainWindow::filterChanged(const QString &arg1)
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     currentTree->blockSignals(true);
     currentTree->setUpdatesEnabled(false);
+    updateInterface();
 
     auto resetTree = [this]() {
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
@@ -2925,7 +2924,6 @@ void MainWindow::filterChanged(const QString &arg1)
         setSearchFocus();
         clearChangeListAndButtons();
     }
-
     currentTree->setUpdatesEnabled(true);
     currentTree->blockSignals(false);
 }
