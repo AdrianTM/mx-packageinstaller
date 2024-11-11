@@ -2063,42 +2063,41 @@ void MainWindow::setIcons()
 
     qicon_installed = force_backup_icon ? backup_icon_installed : theme_icon_installed;
     qicon_upgradable = force_backup_icon ? backup_icon_upgradable : theme_icon_upgradable;
-
-    ui->iconUpgradable->setIcon(qicon_upgradable);
-    ui->iconUpgradable_2->setIcon(ui->iconUpgradable->icon());
-    ui->iconUpgradable_3->setIcon(ui->iconUpgradable->icon());
-    ui->iconInstalledPackages->setIcon(qicon_installed);
-    ui->iconInstalledPackages_2->setIcon(ui->iconInstalledPackages->icon());
-    ui->iconInstalledPackages_3->setIcon(ui->iconInstalledPackages->icon());
-    ui->iconInstalledPackages_4->setIcon(ui->iconInstalledPackages->icon());
-    ui->iconInstalledPackages_5->setIcon(ui->iconInstalledPackages->icon());
+    const auto upgradableIcons = {ui->iconUpgradable, ui->iconUpgradable_2, ui->iconUpgradable_3};
+    const auto installedIcons = {ui->iconInstalledPackages, ui->iconInstalledPackages_2, ui->iconInstalledPackages_3,
+                                 ui->iconInstalledPackages_4, ui->iconInstalledPackages_5};
+    for (auto *icon : upgradableIcons) {
+        icon->setIcon(qicon_upgradable);
+    }
+    for (auto *icon : installedIcons) {
+        icon->setIcon(qicon_installed);
+    }
 }
 
 QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    QHash<QString, VersionNumber> result;
+    QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
-    const QStringList &list = shell.getOut("dpkg -l | grep '^ii'", true).split('\n');
+    const QString command
+        = "LANG=C dpkg-query -W -f='${Package} ${Status} ${Version}\\n' | grep 'install ok installed' "
+          "| awk '{print $1, $5}'";
+    const QStringList packageList = shell.getOut(command, true).split('\n', Qt::SkipEmptyParts);
 
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         QMessageBox::critical(
             this, tr("Error"),
-            tr("dpkg command returned an error, please run 'dpkg --list' in terminal and check the output."));
-        return result;
+            tr("dpkg-query command returned an error, please run 'dpkg-query -W' in terminal and check the output."));
+        return installedVersions;
     }
-    for (const QString &line : list) {
-        QStringList item = line.split(QRegularExpression("\\s{2,}"));
-        if (item.size() < 3) {
-            continue;
+
+    for (const QString &line : packageList) {
+        const QStringList packageInfo = line.split(' ', Qt::SkipEmptyParts);
+        if (packageInfo.size() == 2) {
+            installedVersions.insert(packageInfo.at(0), VersionNumber(packageInfo.at(1)));
         }
-        QString name = item.at(1);
-        name.remove(":i386").remove(":amd64");
-        QString ver_str = item.at(2);
-        ver_str.remove(" amd64");
-        result.insert(name, VersionNumber(ver_str));
     }
-    return result;
+    return installedVersions;
 }
 
 void MainWindow::cmdStart()
