@@ -280,8 +280,9 @@ void MainWindow::listSizeInstalledFP()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     QStringList list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
-    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
-                                 [this](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
+    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0), [this](quint64 acc, const QString &item) {
+        return acc + convert(item.section('\t', 1));
+    });
     ui->labelNumSize->setText(convert(total));
 }
 
@@ -959,89 +960,129 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
 void MainWindow::displayFlatpaks(bool force_update)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    if (!flatpaks.isEmpty() && !force_update) {
+        return;
+    }
+
+    setupFlatpakDisplay();
+    loadFlatpakData();
+    populateFlatpakTree();
+    finalizeFlatpakDisplay();
+}
+
+void MainWindow::setupFlatpakDisplay()
+{
     ui->treeFlatpak->setUpdatesEnabled(false);
     displayFlatpaksIsRunning = true;
     lastItemClicked = nullptr;
-    if (flatpaks.isEmpty() || force_update) {
-        if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
-            setCursor(QCursor(Qt::BusyCursor));
+
+    const bool isCurrentTabFlatpak = ui->tabWidget->currentIndex() == Tab::Flatpak;
+    if (isCurrentTabFlatpak) {
+        setCursor(QCursor(Qt::BusyCursor));
+        progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
         }
-        listFlatpakRemotes();
-        ui->treeFlatpak->blockSignals(true);
-        ui->treeFlatpak->clear();
-        change_list.clear();
+    }
 
-        if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
-            progress->show();
-            if (!timer.isActive()) {
-                timer.start(100ms);
-            }
-        }
-        blockInterfaceFP(true);
-        flatpaks = listFlatpaks(ui->comboRemote->currentText());
-        flatpaks_apps.clear();
-        flatpaks_runtimes.clear();
+    listFlatpakRemotes();
+    ui->treeFlatpak->blockSignals(true);
+    ui->treeFlatpak->clear();
+    change_list.clear();
+    blockInterfaceFP(true);
+}
 
-        // List installed packages
-        installed_apps_fp = listInstalledFlatpaks("--app");
+void MainWindow::loadFlatpakData()
+{
+    flatpaks = listFlatpaks(ui->comboRemote->currentText());
+    flatpaks_apps.clear();
+    flatpaks_runtimes.clear();
 
-        // Add runtimes (needed for older flatpak versions)
-        installed_runtimes_fp = listInstalledFlatpaks("--runtime");
-        uint total_count = 0;
-        QTreeWidgetItem *widget_item {nullptr};
-        for (QString item : qAsConst(flatpaks)) {
-            QString size = item.section('\t', -1);
-            QString version = item.section('\t', 0, 0);
-            item = item.section('\t', 1, 1).section('/', 1);
-            if (version.isEmpty()) {
-                version = item.section('/', -1);
-            }
-            QString long_name = item.section('/', 0, 0);
-            QString short_name = long_name.section('.', -1);
-            if (short_name == QLatin1String("Locale") || short_name == QLatin1String("Sources")
-                || short_name == QLatin1String("Debug")) { // Skip Locale, Sources, Debug
-                continue;
-            }
+    // List installed packages
+    installed_apps_fp = listInstalledFlatpaks("--app");
+    installed_runtimes_fp = listInstalledFlatpaks("--runtime");
+}
+
+void MainWindow::populateFlatpakTree()
+{
+    const QStringList installed_all = installed_apps_fp + installed_runtimes_fp;
+    uint total_count = 0;
+
+    for (const QString &item : qAsConst(flatpaks)) {
+        if (createFlatpakItem(item, installed_all)) {
             ++total_count;
-            widget_item = new QTreeWidgetItem(ui->treeFlatpak);
-            widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
-            widget_item->setText(FlatCol::Name, short_name);
-            widget_item->setText(FlatCol::LongName, long_name);
-            widget_item->setText(FlatCol::Version, version);
-            widget_item->setText(FlatCol::Size, size);
-            widget_item->setData(FlatCol::FullName, Qt::UserRole, item); // Full string
-            QStringList installed_all {installed_apps_fp + installed_runtimes_fp};
-            if (installed_all.contains(item)) {
-                widget_item->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
-                                                                      QIcon(":/icons/package-installed-updated.png")));
-                widget_item->setData(FlatCol::Status, Qt::UserRole, Status::Installed);
-            } else {
-                widget_item->setData(FlatCol::Status, Qt::UserRole, Status::NotInstalled);
-            }
-            widget_item->setData(0, Qt::UserRole, true); // all items are displayed till filtered
         }
-        // Add sizes for the installed packages for older flatpak that doesn't list size for all the packages
-        listSizeInstalledFP();
-        ui->labelNumAppFP->setText(QString::number(total_count));
+    }
 
-        uint total = 0;
-        if (installed_apps_fp != QStringList("")) {
-            total = installed_apps_fp.count();
-        }
-        ui->labelNumInstFP->setText(QString::number(total));
-        ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
-        removeDuplicatesFP();
-        for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
-            ui->treeFlatpak->resizeColumnToContents(i);
-        }
+    updateFlatpakCounts(total_count);
+    formatFlatpakTree();
+}
+
+QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStringList &installed_all) const
+{
+    const QStringList parts = item.split('\t');
+    const QString name = parts.at(1).section('/', 1);
+    const QString version = !parts.at(0).isEmpty() ? parts.at(0) : name.section('/', -1);
+    const QString size = parts.last();
+    const QString long_name = name.section('/', 0, 0);
+    const QString short_name = long_name.section('.', -1);
+
+    // Skip unwanted packages
+    static const QSet<QString> unwantedPackages
+        = {QLatin1String("Locale"), QLatin1String("Sources"), QLatin1String("Debug")};
+    if (unwantedPackages.contains(short_name)) {
+        return nullptr;
     }
+
+    auto *widget_item = new QTreeWidgetItem(ui->treeFlatpak);
+    widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
+    widget_item->setText(FlatCol::Name, short_name);
+    widget_item->setText(FlatCol::LongName, long_name);
+    widget_item->setText(FlatCol::Version, version);
+    widget_item->setText(FlatCol::Size, size);
+    widget_item->setData(FlatCol::FullName, Qt::UserRole, name);
+    widget_item->setData(0, Qt::UserRole, true);
+
+    if (installed_all.contains(name)) {
+        widget_item->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
+                                                              QIcon(":/icons/package-installed-updated.png")));
+        widget_item->setData(FlatCol::Status, Qt::UserRole, Status::Installed);
+    } else {
+        widget_item->setData(FlatCol::Status, Qt::UserRole, Status::NotInstalled);
+    }
+
+    return widget_item;
+}
+
+void MainWindow::updateFlatpakCounts(uint total_count)
+{
+    listSizeInstalledFP();
+    ui->labelNumAppFP->setText(QString::number(total_count));
+    ui->labelNumInstFP->setText(QString::number(!installed_apps_fp.isEmpty() ? installed_apps_fp.count() : 0));
+}
+
+void MainWindow::formatFlatpakTree()
+{
+    ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
+    removeDuplicatesFP();
+
+    for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
+        ui->treeFlatpak->resizeColumnToContents(i);
+    }
+}
+
+void MainWindow::finalizeFlatpakDisplay()
+{
     ui->treeFlatpak->blockSignals(false);
-    if (ui->tabWidget->currentIndex() == Tab::Flatpak && !ui->comboFilterFlatpak->currentText().isEmpty()) {
-        filterChanged(ui->comboFilterFlatpak->currentText());
-    }
-    if (ui->tabWidget->currentIndex() == Tab::Flatpak) {
+
+    const bool isCurrentTabFlatpak = ui->tabWidget->currentIndex() == Tab::Flatpak;
+    if (isCurrentTabFlatpak) {
+        if (!ui->comboFilterFlatpak->currentText().isEmpty()) {
+            filterChanged(ui->comboFilterFlatpak->currentText());
+        }
         ui->searchBoxFlatpak->setFocus();
     }
+
     displayFlatpaksIsRunning = false;
     firstRunFP = false;
     blockInterfaceFP(false);

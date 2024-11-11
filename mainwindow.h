@@ -232,6 +232,7 @@ private:
     [[nodiscard]] QString mapArchToFormat(const QString &arch) const;
     [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
     [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
+    [[nodiscard]] QTreeWidgetItem *createFlatpakItem(const QString &item, const QStringList &installed_all) const;
     [[nodiscard]] QTreeWidgetItem *createTreeItem(const QString &name, const QString &version,
                                                   const QString &description) const;
     [[nodiscard]] bool checkInstalled(const QVariant &names) const;
@@ -277,6 +278,8 @@ private:
     void displayPopularApps() const;
     void displayWarning(const QString &repo);
     void enableTabs(bool enable) const;
+    void finalizeFlatpakDisplay();
+    void formatFlatpakTree();
     void handleEnabledReposTab(const QString &search_str);
     void handleFlatpakTab(const QString &search_str);
     void handleOutputTab();
@@ -287,7 +290,9 @@ private:
     void installFlatpak();
     void listFlatpakRemotes() const;
     void listSizeInstalledFP();
+    void loadFlatpakData();
     void loadPmFiles();
+    void populateFlatpakTree();
     void processDoc(const QDomDocument &doc);
     void refreshPopularApps();
     void removeDuplicatesFP() const;
@@ -300,6 +305,8 @@ private:
     void setProgressDialog();
     void setSearchFocus() const;
     void setup();
+    void setupFlatpakDisplay();
+    void updateFlatpakCounts(uint total_count);
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
 };
