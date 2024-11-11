@@ -1110,6 +1110,7 @@ void MainWindow::listFlatpakRemotes() const
     Cmd shell;
     QStringList list = shell.getOut("flatpak remote-list " + FPuser + "| cut -f1").remove(' ').split('\n');
     if (shell.exitCode() != 0) {
+        ui->comboRemote->blockSignals(false);
         return;
     }
     ui->comboRemote->addItems(list);
