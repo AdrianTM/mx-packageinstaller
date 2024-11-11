@@ -1,3 +1,11 @@
+mx-packageinstaller (24.11.01) mx; urgency=medium
+
+  * Fix: displaying number of packages when switching tabs
+  * Fix: dispay info for packages from Enabled repos when browsing Test or
+    Backport tabs
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 11 Nov 2024 02:02:31 -0500
+
 mx-packageinstaller (24.11) mx; urgency=medium
 
   * Check install recommended depends according to global settings
