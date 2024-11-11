@@ -281,7 +281,7 @@ void MainWindow::listSizeInstalledFP()
 
     QStringList list = cmd.getOut("flatpak list " + FPuser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
     auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
-                                 [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
+                                 [this](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
     ui->labelNumSize->setText(convert(total));
 }
 
