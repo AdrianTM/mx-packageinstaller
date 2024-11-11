@@ -1061,7 +1061,7 @@ void MainWindow::updateFlatpakCounts(uint total_count)
     ui->labelNumInstFP->setText(QString::number(!installed_apps_fp.isEmpty() ? installed_apps_fp.count() : 0));
 }
 
-void MainWindow::formatFlatpakTree()
+void MainWindow::formatFlatpakTree() const
 {
     ui->treeFlatpak->sortByColumn(FlatCol::Name, Qt::AscendingOrder);
     removeDuplicatesFP();
@@ -1771,14 +1771,16 @@ void MainWindow::hideColumns() const
     ui->treeFlatpak->hideColumn(FlatCol::FullName);
 }
 
+// Hide library packages and development files
 void MainWindow::hideLibs() const
 {
+    if (currentTree == ui->treeFlatpak || !ui->checkHideLibs->isChecked()) {
+        return;
+    }
     currentTree->setUpdatesEnabled(false);
-    if (currentTree != ui->treeFlatpak && ui->checkHideLibs->isChecked()) {
-        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-            if (isFilteredName((*it)->text(TreeCol::Name))) {
-                (*it)->setHidden(true);
-            }
+    for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
+        if (isFilteredName((*it)->text(TreeCol::Name))) {
+            (*it)->setHidden(true);
         }
     }
     currentTree->setUpdatesEnabled(true);
@@ -1798,46 +1800,44 @@ bool MainWindow::readPackageList(bool force_download)
         return true;
     }
 
-    // Determine the file name based on the current tree
-    QString fileName;
-    if (currentTree == ui->treeMXtest) {
-        fileName = tmp_dir.path() + "/mxPackages";
-    } else if (currentTree == ui->treeBackports) {
-        fileName = tmp_dir.path() + "/allPackages";
-    } else if (currentTree == ui->treeEnabled) {
-        // treeEnabled is updated at downloadPackageList
+    // treeEnabled is updated at downloadPackageList
+    if (currentTree == ui->treeEnabled) {
         return true;
     }
 
-    // Read the content of the file
-    QFile file(fileName);
-    if (!file.open(QFile::ReadOnly)) {
-        qDebug() << "Could not open file: " << file.fileName();
+    // Determine the file path based on the current tree
+    QString filePath = tmp_dir.filePath((currentTree == ui->treeMXtest) ? "mxPackages" : "allPackages");
+
+    QFile file(filePath);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        qDebug() << "Could not open file:" << filePath;
         return false;
     }
-    QString file_content = file.readAll();
-    file.close();
 
-    // Select the appropriate list to populate
-    QMap<QString, PackageInfo> *packageMap = (currentTree == ui->treeMXtest) ? &mx_list : &backports_list;
-    packageMap->clear();
+    // Select the target package map based on the current tree
+    auto &targetMap = (currentTree == ui->treeMXtest) ? mx_list : backports_list;
+    targetMap.clear();
 
-    // Parse the file content and populate the map
-    QStringList lines = file_content.split('\n');
-    QString package, version, description;
-    for (const QString &line : lines) {
+    // Parse package information from the file
+    QTextStream stream(&file);
+    QString line, package, version, description;
+    while (stream.readLineInto(&line)) {
         if (line.startsWith("Package: ")) {
             package = line.section(' ', 1);
         } else if (line.startsWith("Version: ")) {
             version = line.section(' ', 1);
         } else if (line.startsWith("Description: ")) {
             description = line.section(' ', 1);
-            packageMap->insert(package, {version, description});
-            package.clear();
-            version.clear();
-            description.clear();
+            if (!package.isEmpty()) {
+                targetMap.insert(package, {version, description});
+                package.clear();
+                version.clear();
+                description.clear();
+            }
         }
     }
+
+    file.close();
     return true;
 }
 

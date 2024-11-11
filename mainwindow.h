@@ -279,7 +279,7 @@ private:
     void displayWarning(const QString &repo);
     void enableTabs(bool enable) const;
     void finalizeFlatpakDisplay();
-    void formatFlatpakTree();
+    void formatFlatpakTree() const;
     void handleEnabledReposTab(const QString &search_str);
     void handleFlatpakTab(const QString &search_str);
     void handleOutputTab();
