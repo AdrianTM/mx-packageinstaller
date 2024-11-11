@@ -1971,12 +1971,8 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 // List installed flatpaks by type: apps, runtimes, or all (if no type is provided)
 QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
-    QStringList list {cmd.getOut("flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref")
-                          .split('\n', Qt::SkipEmptyParts)};
-    if (list == QStringList("")) {
-        return {};
-    }
-    return list;
+    QString command = "flatpak list " + FPuser + "2>/dev/null " + type + " --columns=ref";
+    return cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
 }
 
 QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
