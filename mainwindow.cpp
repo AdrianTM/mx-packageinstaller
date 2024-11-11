@@ -2129,31 +2129,38 @@ void MainWindow::disableOutput()
 
 void MainWindow::displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeWidgetItem *item)
 {
-    QString file_name = (tree == ui->treeMXtest) ? tmp_dir.path() + "/mxPackages" : tmp_dir.path() + "/allPackages";
+    QString file_name = (tree == ui->treeMXtest) ? tmp_dir.filePath("mxPackages") : tmp_dir.filePath("allPackages");
 
     QFile file(file_name);
     if (!file.open(QFile::ReadOnly | QFile::Text)) {
-        qDebug() << "Could not open: " << file.fileName();
+        qWarning() << "Could not open file:" << file.fileName();
         return;
     }
+
     QString msg;
-    QString item_name = item->text(TreeCol::Name);
+    const QString item_name = item->text(TreeCol::Name);
     QTextStream in(&file);
+    bool packageFound = false;
+
     while (!in.atEnd()) {
         QString line = in.readLine();
-        if (line == "Package: " + item_name) {
-            msg += line + '\n';
-            line.clear();
-            while (!in.atEnd()) {
-                line = in.readLine();
-                if (line.startsWith(QLatin1String("Package: "))) {
-                    break;
-                }
+        if (line.startsWith("Package: ")) {
+            if (line == "Package: " + item_name) {
+                packageFound = true;
                 msg += line + '\n';
+            } else if (packageFound) {
+                break;
             }
+        } else if (packageFound) {
+            msg += line + '\n';
         }
     }
-    auto msg_list = msg.split('\n');
+    auto msg_list = msg.split('\n', Qt::SkipEmptyParts);
+    if (msg_list.isEmpty()) {
+        qWarning() << "Package info not found in file:" << file.fileName() << "Show info from enabled repos";
+        displayPackageInfo(tree->currentItem());
+        return;
+    }
     auto max_no_chars = 2000;        // Around 15-17 lines
     if (msg.size() > max_no_chars) { // Split msg into details if too large
         uchar max_no_lines = 20;     // Cut message after these many lines
