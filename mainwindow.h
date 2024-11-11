@@ -224,7 +224,7 @@ private:
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
-    [[nodiscard]] QMap<QString, PackageInfo> listInstalled() const;
+    [[nodiscard]] QMap<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString categoryTranslation(const QString &item);
     [[nodiscard]] QString getArchOption() const;
     [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;

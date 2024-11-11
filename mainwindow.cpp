@@ -1935,32 +1935,39 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
     return true;
 }
 
-QMap<QString, PackageInfo> MainWindow::listInstalled() const
+QMap<QString, PackageInfo> MainWindow::listInstalled()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     Cmd shell;
-    QString list = shell.getOut("dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\n'");
+    QString list
+        = shell.getOut("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\\n'");
+
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
-        QMessageBox::critical(nullptr, tr("Error"),
+        QMessageBox::critical(this, tr("Error"),
                               tr("dpkg-query command returned an error. Please run 'dpkg-query -W' in terminal "
                                  "and check the output."));
         exit(EXIT_FAILURE);
     }
 
     QMap<QString, PackageInfo> installedPackages;
-    const auto lines = list.split('\n', Qt::SkipEmptyParts);
     const QString statusPrefix = "ii ";
+    const auto lines = list.split('\n', Qt::SkipEmptyParts);
 
     for (const QString &line : lines) {
-        if (line.startsWith(statusPrefix)) {
-            QStringList parts = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
-            if (parts.size() >= 2) {
-                QString packageName = parts.takeFirst();
-                QString version = parts.takeFirst();
-                QString description = parts.join(' ');
-                installedPackages.insert(packageName, {version, description});
-            }
+        if (!line.startsWith(statusPrefix)) {
+            continue;
         }
+
+        const QStringList parts = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
+        if (parts.size() < 2) {
+            continue;
+        }
+
+        const QString packageName = parts.at(0);
+        const QString version = parts.at(1);
+        const QString description = parts.size() > 2 ? parts.mid(2).join(' ') : QString();
+
+        installedPackages.insert(packageName, {version, description});
     }
 
     return installedPackages;
@@ -2077,9 +2084,7 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
-    const QString command
-        = "LANG=C dpkg-query -W -f='${Package} ${Status} ${Version}\\n' | grep 'install ok installed' "
-          "| awk '{print $1, $5}'";
+    const QString command = "LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'";
     const QStringList packageList = shell.getOut(command, true).split('\n', Qt::SkipEmptyParts);
 
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
@@ -2088,9 +2093,12 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
             tr("dpkg-query command returned an error, please run 'dpkg-query -W' in terminal and check the output."));
         return installedVersions;
     }
-
     for (const QString &line : packageList) {
-        const QStringList packageInfo = line.split(' ', Qt::SkipEmptyParts);
+        const QString statusPrefix = "ii ";
+        if (!line.startsWith(statusPrefix)) {
+            continue;
+        }
+        const QStringList packageInfo = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
         if (packageInfo.size() == 2) {
             installedVersions.insert(packageInfo.at(0), VersionNumber(packageInfo.at(1)));
         }
