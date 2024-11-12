@@ -226,6 +226,7 @@ private:
 
     [[nodiscard]] QMap<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString categoryTranslation(const QString &item);
+    [[nodiscard]] QString getMXTestRepoUrl();
     [[nodiscard]] QString getArchOption() const;
     [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
     [[nodiscard]] QString getVersion(const QString &name) const;
