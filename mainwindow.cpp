@@ -628,6 +628,7 @@ void MainWindow::setConnections() const
     connect(ui->pushForceUpdateBP, &QPushButton::clicked, this, &MainWindow::pushForceUpdateBP_clicked);
     connect(ui->pushForceUpdateEnabled, &QPushButton::clicked, this, &MainWindow::pushForceUpdateEnabled_clicked);
     connect(ui->pushForceUpdateMX, &QPushButton::clicked, this, &MainWindow::pushForceUpdateMX_clicked);
+    connect(ui->pushForceUpdateFP, &QPushButton::clicked, this, &MainWindow::pushForceUpdateFP_clicked);
     connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelp_clicked);
     connect(ui->pushInstall, &QPushButton::clicked, this, &MainWindow::pushInstall_clicked);
     connect(ui->pushRemotes, &QPushButton::clicked, this, &MainWindow::pushRemotes_clicked);
@@ -1965,20 +1966,10 @@ QMap<QString, PackageInfo> MainWindow::listInstalled()
 QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    static bool updated = false;
 
     QString arch_fp = getArchOption();
     if (arch_fp.isEmpty()) {
         return {};
-    }
-
-    Cmd shell;
-    // Update appstream only once per session
-    if (!updated) {
-        if (!shell.run("flatpak update --appstream")) {
-            qDebug() << "Failed to update flatpak appstream.";
-        }
-        updated = true;
     }
 
     // Construct the base command for listing flatpaks
@@ -1994,6 +1985,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 
     QStringList list;
     // Execute the command and process the output
+    Cmd shell;
     if (shell.run(baseCommand)) {
         list = shell.readAllOutput().split('\n', Qt::SkipEmptyParts);
     }
@@ -3067,6 +3059,14 @@ void MainWindow::pushForceUpdateMX_clicked()
     updateInterface();
 }
 
+void MainWindow::pushForceUpdateFP_clicked()
+{
+    ui->searchBoxFlatpak->clear();
+    Cmd().run("flatpak update --appstream");
+    displayFlatpaks(true);
+    updateInterface();
+}
+
 void MainWindow::pushForceUpdateBP_clicked()
 {
     ui->searchBoxBP->clear();
@@ -3243,7 +3243,6 @@ void MainWindow::comboUser_currentIndexChanged(int index)
                     "https://flathub.org/repo/flathub.flatpakrepo");
             cmd.run("flatpak --user remote-add --if-not-exists --subset=verified flathub-verified "
                     "https://flathub.org/repo/flathub.flatpakrepo");
-            cmd.run("flatpak update --appstream");
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }

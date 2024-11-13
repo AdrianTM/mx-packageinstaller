@@ -1,3 +1,10 @@
+mx-packageinstaller (24.11.02) mx; urgency=medium
+
+  * Update flatpaks only if manually refreshed (list might show blank if flatpaks
+    were never used on the system, but it's worth the time saving)
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 13 Nov 2024 16:12:21 -0500
+
 mx-packageinstaller (24.11.01) mx; urgency=medium
 
   * Fix: displaying number of packages when switching tabs

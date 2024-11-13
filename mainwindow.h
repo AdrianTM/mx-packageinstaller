@@ -152,6 +152,7 @@ private slots:
     void pushForceUpdateBP_clicked();
     void pushForceUpdateEnabled_clicked();
     void pushForceUpdateMX_clicked();
+    void pushForceUpdateFP_clicked();
     void pushHelp_clicked();
     void pushInstall_clicked();
     void pushRemotes_clicked();
