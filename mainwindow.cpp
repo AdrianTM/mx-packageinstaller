@@ -1733,13 +1733,14 @@ bool MainWindow::downloadPackageList(bool force_download)
     return true;
 }
 
-void MainWindow::enableTabs(bool enable) const
+void MainWindow::enableTabs(bool enable)
 {
     for (int tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
     }
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
+    setCursor(QCursor(Qt::ArrowCursor));
 }
 
 void MainWindow::hideColumns() const
@@ -2735,6 +2736,7 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
                                         tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
         if (ans == QMessageBox::No) {
             ui->tabWidget->setCurrentIndex(Tab::Popular);
+            enableTabs(true);
             return;
         }
         installFlatpak();

@@ -1,3 +1,9 @@
+mx-packageinstaller (24.11.03) mx; urgency=medium
+
+  * Fix displaying tab when rejecting flatpak installation
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 13 Nov 2024 18:31:10 -0500
+
 mx-packageinstaller (24.11.02) mx; urgency=medium
 
   * Update flatpaks only if manually refreshed (list might show blank if flatpaks
