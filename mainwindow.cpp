@@ -2343,6 +2343,7 @@ void MainWindow::findPackage()
                                                            {ui->treeMXtest, ui->searchBoxMX},
                                                            {ui->treeBackports, ui->searchBoxBP},
                                                            {ui->treeFlatpak, ui->searchBoxFlatpak}};
+
     const QString word = searchBoxMap.value(currentTree)->text();
 
     // Skip single character searches
@@ -2578,11 +2579,12 @@ void MainWindow::tabWidget_currentChanged(int index)
     ui->tabWidget->setTabText(Tab::Output, tr("Console Output"));
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
-    currentTree->blockSignals(true);
 
     resetCheckboxes();
     QString search_str;
     saveSearchText(search_str, savedComboIndex);
+    setCurrentTree();
+    currentTree->blockSignals(true);
 
     auto setTabsEnabled = [this](bool enable) {
         for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak}) {
@@ -2649,8 +2651,6 @@ void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
 void MainWindow::handleEnabledReposTab(const QString &search_str)
 {
     ui->searchBoxEnabled->setText(search_str);
-    // enableTabs(true);
-    setCurrentTree();
     change_list.clear();
     if (displayPackagesIsRunning) {
         progress->show();

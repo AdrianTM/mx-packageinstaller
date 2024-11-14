@@ -1,3 +1,9 @@
+mx-packageinstaller (24.11.05) mx; urgency=medium
+
+  * Fix crash when switching tabs when there's text in the search field
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 14 Nov 2024 08:38:06 -0500
+
 mx-packageinstaller (24.11.04) mx; urgency=medium
 
   * Update flatpaks only if manually refreshed (list might show blank if flatpaks
