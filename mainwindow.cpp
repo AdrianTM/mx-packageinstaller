@@ -3064,7 +3064,8 @@ void MainWindow::pushForceUpdateMX_clicked()
 void MainWindow::pushForceUpdateFP_clicked()
 {
     ui->searchBoxFlatpak->clear();
-    Cmd().run("flatpak update --appstream");
+    progress->show();
+    cmd.run("flatpak update --appstream");
     displayFlatpaks(true);
     updateInterface();
 }
