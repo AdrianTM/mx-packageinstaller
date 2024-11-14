@@ -175,7 +175,7 @@
         <location filename="../mainwindow.ui" line="508"/>
         <location filename="../mainwindow.ui" line="785"/>
         <location filename="../mainwindow.ui" line="1156"/>
-        <location filename="../mainwindow.cpp" line="2436"/>
+        <location filename="../mainwindow.cpp" line="2437"/>
         <location filename="../mainwindow.cpp" line="2862"/>
         <location filename="../mainwindow.cpp" line="2928"/>
         <location filename="../mainwindow.cpp" line="3013"/>
@@ -329,7 +329,7 @@
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1558"/>
-        <location filename="../mainwindow.cpp" line="2578"/>
+        <location filename="../mainwindow.cpp" line="2579"/>
         <location filename="../mainwindow.cpp" line="2795"/>
         <source>Console Output</source>
         <translation>Wyjście Konsoli</translation>
@@ -443,10 +443,10 @@
         <location filename="../mainwindow.cpp" line="1632"/>
         <location filename="../mainwindow.cpp" line="1937"/>
         <location filename="../mainwindow.cpp" line="2077"/>
-        <location filename="../mainwindow.cpp" line="2429"/>
-        <location filename="../mainwindow.cpp" line="2448"/>
-        <location filename="../mainwindow.cpp" line="2554"/>
-        <location filename="../mainwindow.cpp" line="2570"/>
+        <location filename="../mainwindow.cpp" line="2430"/>
+        <location filename="../mainwindow.cpp" line="2449"/>
+        <location filename="../mainwindow.cpp" line="2555"/>
+        <location filename="../mainwindow.cpp" line="2571"/>
         <location filename="../mainwindow.cpp" line="2662"/>
         <location filename="../mainwindow.cpp" line="2695"/>
         <location filename="../mainwindow.cpp" line="3121"/>
@@ -579,11 +579,11 @@
         <translation>Pakiety do instalacji:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2413"/>
-        <location filename="../mainwindow.cpp" line="2425"/>
-        <location filename="../mainwindow.cpp" line="2445"/>
-        <location filename="../mainwindow.cpp" line="2529"/>
-        <location filename="../mainwindow.cpp" line="2551"/>
+        <location filename="../mainwindow.cpp" line="2414"/>
+        <location filename="../mainwindow.cpp" line="2426"/>
+        <location filename="../mainwindow.cpp" line="2446"/>
+        <location filename="../mainwindow.cpp" line="2530"/>
+        <location filename="../mainwindow.cpp" line="2552"/>
         <location filename="../mainwindow.cpp" line="3118"/>
         <location filename="../mainwindow.cpp" line="3193"/>
         <location filename="../mainwindow.cpp" line="3221"/>
@@ -592,12 +592,12 @@
         <translation>Gotowe</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2413"/>
-        <location filename="../mainwindow.cpp" line="2425"/>
-        <location filename="../mainwindow.cpp" line="2445"/>
-        <location filename="../mainwindow.cpp" line="2529"/>
-        <location filename="../mainwindow.cpp" line="2551"/>
-        <location filename="../mainwindow.cpp" line="2567"/>
+        <location filename="../mainwindow.cpp" line="2414"/>
+        <location filename="../mainwindow.cpp" line="2426"/>
+        <location filename="../mainwindow.cpp" line="2446"/>
+        <location filename="../mainwindow.cpp" line="2530"/>
+        <location filename="../mainwindow.cpp" line="2552"/>
+        <location filename="../mainwindow.cpp" line="2568"/>
         <location filename="../mainwindow.cpp" line="3118"/>
         <location filename="../mainwindow.cpp" line="3193"/>
         <location filename="../mainwindow.cpp" line="3221"/>
@@ -607,8 +607,8 @@
         <translation>Przetwarzanie zakończyło się pomyślnie.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2430"/>
-        <location filename="../mainwindow.cpp" line="2449"/>
+        <location filename="../mainwindow.cpp" line="2431"/>
+        <location filename="../mainwindow.cpp" line="2450"/>
         <location filename="../mainwindow.cpp" line="3122"/>
         <location filename="../mainwindow.cpp" line="3198"/>
         <location filename="../mainwindow.cpp" line="3228"/>
@@ -616,48 +616,48 @@
         <translation>Wykryto problem podczas instalacji, sprawdź wyjście konsoli.</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2459"/>
+        <location filename="../mainwindow.cpp" line="2460"/>
         <source>About %1</source>
         <translation>O %1</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2460"/>
+        <location filename="../mainwindow.cpp" line="2461"/>
         <source>Version: </source>
         <translation>Wersja:</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2462"/>
+        <location filename="../mainwindow.cpp" line="2463"/>
         <source>Package Installer for MX Linux</source>
         <translation>Instalator pakietów dla MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2464"/>
+        <location filename="../mainwindow.cpp" line="2465"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Prawa autorskie © MX Linux</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2465"/>
+        <location filename="../mainwindow.cpp" line="2466"/>
         <source>%1 License</source>
         <translation>%1 Licencja</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2477"/>
+        <location filename="../mainwindow.cpp" line="2478"/>
         <source>%1 Help</source>
         <translation>%1 Pomoc</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2554"/>
+        <location filename="../mainwindow.cpp" line="2555"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Napotkaliśmy problem podczas odinstalowywania, sprawdź dane wyjściowe</translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2567"/>
+        <location filename="../mainwindow.cpp" line="2568"/>
         <location filename="../mainwindow.cpp" line="3356"/>
         <source>Success</source>
         <translation>Sukces </translation>
     </message>
     <message>
-        <location filename="../mainwindow.cpp" line="2570"/>
+        <location filename="../mainwindow.cpp" line="2571"/>
         <location filename="../mainwindow.cpp" line="3359"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Napotkaliśmy problem podczas odinstalowywania programu</translation>
