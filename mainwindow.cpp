@@ -2580,7 +2580,6 @@ void MainWindow::tabWidget_currentChanged(int index)
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
 
-    currentTree->blockSignals(true); // Block signals before resetting checkboxes
     resetCheckboxes();
     QString search_str;
     saveSearchText(search_str, savedComboIndex);
@@ -2623,6 +2622,7 @@ void MainWindow::tabWidget_currentChanged(int index)
 
 void MainWindow::resetCheckboxes()
 {
+    currentTree->blockSignals(true);
     if (currentTree != ui->treePopularApps) {
         currentTree->clearSelection();
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
