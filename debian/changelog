@@ -1,6 +1,6 @@
 mx-packageinstaller (24.11.06) mx; urgency=medium
 
-  * Fix deselecting checkboxes before installating the selected programs
+  * Fix deselecting checkboxes before installing the selected programs
 
  -- Adrian <adrian@mxlinux.org>  Thu, 14 Nov 2024 19:01:50 -0500
 
