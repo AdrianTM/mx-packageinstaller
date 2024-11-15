@@ -1,3 +1,9 @@
+mx-packageinstaller (24.11.06) mx; urgency=medium
+
+  * Fix deselecting checkboxes before installating the selected programs
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 14 Nov 2024 19:01:50 -0500
+
 mx-packageinstaller (24.11.05) mx; urgency=medium
 
   * Fix crash when switching tabs when there's text in the search field
