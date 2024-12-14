@@ -2091,6 +2091,43 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
     return installedVersions;
 }
 
+QUrl MainWindow::getScreenshotUrl(const QString &name)
+{
+    QUrl url(QString("https://screenshots.debian.net/json/package/%1").arg(name));
+    QNetworkProxyQuery query(url);
+    QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
+    if (!proxies.isEmpty()) {
+        manager.setProxy(proxies.first());
+    }
+
+    reply = manager.get(QNetworkRequest(url));
+
+    QEventLoop loop;
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    QTimer::singleShot(5s, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    if (reply->error() != QNetworkReply::NoError) {
+        return {};
+    }
+
+    QByteArray response = reply->readAll();
+    QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
+    if (jsonDoc.isObject()) {
+        QJsonObject jsonObj = jsonDoc.object();
+        if (jsonObj.contains("screenshots") && jsonObj["screenshots"].isArray()) {
+            QJsonArray screenshotsArray = jsonObj["screenshots"].toArray();
+            if (!screenshotsArray.isEmpty()) {
+                QJsonObject firstScreenshot = screenshotsArray.first().toObject();
+                if (firstScreenshot.contains("small_image_url")) {
+                    return QUrl(firstScreenshot["small_image_url"].toString());
+                }
+            }
+        }
+    }
+    return {};
+}
+
 void MainWindow::cmdStart()
 {
     if (!timer.isActive()) {
@@ -2213,6 +2250,10 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
     QUrl url = item->data(PopCol::Screenshot, Qt::UserRole).toString(); // screenshot url
 
     if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none")) {
+        url = getScreenshotUrl(install_names.split(' ').first());
+    }
+
+    if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none")) {
         qDebug() << "no screenshot for: " << title;
     } else {
         QNetworkProxyQuery query {QUrl(url)};
@@ -2229,9 +2270,20 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
         loop.exec();
         ui->treePopularApps->blockSignals(false);
 
-        if (reply->error() != 0) {
+        if (reply->error() != QNetworkReply::NoError) {
             qDebug() << "Download of " << url.url() << " failed: " << qPrintable(reply->errorString());
-        } else {
+            url = getScreenshotUrl(install_names.split(' ').first());
+            if (url.isValid() && !url.isEmpty() && url.url() != QLatin1String("none")) {
+                reply = manager.get(QNetworkRequest(url));
+                connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+                QTimer::singleShot(5s, &loop, &QEventLoop::quit);
+                ui->treePopularApps->blockSignals(true);
+                loop.exec();
+                ui->treePopularApps->blockSignals(false);
+            }
+        }
+
+        if (reply->error() == QNetworkReply::NoError) {
             QImage image;
             QByteArray data;
             QBuffer buffer(&data);

@@ -220,6 +220,7 @@ private:
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
+    QUrl getScreenshotUrl(const QString &name);
     const QCommandLineParser &args;
 
     QNetworkAccessManager manager;
