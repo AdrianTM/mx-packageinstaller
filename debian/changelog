@@ -1,3 +1,10 @@
+mx-packageinstaller (24.12) mx; urgency=medium
+
+  * Display snapshots from screenshot.debian.net when clicking info icon in
+    popular apps tab
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 14 Dec 2024 12:10:31 -0500
+
 mx-packageinstaller (24.11.06) mx; urgency=medium
 
   * Fix deselecting checkboxes before installing the selected programs
