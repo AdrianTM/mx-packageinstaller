@@ -24,4 +24,3 @@ override_dh_shlibdeps:
 
 override_dh_auto_install:
 	dh_auto_install
-	dh_link usr/bin/mx-packageinstaller usr/bin/mxpi-launcher

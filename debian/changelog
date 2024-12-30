@@ -1,3 +1,10 @@
+mx-packageinstaller (24.12.01) mx; urgency=medium
+
+  * make mxpi-launcher a script rather than a symlink
+  * addresses launch issue from apt-notifier 
+
+ -- Dolphin Oracle <dolphinoracle@gmail.com>  Mon, 30 Dec 2024 16:52:59 -0500
+
 mx-packageinstaller (24.12) mx; urgency=medium
 
   * Display snapshots from screenshot.debian.net when clicking info icon in
