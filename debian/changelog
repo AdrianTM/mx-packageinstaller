@@ -1,3 +1,11 @@
+mx-packageinstaller (24.12.02) mx; urgency=medium
+
+  * Set the application name to fix the Qt translation domain and
+    window icon name based on the application name instead of the
+    executable file or symlink name
+
+ -- fehlix <fehlix@mxlinux.org>  Tue, 31 Dec 2024 10:19:35 -0500
+
 mx-packageinstaller (24.12.01) mx; urgency=medium
 
   * make mxpi-launcher a script rather than a symlink
