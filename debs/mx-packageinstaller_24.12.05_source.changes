@@ -1,0 +1,45 @@
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA512
+
+Format: 1.8
+Date: Tue, 31 Dec 2024 15:11:46 -0500
+Source: mx-packageinstaller
+Architecture: source
+Version: 24.12.05
+Distribution: mx
+Urgency: medium
+Maintainer: Adrian <adrian@mxlinux.org>
+Changed-By: fehlix <fehlix@mxlinux.org>
+Changes:
+ mx-packageinstaller (24.12.05) mx; urgency=medium
+ .
+   * Set version number during build from changelog within debian/rules
+Checksums-Sha1:
+ e4126d710ffec8054bcd14aacb919448b8d71a1d 1557 mx-packageinstaller_24.12.05.dsc
+ 406967fc2b60e35cb60c3c0d154fdcccbcd1e38d 708744 mx-packageinstaller_24.12.05.tar.xz
+ 440f149845aa7db48edef343ee69e90b87861b8d 11505 mx-packageinstaller_24.12.05_source.buildinfo
+Checksums-Sha256:
+ e519df507a94c39785cb1d80f874b69cd8b3fc4b0fcf1fd747eb4de84f6e8539 1557 mx-packageinstaller_24.12.05.dsc
+ 67cba9a6073585a528fa9d6e7581425e60f6ed83a01487615451cf936551fede 708744 mx-packageinstaller_24.12.05.tar.xz
+ fdb245d446210601adf331b9a2c9fb4a60f486720658b0565ddd9628d3cc5267 11505 mx-packageinstaller_24.12.05_source.buildinfo
+Files:
+ 76a3610ddc676e421129da1bab7a1e63 1557 admin optional mx-packageinstaller_24.12.05.dsc
+ 28c77b8d76aeb197622ab68ed19b78b4 708744 admin optional mx-packageinstaller_24.12.05.tar.xz
+ 00431e172276e8fb4dd421a6843d2221 11505 admin optional mx-packageinstaller_24.12.05_source.buildinfo
+
+-----BEGIN PGP SIGNATURE-----
+
+iQIzBAEBCgAdFiEE9i7eqjrnCpyZ2sQYm2ih6Lm2N1wFAmd0VsEACgkQm2ih6Lm2
+N1ytwA//SQymZ9NRLC93dfeMHxG1EFcwjdtO/lr9/uGsDGMS/PLUqAGbii5JgfeQ
+zR0uiUT4B4/uk3TOiv/g86wmTdttiSWLpQX6GO/OToLHtVaiVA3fp6gmcYq0Fa4n
+Hx2I6x36ZzMX+03kZpA95gPYiNiQgtU5RyR4/welL50j4rq7Yk7W/mETPI5mpq8c
+sLTdHYmA0e1ravMSYDjQUbd8EaMUhmjLfPfb/HwDWJ+0bH8gbvtctbVbUo9J844+
+qxIvcJZJ86AWUBWfefyPkpSuDMc0smwMmxkB+Udk+DYL2y/ZoTa0RVBPRocuPimh
+fG3ziVaUme+Hs7oKsbLUh5W5yaOd/AzXDVqLBPZhwuPDh+deq/Zy5a7IUXSH3/ga
+D1Dj5r4WxP6avj+3xRfVFovTY5b76rp2GpGlG1qWwGyqOFTW2LPi4y4QTSUGSltE
+d7xVtGZOzfmfUxbfmQfOH3WQXbUONLYZbbBQMaO/CMRcCC8NBuhjmOO6VwGmotnJ
+fFfTl95cNUScsGubm9VIB8j4jIfSRIepCx+OlvrNuFuOmi5gKS/dDnZgNFWyC6ZR
+t1ksh/KVQsZsX8fwwVSxV9hViH4ykldc560dxOJdz9O8uOzF7wVs7iBwQGZRXNY0
+I+2Bm9b41YkMhufBij1j5YO+21NSEg3cOsQlHktWJybOZ/Rwslk=
+=HwWd
+-----END PGP SIGNATURE-----
