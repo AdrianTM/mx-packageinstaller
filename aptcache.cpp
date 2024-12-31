@@ -19,7 +19,7 @@ void AptCache::loadCacheFiles()
 
     // Define include and exclude regex patterns
     const QRegularExpression includeRegex(QString(R"(^.*binary-%1_Packages$)").arg(arch));
-    const QRegularExpression secondaryRegex(R"(^.*binary-.*_Packages$)");
+    const QRegularExpression secondaryRegex(R"(^.*_Packages$)");
     const QRegularExpression excludeRegex(
         R"((debian_.*-backports_.*_Packages)|(mx_testrepo.*_test_.*_Packages)|(mx_repo.*_temp_.*_Packages))");
 
