@@ -1,3 +1,9 @@
+mx-packageinstaller (24.12.05) mx; urgency=medium
+
+  * Set version number during build from changelog within debian/rules
+
+ -- fehlix <fehlix@mxlinux.org>  Tue, 31 Dec 2024 15:11:46 -0500
+
 mx-packageinstaller (24.12.04) mx; urgency=medium
 
   * Adjust regex to read binary-packages for current arch only and 
