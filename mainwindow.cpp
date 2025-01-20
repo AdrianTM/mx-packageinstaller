@@ -2755,9 +2755,7 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
         ui->comboFilterBP->setCurrentIndex(savedComboIndex);
         filterChanged(ui->comboFilterEnabled->currentText());
     }
-    if (!search_str.isEmpty()) {
-        currentTree == ui->treePopularApps ? findPopular() : findPackage();
-    }
+    currentTree == ui->treePopularApps ? findPopular() : findPackage();
     currentTree->blockSignals(false);
 }
 
