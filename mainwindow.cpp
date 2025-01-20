@@ -2857,10 +2857,17 @@ void MainWindow::installFlatpak()
 
 void MainWindow::handleOutputTab()
 {
-    ui->searchPopular->clear();
-    ui->searchBoxEnabled->clear();
-    ui->searchBoxMX->clear();
-    ui->searchBoxBP->clear();
+    // Block signals and clear all search boxes
+    const QList<QLineEdit *> searchBoxes
+        = {ui->searchPopular, ui->searchBoxEnabled, ui->searchBoxMX, ui->searchBoxBP, ui->searchBoxFlatpak};
+
+    for (auto searchBox : searchBoxes) {
+        searchBox->blockSignals(true);
+        searchBox->clear();
+        searchBox->blockSignals(false);
+    }
+
+    // Disable install/uninstall buttons
     ui->pushInstall->setDisabled(true);
     ui->pushUninstall->setDisabled(true);
 }
