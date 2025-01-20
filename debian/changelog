@@ -1,3 +1,12 @@
+mx-packageinstaller (25.1) mx; urgency=medium
+
+  * Fix crash when switching back to Popular tab after searching in another
+    tab
+  * Minor optimizations
+  * Update translations
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 20 Jan 2025 11:41:58 -0500
+
 mx-packageinstaller (24.12) mx; urgency=medium
 
   * Display snapshots from screenshot.debian.net when clicking info icon in
