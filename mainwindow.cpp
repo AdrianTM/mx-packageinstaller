@@ -1435,6 +1435,11 @@ bool MainWindow::installPopularApps()
         }
     }
     setCursor(QCursor(Qt::ArrowCursor));
+
+    ui->treePopularApps->clearSelection();
+    for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
+        (*it)->setCheckState(PopCol::Check, Qt::Unchecked);
+    }
     return result;
 }
 
@@ -2566,6 +2571,7 @@ void MainWindow::pushUninstall_clicked()
                 names += (*it)->data(PopCol::UninstallNames, Qt::UserRole).toString().replace('\n', ' ') + ' ';
                 postuninstall += (*it)->data(PopCol::PostUninstall, Qt::UserRole).toString() + '\n';
                 preuninstall += (*it)->data(PopCol::PreUninstall, Qt::UserRole).toString() + '\n';
+                (*it)->setCheckState(PopCol::Check, Qt::Unchecked);
             }
         }
     } else if (currentTree == ui->treeFlatpak) {
@@ -2674,10 +2680,15 @@ void MainWindow::tabWidget_currentChanged(int index)
 void MainWindow::resetCheckboxes()
 {
     currentTree->blockSignals(true);
+    // Popular apps are processed in a different way, tree is reset after install/removal
     if (currentTree != ui->treePopularApps) {
         currentTree->clearSelection();
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-            (*it)->setCheckState(0, Qt::Unchecked);
+            (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
+        }
+    } else if (ui->tabWidget->currentIndex() != Tab::Output) { // Don't clear selections on output tab for pop apps
+        for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
+            (*it)->setCheckState(PopCol::Check, Qt::Unchecked);
         }
     }
 }
