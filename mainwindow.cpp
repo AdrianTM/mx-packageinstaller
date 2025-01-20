@@ -2635,9 +2635,10 @@ void MainWindow::tabWidget_currentChanged(int index)
     resetCheckboxes();
     QString search_str;
     saveSearchText(search_str, savedComboIndex);
-    setCurrentTree();
+    if (index != Tab::Output) {
+        setCurrentTree();
+    }
     currentTree->blockSignals(true);
-
     auto setTabsEnabled = [this](bool enable) {
         for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak}) {
             if (tab != ui->tabWidget->currentIndex()) {
@@ -2645,13 +2646,11 @@ void MainWindow::tabWidget_currentChanged(int index)
             }
         }
     };
-
     setTabsEnabled(false);
     switch (index) {
-    case Tab::Popular: {
-        bool tempFlag = false;
-        handleTab(search_str, ui->searchPopular, "", tempFlag);
-    } break;
+    case Tab::Popular:
+        handleTab(search_str, ui->searchPopular, "", false);
+        break;
     case Tab::EnabledRepos:
         handleEnabledReposTab(search_str);
         break;
@@ -2738,7 +2737,6 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
     if (searchBox) {
         searchBox->setText(search_str);
     }
-    setCurrentTree();
     if (!warningMessage.isEmpty()) {
         displayWarning(warningMessage);
     }
