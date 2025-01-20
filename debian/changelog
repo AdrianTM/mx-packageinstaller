@@ -1,3 +1,10 @@
+mx-packageinstaller (25.1) mx; urgency=medium
+
+  * Fix crash when switching back to Popular tab after searching in another
+    tab
+  * Minor optimizations
+  * Update translations
+
 mx-packageinstaller (24.12.05) mx; urgency=medium
 
   * Set version number during build from changelog within debian/rules
