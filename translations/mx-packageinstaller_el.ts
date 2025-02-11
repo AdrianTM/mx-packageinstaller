@@ -553,12 +553,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1943"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation>Η εντολή dpkg-query επέστρεψε σφάλμα, παρακαλώ εκτελέστε σε τερματικό &apos;dpkg-query -W&apos; και ελέγξτε το αποτέλεσμα.</translation>
+        <translation>Η εντολή dpkg-query επέστρεψε σφάλμα. Παρακαλώ εκτελέστε σε τερματικό &apos;dpkg-query -W&apos; και ελέγξτε το αποτέλεσμα.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2083"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation type="unfinished"></translation>
+        <translation>Η εντολή dpkg-query επέστρεψε σφάλμα, παρακαλώ εκτελέστε σε τερματικό &apos;dpkg-query -W&apos; και ελέγξτε το αποτέλεσμα.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2204"/>
