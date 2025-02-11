@@ -120,7 +120,7 @@ void MainWindow::setup()
     ver_name = getDebianVerName();
 
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
-    ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
+    ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list") || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
 
     test_initially_enabled
         = cmd.run("apt-get update --print-uris | grep -m1 -qE '/mx/testrepo/dists/" + ver_name + "/test/'");
@@ -1743,7 +1743,7 @@ void MainWindow::enableTabs(bool enable)
     for (int tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
     }
-    ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list"));
+    ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list") || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
     setCursor(QCursor(Qt::ArrowCursor));
 }

@@ -1,3 +1,9 @@
+mx-packageinstaller (25.2) mx; urgency=medium
+
+  * Minor change, check for mx.sources in addition to mx.list
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 11 Feb 2025 00:14:29 -0500
+
 mx-packageinstaller (25.1) mx; urgency=medium
 
   * Fix crash when switching back to Popular tab after searching in another
