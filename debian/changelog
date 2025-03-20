@@ -1,3 +1,9 @@
+mx-packageinstaller (25.3) mx; urgency=medium
+
+  * Implements wildcard (*, ?) search
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 20 Mar 2025 09:19:36 -0400
+
 mx-packageinstaller (25.2.01) mx; urgency=medium
 
   * Add CTRL-F to change focus to search field
