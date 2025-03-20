@@ -2363,12 +2363,38 @@ void MainWindow::findPopular() const
         QSet<QTreeWidgetItem *> foundItems;
         const QVector<int> searchColumns {PopCol::Name, PopCol::Icon, PopCol::Description};
 
+        // Check if the search term contains wildcards (* or ?)
+        bool hasWildcards = word.contains('*') || word.contains('?');
+        QRegularExpression regExp;
+
+        if (hasWildcards) {
+            // Convert the glob pattern to a regular expression
+            QString pattern = QRegularExpression::escape(word);
+            pattern.replace("\\*", ".*");
+            pattern.replace("\\?", ".");
+            regExp = QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption);
+        }
+
         for (int column : searchColumns) {
-            const auto matches = tree->findItems(word, Qt::MatchContains | Qt::MatchRecursive, column);
-            for (QTreeWidgetItem *match : matches) {
-                // Add the matching item and all its ancestors
-                for (QTreeWidgetItem *item = match; item; item = item->parent()) {
-                    foundItems.insert(item);
+            if (hasWildcards) {
+                // Use regex matching for wildcard searches
+                for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
+                    QTreeWidgetItem *item = *it;
+                    if (regExp.match(item->text(column)).hasMatch()) {
+                        // Add the matching item and all its ancestors
+                        for (QTreeWidgetItem *ancestor = item; ancestor; ancestor = ancestor->parent()) {
+                            foundItems.insert(ancestor);
+                        }
+                    }
+                }
+            } else {
+                // Use standard search for non-wildcard searches
+                const auto matches = tree->findItems(word, Qt::MatchContains | Qt::MatchRecursive, column);
+                for (QTreeWidgetItem *match : matches) {
+                    // Add the matching item and all its ancestors
+                    for (QTreeWidgetItem *item = match; item; item = item->parent()) {
+                        foundItems.insert(item);
+                    }
                 }
             }
         }
@@ -2425,14 +2451,29 @@ void MainWindow::findPackage()
 
     // Find matches in each column
     for (int column : searchColumns) {
-        const auto matches = currentTree->findItems(word, Qt::MatchContains | Qt::MatchRecursive, column);
+        // Check if the search term contains wildcards (* or ?)
+        QRegularExpression regExp;
+        if (word.contains('*') || word.contains('?')) {
+            // Convert the glob pattern to a regular expression
+            QString pattern = QRegularExpression::escape(word);
+            pattern.replace("\\*", ".*");
+            pattern.replace("\\?", ".");
+            regExp = QRegularExpression(pattern, QRegularExpression::CaseInsensitiveOption);
+        } else {
+            // Use standard search for non-wildcard searches
+            regExp = QRegularExpression(QRegularExpression::escape(word), QRegularExpression::CaseInsensitiveOption);
+        }
 
-        // Add matches and their ancestors to found set
-        for (QTreeWidgetItem *match : matches) {
-            QTreeWidgetItem *item = match;
-            while (item) {
-                foundItems.insert(item);
-                item = item->parent();
+        // Check each item against the regex pattern
+        for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
+            QTreeWidgetItem *item = *it;
+            if (regExp.match(item->text(column)).hasMatch()) {
+                // Add match and its ancestors to found set
+                QTreeWidgetItem *ancestor = item;
+                while (ancestor) {
+                    foundItems.insert(ancestor);
+                    ancestor = ancestor->parent();
+                }
             }
         }
     }
