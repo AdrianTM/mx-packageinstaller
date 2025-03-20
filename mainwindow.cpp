@@ -893,14 +893,14 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
 
     tree->setUpdatesEnabled(false);
 
-    const bool hideLibs = ui->checkHideLibs->isChecked();
+    const bool libsHidden = ui->checkHideLibs->isChecked();
     const auto hashInstalled = listInstalledVersions();
 
     for (QTreeWidgetItemIterator it(tree); (*it) != nullptr; ++it) {
         QTreeWidgetItem *item = *it;
         const QString &app_name = item->text(TreeCol::Name);
 
-        if (hideLibs && isFilteredName(app_name)) {
+        if (libsHidden && isFilteredName(app_name)) {
             item->setHidden(true);
         }
 
@@ -3383,7 +3383,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 {
     if (event->key() == Qt::Key_Escape) {
         pushCancel_clicked();
-    } else if (event->matches(QKeySequence::Find) || (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_F)) {
+    } else if (event->matches(QKeySequence::Find)
+               || (event->modifiers() == Qt::ControlModifier && event->key() == Qt::Key_F)) {
         if (ui->tabWidget->currentWidget() == ui->tabPopular) {
             ui->searchPopular->setFocus();
         } else if (ui->tabWidget->currentWidget() == ui->tabEnabled) {
