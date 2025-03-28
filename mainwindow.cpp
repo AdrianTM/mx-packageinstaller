@@ -38,6 +38,7 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QTextStream>
+#include <QtConcurrent/QtConcurrent>
 #include <QtGlobal>
 #include <QtXml/QtXml>
 
@@ -795,24 +796,21 @@ void MainWindow::displayPackages()
     displayPackagesIsRunning = true;
 
     auto *newTree = getCurrentTree();
-    if (!newTree) {
+    auto *list = getCurrentList();
+
+    if (!newTree || !list) {
         displayPackagesIsRunning = false;
+        emit displayPackagesFinished();
         return;
     }
 
-    QMap<QString, PackageInfo> *list = getCurrentList();
-    if (!list) {
-        displayPackagesIsRunning = false;
-        return;
-    }
-
-    newTree->blockSignals(true);
+    QApplication::setOverrideCursor(Qt::WaitCursor);
     newTree->setUpdatesEnabled(false);
+    newTree->blockSignals(true);
+
     newTree->clear();
-
-    auto items = createTreeItemsList(list);
-
-    newTree->addTopLevelItems(items);
+    newTree->setSortingEnabled(false);
+    newTree->addTopLevelItems(createTreeItemsList(list));
     newTree->sortItems(TreeCol::Name, Qt::AscendingOrder);
 
     updateTreeItems(newTree);
@@ -820,13 +818,15 @@ void MainWindow::displayPackages()
 
     newTree->blockSignals(false);
     newTree->setUpdatesEnabled(true);
+    QApplication::restoreOverrideCursor();
+
     displayPackagesIsRunning = false;
     emit displayPackagesFinished();
 }
 
 void MainWindow::displayAutoremovable(const QTreeWidget *newTree)
 {
-    if (newTree == ui->treePopularApps || newTree == ui->treeFlatpak) {
+    if (!newTree || newTree == ui->treePopularApps || newTree == ui->treeFlatpak) {
         return;
     }
     QStringList names
@@ -836,6 +836,7 @@ void MainWindow::displayAutoremovable(const QTreeWidget *newTree)
     if (names.isEmpty()) {
         return;
     }
+
     QSet<QString> nameSet(names.begin(), names.end());
     for (QTreeWidgetItemIterator it(const_cast<QTreeWidget *>(newTree)); *it; ++it) {
         if (nameSet.contains((*it)->text(TreeCol::Name))) {
