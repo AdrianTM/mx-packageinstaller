@@ -470,12 +470,23 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
-    ui->outputBox->moveCursor(QTextCursor::End);
-    if (output.contains('\r')) {
-        ui->outputBox->moveCursor(QTextCursor::Up, QTextCursor::KeepAnchor);
-        ui->outputBox->moveCursor(QTextCursor::EndOfLine, QTextCursor::KeepAnchor);
+    static const QRegularExpression ansiEscape{R"(\x1B\[[0-9;?]*[A-Za-z])"};
+
+    // Remove ANSI escape sequences
+    QString cleanOutput = output;
+    cleanOutput.remove(ansiEscape);
+
+    // Handle carriage return (overwrite current line)
+    if (cleanOutput.contains('\r')) {
+        QTextCursor cursor = ui->outputBox->textCursor();
+        cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+        cursor.removeSelectedText();
     }
-    ui->outputBox->insertPlainText(output);
+
+    // Move cursor to end and insert cleaned output
+    ui->outputBox->moveCursor(QTextCursor::End);
+    ui->outputBox->insertPlainText(cleanOutput);
+
     ui->outputBox->verticalScrollBar()->setValue(ui->outputBox->verticalScrollBar()->maximum());
 }
 
@@ -486,16 +497,16 @@ void MainWindow::loadPmFiles()
     const QString pmFolderPath {"/usr/share/mx-packageinstaller-pkglist"};
     const QStringList pmFileList = QDir(pmFolderPath).entryList({"*.pm"});
 
-    QDomDocument doc;
     for (const QString &fileName : pmFileList) {
         QFile file(pmFolderPath + '/' + fileName);
         if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-            qDebug() << "Could not open file:" << file.fileName();
+            qWarning() << "Could not open file:" << file.fileName();
             continue;
         }
 
+        QDomDocument doc;
         if (!doc.setContent(&file)) {
-            qDebug() << "Could not load document:" << fileName << "-- not valid XML?";
+            qWarning() << "Could not load document:" << fileName << "-- not valid XML?";
             file.close();
             continue;
         }
