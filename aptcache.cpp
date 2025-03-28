@@ -86,10 +86,10 @@ void AptCache::parseContent()
     QString architecture;
     bool isArchMatched = false;
 
-    const QLatin1String packageStr("Package:");
-    const QLatin1String archStr("Architecture:");
-    const QLatin1String versionStr("Version:");
-    const QLatin1String descStr("Description:");
+    constexpr QLatin1String packageStr("Package:");
+    constexpr QLatin1String archStr("Architecture:");
+    constexpr QLatin1String versionStr("Version:");
+    constexpr QLatin1String descStr("Description:");
     constexpr int packageSize = packageStr.size();
     constexpr int archSize = archStr.size();
     constexpr int versionSize = versionStr.size();
