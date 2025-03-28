@@ -908,44 +908,36 @@ QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QMap<QString, PackageIn
 
 void MainWindow::updateTreeItems(QTreeWidget *tree)
 {
-    int upgradeCount = 0;
-    int installCount = 0;
-
     tree->setUpdatesEnabled(false);
 
     const bool hideLibraries = ui->checkHideLibs->isChecked();
     const auto installedVersions = listInstalledVersions();
 
     for (QTreeWidgetItemIterator it(tree); *it; ++it) {
-        QTreeWidgetItem *item = *it;
+        auto *item = *it;
         const QString &appName = item->text(TreeCol::Name);
 
         if (hideLibraries && isFilteredName(appName)) {
             item->setHidden(true);
         }
 
-        const QString &repoVersion = item->text(TreeCol::RepoVersion);
+        // Get installed version information
         const VersionNumber installedVersion = installedVersions.value(appName);
         const QString installedVersionStr = installedVersion.toString();
-        item->setText(TreeCol::InstalledVersion, installedVersionStr);
 
-        item->setIcon(TreeCol::Check, QIcon());
-
-        if (installedVersionStr.isEmpty()) {
-            item->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
-            continue;
+        // Update installed version text only if changed
+        if (!installedVersionStr.isEmpty() && item->text(TreeCol::InstalledVersion) != installedVersionStr) {
+            item->setText(TreeCol::InstalledVersion, installedVersionStr);
         }
 
-        ++installCount;
-        const VersionNumber repoCandidate(repoVersion);
-
-        if (installedVersion >= repoCandidate) {
-            item->setIcon(TreeCol::Check, qiconInstalled);
-            item->setData(TreeCol::Status, Qt::UserRole, Status::Installed);
+        // Set status based on installation state
+        if (installedVersionStr.isEmpty()) {
+            item->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
         } else {
-            ++upgradeCount;
-            item->setIcon(TreeCol::Check, qiconUpgradable);
-            item->setData(TreeCol::Status, Qt::UserRole, Status::Upgradable);
+            // Compare versions and set appropriate icon
+            const bool isUpToDate = installedVersion >= VersionNumber(item->text(TreeCol::RepoVersion));
+            item->setIcon(TreeCol::Check, isUpToDate ? qiconInstalled : qiconUpgradable);
+            item->setData(TreeCol::Status, Qt::UserRole, isUpToDate ? Status::Installed : Status::Upgradable);
         }
     }
 
