@@ -1011,9 +1011,15 @@ void MainWindow::populateFlatpakTree()
 
 QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStringList &installed_all) const
 {
-    const QStringList parts = item.split('\t');
-    const QString name = parts.at(1).section('/', 1);
-    const QString version = !parts.at(0).isEmpty() ? parts.at(0) : name.section('/', -1);
+    QStringList parts = item.split('\t');
+
+    // Remove empty parts that might occur if item starts with \t
+    if (!parts.isEmpty() && parts.at(0).isEmpty()) {
+        parts.removeAt(0);
+    }
+
+    const QString name = (parts.size() == 3) ? parts.at(1).section('/', 1) : parts.at(0).section('/', 1);
+    const QString version = (parts.size() == 3) ? parts.at(0) : name.section('/', -1);
     const QString size = parts.last();
     const QString long_name = name.section('/', 0, 0);
     const QString short_name = long_name.section('.', -1);
