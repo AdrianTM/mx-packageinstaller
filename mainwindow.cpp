@@ -68,18 +68,25 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     connect(&cmd, &Cmd::errorAvailable, [](const QString &out) { qWarning() << out.trimmed(); });
     setWindowFlags(Qt::Window); // For the close, min and max buttons
 
-    // Start displayPackage and displayFlatpaks in the background
-    QTimer::singleShot(0, this, [this] {
-        setup();
-        QApplication::processEvents();
-        {
-            AptCache cache;
-            enabledList = cache.getCandidates();
-            displayPackages();
-            ui->tabWidget->setTabEnabled(Tab::Test, true);
-            ui->tabWidget->setTabEnabled(Tab::Backports, true);
-        }
-        if (arch != "i386" && checkInstalled("flatpak")) {
+    setup();
+
+    // Run package display in a separate thread
+    QtConcurrent::run([this] {
+        AptCache cache;
+        enabledList = cache.getCandidates();
+        QMetaObject::invokeMethod(
+            this,
+            [this] {
+                displayPackages();
+                ui->tabWidget->setTabEnabled(Tab::Test, true);
+                ui->tabWidget->setTabEnabled(Tab::Backports, true);
+            },
+            Qt::QueuedConnection);
+    });
+
+    // Run flatpak setup and display in a separate thread
+    if (arch != "i386" && checkInstalled("flatpak")) {
+        QtConcurrent::run([this] {
             if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub", true)) {
                 Cmd().runAsRoot(
                     "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
@@ -88,9 +95,10 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                 Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
                                 "https://flathub.org/repo/flathub.flatpakrepo");
             }
-            displayFlatpaks();
-        }
-    });
+            QMetaObject::invokeMethod(
+                this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
+        });
+    }
 }
 
 MainWindow::~MainWindow()
@@ -470,7 +478,7 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
-    static const QRegularExpression ansiEscape{R"(\x1B\[[0-9;?]*[A-Za-z])"};
+    static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
 
     // Remove ANSI escape sequences
     QString cleanOutput = output;
