@@ -674,7 +674,6 @@ void MainWindow::setConnections() const
 
 void MainWindow::setProgressDialog()
 {
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     progress = new QProgressDialog(this);
     bar = new QProgressBar(progress);
     bar->setMaximum(bar->maximum());
@@ -833,7 +832,8 @@ void MainWindow::displayPackages()
     newTree->sortItems(TreeCol::Name, Qt::AscendingOrder);
 
     updateTreeItems(newTree);
-    displayAutoremovable(newTree);
+    QMetaObject::invokeMethod(
+        this, [this, newTree] { displayAutoremovable(newTree); }, Qt::QueuedConnection);
 
     newTree->blockSignals(false);
     newTree->setUpdatesEnabled(true);
@@ -1260,11 +1260,11 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
         msgBox.setDetailedText(detailed_removed_names + '\n' + detailed_to_install);
     }
 
-    // find Detailed Info box and set heigth, set box height between 100 - 400 depending on length of content
+    // Find Detailed Info box and set heigth, set box height between 100 - 400 depending on length of content
     const auto min = 100;
     const auto max = 400;
     auto *const detailedInfo = msgBox.findChild<QTextEdit *>();
-    const auto recommended = qMax(msgBox.detailedText().length() / 2, min); // half of length is just guesswork
+    const auto recommended = qMax(msgBox.detailedText().length() / 2, min); // Half of length is just guesswork
     const auto height = qMin(recommended, max);
     detailedInfo->setFixedHeight(height);
 
@@ -2798,7 +2798,8 @@ void MainWindow::handleEnabledReposTab(const QString &search_str)
         filterChanged(ui->comboFilterEnabled->currentText());
     }
     if (!ui->searchBoxEnabled->text().isEmpty()) {
-        findPackage();
+        QMetaObject::invokeMethod(
+            this, [this] { findPackage(); }, Qt::QueuedConnection);
     }
     if (!displayPackagesIsRunning) {
         currentTree->blockSignals(false);
@@ -2829,7 +2830,6 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
         ui->comboFilterBP->setCurrentIndex(savedComboIndex);
         filterChanged(ui->comboFilterEnabled->currentText());
     }
-    currentTree == ui->treePopularApps ? findPopular() : findPackage();
     currentTree->blockSignals(false);
 }
 
@@ -2844,7 +2844,8 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
     if (!firstRunFP && checkInstalled("flatpak")) {
         ui->searchBoxBP->setText(search_str);
         if (!search_str.isEmpty()) {
-            findPackage();
+            QMetaObject::invokeMethod(
+                this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
         if (!displayFlatpaksIsRunning) {
             filterChanged(ui->comboFilterFlatpak->currentText());
@@ -2879,7 +2880,8 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
         }
         ui->searchBoxBP->setText(search_str);
         if (!search_str.isEmpty()) {
-            findPackage();
+            QMetaObject::invokeMethod(
+                this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
     }
 }
@@ -2956,7 +2958,8 @@ void MainWindow::filterChanged(const QString &arg1)
             (*it)->setHidden(false);
             (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
         }
-        findPackage();
+        QMetaObject::invokeMethod(
+            this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
         ui->pushInstall->setEnabled(false);
         ui->pushUninstall->setEnabled(false);
@@ -3030,7 +3033,8 @@ void MainWindow::filterChanged(const QString &arg1)
             }
             ui->pushUninstall->setEnabled(false);
         }
-        findPackage();
+        QMetaObject::invokeMethod(
+            this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
     } else if (arg1 == tr("All packages")) {
         savedComboIndex = 0;
@@ -3069,7 +3073,8 @@ void MainWindow::filterChanged(const QString &arg1)
             }
         }
         uncheckAllItems();
-        findPackage();
+        QMetaObject::invokeMethod(
+            this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
         clearChangeListAndButtons();
     }
