@@ -1965,7 +1965,7 @@ QMap<QString, PackageInfo> MainWindow::listInstalled()
         exit(EXIT_FAILURE);
     }
 
-    QMap<QString, PackageInfo> installedPackages;
+    QMap<QString, PackageInfo> installedPackagesMap;
     const QString statusPrefix = "ii ";
     const auto lines = list.split('\n', Qt::SkipEmptyParts);
 
@@ -1983,10 +1983,10 @@ QMap<QString, PackageInfo> MainWindow::listInstalled()
         const QString version = parts.at(1);
         const QString description = parts.size() > 2 ? parts.mid(2).join(' ') : QString();
 
-        installedPackages.insert(packageName, {version, description});
+        installedPackagesMap.insert(packageName, {version, description});
     }
 
-    return installedPackages;
+    return installedPackagesMap;
 }
 
 QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type) const
