@@ -87,14 +87,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // Run flatpak setup and display in a separate thread
     if (arch != "i386" && checkInstalled("flatpak")) {
         QtConcurrent::run([this] {
-            if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub", true)) {
-                Cmd().runAsRoot(
-                    "flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
-            }
-            if (!Cmd().run("flatpak remote-list --system --columns=name | grep -qw flathub-verified", true)) {
-                Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
-                                "https://flathub.org/repo/flathub.flatpakrepo");
-            }
+            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
             QMetaObject::invokeMethod(
                 this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
         });
@@ -239,8 +232,7 @@ bool MainWindow::updateApt()
     }
 
     enableOutput();
-    if (cmd.runAsRoot("apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o Acquire::https:Timeout=10 -o "
-                      "Acquire::ftp:Timeout=10")) {
+    if (cmd.run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib apt_update", true)) {
         qDebug() << "sources updated OK";
         updatedOnce = true;
         return true;
@@ -1381,8 +1373,7 @@ bool MainWindow::installPopularApp(const QString &name)
         }
         if (!cmd.runAsRoot(preinstall)) {
             if (QFile::exists(tempList)) {
-                QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
-                Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+                Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
                 updateApt();
             }
             return false;
@@ -1404,8 +1395,7 @@ bool MainWindow::installPopularApp(const QString &name)
         cmd.runAsRoot(postinstall);
     }
     if (QFile::exists(tempList)) {
-        QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
-        Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
         updateApt();
     }
     return result;
@@ -1496,8 +1486,7 @@ bool MainWindow::installSelected()
     bool result = install(names);
     if (currentTree == ui->treeBackports || currentTree == ui->treeMXtest) {
         if (QFile::exists(tempList)) {
-            QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
-            Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
             updateApt();
         }
     }
@@ -1908,12 +1897,11 @@ void MainWindow::cleanup()
     if (cmd.state() != QProcess::NotRunning) {
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }
-    QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"};
     if (QFile::exists(tempList)) {
-        Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
-        Cmd().runAsRoot("apt-get update&");
+        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+        updateApt();
     }
-    Cmd().run(elevate + " /usr/lib/mx-packageinstaller/mxpi-lib copy_log", true);
+    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib copy_log", true);
     settings.setValue("geometry", saveGeometry());
     settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
     settings.setValue("FlatpakUser", ui->comboUser->currentText());
@@ -2903,9 +2891,7 @@ void MainWindow::installFlatpak()
         currentTree->blockSignals(false);
         return;
     }
-    Cmd().runAsRoot("flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo");
-    Cmd().runAsRoot("flatpak remote-add --if-not-exists --subset=verified flathub-verified "
-                    "https://flathub.org/repo/flathub.flatpakrepo");
+    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
     enableOutput();
     listFlatpakRemotes();
     if (displayFlatpaksIsRunning) {
@@ -3375,10 +3361,7 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            cmd.run("flatpak --user remote-add --if-not-exists flathub "
-                    "https://flathub.org/repo/flathub.flatpakrepo");
-            cmd.run("flatpak --user remote-add --if-not-exists --subset=verified flathub-verified "
-                    "https://flathub.org/repo/flathub.flatpakrepo");
+            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }
