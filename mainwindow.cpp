@@ -3361,7 +3361,7 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
+            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", true);
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }

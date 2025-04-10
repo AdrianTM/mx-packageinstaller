@@ -21,6 +21,11 @@ flatpak_add_repos() {
     flatpak remote-add --if-not-exists --subset=verified flathub-verified https://flathub.org/repo/flathub.flatpakrepo
 }
 
+flatpak_add_repos_user() {
+    flatpak --user remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+    flatpak --user remote-add --if-not-exists --subset=verified flathub-verified https://flathub.org/repo/flathub.flatpakrepo
+}
+
 main() {
 case "$1" in 
     apt_update)
@@ -31,6 +36,8 @@ case "$1" in
         cleanup_temp;;
     flatpak_add_repos)
         flatpak_add_repos;;
+    flatpak_add_repos_user)
+        flatpak_add_repos_user;;
 esac
 }
 
