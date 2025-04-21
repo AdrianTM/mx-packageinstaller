@@ -71,7 +71,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     setup();
 
     // Run package display in a separate thread
-    QtConcurrent::run([this] {
+    auto packageFuture [[maybe_unused]] = QtConcurrent::run([this] {
         AptCache cache;
         enabledList = cache.getCandidates();
         QMetaObject::invokeMethod(
@@ -86,7 +86,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
 
     // Run flatpak setup and display in a separate thread
     if (arch != "i386" && checkInstalled("flatpak")) {
-        QtConcurrent::run([this] {
+        auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
             Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
             QMetaObject::invokeMethod(
                 this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
