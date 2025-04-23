@@ -991,7 +991,7 @@ void MainWindow::populateFlatpakTree()
     const QStringList installed_all = installedAppsFP + installedRuntimesFP;
     uint total_count = 0;
 
-    for (const QString &item : qAsConst(flatpaks)) {
+    for (const QString &item : std::as_const(flatpaks)) {
         if (createFlatpakItem(item, installed_all)) {
             ++total_count;
         }
@@ -1319,7 +1319,7 @@ bool MainWindow::installBatch(const QStringList &name_list)
     QString install_names;
 
     for (const QString &name : name_list) {
-        for (const auto &item : qAsConst(popularApps)) {
+        for (const auto &item : std::as_const(popularApps)) {
             if (item.name == name) {
                 postinstall += item.postInstall + '\n';
                 install_names += item.installNames + ' ';
@@ -1356,7 +1356,7 @@ bool MainWindow::installPopularApp(const QString &name)
     QString install_names;
 
     // Get all the app info
-    for (const auto &item : qAsConst(popularApps)) {
+    for (const auto &item : std::as_const(popularApps)) {
         if (item.name == name) {
             preinstall = item.preInstall;
             postinstall = item.postInstall;
@@ -1420,7 +1420,7 @@ bool MainWindow::installPopularApps()
     for (QTreeWidgetItemIterator it(ui->treePopularApps); (*it) != nullptr; ++it) {
         if ((*it)->checkState(PopCol::Check) == Qt::Checked) {
             QString name = (*it)->text(2);
-            for (const auto &item : qAsConst(popularApps)) {
+            for (const auto &item : std::as_const(popularApps)) {
                 if (item.name == name) {
                     const QString &preinstall = item.preInstall;
                     if (preinstall.isEmpty()) { // Add to batch processing if there is no preinstall command
@@ -2641,7 +2641,7 @@ void MainWindow::pushUninstall_clicked()
         }
 
         setCursor(QCursor(Qt::BusyCursor));
-        for (const QString &app : qAsConst(changeList)) {
+        for (const QString &app : std::as_const(changeList)) {
             enableOutput();
             if (!cmd.run("socat SYSTEM:'flatpak uninstall " + fpUser + "-y " + app
                          + "',stderr STDIO")) { // success if all processed successfuly,
