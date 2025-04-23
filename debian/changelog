@@ -1,3 +1,10 @@
+mx-packageinstaller (25.5.02) mx; urgency=medium
+
+  * Update to Qt6
+  * Update translations
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 23 Apr 2025 13:16:50 -0400
+
 mx-packageinstaller (25.5.01) mx; urgency=medium
 
   * Fix adding repo as user for flatpak
