@@ -92,7 +92,7 @@ jobs:
           'your code, for example:'
         echo '  make bootstrap'
         echo '  make release'
-        apt update && apt install qt6-base-dev qt6-base-dev-tools qt6-tools-dev qt6-tools-dev-tools
+        sudo apt-get update && sudo apt-get install -y qt6-base-dev qt6-base-dev-tools qt6-tools-dev qt6-tools-dev-tools
         qmake6
 
 
