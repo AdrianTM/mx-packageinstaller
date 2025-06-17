@@ -356,8 +356,8 @@ uchar MainWindow::getDebianVerNum()
 {
     QFile file {"/etc/debian_version"};
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
-        qCritical() << "Could not open /etc/debian_version:" << file.errorString() << "Assumes Bullseye";
-        return Release::Bullseye;
+        qCritical() << "Could not open /etc/debian_version:" << file.errorString();
+        return showVersionDialog(tr("Could not determine Debian version. Please select your version:"));
     }
 
     QTextStream in(&file);
@@ -379,9 +379,30 @@ uchar MainWindow::getDebianVerNum()
     if (codename == "bookworm") {
         return Release::Bookworm;
     }
+    if (codename == "trixie") {
+        return Release::Trixie;
+    }
 
-    qCritical() << "Unknown Debian version:" << version << "Assumes Bullseye";
-    return Release::Bullseye;
+    qCritical() << "Unknown Debian version:" << version;
+    return showVersionDialog(tr("Could not determine Debian version. Please select your version:"));
+}
+
+uchar MainWindow::showVersionDialog(const QString &message)
+{
+    QMessageBox msgBox;
+    msgBox.setWindowTitle(tr("Debian Version"));
+    msgBox.setText(message);
+    msgBox.addButton("Bullseye", QMessageBox::AcceptRole);
+    msgBox.addButton("Trixie", QMessageBox::AcceptRole);
+    msgBox.addButton(QMessageBox::Cancel);
+    msgBox.show();
+
+    int ret = msgBox.exec();
+
+    if (ret == QMessageBox::Cancel) {
+        exit(EXIT_FAILURE);
+    }
+    return ret == 0 ? Release::Bullseye : Release::Trixie;
 }
 
 QString MainWindow::getDebianVerName()
