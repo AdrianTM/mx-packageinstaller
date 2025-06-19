@@ -466,12 +466,12 @@
         <location filename="../mainwindow.cpp" line="360"/>
         <location filename="../mainwindow.cpp" line="387"/>
         <source>Could not determine Debian version. Please select your version:</source>
-        <translation type="unfinished"></translation>
+        <translation>Nie można ustalić wersji Debiana. Wybierz swoją wersję:</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="393"/>
         <source>Debian Version</source>
-        <translation type="unfinished"></translation>
+        <translation>Wersja Debiana</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="693"/>

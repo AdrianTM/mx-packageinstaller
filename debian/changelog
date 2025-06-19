@@ -1,3 +1,9 @@
+mx-packageinstaller (25.6.01) mx; urgency=medium
+
+  * Fix localization
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 18 Jun 2025 20:56:55 -0400
+
 mx-packageinstaller (25.6) mx; urgency=medium
 
   * Don't assume debian version if it cannot be determined, open a
