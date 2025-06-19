@@ -450,7 +450,7 @@ QString MainWindow::categoryTranslation(const QString &item)
 
     dictionary.beginGroup(item);
     for (const auto &tag : tagCandidates) {
-        const QString translation = dictionary.value(tag).toString().toLatin1();
+        const QString translation = dictionary.value(tag).toString();
         if (!translation.isEmpty()) {
             dictionary.endGroup();
             return translation;
