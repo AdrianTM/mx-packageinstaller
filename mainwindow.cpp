@@ -1936,12 +1936,22 @@ QString MainWindow::getVersion(const QString &name) const
 // Return true if all the packages listed are installed
 bool MainWindow::checkInstalled(const QVariant &names) const
 {
-    const QStringList name_list
-        = names.canConvert<QString>() ? names.toString().split('\n', Qt::SkipEmptyParts) : names.toStringList();
+    QStringList name_list;
+    if (names.canConvert<QStringList>()) {
+        name_list = names.toStringList();
+    } else if (names.canConvert<QString>()) {
+        name_list = names.toString().split('\n', Qt::SkipEmptyParts);
+    }
 
-    return !name_list.isEmpty() && std::all_of(name_list.cbegin(), name_list.cend(), [this](const QString &name) {
-        return installedPackages.contains(name.trimmed());
-    });
+    if (name_list.isEmpty()) {
+        return false;
+    }
+    for (const QString &name : name_list) {
+        if (!installedPackages.contains(name.trimmed())) {
+            return false;
+        }
+    }
+    return true;
 }
 
 // Return true if all the items in the list are upgradable
