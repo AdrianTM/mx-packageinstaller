@@ -28,7 +28,7 @@
 #include <QFileInfo>
 #include <QMessageBox>
 
-#include <cmd.h>
+#include "cmd.h"
 
 #include <unistd.h>
 
