@@ -42,6 +42,9 @@ if(USE_CLANG)
     message(STATUS "Using clang compiler")
 endif()
 
+# Option to build tests
+option(BUILD_TESTS "Build unit tests" OFF)
+
 # Find Qt6 components
 find_package(Qt6 REQUIRED COMPONENTS
     Core
@@ -163,4 +166,10 @@ set_target_properties(mx-packageinstaller PROPERTIES
     OUTPUT_NAME "mx-packageinstaller"
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+# Add tests if requested
+if(BUILD_TESTS)
+    message(STATUS "Building with tests enabled")
+    add_subdirectory(tests)
+endif()
 
