@@ -1604,8 +1604,10 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
                                  .arg(file.fileName()));
         qDebug() << "There was an error downloading the file:" << url << "Error:" << reply->errorString();
         file.remove();
+        reply->deleteLater();
         return false;
     }
+    reply->deleteLater();
     return true;
 }
 
@@ -2152,6 +2154,7 @@ QUrl MainWindow::getScreenshotUrl(const QString &name)
     loop.exec();
 
     if (reply->error() != QNetworkReply::NoError) {
+        reply->deleteLater();
         return {};
     }
 
@@ -2164,11 +2167,14 @@ QUrl MainWindow::getScreenshotUrl(const QString &name)
             if (!screenshotsArray.isEmpty()) {
                 QJsonObject firstScreenshot = screenshotsArray.first().toObject();
                 if (firstScreenshot.contains("small_image_url")) {
-                    return QUrl(firstScreenshot["small_image_url"].toString());
+                    QUrl result = QUrl(firstScreenshot["small_image_url"].toString());
+                    reply->deleteLater();
+                    return result;
                 }
             }
         }
     }
+    reply->deleteLater();
     return {};
 }
 
@@ -2341,6 +2347,9 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
                 msg += QString("<p><img src='data:image/png;base64, %0'>").arg(QString(data.toBase64()));
             }
         }
+    }
+    if (reply) {
+        reply->deleteLater();
     }
     QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg, QMessageBox::Close);
     info.exec();
