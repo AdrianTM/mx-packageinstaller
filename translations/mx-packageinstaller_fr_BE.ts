@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr_BE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr_BE">
 <context>
     <name>MainWindow</name>
     <message>
@@ -569,7 +567,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="2122"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation>La commande dpkg-query a renvoyé une erreur, veuillez exécuter «&#xa0;dpkg-query -W&#xa0;» dans le terminal et vérifier le résultat.</translation>
+        <translation>La commande dpkg-query a renvoyé une erreur, veuillez exécuter « dpkg-query -W » dans le terminal et vérifier le résultat.</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2243"/>
