@@ -1938,18 +1938,36 @@ QString MainWindow::getVersion(const QString &name) const
 // Return true if all the packages listed are installed
 bool MainWindow::checkInstalled(const QVariant &names) const
 {
+
     QStringList name_list;
     if (names.canConvert<QStringList>()) {
         name_list = names.toStringList();
+        // Flatten any strings in the list that contain newlines
+        QStringList expanded_list;
+        for (const QString &name : name_list) {
+            if (name.contains('\n')) {
+                expanded_list.append(name.split('\n', Qt::SkipEmptyParts));
+            } else {
+                expanded_list.append(name);
+            }
+        }
+        name_list = expanded_list;
     } else if (names.canConvert<QString>()) {
         name_list = names.toString().split('\n', Qt::SkipEmptyParts);
+    } else {
+        return false;
     }
 
     if (name_list.isEmpty()) {
         return false;
     }
+
+    // Trim whitespace from all package names
+    for (QString &name : name_list) {
+        name = name.trimmed();
+    }
     for (const QString &name : name_list) {
-        if (!installedPackages.contains(name.trimmed())) {
+        if (!installedPackages.contains(name)) {
             return false;
         }
     }
