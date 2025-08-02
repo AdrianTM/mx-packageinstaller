@@ -42,10 +42,10 @@
 #include <QtGlobal>
 #include <QtXml/QtXml>
 
+#include "../Timer.h"
 #include "about.h"
 #include "aptcache.h"
 #include "versionnumber.h"
-#include "../Timer.h"
 #include <algorithm>
 #include <chrono>
 
@@ -549,12 +549,17 @@ void MainWindow::processDoc(const QDomDocument &doc)
     QDomElement element = root.firstChildElement();
 
     // Optimization: Use static lookup table instead of repeated string comparisons
-    static const QHash<QString, int> tagLookup = {
-        {"category", 0}, {"name", 1}, {"description", 2}, {"installable", 3},
-        {"screenshot", 4}, {"preinstall", 5}, {"install_package_names", 6},
-        {"postinstall", 7}, {"uninstall_package_names", 8}, {"postuninstall", 9},
-        {"preuninstall", 10}
-    };
+    static const QHash<QString, int> tagLookup = {{"category", 0},
+                                                  {"name", 1},
+                                                  {"description", 2},
+                                                  {"installable", 3},
+                                                  {"screenshot", 4},
+                                                  {"preinstall", 5},
+                                                  {"install_package_names", 6},
+                                                  {"postinstall", 7},
+                                                  {"uninstall_package_names", 8},
+                                                  {"postuninstall", 9},
+                                                  {"preuninstall", 10}};
 
     while (!element.isNull()) {
         const QString tagName = element.tagName();
@@ -1234,11 +1239,30 @@ void MainWindow::listFlatpakRemotes() const
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
     Cmd shell;
-    QStringList list = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n');
+    QStringList list
+        = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
     if (shell.exitCode() != 0) {
         ui->comboRemote->blockSignals(false);
         return;
     }
+
+    // If no user remotes exist, set up the default ones
+    if (list.isEmpty()) {
+        qDebug() << "No flatpak remotes found for user, setting up default remotes";
+
+        Cmd addRemotes;
+        if (addRemotes.run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", true)) {
+            qDebug() << "Successfully set up flatpak remotes for user";
+
+            // Re-fetch the remote list after setup
+            list = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1")
+                       .remove(' ')
+                       .split('\n', Qt::SkipEmptyParts);
+        } else {
+            qDebug() << "Failed to set up flatpak remotes for user";
+        }
+    }
+
     ui->comboRemote->addItems(list);
     QString savedRemote = firstRunFP ? settings.value("FlatpakRemote", "flathub").toString() : currentRemote;
     ui->comboRemote->setCurrentText(savedRemote.isEmpty() ? "flathub" : savedRemote);
@@ -2113,6 +2137,12 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         return {};
     }
 
+    // Check if remote parameter is empty (which would happen if no remotes are configured)
+    if (remote.isEmpty()) {
+        qDebug() << "Remote parameter is empty - no flatpak remotes configured for user";
+        return {};
+    }
+
     // Construct the base command for listing flatpaks
     QString baseCommand = "flatpak remote-ls " + fpUser + remote + ' ' + arch_fp + "--columns=ver,ref,installed-size ";
 
@@ -2132,7 +2162,29 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     }
 
     if (list.isEmpty()) {
-        qDebug() << QString("Could not list packages from %1 remote, or remote doesn't contain packages").arg(remote);
+        qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
+
+        // Try to update the remote if it's empty
+        QString updateCommand = "flatpak update " + fpUser + "--appstream " + remote + " 2>/dev/null";
+        qDebug() << "Running remote update command:" << updateCommand;
+
+        Cmd updateShell;
+        if (updateShell.run(updateCommand)) {
+            qDebug() << "Remote update completed, retrying package list";
+
+            // Retry the original command after update
+            Cmd retryShell;
+            if (retryShell.run(baseCommand)) {
+                list = retryShell.readAllOutput().split('\n', Qt::SkipEmptyParts);
+                if (!list.isEmpty()) {
+                    qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
+                } else {
+                    qDebug() << QString("Remote %1 still empty after update").arg(remote);
+                }
+            }
+        } else {
+            qDebug() << "Failed to update remote" << remote;
+        }
     }
 
     return list;
@@ -3504,7 +3556,7 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", true);
+            Cmd().run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", true);
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }
