@@ -45,6 +45,7 @@
 #include "about.h"
 #include "aptcache.h"
 #include "versionnumber.h"
+#include "../Timer.h"
 #include <algorithm>
 #include <chrono>
 
@@ -513,6 +514,7 @@ void MainWindow::outputAvailable(const QString &output)
 
 void MainWindow::loadPmFiles()
 {
+    ScopedTimer timer("MainWindow::loadPmFiles");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     const QString pmFolderPath {"/usr/share/mx-packageinstaller-pkglist"};
@@ -540,6 +542,7 @@ void MainWindow::loadPmFiles()
 // Process DOM documents (from .pm files)
 void MainWindow::processDoc(const QDomDocument &doc)
 {
+    ScopedTimer timer("MainWindow::processDoc");
     PopularInfo info;
     QDomElement root = doc.firstChildElement("app");
     QDomElement element = root.firstChildElement();
@@ -822,6 +825,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 
 void MainWindow::displayPackages()
 {
+    ScopedTimer timer("MainWindow::displayPackages");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     displayPackagesIsRunning = true;
@@ -963,6 +967,7 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
 
 void MainWindow::displayFlatpaks(bool force_update)
 {
+    ScopedTimer timer("MainWindow::displayFlatpaks");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (!flatpaks.isEmpty() && !force_update) {
         return;

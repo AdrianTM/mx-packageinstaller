@@ -1,0 +1,3 @@
+label,timestamp,load_avg,parse_avg,total_avg
+baseline,20250801_204806,273.2,201.852,0
+baseline_fixed,20250801_204825,263.2,197.364,472.236

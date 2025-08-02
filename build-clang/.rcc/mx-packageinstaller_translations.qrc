@@ -1,0 +1,6 @@
+<RCC>
+  <qresource prefix="/i18n">
+    <file alias="mx-packageinstaller_en.qm">/home/adrian/mx-packageinstaller/build-clang/mx-packageinstaller_en.qm</file>
+  </qresource>
+</RCC>
+

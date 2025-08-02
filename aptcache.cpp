@@ -4,6 +4,7 @@
 #include <QDirIterator>
 #include <QRegularExpression>
 
+#include "../Timer.h"
 #include "versionnumber.h"
 
 AptCache::AptCache()
@@ -20,6 +21,7 @@ AptCache::AptCache()
 
 void AptCache::loadCacheFiles()
 {
+    ScopedTimer timer("AptCache::loadCacheFiles");
     // Regex expressions to match package files
     static const QRegularExpression allBinaryArchRegex(QString(R"(^.*binary-%1_Packages$)").arg(arch));
     static const QRegularExpression allBinaryAnyRegex(R"(^.*binary-[a-z0-9]+_Packages$)");
@@ -71,6 +73,7 @@ bool AptCache::isDirValid() const
 
 void AptCache::parseContent()
 {
+    ScopedTimer timer("AptCache::parseContent");
     if (filesContent.isEmpty()) {
         return;
     }
@@ -135,6 +138,7 @@ void AptCache::updateCandidate(const QString &package, const QString &version, c
 
 bool AptCache::readFile(const QString &fileName)
 {
+    ScopedTimer timer("AptCache::readFile");
     QFile file(dir.absoluteFilePath(fileName));
     if (!file.open(QFile::ReadOnly)) {
         qWarning() << "Could not open file:" << file.fileName() << "-" << file.errorString();
