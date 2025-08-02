@@ -301,6 +301,7 @@ void MainWindow::blockInterfaceFP(bool block)
 // Update interface when changing Tab::Enabled, MX, Backports
 void MainWindow::updateInterface() const
 {
+    ScopedTimer timer("MainWindow::updateInterface");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
         return;
@@ -547,32 +548,57 @@ void MainWindow::processDoc(const QDomDocument &doc)
     QDomElement root = doc.firstChildElement("app");
     QDomElement element = root.firstChildElement();
 
+    // Optimization: Use static lookup table instead of repeated string comparisons
+    static const QHash<QString, int> tagLookup = {
+        {"category", 0}, {"name", 1}, {"description", 2}, {"installable", 3},
+        {"screenshot", 4}, {"preinstall", 5}, {"install_package_names", 6},
+        {"postinstall", 7}, {"uninstall_package_names", 8}, {"postuninstall", 9},
+        {"preuninstall", 10}
+    };
+
     while (!element.isNull()) {
         const QString tagName = element.tagName();
-        QString trimmedText = element.text().trimmed();
 
-        if (tagName == "category") {
-            info.category = categoryTranslation(trimmedText);
-        } else if (tagName == "name") {
-            info.name = trimmedText;
-        } else if (tagName == "description") {
-            info.description = getLocalizedName(element);
-        } else if (tagName == "installable") {
-            info.installable = trimmedText;
-        } else if (tagName == "screenshot") {
-            info.screenshot = trimmedText;
-        } else if (tagName == "preinstall") {
-            info.preInstall = trimmedText;
-        } else if (tagName == "install_package_names") {
-            info.installNames = trimmedText.replace('\n', ' ');
-        } else if (tagName == "postinstall") {
-            info.postInstall = trimmedText;
-        } else if (tagName == "uninstall_package_names") {
-            info.uninstallNames = trimmedText;
-        } else if (tagName == "postuninstall") {
-            info.postUninstall = trimmedText;
-        } else if (tagName == "preuninstall") {
-            info.preUninstall = trimmedText;
+        // Fast lookup instead of multiple string comparisons
+        auto it = tagLookup.find(tagName);
+        if (it != tagLookup.end()) {
+            QString trimmedText = element.text().trimmed();
+
+            switch (it.value()) {
+            case 0: // category
+                info.category = categoryTranslation(trimmedText);
+                break;
+            case 1: // name
+                info.name = std::move(trimmedText);
+                break;
+            case 2: // description
+                info.description = getLocalizedName(element);
+                break;
+            case 3: // installable
+                info.installable = std::move(trimmedText);
+                break;
+            case 4: // screenshot
+                info.screenshot = std::move(trimmedText);
+                break;
+            case 5: // preinstall
+                info.preInstall = std::move(trimmedText);
+                break;
+            case 6: // install_package_names
+                info.installNames = trimmedText.replace('\n', ' ');
+                break;
+            case 7: // postinstall
+                info.postInstall = std::move(trimmedText);
+                break;
+            case 8: // uninstall_package_names
+                info.uninstallNames = std::move(trimmedText);
+                break;
+            case 9: // postuninstall
+                info.postUninstall = std::move(trimmedText);
+                break;
+            case 10: // preuninstall
+                info.preUninstall = std::move(trimmedText);
+                break;
+            }
         }
         element = element.nextSiblingElement();
     }
@@ -722,10 +748,26 @@ void MainWindow::setSearchFocus() const
 
 void MainWindow::displayPopularApps() const
 {
+    ScopedTimer timer("MainWindow::displayPopularApps");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    QMap<QString, QTreeWidgetItem *> categoryMap;
+    // Optimization: Pre-cache icons to avoid repeated QIcon::fromTheme() calls
+    static const QIcon folderIcon = QIcon::fromTheme("folder");
+    static const QIcon infoIcon = QIcon::fromTheme("dialog-information");
+
+    // Pre-create bold font to avoid recreating it in loop
+    static const QFont boldFont = []() {
+        QFont font;
+        font.setBold(true);
+        return font;
+    }();
+
+    QHash<QString, QTreeWidgetItem *> categoryMap; // Use QHash instead of QMap for O(1) lookup
     ui->treePopularApps->setUpdatesEnabled(false);
+    ui->treePopularApps->setSortingEnabled(false); // Disable sorting during population
+
+    // Pre-allocate space for categories
+    categoryMap.reserve(20); // Estimate reasonable number of categories
 
     for (const auto &item : popularApps) {
         QTreeWidgetItem *topLevelItem = nullptr;
@@ -736,10 +778,8 @@ void MainWindow::displayPopularApps() const
             topLevelItem->setText(PopCol::Icon, item.category);
             ui->treePopularApps->addTopLevelItem(topLevelItem);
 
-            QFont font;
-            font.setBold(true);
-            topLevelItem->setFont(PopCol::Icon, font);
-            topLevelItem->setIcon(PopCol::Icon, QIcon::fromTheme("folder"));
+            topLevelItem->setFont(PopCol::Icon, boldFont);
+            topLevelItem->setIcon(PopCol::Icon, folderIcon);
             topLevelItem->setFirstColumnSpanned(true);
 
             categoryMap.insert(item.category, topLevelItem);
@@ -750,7 +790,7 @@ void MainWindow::displayPopularApps() const
         // Add package name as childItem to treePopularApps
         auto *childItem = new QTreeWidgetItem(topLevelItem);
         childItem->setText(PopCol::Name, item.name);
-        childItem->setIcon(PopCol::Info, QIcon::fromTheme("dialog-information"));
+        childItem->setIcon(PopCol::Info, infoIcon);
         childItem->setFlags(childItem->flags() | Qt::ItemIsUserCheckable);
         childItem->setCheckState(PopCol::Check, Qt::Unchecked);
         childItem->setText(PopCol::Description, item.description);
@@ -765,11 +805,15 @@ void MainWindow::displayPopularApps() const
         }
     }
 
+    // Optimize: Enable sorting and do a single sort at the end
+    ui->treePopularApps->setSortingEnabled(true);
+    ui->treePopularApps->sortItems(PopCol::Icon, Qt::AscendingOrder);
+
+    // Optimize: Resize columns only once at the end
     for (int i = 0; i < ui->treePopularApps->columnCount(); ++i) {
         ui->treePopularApps->resizeColumnToContents(i);
     }
 
-    ui->treePopularApps->sortItems(PopCol::Icon, Qt::AscendingOrder);
     connect(ui->treePopularApps, &QTreeWidget::itemClicked, this, &MainWindow::displayPopularInfo,
             Qt::UniqueConnection);
     ui->treePopularApps->setUpdatesEnabled(true);
@@ -894,7 +938,7 @@ QTreeWidget *MainWindow::getCurrentTree()
     return nullptr;
 }
 
-QMap<QString, PackageInfo> *MainWindow::getCurrentList()
+QHash<QString, PackageInfo> *MainWindow::getCurrentList()
 {
     if (currentTree == ui->treeMXtest) {
         return &mxList;
@@ -905,8 +949,9 @@ QMap<QString, PackageInfo> *MainWindow::getCurrentList()
     }
 }
 
-QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QMap<QString, PackageInfo> *list) const
+QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QHash<QString, PackageInfo> *list) const
 {
+    ScopedTimer timer("MainWindow::createTreeItemsList");
     QList<QTreeWidgetItem *> items;
     items.reserve(list->size() + installedPackages.size());
 
@@ -925,10 +970,15 @@ QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QMap<QString, PackageIn
 
 void MainWindow::updateTreeItems(QTreeWidget *tree)
 {
+    ScopedTimer timer("MainWindow::updateTreeItems");
     tree->setUpdatesEnabled(false);
 
     const bool hideLibraries = ui->checkHideLibs->isChecked();
     const auto installedVersions = listInstalledVersions();
+
+    // Optimization: Pre-cache VersionNumber objects for repo versions to avoid repeated parsing
+    QHash<QString, VersionNumber> repoVersionCache;
+    repoVersionCache.reserve(tree->topLevelItemCount() * 2);
 
     for (QTreeWidgetItemIterator it(tree); *it; ++it) {
         auto *item = *it;
@@ -936,6 +986,7 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
 
         if (hideLibraries && isFilteredName(appName)) {
             item->setHidden(true);
+            continue; // Skip further processing for hidden items
         }
 
         // Get installed version information
@@ -951,18 +1002,33 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
         if (installedVersionStr.isEmpty()) {
             item->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
         } else {
+            // Optimization: Cache VersionNumber objects for repo versions
+            const QString repoVersionStr = item->text(TreeCol::RepoVersion);
+            VersionNumber repoVersion;
+
+            auto cacheIt = repoVersionCache.find(repoVersionStr);
+            if (cacheIt != repoVersionCache.end()) {
+                repoVersion = cacheIt.value();
+            } else {
+                repoVersion = VersionNumber(repoVersionStr);
+                repoVersionCache.insert(repoVersionStr, repoVersion);
+            }
+
             // Compare versions and set appropriate icon
-            const bool isUpToDate = installedVersion >= VersionNumber(item->text(TreeCol::RepoVersion));
+            const bool isUpToDate = installedVersion >= repoVersion;
             item->setIcon(TreeCol::Check, isUpToDate ? qiconInstalled : qiconUpgradable);
             item->setData(TreeCol::Status, Qt::UserRole, isUpToDate ? Status::Installed : Status::Upgradable);
         }
     }
 
-    for (int i = 0; i < tree->columnCount(); ++i) {
-        tree->resizeColumnToContents(i);
-    }
+    // Optimization: Defer column resizing until the end and only resize visible columns
+    tree->setUpdatesEnabled(true); // Enable updates first so resizing is efficient
 
-    tree->setUpdatesEnabled(true);
+    for (int i = 0; i < tree->columnCount(); ++i) {
+        if (!tree->isColumnHidden(i)) {
+            tree->resizeColumnToContents(i);
+        }
+    }
 }
 
 void MainWindow::displayFlatpaks(bool force_update)
@@ -981,6 +1047,7 @@ void MainWindow::displayFlatpaks(bool force_update)
 
 void MainWindow::setupFlatpakDisplay()
 {
+    ScopedTimer setupTimer("MainWindow::setupFlatpakDisplay");
     ui->treeFlatpak->setUpdatesEnabled(false);
     displayFlatpaksIsRunning = true;
     lastItemClicked = nullptr;
@@ -1003,6 +1070,7 @@ void MainWindow::setupFlatpakDisplay()
 
 void MainWindow::loadFlatpakData()
 {
+    ScopedTimer timer("MainWindow::loadFlatpakData");
     flatpaks = listFlatpaks(ui->comboRemote->currentText());
     flatpaksApps.clear();
     flatpaksRuntimes.clear();
@@ -1014,6 +1082,7 @@ void MainWindow::loadFlatpakData()
 
 void MainWindow::populateFlatpakTree()
 {
+    ScopedTimer timer("MainWindow::populateFlatpakTree");
     const QStringList installed_all = installedAppsFP + installedRuntimesFP;
     uint total_count = 0;
 
@@ -1088,6 +1157,7 @@ void MainWindow::formatFlatpakTree() const
 
 void MainWindow::finalizeFlatpakDisplay()
 {
+    ScopedTimer timer("MainWindow::finalizeFlatpakDisplay");
     ui->treeFlatpak->blockSignals(false);
 
     const bool isCurrentTabFlatpak = ui->tabWidget->currentIndex() == Tab::Flatpak;
@@ -1814,6 +1884,7 @@ void MainWindow::hideLibs() const
 // Process downloaded *Packages.gz files
 bool MainWindow::readPackageList(bool forceDownload)
 {
+    ScopedTimer timer("MainWindow::readPackageList");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     pushCancel->setDisabled(true);
 
@@ -1995,7 +2066,7 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
     return true;
 }
 
-QMap<QString, PackageInfo> MainWindow::listInstalled()
+QHash<QString, PackageInfo> MainWindow::listInstalled()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     Cmd shell;
@@ -2009,7 +2080,7 @@ QMap<QString, PackageInfo> MainWindow::listInstalled()
         exit(EXIT_FAILURE);
     }
 
-    QMap<QString, PackageInfo> installedPackagesMap;
+    QHash<QString, PackageInfo> installedPackagesMap;
     const QString statusPrefix = "ii ";
     const auto lines = list.split('\n', Qt::SkipEmptyParts);
 
@@ -2077,6 +2148,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
                                             const QString &description) const
 {
+    ScopedTimer timer("MainWindow::createTreeItem");
     auto *widget_item = new QTreeWidgetItem();
     widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
     widget_item->setText(TreeCol::Name, name);
@@ -2993,6 +3065,7 @@ void MainWindow::handleOutputTab()
 
 void MainWindow::filterChanged(const QString &arg1)
 {
+    ScopedTimer timer("MainWindow::filterChanged");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     currentTree->blockSignals(true);
     currentTree->setUpdatesEnabled(false);
@@ -3000,11 +3073,15 @@ void MainWindow::filterChanged(const QString &arg1)
 
     // Helper functions
     auto resetTree = [this]() {
+        // Optimization: Disable updates during bulk operations
+        currentTree->setUpdatesEnabled(false);
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
             (*it)->setData(0, Qt::UserRole, true);
             (*it)->setHidden(false);
             (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
         }
+        currentTree->setUpdatesEnabled(true);
+
         QMetaObject::invokeMethod(
             this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
@@ -3013,9 +3090,12 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     auto uncheckAllItems = [this]() {
+        // Optimization: Disable updates during bulk operations
+        currentTree->setUpdatesEnabled(false);
         for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
             (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
         }
+        currentTree->setUpdatesEnabled(true);
     };
 
     auto handleFlatpakFilter = [this, uncheckAllItems](const QStringList &data, bool raw = true) {

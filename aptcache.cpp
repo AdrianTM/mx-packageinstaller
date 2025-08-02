@@ -3,6 +3,7 @@
 #include <QDebug>
 #include <QDirIterator>
 #include <QRegularExpression>
+#include <QStringView>
 
 #include "../Timer.h"
 #include "versionnumber.h"
@@ -15,8 +16,10 @@ AptCache::AptCache()
         return;
     }
 
+    // Pre-allocate map capacity for expected ~70,000 packages to reduce rehashing
+    candidates.reserve(70000);
+    
     loadCacheFiles();
-    parseContent();
 }
 
 void AptCache::loadCacheFiles()
@@ -55,7 +58,7 @@ void AptCache::loadCacheFiles()
     }
 }
 
-QMap<QString, PackageInfo> AptCache::getCandidates() const
+QHash<QString, PackageInfo> AptCache::getCandidates() const
 {
     return candidates;
 }
@@ -78,8 +81,7 @@ void AptCache::parseContent()
         return;
     }
 
-    // Create a regex to match the current architecture or 'all'
-    const QRegularExpression reArch(QStringLiteral(".*(%1|all).*").arg(arch));
+    // Simple string comparison instead of regex for architecture matching
 
     QTextStream stream(&filesContent);
     QString line;
@@ -108,7 +110,7 @@ void AptCache::parseContent()
             isArchMatched = false;
         } else if (line.startsWith(archStr)) {
             architecture = line.mid(archSize).trimmed();
-            isArchMatched = reArch.match(architecture).hasMatch();
+            isArchMatched = (architecture == arch || architecture == QLatin1String("all"));
         } else if (line.startsWith(versionStr)) {
             version = line.mid(versionSize).trimmed();
         } else if (line.startsWith(descStr)) {
@@ -145,13 +147,74 @@ bool AptCache::readFile(const QString &fileName)
         return false;
     }
 
-    QByteArray fileContent = file.readAll();
-    if (!fileContent.isEmpty()) {
-        if (!filesContent.isEmpty()) {
-            filesContent.append('\n');
+    QString content;
+    const qint64 fileSize = file.size();
+    
+    // Use memory mapping for files larger than 10MB to avoid large memory copies
+    if (fileSize > 10 * 1024 * 1024) {
+        uchar* mappedData = file.map(0, fileSize);
+        if (mappedData) {
+            content = QString::fromUtf8(reinterpret_cast<const char*>(mappedData), fileSize);
+            file.unmap(mappedData);
+        } else {
+            // Fall back to regular read if mapping fails
+            QByteArray fileContent = file.readAll();
+            content = QString::fromUtf8(fileContent);
         }
-        filesContent.append(QString::fromUtf8(fileContent));
+    } else {
+        QByteArray fileContent = file.readAll();
+        content = QString::fromUtf8(fileContent);
+    }
+    
+    if (!content.isEmpty()) {
+        parseFileContent(content);
     }
     file.close();
     return true;
+}
+
+void AptCache::parseFileContent(const QString &content)
+{
+    ScopedTimer timer("AptCache::parseFileContent");
+    
+    QTextStream stream(const_cast<QString*>(&content));
+    QString line;
+    QString package;
+    QString version;
+    QString description;
+    bool isArchMatched = false;
+
+    constexpr QLatin1String packageStr("Package:");
+    constexpr QLatin1String archStr("Architecture:");
+    constexpr QLatin1String versionStr("Version:");
+    constexpr QLatin1String descStr("Description:");
+    constexpr int packageSize = packageStr.size();
+    constexpr int archSize = archStr.size();
+    constexpr int versionSize = versionStr.size();
+    constexpr int descSize = descStr.size();
+
+    // Assumes the "Description:" line is the last field in the package data block
+    while (stream.readLineInto(&line)) {
+        QStringView lineView(line);
+        if (lineView.startsWith(packageStr)) {
+            QStringView packageView = lineView.mid(packageSize).trimmed();
+            package = packageView.toString();
+            // Reset state for new package
+            version.clear();
+            description.clear();
+            isArchMatched = false;
+        } else if (lineView.startsWith(archStr)) {
+            QStringView archView = lineView.mid(archSize).trimmed();
+            isArchMatched = (archView == arch || archView == QLatin1String("all"));
+        } else if (lineView.startsWith(versionStr)) {
+            QStringView versionView = lineView.mid(versionSize).trimmed();
+            version = versionView.toString();
+        } else if (lineView.startsWith(descStr)) {
+            QStringView descView = lineView.mid(descSize).trimmed();
+            description = descView.toString();
+            if (isArchMatched && !package.isEmpty() && !version.isEmpty()) {
+                updateCandidate(package, version, description);
+            }
+        }
+    }
 }

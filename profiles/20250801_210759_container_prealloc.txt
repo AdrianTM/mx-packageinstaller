@@ -1,0 +1,295 @@
+=== Performance Profile: container_prealloc ===
+Timestamp: Fri Aug  1 09:07:59 PM EDT 2025
+Iterations: 3
+Binary: timer_test_gcc
+
+=== System Info ===
+CPU: AMD Ryzen 7 4700U with Radeon Graphics
+Memory: 7.4Gi
+Compiler: g++ (Debian 12.2.0-14+deb12u1) 12.2.0
+
+=== Performance Results ===
+--- Run 1 ---
+=== APT Cache Performance Test ===
+--- Run 1 ---
+AptCache::parseFileContent - 3.982ms
+AptCache::readFile - 6.129ms
+AptCache::parseFileContent - 0.017ms
+AptCache::readFile - 0.142ms
+AptCache::parseFileContent - 0.201ms
+AptCache::readFile - 0.378ms
+AptCache::parseFileContent - 0.006ms
+AptCache::readFile - 0.019ms
+AptCache::parseFileContent - 0.114ms
+AptCache::readFile - 0.155ms
+AptCache::parseFileContent - 141.892ms
+AptCache::readFile - 255.031ms
+AptCache::parseFileContent - 0.336ms
+AptCache::readFile - 0.783ms
+AptCache::parseFileContent - 3.176ms
+AptCache::readFile - 5.715ms
+AptCache::parseFileContent - 6.738ms
+AptCache::readFile - 12.063ms
+AptCache::parseFileContent - 0.079ms
+AptCache::readFile - 0.134ms
+AptCache::parseFileContent - 0.57ms
+AptCache::readFile - 0.682ms
+AptCache::parseFileContent - 0.007ms
+AptCache::readFile - 0.026ms
+AptCache::parseFileContent - 0.75ms
+AptCache::readFile - 0.974ms
+AptCache::loadCacheFiles - 283.25ms
+Found 65254 packages
+Total test time - 296.005ms
+--- Run 2 ---
+AptCache::parseFileContent - 1.526ms
+AptCache::readFile - 1.786ms
+AptCache::parseFileContent - 0.052ms
+AptCache::readFile - 0.188ms
+AptCache::parseFileContent - 0.471ms
+AptCache::readFile - 0.534ms
+AptCache::parseFileContent - 0.014ms
+AptCache::readFile - 0.041ms
+AptCache::parseFileContent - 0.168ms
+AptCache::readFile - 0.201ms
+AptCache::parseFileContent - 111.515ms
+AptCache::readFile - 212.568ms
+AptCache::parseFileContent - 0.361ms
+AptCache::readFile - 0.468ms
+AptCache::parseFileContent - 2.361ms
+AptCache::readFile - 3.98ms
+AptCache::parseFileContent - 6.754ms
+AptCache::readFile - 9.393ms
+AptCache::parseFileContent - 0.066ms
+AptCache::readFile - 0.111ms
+AptCache::parseFileContent - 0.528ms
+AptCache::readFile - 0.594ms
+AptCache::parseFileContent - 0.026ms
+AptCache::readFile - 0.044ms
+AptCache::parseFileContent - 0.7ms
+AptCache::readFile - 0.779ms
+AptCache::loadCacheFiles - 231.412ms
+Found 65254 packages
+Total test time - 275.097ms
+--- Run 3 ---
+AptCache::parseFileContent - 1.573ms
+AptCache::readFile - 1.804ms
+AptCache::parseFileContent - 0.014ms
+AptCache::readFile - 0.063ms
+AptCache::parseFileContent - 0.2ms
+AptCache::readFile - 0.24ms
+AptCache::parseFileContent - 0.007ms
+AptCache::readFile - 0.043ms
+AptCache::parseFileContent - 0.074ms
+AptCache::readFile - 0.096ms
+AptCache::parseFileContent - 110.561ms
+AptCache::readFile - 210.3ms
+AptCache::parseFileContent - 0.333ms
+AptCache::readFile - 0.455ms
+AptCache::parseFileContent - 2.386ms
+AptCache::readFile - 2.759ms
+AptCache::parseFileContent - 6.809ms
+AptCache::readFile - 7.42ms
+AptCache::parseFileContent - 0.066ms
+AptCache::readFile - 0.112ms
+AptCache::parseFileContent - 0.523ms
+AptCache::readFile - 0.592ms
+AptCache::parseFileContent - 0.007ms
+AptCache::readFile - 0.021ms
+AptCache::parseFileContent - 0.731ms
+AptCache::readFile - 0.804ms
+AptCache::loadCacheFiles - 225.038ms
+Found 65254 packages
+Total test time - 252.428ms
+
+--- Run 2 ---
+=== APT Cache Performance Test ===
+--- Run 1 ---
+AptCache::parseFileContent - 3.137ms
+AptCache::readFile - 5.062ms
+AptCache::parseFileContent - 0.016ms
+AptCache::readFile - 0.081ms
+AptCache::parseFileContent - 0.207ms
+AptCache::readFile - 0.464ms
+AptCache::parseFileContent - 0.007ms
+AptCache::readFile - 0.031ms
+AptCache::parseFileContent - 0.092ms
+AptCache::readFile - 0.143ms
+AptCache::parseFileContent - 129.844ms
+AptCache::readFile - 229.832ms
+AptCache::parseFileContent - 0.352ms
+AptCache::readFile - 0.806ms
+AptCache::parseFileContent - 2.507ms
+AptCache::readFile - 4.679ms
+AptCache::parseFileContent - 7.704ms
+AptCache::readFile - 13.118ms
+AptCache::parseFileContent - 0.078ms
+AptCache::readFile - 0.132ms
+AptCache::parseFileContent - 0.598ms
+AptCache::readFile - 0.668ms
+AptCache::parseFileContent - 0.008ms
+AptCache::readFile - 0.027ms
+AptCache::parseFileContent - 0.751ms
+AptCache::readFile - 0.963ms
+AptCache::loadCacheFiles - 256.872ms
+Found 65254 packages
+Total test time - 269.421ms
+--- Run 2 ---
+AptCache::parseFileContent - 1.505ms
+AptCache::readFile - 1.741ms
+AptCache::parseFileContent - 0.014ms
+AptCache::readFile - 0.059ms
+AptCache::parseFileContent - 0.196ms
+AptCache::readFile - 0.235ms
+AptCache::parseFileContent - 0.024ms
+AptCache::readFile - 0.074ms
+AptCache::parseFileContent - 0.075ms
+AptCache::readFile - 0.1ms
+AptCache::parseFileContent - 110.221ms
+AptCache::readFile - 210.197ms
+AptCache::parseFileContent - 0.379ms
+AptCache::readFile - 0.485ms
+AptCache::parseFileContent - 2.461ms
+AptCache::readFile - 4.022ms
+AptCache::parseFileContent - 6.763ms
+AptCache::readFile - 9.493ms
+AptCache::parseFileContent - 0.089ms
+AptCache::readFile - 0.14ms
+AptCache::parseFileContent - 0.536ms
+AptCache::readFile - 0.612ms
+AptCache::parseFileContent - 0.008ms
+AptCache::readFile - 0.028ms
+AptCache::parseFileContent - 0.703ms
+AptCache::readFile - 0.782ms
+AptCache::loadCacheFiles - 228.327ms
+Found 65254 packages
+Total test time - 271.67ms
+--- Run 3 ---
+AptCache::parseFileContent - 1.569ms
+AptCache::readFile - 1.782ms
+AptCache::parseFileContent - 0.015ms
+AptCache::readFile - 0.061ms
+AptCache::parseFileContent - 0.193ms
+AptCache::readFile - 0.233ms
+AptCache::parseFileContent - 0.005ms
+AptCache::readFile - 0.019ms
+AptCache::parseFileContent - 0.076ms
+AptCache::readFile - 0.096ms
+AptCache::parseFileContent - 110.387ms
+AptCache::readFile - 213.837ms
+AptCache::parseFileContent - 0.335ms
+AptCache::readFile - 0.441ms
+AptCache::parseFileContent - 2.387ms
+AptCache::readFile - 2.737ms
+AptCache::parseFileContent - 7.049ms
+AptCache::readFile - 7.684ms
+AptCache::parseFileContent - 0.07ms
+AptCache::readFile - 0.126ms
+AptCache::parseFileContent - 0.56ms
+AptCache::readFile - 0.64ms
+AptCache::parseFileContent - 0.008ms
+AptCache::readFile - 0.028ms
+AptCache::parseFileContent - 0.716ms
+AptCache::readFile - 0.797ms
+AptCache::loadCacheFiles - 228.822ms
+Found 65254 packages
+Total test time - 256.225ms
+
+--- Run 3 ---
+=== APT Cache Performance Test ===
+--- Run 1 ---
+AptCache::parseFileContent - 3.145ms
+AptCache::readFile - 5.055ms
+AptCache::parseFileContent - 0.016ms
+AptCache::readFile - 0.11ms
+AptCache::parseFileContent - 0.201ms
+AptCache::readFile - 0.386ms
+AptCache::parseFileContent - 0.006ms
+AptCache::readFile - 0.02ms
+AptCache::parseFileContent - 0.088ms
+AptCache::readFile - 0.124ms
+AptCache::parseFileContent - 129.105ms
+AptCache::readFile - 230.796ms
+AptCache::parseFileContent - 0.339ms
+AptCache::readFile - 0.784ms
+AptCache::parseFileContent - 2.489ms
+AptCache::readFile - 4.554ms
+AptCache::parseFileContent - 7.094ms
+AptCache::readFile - 12.746ms
+AptCache::parseFileContent - 0.093ms
+AptCache::readFile - 0.158ms
+AptCache::parseFileContent - 0.682ms
+AptCache::readFile - 0.786ms
+AptCache::parseFileContent - 0.009ms
+AptCache::readFile - 0.042ms
+AptCache::parseFileContent - 0.753ms
+AptCache::readFile - 1.005ms
+AptCache::loadCacheFiles - 257.383ms
+Found 65254 packages
+Total test time - 271.121ms
+--- Run 2 ---
+AptCache::parseFileContent - 1.643ms
+AptCache::readFile - 1.873ms
+AptCache::parseFileContent - 0.016ms
+AptCache::readFile - 0.065ms
+AptCache::parseFileContent - 0.194ms
+AptCache::readFile - 0.243ms
+AptCache::parseFileContent - 0.006ms
+AptCache::readFile - 0.023ms
+AptCache::parseFileContent - 0.077ms
+AptCache::readFile - 0.099ms
+AptCache::parseFileContent - 114.278ms
+AptCache::readFile - 219.047ms
+AptCache::parseFileContent - 0.352ms
+AptCache::readFile - 0.459ms
+AptCache::parseFileContent - 2.507ms
+AptCache::readFile - 4.084ms
+AptCache::parseFileContent - 6.701ms
+AptCache::readFile - 9.355ms
+AptCache::parseFileContent - 0.083ms
+AptCache::readFile - 0.132ms
+AptCache::parseFileContent - 0.532ms
+AptCache::readFile - 0.607ms
+AptCache::parseFileContent - 0.007ms
+AptCache::readFile - 0.022ms
+AptCache::parseFileContent - 0.719ms
+AptCache::readFile - 0.796ms
+AptCache::loadCacheFiles - 237.163ms
+Found 65254 packages
+Total test time - 283.77ms
+--- Run 3 ---
+AptCache::parseFileContent - 1.604ms
+AptCache::readFile - 1.816ms
+AptCache::parseFileContent - 0.016ms
+AptCache::readFile - 0.062ms
+AptCache::parseFileContent - 0.194ms
+AptCache::readFile - 0.235ms
+AptCache::parseFileContent - 0.006ms
+AptCache::readFile - 0.019ms
+AptCache::parseFileContent - 0.074ms
+AptCache::readFile - 0.092ms
+AptCache::parseFileContent - 111.439ms
+AptCache::readFile - 214.58ms
+AptCache::parseFileContent - 0.355ms
+AptCache::readFile - 0.481ms
+AptCache::parseFileContent - 2.388ms
+AptCache::readFile - 2.749ms
+AptCache::parseFileContent - 7.455ms
+AptCache::readFile - 8.132ms
+AptCache::parseFileContent - 0.066ms
+AptCache::readFile - 0.113ms
+AptCache::parseFileContent - 0.576ms
+AptCache::readFile - 0.661ms
+AptCache::parseFileContent - 0.008ms
+AptCache::readFile - 0.03ms
+AptCache::parseFileContent - 0.734ms
+AptCache::readFile - 0.81ms
+AptCache::loadCacheFiles - 230.102ms
+Found 65254 packages
+Total test time - 257.111ms
+
+=== Summary ===
+Load Cache Average: 227.987ms
+Parse Content Average: ms
+Total Time Average: 255.255ms
+

@@ -27,6 +27,7 @@
 #include <QCommandLineParser>
 #include <QDomDocument>
 #include <QFile>
+#include <QHash>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -197,10 +198,10 @@ private:
     QIcon qiconUpgradable;
     QList<PopularInfo> popularApps;
     QLocale locale;
-    QMap<QString, PackageInfo> backportsList;
-    QMap<QString, PackageInfo> enabledList;
-    QMap<QString, PackageInfo> installedPackages;
-    QMap<QString, PackageInfo> mxList;
+    QHash<QString, PackageInfo> backportsList;
+    QHash<QString, PackageInfo> enabledList;
+    QHash<QString, PackageInfo> installedPackages;
+    QHash<QString, PackageInfo> mxList;
     QProgressBar *bar {};
     QProgressDialog *progress {};
     QPushButton *pushCancel {};
@@ -227,7 +228,7 @@ private:
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
-    [[nodiscard]] QMap<QString, PackageInfo> listInstalled();
+    [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString categoryTranslation(const QString &item);
     [[nodiscard]] QString getMXTestRepoUrl();
     [[nodiscard]] QString getArchOption() const;
@@ -247,8 +248,8 @@ private:
     [[nodiscard]] static bool isFilteredName(const QString &name);
     [[nodiscard]] static uchar getDebianVerNum();
     [[nodiscard]] static uchar showVersionDialog(const QString &message);
-    [[nodiscard]] QList<QTreeWidgetItem *> createTreeItemsList(QMap<QString, PackageInfo> *list) const;
-    [[nodiscard]] QMap<QString, PackageInfo> *getCurrentList();
+    [[nodiscard]] QList<QTreeWidgetItem *> createTreeItemsList(QHash<QString, PackageInfo> *list) const;
+    [[nodiscard]] QHash<QString, PackageInfo> *getCurrentList();
     [[nodiscard]] QTreeWidget *getCurrentTree();
 
     bool buildPackageLists(bool forceDownload = false);
