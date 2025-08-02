@@ -42,7 +42,6 @@
 #include <QtGlobal>
 #include <QtXml/QtXml>
 
-#include "../Timer.h"
 #include "about.h"
 #include "aptcache.h"
 #include "versionnumber.h"
@@ -301,7 +300,6 @@ void MainWindow::blockInterfaceFP(bool block)
 // Update interface when changing Tab::Enabled, MX, Backports
 void MainWindow::updateInterface() const
 {
-    ScopedTimer timer("MainWindow::updateInterface");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
         return;
@@ -515,7 +513,6 @@ void MainWindow::outputAvailable(const QString &output)
 
 void MainWindow::loadPmFiles()
 {
-    ScopedTimer timer("MainWindow::loadPmFiles");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     const QString pmFolderPath {"/usr/share/mx-packageinstaller-pkglist"};
@@ -543,7 +540,6 @@ void MainWindow::loadPmFiles()
 // Process DOM documents (from .pm files)
 void MainWindow::processDoc(const QDomDocument &doc)
 {
-    ScopedTimer timer("MainWindow::processDoc");
     PopularInfo info;
     QDomElement root = doc.firstChildElement("app");
     QDomElement element = root.firstChildElement();
@@ -753,7 +749,6 @@ void MainWindow::setSearchFocus() const
 
 void MainWindow::displayPopularApps() const
 {
-    ScopedTimer timer("MainWindow::displayPopularApps");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     // Optimization: Pre-cache icons to avoid repeated QIcon::fromTheme() calls
@@ -874,7 +869,6 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 
 void MainWindow::displayPackages()
 {
-    ScopedTimer timer("MainWindow::displayPackages");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
     displayPackagesIsRunning = true;
@@ -956,7 +950,6 @@ QHash<QString, PackageInfo> *MainWindow::getCurrentList()
 
 QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QHash<QString, PackageInfo> *list) const
 {
-    ScopedTimer timer("MainWindow::createTreeItemsList");
     QList<QTreeWidgetItem *> items;
     items.reserve(list->size() + installedPackages.size());
 
@@ -975,7 +968,6 @@ QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QHash<QString, PackageI
 
 void MainWindow::updateTreeItems(QTreeWidget *tree)
 {
-    ScopedTimer timer("MainWindow::updateTreeItems");
     tree->setUpdatesEnabled(false);
 
     const bool hideLibraries = ui->checkHideLibs->isChecked();
@@ -1038,7 +1030,6 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
 
 void MainWindow::displayFlatpaks(bool force_update)
 {
-    ScopedTimer timer("MainWindow::displayFlatpaks");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (!flatpaks.isEmpty() && !force_update) {
         return;
@@ -1052,7 +1043,6 @@ void MainWindow::displayFlatpaks(bool force_update)
 
 void MainWindow::setupFlatpakDisplay()
 {
-    ScopedTimer setupTimer("MainWindow::setupFlatpakDisplay");
     ui->treeFlatpak->setUpdatesEnabled(false);
     displayFlatpaksIsRunning = true;
     lastItemClicked = nullptr;
@@ -1075,7 +1065,6 @@ void MainWindow::setupFlatpakDisplay()
 
 void MainWindow::loadFlatpakData()
 {
-    ScopedTimer timer("MainWindow::loadFlatpakData");
     flatpaks = listFlatpaks(ui->comboRemote->currentText());
     flatpaksApps.clear();
     flatpaksRuntimes.clear();
@@ -1087,7 +1076,6 @@ void MainWindow::loadFlatpakData()
 
 void MainWindow::populateFlatpakTree()
 {
-    ScopedTimer timer("MainWindow::populateFlatpakTree");
     const QStringList installed_all = installedAppsFP + installedRuntimesFP;
     uint total_count = 0;
 
@@ -1162,7 +1150,6 @@ void MainWindow::formatFlatpakTree() const
 
 void MainWindow::finalizeFlatpakDisplay()
 {
-    ScopedTimer timer("MainWindow::finalizeFlatpakDisplay");
     ui->treeFlatpak->blockSignals(false);
 
     const bool isCurrentTabFlatpak = ui->tabWidget->currentIndex() == Tab::Flatpak;
@@ -1908,7 +1895,6 @@ void MainWindow::hideLibs() const
 // Process downloaded *Packages.gz files
 bool MainWindow::readPackageList(bool forceDownload)
 {
-    ScopedTimer timer("MainWindow::readPackageList");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     pushCancel->setDisabled(true);
 
@@ -2200,7 +2186,6 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
                                             const QString &description) const
 {
-    ScopedTimer timer("MainWindow::createTreeItem");
     auto *widget_item = new QTreeWidgetItem();
     widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
     widget_item->setText(TreeCol::Name, name);
@@ -3117,7 +3102,6 @@ void MainWindow::handleOutputTab()
 
 void MainWindow::filterChanged(const QString &arg1)
 {
-    ScopedTimer timer("MainWindow::filterChanged");
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     currentTree->blockSignals(true);
     currentTree->setUpdatesEnabled(false);
