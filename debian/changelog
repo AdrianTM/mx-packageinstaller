@@ -1,3 +1,10 @@
+mx-packageinstaller (25.08.1) mx; urgency=medium
+
+  * Fix: adding flatpak repos for --user if not available
+  * Performance improvements
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 02 Aug 2025 14:11:12 -0400
+
 mx-packageinstaller (25.08) mx; urgency=medium
 
   * Fix: detection for multiple packages

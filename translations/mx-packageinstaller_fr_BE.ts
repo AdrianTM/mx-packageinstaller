@@ -381,7 +381,7 @@
     <message>
         <location filename="../mainwindow.ui" line="1702"/>
         <source>About...</source>
-        <translation>À propos ...</translation>
+        <translation>À propos …</translation>
     </message>
     <message>
         <location filename="../mainwindow.ui" line="1708"/>
@@ -416,22 +416,22 @@
     <message>
         <location filename="../mainwindow.cpp" line="186"/>
         <source>Uninstalling packages...</source>
-        <translation>Désinstallation des paquets ...</translation>
+        <translation>Désinstallation des paquets …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="191"/>
         <source>Running pre-uninstall operations...</source>
-        <translation>Exécution des opérations de pré-désinstallation ...</translation>
+        <translation>Exécution des opérations de pré-désinstallation …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="211"/>
         <source>Running post-uninstall operations...</source>
-        <translation>Processus post-désinstallation en cours ...</translation>
+        <translation>Processus post-désinstallation en cours …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="228"/>
         <source>Refreshing sources...</source>
-        <translation>Rafraîchissement des sources ...</translation>
+        <translation>Rafraîchissement des sources …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="241"/>
@@ -479,7 +479,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="700"/>
         <source>Please wait...</source>
-        <translation>Veuillez patienter ...</translation>
+        <translation>Veuillez patienter …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1113"/>
@@ -527,12 +527,12 @@
     <message>
         <location filename="../mainwindow.cpp" line="1301"/>
         <source>Installing packages...</source>
-        <translation>Installation des paquets ...</translation>
+        <translation>Installation des paquets …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1359"/>
         <source>Post-processing...</source>
-        <translation>Post-traitement ...</translation>
+        <translation>Post-traitement …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1391"/>
@@ -557,7 +557,7 @@
     <message>
         <location filename="../mainwindow.cpp" line="1675"/>
         <source>Downloading package info...</source>
-        <translation>Téléchargement des infos des paquets ...</translation>
+        <translation>Téléchargement des infos des paquets …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="1982"/>
@@ -580,7 +580,7 @@
         <location filename="../mainwindow.cpp" line="2260"/>
         <location filename="../mainwindow.cpp" line="3411"/>
         <source>More &amp;info...</source>
-        <translation>Plus &amp;info ...</translation>
+        <translation>Plus &amp;info …</translation>
     </message>
     <message>
         <location filename="../mainwindow.cpp" line="2291"/>
