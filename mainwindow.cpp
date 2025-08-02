@@ -1069,9 +1069,25 @@ void MainWindow::loadFlatpakData()
     flatpaksApps.clear();
     flatpaksRuntimes.clear();
 
-    // List installed packages
-    installedAppsFP = listInstalledFlatpaks("--app");
-    installedRuntimesFP = listInstalledFlatpaks("--runtime");
+    // Optimize: Get all installed packages with one command, then split by type
+    QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref";
+    QStringList allInstalled = cmd.getOut(allInstalledCommand).split('\n', Qt::SkipEmptyParts);
+
+    // Clear and reserve space for better performance
+    installedAppsFP.clear();
+    installedRuntimesFP.clear();
+    installedAppsFP.reserve(allInstalled.size() / 2);
+    installedRuntimesFP.reserve(allInstalled.size() / 2);
+
+    // Split by type based on flatpak naming convention
+    for (const QString &item : allInstalled) {
+        if (item.contains(".runtime/")) {
+            installedRuntimesFP.append(item);
+        } else {
+            // Assume anything that's not explicitly a runtime is an app
+            installedAppsFP.append(item);
+        }
+    }
 }
 
 void MainWindow::populateFlatpakTree()
