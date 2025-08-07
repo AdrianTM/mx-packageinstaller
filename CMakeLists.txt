@@ -62,30 +62,30 @@ set(CMAKE_AUTORCC ON)
 
 # Define source files
 set(SOURCES
-    log.cpp
-    main.cpp
-    mainwindow.cpp
-    lockfile.cpp
-    versionnumber.cpp
-    aptcache.cpp
-    remotes.cpp
-    about.cpp
-    cmd.cpp
+    src/log.cpp
+    src/main.cpp
+    src/mainwindow.cpp
+    src/lockfile.cpp
+    src/versionnumber.cpp
+    src/aptcache.cpp
+    src/remotes.cpp
+    src/about.cpp
+    src/cmd.cpp
 )
 
 set(HEADERS
-    log.h
-    mainwindow.h
-    lockfile.h
-    versionnumber.h
-    aptcache.h
-    remotes.h
-    about.h
-    cmd.h
+    src/log.h
+    src/mainwindow.h
+    src/lockfile.h
+    src/versionnumber.h
+    src/aptcache.h
+    src/remotes.h
+    src/about.h
+    src/cmd.h
 )
 
 set(UI_FILES
-    mainwindow.ui
+    src/mainwindow.ui
 )
 
 set(RESOURCE_FILES
@@ -170,6 +170,6 @@ set_target_properties(mx-packageinstaller PROPERTIES
 # Add tests if requested
 if(BUILD_TESTS)
     message(STATUS "Building with tests enabled")
-    add_subdirectory(tests)
+    add_subdirectory(Testing)
 endif()
 
