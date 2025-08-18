@@ -4,6 +4,7 @@
 # * Copyright (C) 2017-2025 MX Authors
 # *
 # * Authors: Adrian
+# *          Dolphin_Oracle
 # *          MX Linux <http://mxlinux.org>
 # *
 # * This file is part of mx-packageinstaller.
@@ -29,6 +30,8 @@ BUILD_DIR="build"
 BUILD_TYPE="Release"
 USE_CLANG=false
 CLEAN=false
+DEBIAN_BUILD=false
+BUILD_TESTS=false
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -45,12 +48,22 @@ while [[ $# -gt 0 ]]; do
             CLEAN=true
             shift
             ;;
+        --debian)
+            DEBIAN_BUILD=true
+            shift
+            ;;
+        -t|--tests)
+            BUILD_TESTS=true
+            shift
+            ;;
         -h|--help)
             echo "Usage: $0 [OPTIONS]"
             echo "Options:"
             echo "  -d, --debug     Build in Debug mode (default: Release)"
             echo "  -c, --clang     Use clang compiler"
+            echo "  -t, --tests     Build with unit tests"
             echo "  --clean         Clean build directory before building"
+            echo "  --debian        Build Debian package"
             echo "  -h, --help      Show this help message"
             exit 0
             ;;
@@ -61,10 +74,40 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
+# Build Debian package
+if [ "$DEBIAN_BUILD" = true ]; then
+    echo "Building Debian package..."
+    debuild -us -uc
+
+    echo "Creating debs directory and moving debian artifacts..."
+    mkdir -p debs
+    mv ../*.deb debs/ 2>/dev/null || true
+    mv ../*.changes debs/ 2>/dev/null || true  
+    mv ../*.dsc debs/ 2>/dev/null || true
+    mv ../*.tar.* debs/ 2>/dev/null || true
+    mv ../*.buildinfo debs/ 2>/dev/null || true
+    mv ../*build* debs/ 2>/dev/null || true
+
+    echo "Cleaning build directory and debian artifacts..."
+    rm -rf "$BUILD_DIR"
+    rm -f debian/*.debhelper.log debian/*.substvars debian/files
+    rm -rf debian/.debhelper/ debian/mx-packageinstaller/ obj-*/
+    rm -f translations/*.qm version.h
+    rm -f ../*build* ../*.buildinfo 2>/dev/null || true
+
+    echo "Debian package build completed!"
+    echo "Debian artifacts moved to debs/ directory"
+    exit 0
+fi
+
 # Clean build directory if requested
 if [ "$CLEAN" = true ]; then
-    echo "Cleaning build directory..."
+    echo "Cleaning build directory and debian artifacts..."
     rm -rf "$BUILD_DIR"
+    rm -f debian/*.debhelper.log debian/*.substvars debian/files
+    rm -rf debian/.debhelper/ debian/mx-packageinstaller/ obj-*/
+    rm -f translations/*.qm version.h
+    rm -f ../*build* ../*.buildinfo 2>/dev/null || true
 fi
 
 # Create build directory
@@ -84,6 +127,11 @@ if [ "$USE_CLANG" = true ]; then
     echo "Using clang compiler"
 fi
 
+if [ "$BUILD_TESTS" = true ]; then
+    CMAKE_ARGS+=(-DBUILD_TESTS=ON)
+    echo "Building with tests enabled"
+fi
+
 cmake "${CMAKE_ARGS[@]}"
 
 # Build the project
@@ -92,3 +140,10 @@ cmake --build "$BUILD_DIR" --parallel
 
 echo "Build completed successfully!"
 echo "Executable: $BUILD_DIR/mx-packageinstaller"
+
+# Run tests if built with tests
+if [ "$BUILD_TESTS" = true ]; then
+    echo "Running tests..."
+    cd "$BUILD_DIR" && ctest --verbose
+    cd - > /dev/null
+fi

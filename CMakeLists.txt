@@ -23,8 +23,21 @@
 
 cmake_minimum_required(VERSION 3.16)
 
+# Get version from debian/changelog
+execute_process(
+    COMMAND dpkg-parsechangelog -SVersion
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+    OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    RESULT_VARIABLE DPKG_RESULT
+)
+
+if(NOT DPKG_RESULT EQUAL 0)
+    message(FATAL_ERROR "Failed to get version from debian/changelog using dpkg-parsechangelog")
+endif()
+
 project(mx-packageinstaller
-    VERSION 25.7
+    VERSION ${PROJECT_VERSION_FROM_CHANGELOG}
     DESCRIPTION "MX Package Installer - A tool for managing packages on MX Linux"
     LANGUAGES CXX
 )
@@ -32,6 +45,19 @@ project(mx-packageinstaller
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+# Enable compile commands export for IDEs and tools
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+# Optimize for Ninja builds
+if(CMAKE_GENERATOR STREQUAL "Ninja")
+    # Enable colored output for Ninja
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+        add_compile_options(-fdiagnostics-color=always)
+    elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+        add_compile_options(-fcolor-diagnostics)
+    endif()
+endif()
 
 # Option to use clang for testing builds
 option(USE_CLANG "Use clang compiler" OFF)
@@ -92,9 +118,8 @@ set(RESOURCE_FILES
     images.qrc
 )
 
-set(TRANSLATION_FILES
-    translations/mx-packageinstaller_en.ts
-)
+# Get all translation files
+file(GLOB TRANSLATION_FILES "translations/*.ts")
 
 # Create the executable
 add_executable(mx-packageinstaller
@@ -144,9 +169,12 @@ target_compile_definitions(mx-packageinstaller PRIVATE
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(mx-packageinstaller PRIVATE NDEBUG)
     target_compile_options(mx-packageinstaller PRIVATE -O3)
-    
-    # Only add LTO for GCC, not Clang
-    if(NOT CMAKE_CXX_COMPILER_ID STREQUAL "Clang" AND NOT USE_CLANG)
+
+    # Add LTO - different flags for different compilers
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(mx-packageinstaller PRIVATE -flto=thin)
+        target_link_options(mx-packageinstaller PRIVATE -flto=thin)
+    else()
         target_compile_options(mx-packageinstaller PRIVATE -flto=auto)
         target_link_options(mx-packageinstaller PRIVATE
             -flto=auto
@@ -159,12 +187,19 @@ endif()
 # Handle translations
 qt6_add_translations(mx-packageinstaller
     TS_FILES ${TRANSLATION_FILES}
+    QM_FILES_OUTPUT_VARIABLE qm_files
 )
 
 # Set target properties
 set_target_properties(mx-packageinstaller PROPERTIES
     OUTPUT_NAME "mx-packageinstaller"
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
+# Install target (required by Debian build system)
+# Other files are handled by debian/install
+install(TARGETS mx-packageinstaller
+    RUNTIME DESTINATION bin
 )
 
 # Add tests if requested

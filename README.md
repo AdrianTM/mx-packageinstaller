@@ -24,9 +24,9 @@ mx-packageinstaller/
 
 ## Building
 
-This is a Qt6 application using both CMake (recommended) and qmake build systems.
+This is a Qt6 application using CMake build system.
 
-### CMake (Recommended)
+### Build Commands
 
 ```bash
 # Basic build
@@ -38,26 +38,23 @@ cmake -B build -DBUILD_TESTS=ON -DCMAKE_BUILD_TYPE=Release
 cmake --build build
 
 # Run tests
-cd build && ./Testing/test_versionnumber && ./Testing/test_aptcache
+cd build && ctest --verbose
+# or run individual tests
+cd build && ./test_versionnumber && ./test_aptcache
 
 # Continuous testing (requires inotify-tools)
 cd build && make watch_tests
-```
 
-### qmake (Legacy)
+# Clean build
+cmake --build build --target clean
 
-```bash
-# Basic build
-qmake6 && make
-
-# Release build
-qmake6 CONFIG+=release && make
-
-# Clean
-make clean
-
-# Update translations
-/usr/lib/qt6/bin/lrelease translations/*.ts
+# Using the build script
+./build.sh                    # Release build
+./build.sh --debug            # Debug build
+./build.sh --tests            # Build with tests
+./build.sh --clang            # Use Clang compiler
+./build.sh --clean            # Clean before build
+./build.sh --debian           # Build Debian package
 ```
 
 ## Testing
@@ -86,6 +83,6 @@ Application logs are written to `/tmp/mxpi.log` during runtime and copied to `/v
 
 - Qt6 (Core, Gui, Widgets, Network, Xml, LinguistTools)
 - C++20 compiler (GCC 12+ or Clang)
-- CMake 3.16+ (for CMake builds)
-- qmake6 (for qmake builds)
+- CMake 3.16+
+- Ninja (recommended for faster builds)
 
