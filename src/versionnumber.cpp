@@ -87,7 +87,7 @@ bool VersionNumber::operator>=(const VersionNumber &value) const
 
 bool VersionNumber::operator==(const VersionNumber &value) const
 {
-    return str == value.str;
+    return compare(*this, value) == 0;
 }
 
 bool VersionNumber::operator!=(const VersionNumber &value) const
@@ -171,11 +171,18 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second)
             return -1;
         }
 
-        // Compare remaining digits
-        if (second.at(i).toInt() > first.at(i).toInt()) {
+        // Compare remaining digits - follow dpkg semantics
+        int firstInt = first.at(i).toInt();
+        int secondInt = second.at(i).toInt();
+
+        if (secondInt > firstInt) {
             return 1;
-        } else {
+        } else if (secondInt < firstInt) {
             return -1;
+        } else {
+            // Numerically equal - dpkg treats versions like "8" and "08" as equal
+            // Continue to next component (don't return here)
+            continue;
         }
     }
 

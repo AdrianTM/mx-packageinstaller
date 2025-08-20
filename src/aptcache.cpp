@@ -17,7 +17,7 @@ AptCache::AptCache()
 
     // Pre-allocate map capacity for expected ~70,000 packages to reduce rehashing
     candidates.reserve(70000);
-    
+
     loadCacheFiles();
 }
 
@@ -145,7 +145,7 @@ bool AptCache::readFile(const QString &fileName)
 
     QString content;
     const qint64 fileSize = file.size();
-    
+
     // Use memory mapping for files larger than 10MB to avoid large memory copies
     if (fileSize > 10 * 1024 * 1024) {
         uchar* mappedData = file.map(0, fileSize);
@@ -161,7 +161,7 @@ bool AptCache::readFile(const QString &fileName)
         QByteArray fileContent = file.readAll();
         content = QString::fromUtf8(fileContent);
     }
-    
+
     if (!content.isEmpty()) {
         parseFileContent(content);
     }
@@ -171,7 +171,7 @@ bool AptCache::readFile(const QString &fileName)
 
 void AptCache::parseFileContent(const QString &content)
 {
-    
+
     QTextStream stream(const_cast<QString*>(&content));
     QString line;
     QString package;
