@@ -190,11 +190,21 @@ qt6_add_translations(mx-packageinstaller
     QM_FILES_OUTPUT_VARIABLE qm_files
 )
 
+# Generate version.h file
+configure_file(
+    "${CMAKE_SOURCE_DIR}/src/version.h.in"
+    "${CMAKE_BINARY_DIR}/src/version.h"
+    @ONLY
+)
+
 # Set target properties
 set_target_properties(mx-packageinstaller PROPERTIES
     OUTPUT_NAME "mx-packageinstaller"
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
+
+# Add build directory to include path for generated version.h
+target_include_directories(mx-packageinstaller PRIVATE ${CMAKE_BINARY_DIR}/src)
 
 # Install target (required by Debian build system)
 # Other files are handled by debian/install
