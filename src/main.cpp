@@ -1,7 +1,7 @@
 /**********************************************************************
  *  main.cpp
  **********************************************************************
- * Copyright (C) 2017 MX Authors
+ * Copyright (C) 2017-2025 MX Authors
  *
  * Authors: Adrian
  *          Dolphin_Oracle
@@ -35,9 +35,12 @@
 
 #include "log.h"
 #include "mainwindow.h"
-#include "version.h"
 
 #include <unistd.h>
+
+#ifndef VERSION
+    #define VERSION "?.?.?.?"
+#endif
 
 inline const QString starting_home = qEnvironmentVariable("HOME");
 
