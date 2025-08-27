@@ -23,17 +23,35 @@
 
 cmake_minimum_required(VERSION 3.16)
 
-# Get version from debian/changelog
-execute_process(
-    COMMAND dpkg-parsechangelog -SVersion
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-    OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    RESULT_VARIABLE DPKG_RESULT
-)
+# Allow selecting clang before project() to ensure proper toolchain detection
+option(USE_CLANG "Use clang compiler" OFF)
+if(USE_CLANG)
+    set(CMAKE_C_COMPILER clang)
+    set(CMAKE_CXX_COMPILER clang++)
+    message(STATUS "Using clang compiler")
+endif()
 
-if(NOT DPKG_RESULT EQUAL 0)
-    message(FATAL_ERROR "Failed to get version from debian/changelog using dpkg-parsechangelog")
+# Version detection with override and fallback
+set(PROJECT_VERSION_OVERRIDE "" CACHE STRING "Override project version (e.g. 1.2.3)")
+set(PROJECT_VERSION_FROM_CHANGELOG "")
+find_program(DPKG_PARSECHANGELOG_EXECUTABLE NAMES dpkg-parsechangelog)
+if(PROJECT_VERSION_OVERRIDE)
+    set(PROJECT_VERSION_FROM_CHANGELOG ${PROJECT_VERSION_OVERRIDE})
+elseif(DPKG_PARSECHANGELOG_EXECUTABLE)
+    execute_process(
+        COMMAND ${DPKG_PARSECHANGELOG_EXECUTABLE} -SVersion
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
+        OUTPUT_STRIP_TRAILING_WHITESPACE
+        RESULT_VARIABLE DPKG_RESULT
+    )
+    if(NOT DPKG_RESULT EQUAL 0 OR PROJECT_VERSION_FROM_CHANGELOG STREQUAL "")
+        set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
+        message(WARNING "Failed to get version from debian/changelog; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
+    endif()
+else()
+    set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
+    message(WARNING "dpkg-parsechangelog not found; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
 endif()
 
 project(mx-packageinstaller
@@ -57,15 +75,6 @@ if(CMAKE_GENERATOR STREQUAL "Ninja")
     elseif(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
         add_compile_options(-fcolor-diagnostics)
     endif()
-endif()
-
-# Option to use clang for testing builds
-option(USE_CLANG "Use clang compiler" OFF)
-if(USE_CLANG)
-    set(CMAKE_C_COMPILER clang)
-    set(CMAKE_CXX_COMPILER clang++)
-    set(CMAKE_CXX_COMPILER_ID "Clang")
-    message(STATUS "Using clang compiler")
 endif()
 
 # Option to build tests
@@ -208,4 +217,3 @@ if(BUILD_TESTS)
     message(STATUS "Building with tests enabled")
     add_subdirectory(Testing)
 endif()
-
