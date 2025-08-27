@@ -22,6 +22,7 @@
 #include "log.h"
 
 #include <QDate>
+#include <QDateTime>
 
 Log::Log(const QString &file_name)
 {

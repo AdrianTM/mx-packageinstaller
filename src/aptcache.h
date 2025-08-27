@@ -2,6 +2,7 @@
 
 #include <QDir>
 #include <QHash>
+#include <QMap>
 #include <QString>
 
 // Pair of arch names returned by QSysInfo::currentCpuArchitecture() and corresponding DEB_BUILD_ARCH formats
