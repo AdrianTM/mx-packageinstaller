@@ -30,6 +30,9 @@ build
 debug
 Testing
 
+# Local adhoc test binaries
+timer_test_*
+
 # QtCreator
 
 *.autosave
