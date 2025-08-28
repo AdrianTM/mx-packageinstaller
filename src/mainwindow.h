@@ -270,8 +270,8 @@ private:
     bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
                    const QString &postUninstall = QLatin1String(""));
     bool updateApt();
-    static QString convert(quint64 bytes);
-    static quint64 convert(const QString &size);
+    [[nodiscard]] static QString convert(quint64 bytes);
+    [[nodiscard]] static quint64 convert(const QString &size);
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();

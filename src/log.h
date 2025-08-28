@@ -29,7 +29,7 @@ class Log
 {
 public:
     explicit Log(const QString &file_name = "/tmp/mxpi.log");
-    static QString getLog();
+    [[nodiscard]] static QString getLog();
     static void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg);
 
 private:

@@ -69,7 +69,7 @@ bool Cmd::terminateAndKill()
     return state() == QProcess::NotRunning;
 }
 
-QString Cmd::readAllOutput()
+QString Cmd::readAllOutput() const
 {
     return out_buffer.trimmed();
 }

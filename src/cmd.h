@@ -12,10 +12,10 @@ public:
 
     [[nodiscard]] QString getOut(const QString &cmd, bool quiet = false, bool asRoot = false);
     [[nodiscard]] QString getOutAsRoot(const QString &cmd, bool quiet = false);
-    [[nodiscard]] QString readAllOutput();
+    [[nodiscard]] QString readAllOutput() const;
     bool run(const QString &cmd, bool quiet = false, bool asRoot = false);
     bool runAsRoot(const QString &cmd, bool quiet = false);
-    bool terminateAndKill();
+    [[nodiscard]] bool terminateAndKill();
 
 signals:
     void done();

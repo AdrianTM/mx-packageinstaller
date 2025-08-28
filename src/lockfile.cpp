@@ -75,12 +75,12 @@ void LockFile::unlock()
     file.close();
 }
 
-QString LockFile::fileName()
+QString LockFile::fileName() const
 {
     return file.fileName();
 }
 
-QString LockFile::getLockingProcess()
+QString LockFile::getLockingProcess() const
 {
     return Cmd()
         .getOutAsRoot("pid=$(fuser " + fileName()

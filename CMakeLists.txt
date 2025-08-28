@@ -161,7 +161,7 @@ target_compile_options(mx-packageinstaller PRIVATE
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
     target_compile_options(mx-packageinstaller PRIVATE -Werror=return-stack-address)
 else()
-    target_compile_options(mx-packageinstaller PRIVATE 
+    target_compile_options(mx-packageinstaller PRIVATE
         -Werror=return-local-addr
         # Suppress false positive LTO warnings with Qt6 QHash (GCC only)
         -Wno-alloc-size-larger-than
@@ -197,7 +197,7 @@ endif()
 # Handle translations
 qt6_add_translations(mx-packageinstaller
     TS_FILES ${TRANSLATION_FILES}
-    QM_FILES_OUTPUT_VARIABLE qm_files
+    LRELEASE_OPTIONS -compress -nounfinished -removeidentical -silent
 )
 
 # Set target properties

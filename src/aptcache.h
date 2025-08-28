@@ -19,8 +19,8 @@ class AptCache
 public:
     AptCache();
 
-    QHash<QString, PackageInfo> getCandidates() const;
-    static QString getArch();
+    [[nodiscard]] QHash<QString, PackageInfo> getCandidates() const;
+    [[nodiscard]] static QString getArch();
 
 private:
     QHash<QString, PackageInfo> candidates;
@@ -28,8 +28,8 @@ private:
     QString filesContent;
     const QDir dir {"/var/lib/apt/lists/"};
 
-    bool isDirValid() const;
-    bool readFile(const QString &fileName);
+    [[nodiscard]] bool isDirValid() const;
+    [[nodiscard]] bool readFile(const QString &fileName);
     void loadCacheFiles();
     void parseContent();
     void parseFileContent(const QString &content);
