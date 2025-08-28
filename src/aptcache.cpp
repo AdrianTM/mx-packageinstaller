@@ -56,7 +56,7 @@ void AptCache::loadCacheFiles()
     }
 }
 
-QHash<QString, PackageInfo> AptCache::getCandidates() const
+const QHash<QString, PackageInfo>& AptCache::getCandidates() const
 {
     return candidates;
 }

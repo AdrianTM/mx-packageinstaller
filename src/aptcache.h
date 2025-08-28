@@ -19,7 +19,7 @@ class AptCache
 public:
     AptCache();
 
-    [[nodiscard]] QHash<QString, PackageInfo> getCandidates() const;
+    [[nodiscard]] const QHash<QString, PackageInfo>& getCandidates() const;
     [[nodiscard]] static QString getArch();
 
 private:
