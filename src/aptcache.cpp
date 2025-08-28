@@ -72,54 +72,6 @@ bool AptCache::isDirValid() const
     return dir.exists() && dir.isReadable();
 }
 
-void AptCache::parseContent()
-{
-    if (filesContent.isEmpty()) {
-        return;
-    }
-
-    // Simple string comparison instead of regex for architecture matching
-
-    QTextStream stream(&filesContent);
-    QString line;
-    QString package;
-    QString version;
-    QString description;
-    QString architecture;
-    bool isArchMatched = false;
-
-    constexpr QLatin1String packageStr("Package:");
-    constexpr QLatin1String archStr("Architecture:");
-    constexpr QLatin1String versionStr("Version:");
-    constexpr QLatin1String descStr("Description:");
-    constexpr int packageSize = packageStr.size();
-    constexpr int archSize = archStr.size();
-    constexpr int versionSize = versionStr.size();
-    constexpr int descSize = descStr.size();
-
-    // Assumes the "Description:" line is the last field in the package data block
-    while (stream.readLineInto(&line)) {
-        if (line.startsWith(packageStr)) {
-            package = line.mid(packageSize).trimmed();
-            // Reset state for new package
-            version.clear();
-            description.clear();
-            isArchMatched = false;
-        } else if (line.startsWith(archStr)) {
-            architecture = line.mid(archSize).trimmed();
-            isArchMatched = (architecture == arch || architecture == QLatin1String("all"));
-        } else if (line.startsWith(versionStr)) {
-            version = line.mid(versionSize).trimmed();
-        } else if (line.startsWith(descStr)) {
-            description = line.mid(descSize).trimmed();
-            if (isArchMatched && !package.isEmpty() && !version.isEmpty()) {
-                updateCandidate(package, version, description);
-            }
-        }
-    }
-    filesContent.clear();
-}
-
 void AptCache::updateCandidate(const QString &package, const QString &version, const QString &description)
 {
     auto it = candidates.find(package);

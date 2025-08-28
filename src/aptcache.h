@@ -25,13 +25,11 @@ public:
 private:
     QHash<QString, PackageInfo> candidates;
     QString arch;
-    QString filesContent;
     const QDir dir {"/var/lib/apt/lists/"};
 
     [[nodiscard]] bool isDirValid() const;
     [[nodiscard]] bool readFile(const QString &fileName);
     void loadCacheFiles();
-    void parseContent();
     void parseFileContent(const QString &content);
     void updateCandidate(const QString &package, const QString &version, const QString &description);
 };
