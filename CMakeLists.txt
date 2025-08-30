@@ -198,6 +198,7 @@ endif()
 qt6_add_translations(mx-packageinstaller
     TS_FILES ${TRANSLATION_FILES}
     LRELEASE_OPTIONS -compress -nounfinished -removeidentical -silent
+    QM_FILES_OUTPUT_VARIABLE qm_files
 )
 
 # Set target properties
