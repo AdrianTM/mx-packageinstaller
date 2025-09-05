@@ -1,6 +1,8 @@
 mx-packageinstaller (25.09) mx; urgency=medium
 
   * Remember HideLibs selection
+  * Add a select all checkbox for 'Upgradable' and 'Autoremovable'
+    filters
 
  -- Adrian <adrian@mxlinux.org>  Fri, 05 Sep 2025 12:02:47 -0400
 
