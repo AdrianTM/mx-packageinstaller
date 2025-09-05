@@ -133,6 +133,13 @@ void MainWindow::setup()
     setIcons();
     loadPmFiles();
     refreshPopularApps();
+
+    // Load persisted setting for hiding libraries/developer packages
+    const bool savedHideLibs = settings.value("HideLibs", true).toBool();
+    hideLibsChecked = savedHideLibs;
+    ui->checkHideLibs->setChecked(savedHideLibs);
+    ui->checkHideLibsMX->setChecked(savedHideLibs);
+    ui->checkHideLibsBP->setChecked(savedHideLibs);
     setConnections();
 
     ui->searchPopular->setFocus();
@@ -3397,6 +3404,8 @@ void MainWindow::checkHideLibs_toggled(bool checked)
 {
     ui->treeEnabled->setUpdatesEnabled(false);
     hideLibsChecked = checked;
+    // Persist user preference
+    settings.setValue("HideLibs", checked);
     ui->checkHideLibsMX->setChecked(checked);
     ui->checkHideLibsBP->setChecked(checked);
 
