@@ -100,6 +100,7 @@ set(SOURCES
     src/log.cpp
     src/main.cpp
     src/mainwindow.cpp
+    src/checkableheaderview.cpp
     src/lockfile.cpp
     src/versionnumber.cpp
     src/aptcache.cpp
@@ -111,6 +112,7 @@ set(SOURCES
 set(HEADERS
     src/log.h
     src/mainwindow.h
+    src/checkableheaderview.h
     src/lockfile.h
     src/versionnumber.h
     src/aptcache.h
@@ -124,7 +126,7 @@ set(UI_FILES
 )
 
 set(RESOURCE_FILES
-    images.qrc
+    src/images.qrc
 )
 
 # Get all translation files

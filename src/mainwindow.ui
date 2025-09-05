@@ -272,6 +272,16 @@
               </property>
              </widget>
             </item>
+            <item row="0" column="9">
+             <widget class="QCheckBox" name="checkSelectAllEnabled">
+              <property name="text">
+               <string>Select all</string>
+              </property>
+              <property name="visible">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
             <item row="1" column="0">
              <widget class="QLabel" name="labelInstalled">
               <property name="sizePolicy">
@@ -636,6 +646,16 @@
                <iconset theme="reload"/>
               </property>
               <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="9">
+             <widget class="QCheckBox" name="checkSelectAllMX">
+              <property name="text">
+               <string>Select all</string>
+              </property>
+              <property name="visible">
                <bool>false</bool>
               </property>
              </widget>
@@ -1009,6 +1029,16 @@
                <iconset theme="reload"/>
               </property>
               <property name="autoDefault">
+               <bool>false</bool>
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="9">
+             <widget class="QCheckBox" name="checkSelectAllBP">
+              <property name="text">
+               <string>Select all</string>
+              </property>
+              <property name="visible">
                <bool>false</bool>
               </property>
              </widget>

@@ -44,6 +44,7 @@
 
 #include "about.h"
 #include "aptcache.h"
+#include "checkableheaderview.h"
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
@@ -140,6 +141,28 @@ void MainWindow::setup()
     ui->checkHideLibs->setChecked(savedHideLibs);
     ui->checkHideLibsMX->setChecked(savedHideLibs);
     ui->checkHideLibsBP->setChecked(savedHideLibs);
+
+    // Ensure "Select all" checkboxes start hidden/unchecked
+    // (Deprecated UI checkboxes remain hidden in UI; header checkboxes are used instead.)
+    if (auto *w = ui->checkSelectAllEnabled) { w->setVisible(false); w->setChecked(false); }
+    if (auto *w = ui->checkSelectAllMX) { w->setVisible(false); w->setChecked(false); }
+    if (auto *w = ui->checkSelectAllBP) { w->setVisible(false); w->setChecked(false); }
+
+    // Install custom header views with checkbox in column 0 (TreeCol::Check)
+    headerEnabled = new CheckableHeaderView(Qt::Horizontal, ui->treeEnabled);
+    headerEnabled->setTargetColumn(TreeCol::Check);
+    headerEnabled->setMinimumSectionSize(22);
+    ui->treeEnabled->setHeader(headerEnabled);
+
+    headerMX = new CheckableHeaderView(Qt::Horizontal, ui->treeMXtest);
+    headerMX->setTargetColumn(TreeCol::Check);
+    headerMX->setMinimumSectionSize(22);
+    ui->treeMXtest->setHeader(headerMX);
+
+    headerBP = new CheckableHeaderView(Qt::Horizontal, ui->treeBackports);
+    headerBP->setTargetColumn(TreeCol::Check);
+    headerBP->setMinimumSectionSize(22);
+    ui->treeBackports->setHeader(headerBP);
     setConnections();
 
     ui->searchPopular->setFocus();
@@ -710,6 +733,10 @@ void MainWindow::setConnections() const
     connect(ui->pushUpgradeFP, &QPushButton::clicked, this, &MainWindow::pushUpgradeFP_clicked);
     connect(ui->tabWidget, QOverload<int>::of(&QTabWidget::currentChanged), this,
             &MainWindow::tabWidget_currentChanged);
+    // Header checkbox (Upgradable): select all
+    connect(headerEnabled, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
+    connect(headerMX, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
+    connect(headerBP, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(ui->treeBackports, &QTreeWidget::itemChanged, this, &MainWindow::treeBackports_itemChanged);
     connect(ui->treeEnabled, &QTreeWidget::itemChanged, this, &MainWindow::treeEnabled_itemChanged);
     connect(ui->treeFlatpak, &QTreeWidget::itemChanged, this, &MainWindow::treeFlatpak_itemChanged);
@@ -3178,6 +3205,11 @@ void MainWindow::filterChanged(const QString &arg1)
         ui->checkHideLibsMX->blockSignals(block);
     };
 
+    // Hide and reset all header checkboxes by default
+    if (headerEnabled) { headerEnabled->setCheckboxVisible(false); headerEnabled->setChecked(false); }
+    if (headerMX) { headerMX->setCheckboxVisible(false); headerMX->setChecked(false); }
+    if (headerBP) { headerBP->setCheckboxVisible(false); headerBP->setChecked(false); }
+
     bool isAutoremovable = (arg1 == tr("Autoremovable"));
     bool shouldHideLibs = !isAutoremovable && hideLibsChecked;
 
@@ -3257,6 +3289,25 @@ void MainWindow::filterChanged(const QString &arg1)
                 (*it)->setHidden(!shouldShow);
                 (*it)->setData(0, Qt::UserRole, shouldShow);
             }
+            // Show the header checkbox when filtering Upgradable or Autoremovable
+            if (itStatus.value() == Status::Upgradable || itStatus.value() == Status::Autoremovable) {
+                const QString tip = (itStatus.value() == Status::Upgradable)
+                                        ? tr("Select/deselect all upgradable")
+                                        : tr("Select/deselect all autoremovable");
+                if (currentTree == ui->treeEnabled && headerEnabled) {
+                    headerEnabled->setCheckboxVisible(true);
+                    headerEnabled->setToolTip(tip);
+                    headerEnabled->resizeSection(TreeCol::Check, qMax(headerEnabled->sectionSize(0), 22));
+                } else if (currentTree == ui->treeMXtest && headerMX) {
+                    headerMX->setCheckboxVisible(true);
+                    headerMX->setToolTip(tip);
+                    headerMX->resizeSection(TreeCol::Check, qMax(headerMX->sectionSize(0), 22));
+                } else if (currentTree == ui->treeBackports && headerBP) {
+                    headerBP->setCheckboxVisible(true);
+                    headerBP->setToolTip(tip);
+                    headerBP->resizeSection(TreeCol::Check, qMax(headerBP->sectionSize(0), 22));
+                }
+            }
         }
         uncheckAllItems();
         QMetaObject::invokeMethod(
@@ -3266,6 +3317,47 @@ void MainWindow::filterChanged(const QString &arg1)
     }
     currentTree->setUpdatesEnabled(true);
     currentTree->blockSignals(false);
+}
+
+// Toggle selection of all visible upgradable items in the current tab
+void MainWindow::selectAllUpgradable_toggled(bool checked)
+{
+    QTreeWidget *tree = nullptr;
+    QObject *s = sender();
+    if (s == headerEnabled) {
+        tree = ui->treeEnabled;
+    } else if (s == headerMX) {
+        tree = ui->treeMXtest;
+    } else if (s == headerBP) {
+        tree = ui->treeBackports;
+    } else {
+        return;
+    }
+
+    tree->setUpdatesEnabled(false);
+    // Determine desired status based on current filter text
+    int targetStatus = Status::Upgradable;
+    QString filterText;
+    if (tree == ui->treeEnabled) {
+        filterText = ui->comboFilterEnabled->currentText();
+    } else if (tree == ui->treeMXtest) {
+        filterText = ui->comboFilterMX->currentText();
+    } else if (tree == ui->treeBackports) {
+        filterText = ui->comboFilterBP->currentText();
+    }
+    if (filterText == tr("Autoremovable")) {
+        targetStatus = Status::Autoremovable;
+    }
+
+    for (QTreeWidgetItemIterator it(tree); *it; ++it) {
+        QTreeWidgetItem *item = *it;
+        const bool visible = !item->isHidden();
+        const bool match = item->data(TreeCol::Status, Qt::UserRole).toInt() == targetStatus;
+        if (visible && match) {
+            item->setCheckState(TreeCol::Check, checked ? Qt::Checked : Qt::Unchecked);
+        }
+    }
+    tree->setUpdatesEnabled(true);
 }
 
 void MainWindow::treeEnabled_itemChanged(QTreeWidgetItem *item)

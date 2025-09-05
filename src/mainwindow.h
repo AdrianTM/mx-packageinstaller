@@ -40,6 +40,7 @@
 
 #include "aptcache.h"
 #include "cmd.h"
+#include "checkableheaderview.h"
 #include "lockfile.h"
 #include "remotes.h"
 #include "versionnumber.h"
@@ -144,6 +145,7 @@ private slots:
     void checkHideLibsBP_clicked(bool checked);
     void checkHideLibsMX_clicked(bool checked);
     void checkHideLibs_toggled(bool checked);
+    void selectAllUpgradable_toggled(bool checked);
     void comboRemote_activated(int index = 0);
     void comboUser_currentIndexChanged(int index);
     void lineEdit_returnPressed();
@@ -315,4 +317,8 @@ private:
     void updateFlatpakCounts(uint totalCount);
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
+    // Header checkbox helpers
+    CheckableHeaderView *headerEnabled {nullptr};
+    CheckableHeaderView *headerMX {nullptr};
+    CheckableHeaderView *headerBP {nullptr};
 };
