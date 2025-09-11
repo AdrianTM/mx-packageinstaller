@@ -1,3 +1,13 @@
+mx-packageinstaller (25.09.1) mx; urgency=medium
+
+  * Performance fix: select all checkboxes in a batch manner
+  * Add sudo as backup to pkexec -- but it would only work if ran from
+    CLI
+  * Minor interface fix, display message first and then switch to
+    Popular tab
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 11 Sep 2025 15:29:22 -0400
+
 mx-packageinstaller (25.09) mx; urgency=medium
 
   * Remember HideLibs selection
