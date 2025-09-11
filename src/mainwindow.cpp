@@ -144,9 +144,18 @@ void MainWindow::setup()
 
     // Ensure "Select all" checkboxes start hidden/unchecked
     // (Deprecated UI checkboxes remain hidden in UI; header checkboxes are used instead.)
-    if (auto *w = ui->checkSelectAllEnabled) { w->setVisible(false); w->setChecked(false); }
-    if (auto *w = ui->checkSelectAllMX) { w->setVisible(false); w->setChecked(false); }
-    if (auto *w = ui->checkSelectAllBP) { w->setVisible(false); w->setChecked(false); }
+    if (auto *w = ui->checkSelectAllEnabled) {
+        w->setVisible(false);
+        w->setChecked(false);
+    }
+    if (auto *w = ui->checkSelectAllMX) {
+        w->setVisible(false);
+        w->setChecked(false);
+    }
+    if (auto *w = ui->checkSelectAllBP) {
+        w->setVisible(false);
+        w->setChecked(false);
+    }
 
     // Install custom header views with checkbox in column 0 (TreeCol::Check)
     headerEnabled = new CheckableHeaderView(Qt::Horizontal, ui->treeEnabled);
@@ -1266,7 +1275,6 @@ void MainWindow::ifDownloadFailed() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     progress->hide();
-    ui->tabWidget->setCurrentWidget(ui->tabPopular);
 }
 
 void MainWindow::listFlatpakRemotes() const
@@ -3206,9 +3214,18 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     // Hide and reset all header checkboxes by default
-    if (headerEnabled) { headerEnabled->setCheckboxVisible(false); headerEnabled->setChecked(false); }
-    if (headerMX) { headerMX->setCheckboxVisible(false); headerMX->setChecked(false); }
-    if (headerBP) { headerBP->setCheckboxVisible(false); headerBP->setChecked(false); }
+    if (headerEnabled) {
+        headerEnabled->setCheckboxVisible(false);
+        headerEnabled->setChecked(false);
+    }
+    if (headerMX) {
+        headerMX->setCheckboxVisible(false);
+        headerMX->setChecked(false);
+    }
+    if (headerBP) {
+        headerBP->setCheckboxVisible(false);
+        headerBP->setChecked(false);
+    }
 
     bool isAutoremovable = (arg1 == tr("Autoremovable"));
     bool shouldHideLibs = !isAutoremovable && hideLibsChecked;
@@ -3291,9 +3308,8 @@ void MainWindow::filterChanged(const QString &arg1)
             }
             // Show the header checkbox when filtering Upgradable or Autoremovable
             if (itStatus.value() == Status::Upgradable || itStatus.value() == Status::Autoremovable) {
-                const QString tip = (itStatus.value() == Status::Upgradable)
-                                        ? tr("Select/deselect all upgradable")
-                                        : tr("Select/deselect all autoremovable");
+                const QString tip = (itStatus.value() == Status::Upgradable) ? tr("Select/deselect all upgradable")
+                                                                             : tr("Select/deselect all autoremovable");
                 if (currentTree == ui->treeEnabled && headerEnabled) {
                     headerEnabled->setCheckboxVisible(true);
                     headerEnabled->setToolTip(tip);
