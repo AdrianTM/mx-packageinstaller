@@ -88,7 +88,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // Run flatpak setup and display in a separate thread
     if (arch != "i386" && checkInstalled("flatpak")) {
         auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
+            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
             QMetaObject::invokeMethod(
                 this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
         });
@@ -262,7 +262,7 @@ bool MainWindow::updateApt()
     }
 
     enableOutput();
-    if (cmd.run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib apt_update", true)) {
+    if (cmd.run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib apt_update", Cmd::QuietMode::Yes)) {
         qDebug() << "sources updated OK";
         updatedOnce = true;
         return true;
@@ -1288,7 +1288,7 @@ void MainWindow::listFlatpakRemotes() const
         qDebug() << "No flatpak remotes found for user, setting up default remotes";
 
         Cmd addRemotes;
-        if (addRemotes.run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", true)) {
+        if (addRemotes.run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", Cmd::QuietMode::Yes)) {
             qDebug() << "Successfully set up flatpak remotes for user";
 
             // Re-fetch the remote list after setup
@@ -1530,7 +1530,7 @@ bool MainWindow::installPopularApp(const QString &name)
         }
         if (!cmd.runAsRoot(preinstall)) {
             if (QFile::exists(tempList)) {
-                Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+                Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
                 updateApt();
             }
             return false;
@@ -1552,7 +1552,7 @@ bool MainWindow::installPopularApp(const QString &name)
         cmd.runAsRoot(postinstall);
     }
     if (QFile::exists(tempList)) {
-        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
         updateApt();
     }
     return result;
@@ -1643,7 +1643,7 @@ bool MainWindow::installSelected()
     bool result = install(names);
     if (currentTree == ui->treeBackports || currentTree == ui->treeMXtest) {
         if (QFile::exists(tempList)) {
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
             updateApt();
         }
     }
@@ -2057,10 +2057,10 @@ void MainWindow::cleanup()
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }
     if (QFile::exists(tempList)) {
-        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", true);
+        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
         updateApt();
     }
-    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib copy_log", true);
+    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib copy_log", Cmd::QuietMode::Yes);
     settings.setValue("geometry", saveGeometry());
     settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
     settings.setValue("FlatpakUser", ui->comboUser->currentText());
@@ -2298,7 +2298,7 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
     QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
     const QString command = "LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'";
-    const QStringList packageList = shell.getOut(command, true).split('\n', Qt::SkipEmptyParts);
+    const QStringList packageList = shell.getOut(command, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
 
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         QMessageBox::critical(
@@ -3113,7 +3113,7 @@ void MainWindow::installFlatpak()
         currentTree->blockSignals(false);
         return;
     }
-    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", true);
+    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
     enableOutput();
     listFlatpakRemotes();
     if (displayFlatpaksIsRunning) {
@@ -3684,7 +3684,7 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            Cmd().run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", true);
+            Cmd().run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", Cmd::QuietMode::Yes);
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }

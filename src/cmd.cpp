@@ -3,13 +3,14 @@
 #include <QCoreApplication>
 #include <QDebug>
 #include <QEventLoop>
+#include <QFile>
 #include <QFileInfo>
 
 #include <unistd.h>
 
 Cmd::Cmd(QObject *parent)
     : QProcess(parent),
-      elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec" : "/usr/bin/gksu"},
+      elevate {elevationTool()},
       helper {"/usr/lib/mx-packageinstaller/helper"}
 {
     connect(this, &Cmd::readyReadStandardOutput, [this] { emit outputAvailable(readAllStandardOutput()); });
@@ -18,31 +19,39 @@ Cmd::Cmd(QObject *parent)
     connect(this, &Cmd::errorAvailable, [this](const QString &out) { out_buffer += out; });
 }
 
-QString Cmd::getOut(const QString &cmd, bool quiet, bool asRoot)
+QString Cmd::elevationTool()
+{
+    if (QFile::exists("/usr/bin/pkexec")) return QStringLiteral("/usr/bin/pkexec");
+    if (QFile::exists("/usr/bin/gksu")) return QStringLiteral("/usr/bin/gksu");
+    if (QFile::exists("/usr/bin/sudo")) return QStringLiteral("/usr/bin/sudo");
+    return QStringLiteral("/usr/bin/sudo"); // fallback
+}
+
+QString Cmd::getOut(const QString &cmd, QuietMode quiet, Elevation elevation)
 {
     out_buffer.clear();
-    run(cmd, quiet, asRoot);
+    run(cmd, quiet, elevation);
     return out_buffer.trimmed();
 }
 
-QString Cmd::getOutAsRoot(const QString &cmd, bool quiet)
+QString Cmd::getOutAsRoot(const QString &cmd, QuietMode quiet)
 {
-    return getOut(cmd, quiet, true);
+    return getOut(cmd, quiet, Elevation::Yes);
 }
 
-bool Cmd::run(const QString &cmd, bool quiet, bool asRoot)
+bool Cmd::run(const QString &cmd, QuietMode quiet, Elevation elevation)
 {
     out_buffer.clear();
     if (state() != QProcess::NotRunning) {
         qDebug() << "Process already running:" << program() << arguments();
         return false;
     }
-    if (!quiet) {
+    if (quiet == QuietMode::No) {
         qDebug().noquote() << cmd;
     }
     QEventLoop loop;
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &loop, &QEventLoop::quit);
-    if (asRoot && getuid() != 0) {
+    if (elevation == Elevation::Yes && getuid() != 0) {
         start(elevate, {helper, cmd});
     } else {
         start("/bin/bash", {"-c", cmd});
@@ -52,9 +61,9 @@ bool Cmd::run(const QString &cmd, bool quiet, bool asRoot)
     return (exitStatus() == QProcess::NormalExit && exitCode() == 0);
 }
 
-bool Cmd::runAsRoot(const QString &cmd, bool quiet)
+bool Cmd::runAsRoot(const QString &cmd, QuietMode quiet)
 {
-    return run(cmd, quiet, true);
+    return run(cmd, quiet, Elevation::Yes);
 }
 
 // Return true when process is killed or not running

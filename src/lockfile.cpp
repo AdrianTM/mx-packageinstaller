@@ -62,7 +62,7 @@ bool LockFile::lock()
     if (isLockedGUI()) {
         return false;
     }
-    Cmd().runAsRoot("chown $(logname): " + file.fileName(), true); // take ownership
+    Cmd().runAsRoot("chown $(logname): " + file.fileName(), Cmd::QuietMode::Yes); // take ownership
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Unable to open lock file" << file.fileName() << "for writing:" << file.errorString();
         return false;

@@ -18,6 +18,7 @@ Architecture: any
 Depends: aptitude,
          mx-packageinstaller-pkglist (>= 17.4),
          xdg-utils | mx-viewer,
+         sudo | pkexec | gksu,
          socat,
          ${misc:Depends},
          ${shlibs:Depends}
