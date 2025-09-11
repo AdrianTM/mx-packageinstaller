@@ -3334,7 +3334,9 @@ void MainWindow::selectAllUpgradable_toggled(bool checked)
         return;
     }
 
+    // Batch update: avoid emitting itemChanged for every item
     tree->setUpdatesEnabled(false);
+    tree->blockSignals(true);
     // Determine desired status based on current filter text
     int targetStatus = Status::Upgradable;
     QString filterText;
@@ -3357,6 +3359,31 @@ void MainWindow::selectAllUpgradable_toggled(bool checked)
             item->setCheckState(TreeCol::Check, checked ? Qt::Checked : Qt::Unchecked);
         }
     }
+    // Rebuild changeList and update buttons once, instead of per-item
+    changeList.clear();
+    if (checked) {
+        for (QTreeWidgetItemIterator it(tree); *it; ++it) {
+            QTreeWidgetItem *item = *it;
+            const bool visible = !item->isHidden();
+            const bool match = item->data(TreeCol::Status, Qt::UserRole).toInt() == targetStatus;
+            if (visible && match && item->checkState(TreeCol::Check) == Qt::Checked) {
+                changeList.append(item->text(TreeCol::Name));
+            }
+        }
+    }
+
+    // Update action buttons coherently after batch toggle
+    ui->pushInstall->setEnabled(!changeList.isEmpty());
+    if (tree != ui->treeFlatpak) {
+        ui->pushUninstall->setEnabled(checkInstalled(changeList));
+        if (targetStatus == Status::Autoremovable) {
+            ui->pushInstall->setText(tr("Mark keep"));
+        } else {
+            ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
+        }
+    }
+
+    tree->blockSignals(false);
     tree->setUpdatesEnabled(true);
 }
 
