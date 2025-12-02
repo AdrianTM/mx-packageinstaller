@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr">
 <context>
     <name>MainWindow</name>
     <message>
@@ -86,14 +84,14 @@
         <location filename="../src/mainwindow.ui" line="557"/>
         <location filename="../src/mainwindow.ui" line="946"/>
         <source>Installed:</source>
-        <translation>Installés&#xa0;:</translation>
+        <translation>Installés :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="378"/>
         <location filename="../src/mainwindow.ui" line="550"/>
         <location filename="../src/mainwindow.ui" line="967"/>
         <source>Total packages:</source>
-        <translation>Total des paquets&#xa0;:</translation>
+        <translation>Total des paquets :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="364"/>
@@ -107,7 +105,7 @@
         <location filename="../src/mainwindow.ui" line="587"/>
         <location filename="../src/mainwindow.ui" line="939"/>
         <source>Upgradable:</source>
-        <translation>Pouvant être mis à niveau&#xa0;:</translation>
+        <translation>Pouvant être mis à niveau :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="243"/>
@@ -247,7 +245,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1571"/>
         <source>Remote (repo):</source>
-        <translation>Dépôt à distance (repo)&#xa0;:</translation>
+        <translation>Dépôt à distance (repo) :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1512"/>
@@ -296,7 +294,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1347"/>
         <source>Installed apps:</source>
-        <translation>Applications installées&#xa0;:</translation>
+        <translation>Applications installées :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1399"/>
@@ -306,7 +304,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1428"/>
         <source>Total installed size:</source>
-        <translation>Taille totale installée&#xa0;:</translation>
+        <translation>Taille totale installée :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1442"/>
@@ -469,13 +467,13 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="281"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation>Un problème a été rencontré lors de la mise à jour des sources. Certaines sources n’ont pas pu fournir de mises à jour. Pour plus d’informations, consultez&#xa0;: </translation>
+        <translation>Un problème a été rencontré lors de la mise à jour des sources. Certaines sources n’ont pas pu fournir de mises à jour. Pour plus d’informations, consultez : </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="399"/>
         <location filename="../src/mainwindow.cpp" line="426"/>
         <source>Could not determine Debian version. Please select your version:</source>
-        <translation>Impossible de déterminer la version de Debian. Veuillez sélectionner votre version&#xa0;:</translation>
+        <translation>Impossible de déterminer la version de Debian. Veuillez sélectionner votre version :</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="432"/>
@@ -500,7 +498,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1248"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>Vous êtes sur le point d’utiliser le dépôt de rétroportage (Backports) de Debian. Il contient des paquets provenant de la prochaine version de Debian (appelée « testing ») qui ont été modifiés et recompilés pour être utilisés dans Debian « stable ». Par conséquent, ils n’ont pas pu faire l’objet de tests aussi poussés que pour les versions stables de Debian et de MX Linux et peuvent présenter des incompatibilités avec d’autres composants de Debian « stable ». À utiliser avec précaution&#xa0;!</translation>
+        <translation>Vous êtes sur le point d’utiliser le dépôt de rétroportage (Backports) de Debian. Il contient des paquets provenant de la prochaine version de Debian (appelée « testing ») qui ont été modifiés et recompilés pour être utilisés dans Debian « stable ». Par conséquent, ils n’ont pas pu faire l’objet de tests aussi poussés que pour les versions stables de Debian et de MX Linux et peuvent présenter des incompatibilités avec d’autres composants de Debian « stable ». À utiliser avec précaution !</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1256"/>
@@ -563,7 +561,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1746"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
-        <translation>Une erreur s’est produite lors du téléchargement ou de l’écriture du fichier&#xa0;: %1. Veuillez vérifier votre connexion internet et l’espace libre sur votre périphérique.</translation>
+        <translation>Une erreur s’est produite lors du téléchargement ou de l’écriture du fichier : %1. Veuillez vérifier votre connexion internet et l’espace libre sur votre périphérique.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1821"/>
@@ -578,7 +576,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2314"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation>La commande dpkg-query a renvoyé une erreur, veuillez exécuter «&#xa0;dpkg-query -W&#xa0;» dans le terminal et vérifier le résultat.</translation>
+        <translation>La commande dpkg-query a renvoyé une erreur, veuillez exécuter « dpkg-query -W » dans le terminal et vérifier le résultat.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2439"/>
@@ -596,7 +594,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2487"/>
         <source>Packages to be installed: </source>
-        <translation>Paquets à installer&#xa0;: </translation>
+        <translation>Paquets à installer : </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2750"/>
@@ -643,7 +641,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2797"/>
         <source>Version: </source>
-        <translation>Version&#xa0;: </translation>
+        <translation>Version : </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2799"/>
@@ -699,7 +697,7 @@
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak n’est pas installé actuellement.
-Voulez-vous l’installer&#xa0;?</translation>
+Voulez-vous l’installer ?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3117"/>
@@ -732,7 +730,7 @@ Voulez-vous l’installer&#xa0;?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3312"/>
         <source>Select/deselect all autoremovable</source>
-        <translation>Sélectionner/désélectionner tous les éléments «&#xa0;autoremovable&#xa0;» ou «&#xa0;autosupprimables&#xa0;»</translation>
+        <translation>Sélectionner/désélectionner tous les éléments « autoremovable » ou « autosupprimables »</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3398"/>
@@ -743,12 +741,12 @@ Voulez-vous l’installer&#xa0;?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3608"/>
         <source>Quit?</source>
-        <translation>Quitter&#xa0;?</translation>
+        <translation>Quitter ?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3609"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>Processus toujours en cours, quitter maintenant pourrait laisser le système en état d’instabilité .&lt;p&gt;&lt;b&gt;Êtes-vous sûr de vouloir quitter l’installateur de paquets MX&#xa0;?&lt;/b&gt;</translation>
+        <translation>Processus toujours en cours, quitter maintenant pourrait laisser le système en état d’instabilité .&lt;p&gt;&lt;b&gt;Êtes-vous sûr de vouloir quitter l’installateur de paquets MX ?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3771"/>
@@ -883,7 +881,7 @@ Veillez à bien vérifier la liste des paquets à supprimer.</translation>
         <location filename="../src/lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation>La base de données dpkg/apt est verrouillée par un autre programme&#xa0;: %1
+        <translation>La base de données dpkg/apt est verrouillée par un autre programme : %1
 Fermez le programme ou attendez qu’il ait terminé son traitement et réessayez.</translation>
     </message>
     <message>

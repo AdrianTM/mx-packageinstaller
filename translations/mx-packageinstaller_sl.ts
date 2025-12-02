@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sl">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sl">
 <context>
     <name>MainWindow</name>
     <message>
@@ -727,12 +725,12 @@ Ali naj ga namestim?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3311"/>
         <source>Select/deselect all upgradable</source>
-        <translation type="unfinished"></translation>
+        <translation>Izberi/opusti ve nadgradljive</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3312"/>
         <source>Select/deselect all autoremovable</source>
-        <translation type="unfinished"></translation>
+        <translation>Izberi/opusti vse samodejno odstranljive</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3398"/>

@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fr_BE">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fr_BE">
 <context>
     <name>MainWindow</name>
     <message>
@@ -392,7 +390,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1732"/>
         <source>About...</source>
-        <translation>À propos&#xa0;…</translation>
+        <translation>À propos …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1738"/>
@@ -427,22 +425,22 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="225"/>
         <source>Uninstalling packages...</source>
-        <translation>Désinstallation des paquets&#xa0;…</translation>
+        <translation>Désinstallation des paquets …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="230"/>
         <source>Running pre-uninstall operations...</source>
-        <translation>Exécution des opérations de pré-désinstallation&#xa0;…</translation>
+        <translation>Exécution des opérations de pré-désinstallation …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="250"/>
         <source>Running post-uninstall operations...</source>
-        <translation>Processus post-désinstallation en cours&#xa0;…</translation>
+        <translation>Processus post-désinstallation en cours …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="267"/>
         <source>Refreshing sources...</source>
-        <translation>Rafraîchissement des sources&#xa0;…</translation>
+        <translation>Rafraîchissement des sources …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="280"/>
@@ -490,7 +488,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="773"/>
         <source>Please wait...</source>
-        <translation>Veuillez patienter&#xa0;…</translation>
+        <translation>Veuillez patienter …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1239"/>
@@ -538,12 +536,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1445"/>
         <source>Installing packages...</source>
-        <translation>Installation des paquets&#xa0;…</translation>
+        <translation>Installation des paquets …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1503"/>
         <source>Post-processing...</source>
-        <translation>Post-traitement&#xa0;…</translation>
+        <translation>Post-traitement …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1535"/>
@@ -568,7 +566,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1821"/>
         <source>Downloading package info...</source>
-        <translation>Téléchargement des infos des paquets&#xa0;…</translation>
+        <translation>Téléchargement des infos des paquets …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2146"/>
@@ -578,7 +576,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2314"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation>La commande dpkg-query a renvoyé une erreur, veuillez exécuter «&#xa0;dpkg-query -W&#xa0;» dans le terminal et vérifier le résultat.</translation>
+        <translation>La commande dpkg-query a renvoyé une erreur, veuillez exécuter « dpkg-query -W » dans le terminal et vérifier le résultat.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2439"/>
@@ -591,7 +589,7 @@
         <location filename="../src/mainwindow.cpp" line="2456"/>
         <location filename="../src/mainwindow.cpp" line="3719"/>
         <source>More &amp;info...</source>
-        <translation>Plus &amp;info&#xa0;…</translation>
+        <translation>Plus &amp;info …</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2487"/>
@@ -732,7 +730,7 @@ Voulez-vous l’installer?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3312"/>
         <source>Select/deselect all autoremovable</source>
-        <translation>Sélectionner/désélectionner tous les éléments «&#xa0;autoremovable&#xa0;» ou «&#xa0;autosupprimables&#xa0;»</translation>
+        <translation>Sélectionner/désélectionner tous les éléments « autoremovable » ou « autosupprimables »</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3398"/>

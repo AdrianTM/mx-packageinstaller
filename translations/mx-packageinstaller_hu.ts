@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="hu">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="hu">
 <context>
     <name>MainWindow</name>
     <message>
@@ -323,7 +321,7 @@
         <location filename="../src/mainwindow.ui" line="656"/>
         <location filename="../src/mainwindow.ui" line="1039"/>
         <source>Select all</source>
-        <translation type="unfinished"></translation>
+        <translation>Összes kijelölése</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1284"/>
@@ -727,12 +725,12 @@ Indulhat a telepítése?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3311"/>
         <source>Select/deselect all upgradable</source>
-        <translation type="unfinished"></translation>
+        <translation>Frissíthetők kijelölése</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3312"/>
         <source>Select/deselect all autoremovable</source>
-        <translation type="unfinished"></translation>
+        <translation>Automatikusan eltávolíthatók kijelölése</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3398"/>

@@ -1,3 +1,9 @@
+mx-packageinstaller (25.12) mx; urgency=medium
+
+  * Move .Platform packages from Apps to Runtime Flatpak category
+
+ -- Adrian <adrian@mxlinux.org>  Tue, 02 Dec 2025 10:55:41 -0500
+
 mx-packageinstaller (25.09.1) mx; urgency=medium
 
   * Performance fix: select all checkboxes in a batch manner

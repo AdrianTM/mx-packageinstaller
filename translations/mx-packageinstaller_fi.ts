@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="fi">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="fi">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
         <location filename="../src/mainwindow.cpp" line="132"/>
         <source>MX Package Installer</source>
-        <translation>MX-pakettien asentaja</translation>
+        <translation>MX Sovellukset</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="57"/>
@@ -58,12 +56,12 @@
         <location filename="../src/mainwindow.ui" line="1197"/>
         <location filename="../src/mainwindow.ui" line="1461"/>
         <source>= Installed packages</source>
-        <translation>= Asennetut paketit</translation>
+        <translation>= tietokoneeseen asennetut paketit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="172"/>
         <source>Enabled Repos</source>
-        <translation>Repot käytössä</translation>
+        <translation>Arkistot käytössä</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="230"/>
@@ -93,7 +91,7 @@
         <location filename="../src/mainwindow.ui" line="550"/>
         <location filename="../src/mainwindow.ui" line="967"/>
         <source>Total packages:</source>
-        <translation>Paketit yhteensä:</translation>
+        <translation>Paketteja:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="364"/>
@@ -114,7 +112,7 @@
         <location filename="../src/mainwindow.ui" line="594"/>
         <location filename="../src/mainwindow.ui" line="974"/>
         <source>Hide library and developer packages</source>
-        <translation>Piilota kirjasto- ja kehityspaketit</translation>
+        <translation>Piilota kirjasto ja kehittäjäpaketit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="265"/>
@@ -188,7 +186,7 @@
         <location filename="../src/mainwindow.ui" line="747"/>
         <location filename="../src/mainwindow.ui" line="875"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation>Päivitettävä paketti. Uudempi versio saatavilla valitussa repossa.</translation>
+        <translation>= päivitettävissä oleva paketti. Uudempi versio on saatavilla valitusta lähteestä.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="415"/>
@@ -212,7 +210,7 @@
         <location filename="../src/mainwindow.ui" line="827"/>
         <location filename="../src/mainwindow.ui" line="1094"/>
         <source>Repo Version</source>
-        <translation>Repo-versio</translation>
+        <translation>Arkiston versio</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="425"/>
@@ -242,12 +240,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1486"/>
         <source>For current user</source>
-        <translation>Nykyiselle käyttäjälle</translation>
+        <translation>Vain minulle</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1571"/>
         <source>Remote (repo):</source>
-        <translation>Ulkopuolinen (repo):</translation>
+        <translation>Ulkopuolinen (arkisto):</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1512"/>
@@ -260,7 +258,7 @@
         <location filename="../src/mainwindow.ui" line="1521"/>
         <location filename="../src/mainwindow.cpp" line="3247"/>
         <source>All runtimes</source>
-        <translation>Kaikki ajettavat</translation>
+        <translation>Kaikki suoritusympäristöt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1526"/>
@@ -278,7 +276,7 @@
         <location filename="../src/mainwindow.ui" line="1536"/>
         <location filename="../src/mainwindow.cpp" line="3235"/>
         <source>Installed runtimes</source>
-        <translation>Asennetut ajettavat</translation>
+        <translation>Asennetut suoritusympäristöt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1541"/>
@@ -286,12 +284,12 @@
         <location filename="../src/mainwindow.cpp" line="3477"/>
         <location filename="../src/mainwindow.cpp" line="3478"/>
         <source>All installed</source>
-        <translation>Kaikki asennettu</translation>
+        <translation>Kaikki asennetut</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1333"/>
         <source>Total items </source>
-        <translation>Kohteita yhteensä</translation>
+        <translation>Kohteita:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1347"/>
@@ -316,14 +314,14 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1279"/>
         <source>Short Name</source>
-        <translation>Lyhyt nimi</translation>
+        <translation>Nimi</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="278"/>
         <location filename="../src/mainwindow.ui" line="656"/>
         <location filename="../src/mainwindow.ui" line="1039"/>
         <source>Select all</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse kaikki</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1284"/>
@@ -340,7 +338,7 @@
         <location filename="../src/mainwindow.cpp" line="2916"/>
         <location filename="../src/mainwindow.cpp" line="3134"/>
         <source>Console Output</source>
-        <translation>Konsoliulostulo</translation>
+        <translation>Konsoli</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1594"/>
@@ -495,7 +493,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1239"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Olet aikeissa käyttää MX Testirepoa, jonka paketit on tarkoitettu vain testikäyttöön. Ne saattavat rikkoa järjestelmäsi, joten on suositeltavaa että varmuuskopioit järjestelmäsi sekä asennat tai päivität vain yhden paketin kerrallaan. Anna palautetta paketista ja sen toimivuudesta keskustelufoorumilla, jotta paketti voidaan arvioida ennen sen siirtämistä Main repo pakettivarastoon.</translation>
+        <translation>Olet aikeissa käyttää MX Testiarkistoa, jonka paketit on tarkoitettu vain testikäyttöön. Ne saattavat rikkoa järjestelmäsi, joten on suositeltavaa että varmuuskopioit järjestelmäsi sekä asennat tai päivität vain yhden paketin kerrallaan. Anna palautetta paketista ja sen toimivuudesta foorumilla, jotta paketti voidaan arvioida ennen sen siirtämistä varsinaiseen jakeluun.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1248"/>
@@ -505,7 +503,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1256"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux sisällyttää tämän flatpak repon vain käyttäjämukavuutta tavoitellen, eikä ole itse vastuussa yksittäisten flatpakien toimivuudesta. Lisätietoja, lue Wiki-sivujen flatpak-osio.</translation>
+        <translation>MX Linux sisällyttää flatpak ohjelmat vain käyttäjän mukavuutta tavoitellen, eikä ole itse vastuussa flatpakien toimivuudesta. Lisätietoja, lue Wiki-sivujen osiosta flatpak.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1264"/>
@@ -699,7 +697,7 @@
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak ei ole tällä hetkellä asennettuna.
-Onko OK jatkaa eteenpäin asentaen sen?</translation>
+Voinko asentaa sen?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3117"/>
@@ -727,12 +725,12 @@ Onko OK jatkaa eteenpäin asentaen sen?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3311"/>
         <source>Select/deselect all upgradable</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse kaikki päivitettävät/poista valinnat</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3312"/>
         <source>Select/deselect all autoremovable</source>
-        <translation type="unfinished"></translation>
+        <translation>Valitse kaikki autom. poistettavat/poista valinnat</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3398"/>
@@ -748,7 +746,7 @@ Onko OK jatkaa eteenpäin asentaen sen?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3609"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>Prosessi on edelleen käynnissä, lopettaminen saattaa jättää järjestelmän epävakaaseen tilaan. &lt;p&gt;&lt;b&gt; Haluatko poistua MX Package Installer-ohjelmasta?&lt;/b&gt;</translation>
+        <translation>Prosessi on edelleen käynnissä, lopettaminen saattaa jättää järjestelmän epävakaaseen tilaan. &lt;p&gt;&lt;b&gt; Haluatko poistua MX Sovellukset ohjelmasta?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3771"/>
@@ -783,7 +781,7 @@ Varmista, että tarkistat huolellisesti poistettavien pakettien luettelo.</trans
     <message>
         <location filename="../src/remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation>Nykyiselle käyttäjälle</translation>
+        <translation>Vain minulle</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="35"/>
@@ -798,7 +796,7 @@ Varmista, että tarkistat huolellisesti poistettavien pakettien luettelo.</trans
     <message>
         <location filename="../src/remotes.cpp" line="40"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Lisää tai poista flatpak repot (ohjelmavarastot), tai asenna sovelluksia käyttäen flatpakref URL-osoitetta tai polkua</translation>
+        <translation>Lisää tai poista flatpak arkistot (ohjelmavarastot), tai asenna sovelluksia käyttäen flatpakref URL-osoitetta tai polkua</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="49"/>
@@ -893,11 +891,11 @@ Sulje ohjelma tai odota, kunnes se on valmiina  ja yritä uudelleen.</translatio
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation>MX Package Installer on työkalu pakettien hallintaan MX Linux:ssa
+        <translation>MX Sovellukset on työkalu pakettien hallintaan MX Linux:ssa
     - asentaa suosittuja ohjelmia eri lähteistä
-    - asentaa ohjelmia MX testireposta
-    - asentaa ohjelmia Debian Backports reposta
-    - asentaa flatpakeja</translation>
+    - asentaa ohjelmia MX testilähteestä
+    - asentaa ohjelmia Debian Backports lähteestä
+    - asentaa flatpak-ohjelmia</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="98"/>

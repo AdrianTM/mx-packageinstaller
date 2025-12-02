@@ -1,6 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="sq">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="sq">
 <context>
     <name>MainWindow</name>
     <message>
@@ -323,7 +321,7 @@
         <location filename="../src/mainwindow.ui" line="656"/>
         <location filename="../src/mainwindow.ui" line="1039"/>
         <source>Select all</source>
-        <translation type="unfinished"></translation>
+        <translation>Përzgjidhi krejt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1284"/>
@@ -727,12 +725,12 @@ OK të ecet më tej dhe të instalohet?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3311"/>
         <source>Select/deselect all upgradable</source>
-        <translation type="unfinished"></translation>
+        <translation>Përzgjidh/shpërzgjidh krejt të përmirësueshmet</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3312"/>
         <source>Select/deselect all autoremovable</source>
-        <translation type="unfinished"></translation>
+        <translation>Përzgjidh/shpërzgjidh krejt ato që mund të hiqen vetvetiu</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3398"/>

@@ -1,13 +1,11 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!DOCTYPE TS>
-<TS version="2.1" language="ca">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="ca">
 <context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
         <location filename="../src/mainwindow.cpp" line="132"/>
         <source>MX Package Installer</source>
-        <translation>MX Package Installer</translation>
+        <translation>Instal·lador de paquets de l&apos;MX</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="57"/>
@@ -748,7 +746,7 @@ Voleu continuar i instal·lar-ho?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="3609"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>El procés encara funciona, si sortiu ara el procés pot quedar en un estat inestable.&lt;p&gt;&lt;b&gt;Esteu segurs que voleu sortir del MX Package Installer?&lt;/b&gt;</translation>
+        <translation>El procés encara funciona, si sortiu ara el procés pot quedar en un estat inestable.&lt;p&gt;&lt;b&gt;Segur que voleu sortir de l&apos;Instal·lador de paquets de l&apos;MX?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3771"/>
@@ -883,7 +881,7 @@ Si us plau, reviseu amb cura la llista de paquets a eliminar.</translation>
         <location filename="../src/lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation>La base de dades dpkg/apt està bloquejada per un altre programa: %1
+        <translation>La base de dades de dpkg / apt està blocada per un altre programa: %1
 Tanqueu el programa, o espereu fins que acabi i torneu-ho a provar.</translation>
     </message>
     <message>
@@ -893,7 +891,7 @@ Tanqueu el programa, o espereu fins que acabi i torneu-ho a provar.</translation
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation>MX Package Installer és una eina per gestionar els paquets a MX Linux
+        <translation>L&apos;Instal·lador de paquets de l&apos;MX és una eina per gestionar els paquets a l&apos;MX Linux
     - instal·la programari popular des de diferents orígens
     - instal·la programari des del dipòsit MX Test
     - instal·la programari des del dipòsit Debian Backports
