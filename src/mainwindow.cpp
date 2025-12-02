@@ -89,8 +89,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     if (arch != "i386" && checkInstalled("flatpak")) {
         auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
             Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
-            QMetaObject::invokeMethod(
-                this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
         });
     }
 }
@@ -935,8 +934,7 @@ void MainWindow::displayPackages()
     newTree->sortItems(TreeCol::Name, Qt::AscendingOrder);
 
     updateTreeItems(newTree);
-    QMetaObject::invokeMethod(
-        this, [this, newTree] { displayAutoremovable(newTree); }, Qt::QueuedConnection);
+    QMetaObject::invokeMethod(this, [this, newTree] { displayAutoremovable(newTree); }, Qt::QueuedConnection);
 
     newTree->blockSignals(false);
     newTree->setUpdatesEnabled(true);
@@ -1124,7 +1122,7 @@ void MainWindow::loadFlatpakData()
 
     // Split by type based on flatpak naming convention
     for (const QString &item : allInstalled) {
-        if (item.contains(".runtime/")) {
+        if (item.contains(".runtime/") || item.contains(".Platform")) {
             installedRuntimesFP.append(item);
         } else {
             // Assume anything that's not explicitly a runtime is an app
@@ -3014,8 +3012,7 @@ void MainWindow::handleEnabledReposTab(const QString &search_str)
         filterChanged(ui->comboFilterEnabled->currentText());
     }
     if (!ui->searchBoxEnabled->text().isEmpty()) {
-        QMetaObject::invokeMethod(
-            this, [this] { findPackage(); }, Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
     }
     if (!displayPackagesIsRunning) {
         currentTree->blockSignals(false);
@@ -3060,8 +3057,7 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
     if (!firstRunFP && checkInstalled("flatpak")) {
         ui->searchBoxBP->setText(search_str);
         if (!search_str.isEmpty()) {
-            QMetaObject::invokeMethod(
-                this, [this] { findPackage(); }, Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
         if (!displayFlatpaksIsRunning) {
             filterChanged(ui->comboFilterFlatpak->currentText());
@@ -3096,8 +3092,7 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
         }
         ui->searchBoxBP->setText(search_str);
         if (!search_str.isEmpty()) {
-            QMetaObject::invokeMethod(
-                this, [this] { findPackage(); }, Qt::QueuedConnection);
+            QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
     }
 }
@@ -3176,8 +3171,7 @@ void MainWindow::filterChanged(const QString &arg1)
         }
         currentTree->setUpdatesEnabled(true);
 
-        QMetaObject::invokeMethod(
-            this, [this] { findPackage(); }, Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
         ui->pushInstall->setEnabled(false);
         ui->pushUninstall->setEnabled(false);
@@ -3268,8 +3262,7 @@ void MainWindow::filterChanged(const QString &arg1)
             }
             ui->pushUninstall->setEnabled(false);
         }
-        QMetaObject::invokeMethod(
-            this, [this] { findPackage(); }, Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
     } else if (arg1 == tr("All packages")) {
         savedComboIndex = 0;
@@ -3326,8 +3319,7 @@ void MainWindow::filterChanged(const QString &arg1)
             }
         }
         uncheckAllItems();
-        QMetaObject::invokeMethod(
-            this, [this] { findPackage(); }, Qt::QueuedConnection);
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
         clearChangeListAndButtons();
     }
