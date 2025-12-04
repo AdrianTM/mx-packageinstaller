@@ -683,14 +683,58 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
             const bool isRuntime = token.startsWith("runtime/") || token.contains(".runtime/") || token.contains(".Platform");
             // If the token already lacks the app/runtime prefix, keep it intact
             const bool hasTypePrefix = token.startsWith("app/") || token.startsWith("runtime/");
-            return {hasTypePrefix ? token.section('/', 1) : token, isRuntime};
+            QString ref = hasTypePrefix ? token.section('/', 1) : token;
+            return {ref.trimmed(), isRuntime};
         }
     }
 
     // Fallback: return the line as-is if it looks like a ref without type prefix
-    const QString fallbackRef = line.contains('/') ? line : QString();
+    const QString fallbackRef = line.contains('/') ? line.trimmed() : QString();
     const bool isRuntime = fallbackRef.contains(".runtime/") || fallbackRef.contains(".Platform");
     return {fallbackRef, isRuntime};
+}
+} // namespace
+
+namespace {
+struct RemoteLsEntry {
+    QString version;
+    QString ref;
+    QString size;
+};
+
+RemoteLsEntry parseRemoteLsLine(const QString &line)
+{
+    RemoteLsEntry entry;
+
+    QStringList tabParts = line.split('\t', Qt::SkipEmptyParts);
+    if (tabParts.size() >= 3) {
+        entry.version = tabParts.at(0);
+        entry.ref = tabParts.at(1);
+        entry.size = tabParts.last();
+        return entry;
+    }
+
+    QStringList tokens = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    int refIndex = -1;
+    for (int i = 0; i < tokens.size(); ++i) {
+        if (tokens.at(i).count('/') >= 2) { // Looks like a Flatpak ref
+            entry.ref = tokens.at(i);
+            refIndex = i;
+            break;
+        }
+    }
+
+    if (!entry.ref.isEmpty()) {
+        entry.version = tokens.value(0);
+        if (refIndex >= 0 && refIndex + 1 < tokens.size()) {
+            entry.size = tokens.mid(refIndex + 1).join(' ');
+        }
+        return entry;
+    }
+
+    entry.ref = line.trimmed();
+    entry.version = entry.ref.section('/', -1);
+    return entry;
 }
 } // namespace
 
@@ -901,23 +945,12 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     ui->treeFlatpak->setUpdatesEnabled(false);
 
     auto normalizeRef = [](const QString &line) {
-        QStringList parts = line.split('\t');
-
-        // Remove empty parts that might occur if the line starts with a tab
-        if (!parts.isEmpty() && parts.first().isEmpty()) {
-            parts.removeFirst();
+        const RemoteLsEntry entry = parseRemoteLsLine(line);
+        QString ref = entry.ref.trimmed();
+        if (ref.startsWith("app/") || ref.startsWith("runtime/")) {
+            ref = ref.section('/', 1); // Strip leading type segment (app/runtime)
         }
-
-        QString ref;
-        if (parts.size() >= 4) {
-            ref = parts.at(2);
-        } else if (parts.size() >= 2) {
-            ref = parts.at(1);
-        } else {
-            ref = parts.value(0);
-        }
-
-        return ref.section('/', 1); // Strip leading type segment (app/runtime)
+        return ref;
     };
 
     QMutableStringListIterator i(list);
@@ -926,9 +959,24 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
             i.setValue(normalizeRef(i.next()));
         }
     }
+
+    auto normalizeForMatch = [](const QString &ref) {
+        QString normalized = ref.trimmed();
+        if (normalized.startsWith("app/") || normalized.startsWith("runtime/")) {
+            normalized = normalized.section('/', 1);
+        }
+        return normalized;
+    };
+
+    QSet<QString> refSet;
+    for (const QString &ref : std::as_const(list)) {
+        refSet.insert(normalizeForMatch(ref));
+    }
+
     uint total = 0;
     for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-        if (list.contains((*it)->data(FlatCol::FullName, Qt::UserRole).toString())) {
+        const QString itemRef = normalizeForMatch((*it)->data(FlatCol::FullName, Qt::UserRole).toString());
+        if (refSet.contains(itemRef)) {
             ++total;
             (*it)->setHidden(false);
             (*it)->setData(0, Qt::UserRole, true); // Displayed flag
@@ -960,6 +1008,11 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     ui->treeFlatpak->blockSignals(false);
     blockInterfaceFP(false);
     ui->treeFlatpak->setUpdatesEnabled(true);
+
+    // Auto-adjust column widths after filter changes for Flatpak tab
+    for (int i = 0; i < ui->treeFlatpak->columnCount(); ++i) {
+        ui->treeFlatpak->resizeColumnToContents(i);
+    }
 }
 
 void MainWindow::displayPackages()
@@ -1205,23 +1258,19 @@ void MainWindow::populateFlatpakTree()
 
 QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStringList &installed_all) const
 {
-    QStringList parts = item.split('\t');
+    const RemoteLsEntry entry = parseRemoteLsLine(item);
 
-    // Remove empty parts that might occur if item starts with \t
-    if (!parts.isEmpty() && parts.at(0).isEmpty()) {
-        parts.removeAt(0);
-    }
-
-    const bool hasBranchColumn = parts.size() >= 4;
-    const QString ref = hasBranchColumn ? parts.at(2)
-                                        : ((parts.size() >= 2) ? parts.at(1) : parts.value(0));
-    QString version = parts.value(0);
-    if (version.isEmpty()) {
+    QString ref = entry.ref;
+    QString version = entry.version;
+    if (version.isEmpty() || version.contains('/')) {
         version = ref.section('/', -1);
     }
-    const QString branch = hasBranchColumn ? parts.at(1) : ref.section('/', -1);
-    const QString size = parts.last();
-    const QString name = ref.section('/', 1);
+    const QString size = entry.size;
+    const bool hasTypePrefix = ref.startsWith("app/") || ref.startsWith("runtime/");
+    const QString name = hasTypePrefix ? ref.section('/', 1) : ref;
+    if (name.isEmpty()) {
+        return nullptr;
+    }
     const QString long_name = name.section('/', 0, 0);
     const QString short_name = long_name.section('.', -1);
 
@@ -1237,7 +1286,6 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     widget_item->setText(FlatCol::Name, short_name);
     widget_item->setText(FlatCol::LongName, long_name);
     widget_item->setText(FlatCol::Version, version);
-    widget_item->setText(FlatCol::Branch, branch);
     widget_item->setText(FlatCol::Size, size);
     widget_item->setData(FlatCol::FullName, Qt::UserRole, name);
     widget_item->setData(0, Qt::UserRole, true);
@@ -2253,7 +2301,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     const bool isUserScope = fpUser.startsWith("--user");
 
     auto buildRemoteLsCommand = [&](const QString &scope) {
-        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
+        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,ref,installed-size ";
     };
 
     QString typeFlag;
