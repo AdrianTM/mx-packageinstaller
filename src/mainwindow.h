@@ -218,6 +218,9 @@ private:
     QStringList flatpaksRuntimes;
     QStringList installedAppsFP;
     QStringList installedRuntimesFP;
+    QStringList cachedInstalledFlatpaks; // Raw lines from flatpak list --columns=ref,size
+    QString cachedInstalledScope;
+    QHash<QString, QString> cachedInstalledSizeMap; // canonical ref -> size string
     QTemporaryDir tempDir;
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree

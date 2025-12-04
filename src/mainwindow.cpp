@@ -314,9 +314,19 @@ void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    QStringList list = cmd.getOut("flatpak list " + fpUser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
-    auto total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
-                                 [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
+    auto sumSizes = [](const QList<QString> &sizes) {
+        return std::accumulate(sizes.cbegin(), sizes.cend(), quint64(0),
+                               [](quint64 acc, const QString &item) { return acc + convert(item); });
+    };
+
+    quint64 total = 0;
+    if (cachedInstalledScope == fpUser && !cachedInstalledSizeMap.isEmpty()) {
+        total = sumSizes(cachedInstalledSizeMap.values());
+    } else {
+        QStringList list = cmd.getOut("flatpak list " + fpUser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
+        total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
+                                [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
+    }
     ui->labelNumSize->setText(convert(total));
 }
 
@@ -667,6 +677,20 @@ struct ParsedFlatpakRef {
     bool isRuntime {false};
 };
 
+QString canonicalFlatpakRef(const QString &ref)
+{
+    QString cleaned = ref.trimmed();
+    if (cleaned.startsWith("app/") || cleaned.startsWith("runtime/")) {
+        cleaned = cleaned.section('/', 1);
+    }
+    return cleaned;
+}
+
+bool isRuntimeToken(const QString &token)
+{
+    return token.startsWith("runtime/") || token.contains(".runtime/") || token.contains(".Platform");
+}
+
 ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
 {
     static const QRegularExpression refRegex(R"((app|runtime)/\S+)");
@@ -680,7 +704,7 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
     const QStringList tokens = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
     for (const QString &token : tokens) {
         if (token.contains('/')) {
-            const bool isRuntime = token.startsWith("runtime/") || token.contains(".runtime/") || token.contains(".Platform");
+            const bool isRuntime = isRuntimeToken(token);
             // If the token already lacks the app/runtime prefix, keep it intact
             const bool hasTypePrefix = token.startsWith("app/") || token.startsWith("runtime/");
             QString ref = hasTypePrefix ? token.section('/', 1) : token;
@@ -690,7 +714,7 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
 
     // Fallback: return the line as-is if it looks like a ref without type prefix
     const QString fallbackRef = line.contains('/') ? line.trimmed() : QString();
-    const bool isRuntime = fallbackRef.contains(".runtime/") || fallbackRef.contains(".Platform");
+    const bool isRuntime = isRuntimeToken(fallbackRef);
     return {fallbackRef, isRuntime};
 }
 } // namespace
@@ -960,13 +984,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
         }
     }
 
-    auto normalizeForMatch = [](const QString &ref) {
-        QString normalized = ref.trimmed();
-        if (normalized.startsWith("app/") || normalized.startsWith("runtime/")) {
-            normalized = normalized.section('/', 1);
-        }
-        return normalized;
-    };
+    auto normalizeForMatch = [](const QString &ref) { return canonicalFlatpakRef(ref); };
 
     QSet<QString> refSet;
     for (const QString &ref : std::as_const(list)) {
@@ -975,7 +993,10 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 
     uint total = 0;
     for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-        const QString itemRef = normalizeForMatch((*it)->data(FlatCol::FullName, Qt::UserRole).toString());
+        const QString storedCanonical = (*it)->data(FlatCol::FullName, Qt::UserRole + 1).toString();
+        const QString itemRef = normalizeForMatch(!storedCanonical.isEmpty()
+                                                      ? storedCanonical
+                                                      : (*it)->data(FlatCol::FullName, Qt::UserRole).toString());
         if (refSet.contains(itemRef)) {
             ++total;
             (*it)->setHidden(false);
@@ -1215,10 +1236,18 @@ void MainWindow::loadFlatpakData()
     flatpaks = listFlatpaks(ui->comboRemote->currentText());
     flatpaksApps.clear();
     flatpaksRuntimes.clear();
+    QSet<QString> installedCanonical;
+    cachedInstalledFlatpaks.clear();
+    cachedInstalledSizeMap.clear();
+    cachedInstalledScope.clear();
 
-    // Optimize: Get all installed packages with one command, then split by type
-    QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref";
+    // Optimize: Get all installed packages with one command (ref + size), then split by type
+    QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref,size";
     QStringList allInstalled = cmd.getOut(allInstalledCommand).split('\n', Qt::SkipEmptyParts);
+    cachedInstalledFlatpaks = allInstalled;
+    cachedInstalledScope = fpUser;
+    cachedInstalledFlatpaks = allInstalled;
+    cachedInstalledScope = fpUser;
 
     // Clear and reserve space for better performance
     installedAppsFP.clear();
@@ -1227,16 +1256,52 @@ void MainWindow::loadFlatpakData()
     installedRuntimesFP.reserve(allInstalled.size() / 2);
 
     // Split by type based on flatpak naming convention
-    for (const QString &item : allInstalled) {
-        const ParsedFlatpakRef parsed = parseInstalledFlatpakLine(item);
+    for (const QString &itemRaw : allInstalled) {
+        if (itemRaw.startsWith("Ref")) { // header row on some versions
+            continue;
+        }
+
+        const ParsedFlatpakRef parsed = parseInstalledFlatpakLine(itemRaw.section('\t', 0, 0));
         if (parsed.ref.isEmpty()) {
             continue;
         }
 
+        const QString canonicalRef = canonicalFlatpakRef(parsed.ref);
+        if (canonicalRef.isEmpty()) {
+            continue;
+        }
+        installedCanonical.insert(canonicalRef);
+
+        const QString sizeStr = itemRaw.section('\t', 1);
+        if (!sizeStr.isEmpty()) {
+            cachedInstalledSizeMap.insert(canonicalRef, sizeStr);
+        }
+
         if (parsed.isRuntime) {
-            installedRuntimesFP.append(parsed.ref);
+            installedRuntimesFP.append(canonicalRef);
         } else {
-            installedAppsFP.append(parsed.ref);
+            installedAppsFP.append(canonicalRef);
+        }
+    }
+
+    // Ensure installed refs are present in the display even if missing from remote listings
+    QSet<QString> listedCanonicalRefs;
+    for (const QString &entry : std::as_const(flatpaks)) {
+        const RemoteLsEntry parsed = parseRemoteLsLine(entry);
+        const QString canonical = canonicalFlatpakRef(parsed.ref);
+        if (!canonical.isEmpty()) {
+            listedCanonicalRefs.insert(canonical);
+        }
+    }
+
+    const auto buildEntry = [](const QString &ref) {
+        const QString version = ref.section('/', -1);
+        return version + '\t' + ref + '\t' + QString();
+    };
+
+    for (const QString &ref : std::as_const(installedCanonical)) {
+        if (!listedCanonicalRefs.contains(ref)) {
+            flatpaks.append(buildEntry(ref));
         }
     }
 }
@@ -1260,19 +1325,20 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
 {
     const RemoteLsEntry entry = parseRemoteLsLine(item);
 
-    QString ref = entry.ref;
+    const QString originalRef = entry.ref.trimmed();
+    QString ref = originalRef;
     QString version = entry.version;
     if (version.isEmpty() || version.contains('/')) {
         version = ref.section('/', -1);
     }
     const QString size = entry.size;
-    const bool hasTypePrefix = ref.startsWith("app/") || ref.startsWith("runtime/");
-    const QString name = hasTypePrefix ? ref.section('/', 1) : ref;
-    if (name.isEmpty()) {
+    const QString canonicalRef = canonicalFlatpakRef(ref);
+    if (canonicalRef.isEmpty()) {
         return nullptr;
     }
-    const QString long_name = name.section('/', 0, 0);
+    const QString long_name = canonicalRef.section('/', 0, 0);
     const QString short_name = long_name.section('.', -1);
+    const QString name = canonicalRef;
 
     // Skip unwanted packages
     static const QSet<QString> unwantedPackages
@@ -1287,7 +1353,8 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     widget_item->setText(FlatCol::LongName, long_name);
     widget_item->setText(FlatCol::Version, version);
     widget_item->setText(FlatCol::Size, size);
-    widget_item->setData(FlatCol::FullName, Qt::UserRole, name);
+    widget_item->setData(FlatCol::FullName, Qt::UserRole, originalRef.isEmpty() ? name : originalRef);
+    widget_item->setData(FlatCol::FullName, Qt::UserRole + 1, name); // canonical for matching
     widget_item->setData(0, Qt::UserRole, true);
 
     if (installed_all.contains(name)) {
@@ -2363,14 +2430,39 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 // List installed flatpaks by type: apps, runtimes, or all (if no type is provided)
 QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
-    QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
-    QStringList refs;
-    const QStringList lines = cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
-    for (const QString &line : lines) {
-        const ParsedFlatpakRef parsed = parseInstalledFlatpakLine(line);
-        if (!parsed.ref.isEmpty()) {
-            refs.append(parsed.ref);
+    QStringList lines;
+    if (cachedInstalledScope == fpUser && !cachedInstalledFlatpaks.isEmpty() && type.isEmpty()) {
+        lines = cachedInstalledFlatpaks;
+    } else {
+        QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
+        lines = cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
+
+        if (type.isEmpty()) {
+            cachedInstalledFlatpaks = lines;
+            cachedInstalledScope = fpUser;
         }
+    }
+
+    QStringList refs;
+    for (const QString &lineRaw : lines) {
+        if (lineRaw.startsWith("Ref")) { // skip header if present
+            continue;
+        }
+        const QString line = lineRaw.section('\t', 0, 0);
+
+        const ParsedFlatpakRef parsed = parseInstalledFlatpakLine(line);
+        if (parsed.ref.isEmpty()) {
+            continue;
+        }
+
+        if (type == QLatin1String("--app") && parsed.isRuntime) {
+            continue;
+        }
+        if (type == QLatin1String("--runtime") && !parsed.isRuntime) {
+            continue;
+        }
+
+        refs.append(parsed.ref);
     }
     return refs;
 }
