@@ -661,6 +661,39 @@ bool MainWindow::isPackageInstallable(const QString &installable, const QString 
     return installable.split(',').contains(modArch) || installable == "all";
 }
 
+namespace {
+struct ParsedFlatpakRef {
+    QString ref;
+    bool isRuntime {false};
+};
+
+ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
+{
+    static const QRegularExpression refRegex(R"((app|runtime)/\S+)");
+
+    const QRegularExpressionMatch match = refRegex.match(line);
+    if (match.hasMatch()) {
+        const QString refWithType = match.captured(0);
+        return {refWithType.section('/', 1), refWithType.startsWith("runtime/")};
+    }
+
+    const QStringList tokens = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
+    for (const QString &token : tokens) {
+        if (token.contains('/')) {
+            const bool isRuntime = token.startsWith("runtime/") || token.contains(".runtime/") || token.contains(".Platform");
+            // If the token already lacks the app/runtime prefix, keep it intact
+            const bool hasTypePrefix = token.startsWith("app/") || token.startsWith("runtime/");
+            return {hasTypePrefix ? token.section('/', 1) : token, isRuntime};
+        }
+    }
+
+    // Fallback: return the line as-is if it looks like a ref without type prefix
+    const QString fallbackRef = line.contains('/') ? line : QString();
+    const bool isRuntime = fallbackRef.contains(".runtime/") || fallbackRef.contains(".Platform");
+    return {fallbackRef, isRuntime};
+}
+} // namespace
+
 void MainWindow::refreshPopularApps()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -1142,11 +1175,15 @@ void MainWindow::loadFlatpakData()
 
     // Split by type based on flatpak naming convention
     for (const QString &item : allInstalled) {
-        if (item.contains(".runtime/") || item.contains(".Platform")) {
-            installedRuntimesFP.append(item);
+        const ParsedFlatpakRef parsed = parseInstalledFlatpakLine(item);
+        if (parsed.ref.isEmpty()) {
+            continue;
+        }
+
+        if (parsed.isRuntime) {
+            installedRuntimesFP.append(parsed.ref);
         } else {
-            // Assume anything that's not explicitly a runtime is an app
-            installedAppsFP.append(item);
+            installedAppsFP.append(parsed.ref);
         }
     }
 }
@@ -2213,24 +2250,34 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         return {};
     }
 
-    // Construct the base command for listing flatpaks
-    QString baseCommand
-        = "flatpak remote-ls " + fpUser + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
+    const bool isUserScope = fpUser.startsWith("--user");
 
-    // Append the type to the base command if specified
+    auto buildRemoteLsCommand = [&](const QString &scope) {
+        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
+    };
+
+    QString typeFlag;
     if (type == QLatin1String("--app")) {
-        baseCommand.append("--app ");
+        typeFlag = "--app ";
     } else if (type == QLatin1String("--runtime")) {
-        baseCommand.append("--runtime ");
+        typeFlag = "--runtime ";
     }
-    baseCommand.append("2>/dev/null");
+    const QString commandSuffix = typeFlag + "2>/dev/null";
 
-    QStringList list;
+    // Construct the base command for listing flatpaks
+    QString baseCommand = buildRemoteLsCommand(fpUser) + commandSuffix;
+
+    auto runRemoteLs = [](const QString &command) {
+        Cmd shell;
+        QStringList output;
+        if (shell.run(command)) {
+            output = shell.readAllOutput().split('\n', Qt::SkipEmptyParts);
+        }
+        return output;
+    };
+
     // Execute the command and process the output
-    Cmd shell;
-    if (shell.run(baseCommand)) {
-        list = shell.readAllOutput().split('\n', Qt::SkipEmptyParts);
-    }
+    QStringList list = runRemoteLs(baseCommand);
 
     if (list.isEmpty()) {
         qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
@@ -2244,18 +2291,22 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
             qDebug() << "Remote update completed, retrying package list";
 
             // Retry the original command after update
-            Cmd retryShell;
-            if (retryShell.run(baseCommand)) {
-                list = retryShell.readAllOutput().split('\n', Qt::SkipEmptyParts);
-                if (!list.isEmpty()) {
-                    qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
-                } else {
-                    qDebug() << QString("Remote %1 still empty after update").arg(remote);
-                }
+            list = runRemoteLs(baseCommand);
+            if (!list.isEmpty()) {
+                qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
+            } else {
+                qDebug() << QString("Remote %1 still empty after update").arg(remote);
             }
         } else {
             qDebug() << "Failed to update remote" << remote;
         }
+    }
+
+    // If user scope returned nothing (e.g. only system remotes exist), fall back to system remotes for listing
+    if (list.isEmpty() && isUserScope) {
+        const QString systemCommand = buildRemoteLsCommand(QStringLiteral("--system ")) + commandSuffix;
+        qDebug() << "User remotes empty; retrying flatpak listing using system remotes:" << systemCommand;
+        list = runRemoteLs(systemCommand);
     }
 
     return list;
@@ -2265,7 +2316,15 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
     QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
-    return cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
+    QStringList refs;
+    const QStringList lines = cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const ParsedFlatpakRef parsed = parseInstalledFlatpakLine(line);
+        if (!parsed.ref.isEmpty()) {
+            refs.append(parsed.ref);
+        }
+    }
+    return refs;
 }
 
 QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
