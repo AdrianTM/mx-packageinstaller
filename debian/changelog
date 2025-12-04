@@ -1,3 +1,11 @@
+mx-packageinstaller (25.12.1) mx; urgency=medium
+
+  * Cache flatpak listings and normalize refs for user scope
+  * List flatpak versions that were removed from repos
+  * Autoajust flatpak columns
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 04 Dec 2025 17:27:25 -0500
+
 mx-packageinstaller (25.12) mx; urgency=medium
 
   * Move .Platform packages from Apps to Runtime Flatpak category
