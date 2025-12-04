@@ -84,7 +84,7 @@ enum { Check, Name, RepoVersion, InstalledVersion, Description, Status };
 
 namespace FlatCol
 {
-enum { Check, Name, LongName, Version, Size, Status, Duplicate, FullName };
+enum { Check, Name, LongName, Version, Branch, Size, Status, Duplicate, FullName };
 }
 
 namespace Release

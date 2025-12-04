@@ -867,10 +867,30 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     ui->treeFlatpak->blockSignals(true);
     ui->treeFlatpak->setUpdatesEnabled(false);
 
+    auto normalizeRef = [](const QString &line) {
+        QStringList parts = line.split('\t');
+
+        // Remove empty parts that might occur if the line starts with a tab
+        if (!parts.isEmpty() && parts.first().isEmpty()) {
+            parts.removeFirst();
+        }
+
+        QString ref;
+        if (parts.size() >= 4) {
+            ref = parts.at(2);
+        } else if (parts.size() >= 2) {
+            ref = parts.at(1);
+        } else {
+            ref = parts.value(0);
+        }
+
+        return ref.section('/', 1); // Strip leading type segment (app/runtime)
+    };
+
     QMutableStringListIterator i(list);
     if (raw) { // Raw format that needs to be edited
         while (i.hasNext()) {
-            i.setValue(i.next().section('\t', 1, 1).section('/', 1)); // Remove version and size
+            i.setValue(normalizeRef(i.next()));
         }
     }
     uint total = 0;
@@ -1155,9 +1175,16 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
         parts.removeAt(0);
     }
 
-    const QString name = (parts.size() == 3) ? parts.at(1).section('/', 1) : parts.at(0).section('/', 1);
-    const QString version = (parts.size() == 3) ? parts.at(0) : name.section('/', -1);
+    const bool hasBranchColumn = parts.size() >= 4;
+    const QString ref = hasBranchColumn ? parts.at(2)
+                                        : ((parts.size() >= 2) ? parts.at(1) : parts.value(0));
+    QString version = parts.value(0);
+    if (version.isEmpty()) {
+        version = ref.section('/', -1);
+    }
+    const QString branch = hasBranchColumn ? parts.at(1) : ref.section('/', -1);
     const QString size = parts.last();
+    const QString name = ref.section('/', 1);
     const QString long_name = name.section('/', 0, 0);
     const QString short_name = long_name.section('.', -1);
 
@@ -1173,6 +1200,7 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     widget_item->setText(FlatCol::Name, short_name);
     widget_item->setText(FlatCol::LongName, long_name);
     widget_item->setText(FlatCol::Version, version);
+    widget_item->setText(FlatCol::Branch, branch);
     widget_item->setText(FlatCol::Size, size);
     widget_item->setData(FlatCol::FullName, Qt::UserRole, name);
     widget_item->setData(0, Qt::UserRole, true);
@@ -2186,7 +2214,8 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     }
 
     // Construct the base command for listing flatpaks
-    QString baseCommand = "flatpak remote-ls " + fpUser + remote + ' ' + arch_fp + "--columns=ver,ref,installed-size ";
+    QString baseCommand
+        = "flatpak remote-ls " + fpUser + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
 
     // Append the type to the base command if specified
     if (type == QLatin1String("--app")) {
