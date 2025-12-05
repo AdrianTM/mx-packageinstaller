@@ -338,6 +338,9 @@ void MainWindow::listSizeInstalledFP()
 // Block interface while updating Flatpak list
 void MainWindow::blockInterfaceFP(bool block)
 {
+    if (holdProgressForFlatpakRefresh && block) {
+        return;
+    }
     ui->tabWidget->widget(Tab::Flatpak)->setEnabled(!block);
     ui->comboRemote->setDisabled(block);
     ui->comboFilterFlatpak->setDisabled(block);
