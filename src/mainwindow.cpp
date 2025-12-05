@@ -3642,29 +3642,39 @@ void MainWindow::filterChanged(const QString &arg1)
         auto itStatus = statusMap.find(arg1);
         if (itStatus != statusMap.end()) {
             savedComboIndex = itStatus.value();
+            bool hasVisibleMatches = false;
             for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
                 int itemStatus = (*it)->data(TreeCol::Status, Qt::UserRole).toInt();
                 bool shouldShow = (itStatus.value() == Status::Installed && itemStatus == Status::Upgradable)
                                   || (itemStatus == itStatus.value());
                 (*it)->setHidden(!shouldShow);
                 (*it)->setData(0, Qt::UserRole, shouldShow);
+                hasVisibleMatches = hasVisibleMatches || shouldShow;
             }
             // Show the header checkbox when filtering Upgradable or Autoremovable
             if (itStatus.value() == Status::Upgradable || itStatus.value() == Status::Autoremovable) {
                 const QString tip = (itStatus.value() == Status::Upgradable) ? tr("Select/deselect all upgradable")
                                                                              : tr("Select/deselect all autoremovable");
+                const bool allowAutoremovableCheckbox = itStatus.value() != Status::Autoremovable || hasVisibleMatches;
+
                 if (currentTree == ui->treeEnabled && headerEnabled) {
-                    headerEnabled->setCheckboxVisible(true);
-                    headerEnabled->setToolTip(tip);
-                    headerEnabled->resizeSection(TreeCol::Check, qMax(headerEnabled->sectionSize(0), 22));
+                    headerEnabled->setCheckboxVisible(allowAutoremovableCheckbox);
+                    if (allowAutoremovableCheckbox) {
+                        headerEnabled->setToolTip(tip);
+                        headerEnabled->resizeSection(TreeCol::Check, qMax(headerEnabled->sectionSize(0), 22));
+                    }
                 } else if (currentTree == ui->treeMXtest && headerMX) {
-                    headerMX->setCheckboxVisible(true);
-                    headerMX->setToolTip(tip);
-                    headerMX->resizeSection(TreeCol::Check, qMax(headerMX->sectionSize(0), 22));
+                    headerMX->setCheckboxVisible(allowAutoremovableCheckbox);
+                    if (allowAutoremovableCheckbox) {
+                        headerMX->setToolTip(tip);
+                        headerMX->resizeSection(TreeCol::Check, qMax(headerMX->sectionSize(0), 22));
+                    }
                 } else if (currentTree == ui->treeBackports && headerBP) {
-                    headerBP->setCheckboxVisible(true);
-                    headerBP->setToolTip(tip);
-                    headerBP->resizeSection(TreeCol::Check, qMax(headerBP->sectionSize(0), 22));
+                    headerBP->setCheckboxVisible(allowAutoremovableCheckbox);
+                    if (allowAutoremovableCheckbox) {
+                        headerBP->setToolTip(tip);
+                        headerBP->resizeSection(TreeCol::Check, qMax(headerBP->sectionSize(0), 22));
+                    }
                 }
             }
         }
