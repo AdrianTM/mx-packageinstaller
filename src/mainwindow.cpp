@@ -2092,14 +2092,7 @@ bool MainWindow::downloadPackageList(bool forceDownload)
 
     auto runUpdateApt = [this, forceDownload]() {
         QScopedValueRollback<bool> holdGuard(holdProgressForAptRefresh, holdProgressForAptRefresh || forceDownload);
-        const bool previousCancelState = pushCancel->isEnabled();
-        if (forceDownload) {
-            pushCancel->setEnabled(false);
-        }
         const bool ok = updateApt();
-        if (forceDownload) {
-            pushCancel->setEnabled(previousCancelState);
-        }
         return ok;
     };
 
@@ -2290,6 +2283,8 @@ bool MainWindow::readPackageList(bool forceDownload)
 void MainWindow::cancelDownload()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    holdProgressForAptRefresh = false;
+    holdProgressForFlatpakRefresh = false;
     cmd.terminate();
 }
 
