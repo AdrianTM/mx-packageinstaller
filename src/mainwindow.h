@@ -1,7 +1,7 @@
 /**********************************************************************
  *  mxpackageinstaller.h
  **********************************************************************
- * Copyright (C) 2017 MX Authors
+ * Copyright (C) 2017-2025 MX Authors
  *
  * Authors: Adrian
  *          Dolphin_Oracle
@@ -221,6 +221,7 @@ private:
     QStringList cachedInstalledFlatpaks; // Raw lines from flatpak list --columns=ref,size
     QString cachedInstalledScope;
     QHash<QString, QString> cachedInstalledSizeMap; // canonical ref -> size string
+    bool cachedInstalledFetched {false};
     QTemporaryDir tempDir;
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree

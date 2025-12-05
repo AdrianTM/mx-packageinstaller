@@ -1,8 +1,9 @@
-mx-packageinstaller (25.12.2) mx; urgency=medium
+mx-packageinstaller (25.12.3) mx; urgency=medium
 
   * Cache flatpak listings and normalize refs for user scope
   * List flatpak versions that were removed from repos
   * Autoajust flatpak columns
+  * Ensure user flatpak remotes are initialized when switching scope
 
  -- Adrian <adrian@mxlinux.org>  Thu, 04 Dec 2025 17:27:25 -0500
 

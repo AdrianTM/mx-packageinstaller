@@ -1,7 +1,7 @@
 /**********************************************************************
  *  MainWindow.cpp
  **********************************************************************
- * Copyright (C) 2017-2023 MX Authors
+ * Copyright (C) 2017-2025 MX Authors
  *
  * Authors: Adrian
  *          Dolphin_Oracle
@@ -320,7 +320,7 @@ void MainWindow::listSizeInstalledFP()
     };
 
     quint64 total = 0;
-    if (cachedInstalledScope == fpUser && !cachedInstalledSizeMap.isEmpty()) {
+    if (cachedInstalledScope == fpUser && cachedInstalledFetched) {
         total = sumSizes(cachedInstalledSizeMap.values());
     } else {
         QStringList list = cmd.getOut("flatpak list " + fpUser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
@@ -440,7 +440,7 @@ uchar MainWindow::showVersionDialog(const QString &message)
     QMessageBox msgBox;
     msgBox.setWindowTitle(tr("Debian Version"));
     msgBox.setText(message);
-    msgBox.addButton("Bullseye", QMessageBox::AcceptRole);
+    msgBox.addButton("Bookworm", QMessageBox::AcceptRole);
     msgBox.addButton("Trixie", QMessageBox::AcceptRole);
     msgBox.addButton(QMessageBox::Cancel);
     msgBox.show();
@@ -450,7 +450,7 @@ uchar MainWindow::showVersionDialog(const QString &message)
     if (ret == QMessageBox::Cancel) {
         exit(EXIT_FAILURE);
     }
-    return ret == 0 ? Release::Bullseye : Release::Trixie;
+    return ret == 0 ? Release::Bookworm : Release::Trixie;
 }
 
 QString MainWindow::getDebianVerName(uchar version)
@@ -467,8 +467,8 @@ QString MainWindow::getDebianVerName(uchar version)
         return it->second;
     }
 
-    qWarning() << "Error: Invalid Debian version, assumes Bullseye";
-    return QStringLiteral("bullseye");
+    qWarning() << "Error: Invalid Debian version, assumes bookworm";
+    return QStringLiteral("bookworm");
 }
 
 QString MainWindow::getLocalizedName(const QDomElement &element) const
@@ -1270,14 +1270,14 @@ void MainWindow::loadFlatpakData()
     cachedInstalledFlatpaks.clear();
     cachedInstalledSizeMap.clear();
     cachedInstalledScope.clear();
+    cachedInstalledFetched = false;
 
     // Optimize: Get all installed packages with one command (ref + size), then split by type
-    QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref,size";
-    QStringList allInstalled = cmd.getOut(allInstalledCommand).split('\n', Qt::SkipEmptyParts);
+    const QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref,size";
+    const QStringList allInstalled = cmd.getOut(allInstalledCommand).split('\n', Qt::SkipEmptyParts);
     cachedInstalledFlatpaks = allInstalled;
     cachedInstalledScope = fpUser;
-    cachedInstalledFlatpaks = allInstalled;
-    cachedInstalledScope = fpUser;
+    cachedInstalledFetched = true;
 
     // Clear and reserve space for better performance
     installedAppsFP.clear();
@@ -1493,29 +1493,47 @@ void MainWindow::listFlatpakRemotes() const
     QString currentRemote = ui->comboRemote->currentText();
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
-    Cmd shell;
-    QStringList list
-        = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
-    if (shell.exitCode() != 0) {
-        ui->comboRemote->blockSignals(false);
-        return;
+    const bool isUserScope = fpUser.startsWith("--user");
+
+    auto fetchRemotes = [this](QStringList &outList) {
+        Cmd shell;
+        outList = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
+        return shell.exitCode() == 0;
+    };
+
+    auto addUserRemotes = []() {
+        Cmd addRemotes;
+        return addRemotes.run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", Cmd::QuietMode::Yes);
+    };
+
+    QStringList list;
+    bool listOk = fetchRemotes(list);
+
+    // If user scope listing failed (common when user has never set up flatpak), attempt to set up defaults
+    if (!listOk && isUserScope) {
+        qDebug() << "User remote-list failed; attempting to set up user remotes";
+        if (addUserRemotes()) {
+            listOk = fetchRemotes(list);
+        }
     }
 
     // If no user remotes exist, set up the default ones
-    if (list.isEmpty()) {
+    if (list.isEmpty() && isUserScope) {
         qDebug() << "No flatpak remotes found for user, setting up default remotes";
 
-        Cmd addRemotes;
-        if (addRemotes.run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", Cmd::QuietMode::Yes)) {
+        if (addUserRemotes()) {
             qDebug() << "Successfully set up flatpak remotes for user";
 
             // Re-fetch the remote list after setup
-            list = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1")
-                       .remove(' ')
-                       .split('\n', Qt::SkipEmptyParts);
+            listOk = fetchRemotes(list);
         } else {
             qDebug() << "Failed to set up flatpak remotes for user";
         }
+    }
+
+    if (!listOk) {
+        ui->comboRemote->blockSignals(false);
+        return;
     }
 
     ui->comboRemote->addItems(list);
@@ -2463,15 +2481,16 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 {
     QStringList lines;
-    if (cachedInstalledScope == fpUser && !cachedInstalledFlatpaks.isEmpty() && type.isEmpty()) {
+    if (cachedInstalledScope == fpUser && cachedInstalledFetched) {
         lines = cachedInstalledFlatpaks;
     } else {
-        QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
+        const QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
         lines = cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
 
         if (type.isEmpty()) {
             cachedInstalledFlatpaks = lines;
             cachedInstalledScope = fpUser;
+            cachedInstalledFetched = true;
         }
     }
 
