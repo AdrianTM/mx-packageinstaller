@@ -2090,9 +2090,22 @@ bool MainWindow::downloadPackageList(bool forceDownload)
     progress->setLabelText(tr("Downloading package info..."));
     pushCancel->setEnabled(true);
 
+    auto runUpdateApt = [this, forceDownload]() {
+        QScopedValueRollback<bool> holdGuard(holdProgressForAptRefresh, holdProgressForAptRefresh || forceDownload);
+        const bool previousCancelState = pushCancel->isEnabled();
+        if (forceDownload) {
+            pushCancel->setEnabled(false);
+        }
+        const bool ok = updateApt();
+        if (forceDownload) {
+            pushCancel->setEnabled(previousCancelState);
+        }
+        return ok;
+    };
+
     // Handle enabled list download/update
     if (enabledList.isEmpty() || forceDownload) {
-        if (forceDownload && !updateApt()) {
+        if (forceDownload && !runUpdateApt()) {
             return false;
         }
         progress->show();
@@ -2102,7 +2115,7 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         AptCache cache;
         enabledList = cache.getCandidates();
         if (enabledList.isEmpty()) {
-            updateApt();
+            runUpdateApt();
             enabledList = AptCache().getCandidates();
         }
     }
@@ -2701,7 +2714,7 @@ void MainWindow::cmdDone()
     timer.stop();
     setCursor(QCursor(Qt::ArrowCursor));
     disableOutput();
-    if (!holdProgressForFlatpakRefresh) {
+    if (!holdProgressForFlatpakRefresh && !holdProgressForAptRefresh) {
         progress->hide();
     }
 }
