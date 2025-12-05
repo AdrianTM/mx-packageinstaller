@@ -335,22 +335,12 @@ void MainWindow::listSizeInstalledFP()
     ui->labelNumSize->setText(convert(total));
 }
 
-// Block interface while updating Flatpak list
-void MainWindow::blockInterfaceFP(bool block)
+// Keep Flatpak UI enabled; rely on modal progress dialog to block interaction
+void MainWindow::blockInterfaceFP(bool)
 {
-    if (holdProgressForFlatpakRefresh && block) {
-        return;
-    }
-    ui->tabWidget->widget(Tab::Flatpak)->setEnabled(!block);
-    ui->comboRemote->setDisabled(block);
-    ui->comboFilterFlatpak->setDisabled(block);
-    ui->comboUser->setDisabled(block);
-    ui->searchBoxFlatpak->setDisabled(block);
-    ui->treeFlatpak->setDisabled(block);
-    ui->frameFP->setDisabled(block);
-    ui->iconInstalledPackages_4->setDisabled(block);
-    ui->labelRepo->setDisabled(block);
-    block ? setCursor(QCursor(Qt::BusyCursor)) : setCursor(QCursor(Qt::ArrowCursor));
+    // Maintain cursor feedback without toggling widget enabled state
+    const bool isBusy = displayFlatpaksIsRunning;
+    setCursor(isBusy ? QCursor(Qt::BusyCursor) : QCursor(Qt::ArrowCursor));
 }
 
 // Update interface when changing Tab::Enabled, MX, Backports
@@ -905,8 +895,7 @@ void MainWindow::setProgressDialog()
     pushCancel = new QPushButton(tr("Cancel"));
     connect(pushCancel, &QPushButton::clicked, this, &MainWindow::cancelDownload);
     progress->setWindowModality(Qt::WindowModal);
-    progress->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowSystemMenuHint
-                             | Qt::WindowStaysOnTopHint);
+    progress->setWindowFlags(Qt::Dialog | Qt::CustomizeWindowHint | Qt::WindowTitleHint | Qt::WindowStaysOnTopHint);
     progress->setCancelButton(pushCancel);
     pushCancel->setDisabled(true);
     progress->setLabelText(tr("Please wait..."));
@@ -1256,6 +1245,11 @@ void MainWindow::setupFlatpakDisplay()
     const bool isCurrentTabFlatpak = ui->tabWidget->currentIndex() == Tab::Flatpak;
     if (isCurrentTabFlatpak) {
         setCursor(QCursor(Qt::BusyCursor));
+        if (!flatpakCancelHidden && pushCancel) {
+            pushCancel->setEnabled(false);
+            pushCancel->hide();
+            flatpakCancelHidden = true;
+        }
         progress->show();
         if (!timer.isActive()) {
             timer.start(100ms);
@@ -1454,6 +1448,11 @@ void MainWindow::finalizeFlatpakDisplay()
     if (holdProgressForFlatpakRefresh) {
         holdProgressForFlatpakRefresh = false;
         progress->hide();
+    }
+    if (flatpakCancelHidden && pushCancel) {
+        pushCancel->show();
+        pushCancel->setEnabled(true);
+        flatpakCancelHidden = false;
     }
     ui->treeFlatpak->setUpdatesEnabled(true);
 }
@@ -3418,6 +3417,11 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
             listFlatpakRemotes();
         }
         if (displayFlatpaksIsRunning) {
+            if (!flatpakCancelHidden && pushCancel) {
+                pushCancel->setEnabled(false);
+                pushCancel->hide();
+                flatpakCancelHidden = true;
+            }
             progress->show();
             if (!timer.isActive()) {
                 timer.start(100ms);
@@ -3847,6 +3851,11 @@ void MainWindow::pushForceUpdateMX_clicked()
 void MainWindow::pushForceUpdateFP_clicked()
 {
     ui->searchBoxFlatpak->clear();
+    if (!flatpakCancelHidden && pushCancel) {
+        pushCancel->setEnabled(false);
+        pushCancel->hide();
+        flatpakCancelHidden = true;
+    }
     holdProgressForFlatpakRefresh = true;
     progress->show();
     cmd.run("flatpak update --appstream");

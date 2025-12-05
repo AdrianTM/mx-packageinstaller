@@ -227,6 +227,8 @@ private:
     bool cachedInstalledFetched {false};
     bool holdProgressForAptRefresh {false};
     bool holdProgressForFlatpakRefresh {false};
+    bool flatpakCancelHidden {false};
+    bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
     QTemporaryDir tempDir;
     QTimer timer;

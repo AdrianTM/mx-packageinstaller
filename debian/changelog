@@ -5,6 +5,7 @@ mx-packageinstaller (25.12.3) mx; urgency=medium
   * Autoajust flatpak columns
   * Ensure user flatpak remotes are initialized when switching scope
   * Cache flatpak remote listing to avoid duplicate remote-ls on tab switch
+  * UI improvements: progress bar should not flash anymore
 
  -- Adrian <adrian@mxlinux.org>  Thu, 04 Dec 2025 17:27:25 -0500
 
