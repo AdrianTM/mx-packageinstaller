@@ -453,9 +453,11 @@ uchar MainWindow::showVersionDialog(const QString &message)
     return ret == 0 ? Release::Bullseye : Release::Trixie;
 }
 
-QString MainWindow::getDebianVerName()
+QString MainWindow::getDebianVerName(uchar version)
 {
-    const auto version = getDebianVerNum();
+    if (version == 0) {
+        version = getDebianVerNum();
+    }
     static const std::map<uchar, QString> versionMap
         = {{Release::Jessie, QStringLiteral("jessie")},     {Release::Stretch, QStringLiteral("stretch")},
            {Release::Buster, QStringLiteral("buster")},     {Release::Bullseye, QStringLiteral("bullseye")},
@@ -671,7 +673,8 @@ bool MainWindow::isPackageInstallable(const QString &installable, const QString 
     return installable.split(',').contains(modArch) || installable == "all";
 }
 
-namespace {
+namespace
+{
 struct ParsedFlatpakRef {
     QString ref;
     bool isRuntime {false};
@@ -717,11 +720,10 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
     const bool isRuntime = isRuntimeToken(fallbackRef);
     return {fallbackRef, isRuntime};
 }
-} // namespace
 
-namespace {
 struct RemoteLsEntry {
     QString version;
+    QString branch;
     QString ref;
     QString size;
 };
@@ -730,12 +732,41 @@ RemoteLsEntry parseRemoteLsLine(const QString &line)
 {
     RemoteLsEntry entry;
 
-    QStringList tabParts = line.split('\t', Qt::SkipEmptyParts);
-    if (tabParts.size() >= 3) {
-        entry.version = tabParts.at(0);
-        entry.ref = tabParts.at(1);
-        entry.size = tabParts.last();
+    const QStringList tabPartsRaw = line.split('\t', Qt::KeepEmptyParts);
+    QStringList tabParts;
+    tabParts.reserve(tabPartsRaw.size());
+    for (const QString &part : tabPartsRaw) {
+        tabParts.append(part.trimmed());
+    }
+
+    auto finalizeEntry = [&entry]() {
+        if (entry.branch.isEmpty() && !entry.ref.isEmpty()) {
+            entry.branch = entry.ref.section('/', -1);
+        }
+        if ((entry.version.isEmpty() || entry.version.contains('/')) && !entry.ref.isEmpty()) {
+            entry.version = entry.ref.section('/', -1);
+        }
         return entry;
+    };
+
+    if (tabParts.size() >= 4) {
+        entry.version = tabParts.at(0);
+        entry.branch = tabParts.at(1);
+        entry.ref = tabParts.at(2);
+        entry.size = tabParts.at(3);
+        return finalizeEntry();
+    }
+    if (tabParts.size() == 3) {
+        entry.version = tabParts.at(0);
+        const QString possibleBranchOrRef = tabParts.at(1);
+        if (possibleBranchOrRef.count('/') >= 2) {
+            entry.ref = possibleBranchOrRef;
+            entry.size = tabParts.at(2);
+        } else {
+            entry.branch = possibleBranchOrRef;
+            entry.ref = tabParts.at(2);
+        }
+        return finalizeEntry();
     }
 
     QStringList tokens = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
@@ -750,15 +781,15 @@ RemoteLsEntry parseRemoteLsLine(const QString &line)
 
     if (!entry.ref.isEmpty()) {
         entry.version = tokens.value(0);
+        entry.branch = tokens.value(1);
         if (refIndex >= 0 && refIndex + 1 < tokens.size()) {
             entry.size = tokens.mid(refIndex + 1).join(' ');
         }
-        return entry;
+        return finalizeEntry();
     }
 
     entry.ref = line.trimmed();
-    entry.version = entry.ref.section('/', -1);
-    return entry;
+    return finalizeEntry();
 }
 } // namespace
 
@@ -994,9 +1025,8 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     uint total = 0;
     for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
         const QString storedCanonical = (*it)->data(FlatCol::FullName, Qt::UserRole + 1).toString();
-        const QString itemRef = normalizeForMatch(!storedCanonical.isEmpty()
-                                                      ? storedCanonical
-                                                      : (*it)->data(FlatCol::FullName, Qt::UserRole).toString());
+        const QString itemRef = normalizeForMatch(
+            !storedCanonical.isEmpty() ? storedCanonical : (*it)->data(FlatCol::FullName, Qt::UserRole).toString());
         if (refSet.contains(itemRef)) {
             ++total;
             (*it)->setHidden(false);
@@ -1295,8 +1325,9 @@ void MainWindow::loadFlatpakData()
     }
 
     const auto buildEntry = [](const QString &ref) {
-        const QString version = ref.section('/', -1);
-        return version + '\t' + ref + '\t' + QString();
+        const QString branch = ref.section('/', -1);
+        const QString version = branch;
+        return version + '\t' + branch + '\t' + ref + '\t';
     };
 
     for (const QString &ref : std::as_const(installedCanonical)) {
@@ -1329,7 +1360,8 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     QString ref = originalRef;
     QString version = entry.version;
     if (version.isEmpty() || version.contains('/')) {
-        version = ref.section('/', -1);
+        const QString branch = entry.branch.isEmpty() ? ref.section('/', -1) : entry.branch;
+        version = branch;
     }
     const QString size = entry.size;
     const QString canonicalRef = canonicalFlatpakRef(ref);
@@ -2368,7 +2400,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     const bool isUserScope = fpUser.startsWith("--user");
 
     auto buildRemoteLsCommand = [&](const QString &scope) {
-        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,ref,installed-size ";
+        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
     };
 
     QString typeFlag;
