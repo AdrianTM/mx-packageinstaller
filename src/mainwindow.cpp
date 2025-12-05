@@ -1448,6 +1448,10 @@ void MainWindow::finalizeFlatpakDisplay()
     displayFlatpaksIsRunning = false;
     firstRunFP = false;
     blockInterfaceFP(false);
+    if (holdProgressForFlatpakRefresh) {
+        holdProgressForFlatpakRefresh = false;
+        progress->hide();
+    }
     ui->treeFlatpak->setUpdatesEnabled(true);
 }
 
@@ -2697,7 +2701,9 @@ void MainWindow::cmdDone()
     timer.stop();
     setCursor(QCursor(Qt::ArrowCursor));
     disableOutput();
-    progress->hide();
+    if (!holdProgressForFlatpakRefresh) {
+        progress->hide();
+    }
 }
 
 void MainWindow::enableOutput()
@@ -3830,6 +3836,7 @@ void MainWindow::pushForceUpdateMX_clicked()
 void MainWindow::pushForceUpdateFP_clicked()
 {
     ui->searchBoxFlatpak->clear();
+    holdProgressForFlatpakRefresh = true;
     progress->show();
     cmd.run("flatpak update --appstream");
     displayFlatpaks(true);
