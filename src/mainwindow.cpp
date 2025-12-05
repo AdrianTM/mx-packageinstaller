@@ -1497,6 +1497,13 @@ void MainWindow::ifDownloadFailed() const
     progress->hide();
 }
 
+void MainWindow::invalidateFlatpakRemoteCache()
+{
+    cachedFlatpakRemotes.clear();
+    cachedFlatpakRemotesScope.clear();
+    cachedFlatpakRemotesFetched = false;
+}
+
 void MainWindow::listFlatpakRemotes() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -1505,9 +1512,22 @@ void MainWindow::listFlatpakRemotes() const
     ui->comboRemote->clear();
     const bool isUserScope = fpUser.startsWith("--user");
 
+    auto applyRemotes = [&](const QStringList &list) {
+        ui->comboRemote->addItems(list);
+        QString savedRemote = firstRunFP ? settings.value("FlatpakRemote", "flathub").toString() : currentRemote;
+        ui->comboRemote->setCurrentText(savedRemote.isEmpty() ? "flathub" : savedRemote);
+        ui->comboRemote->blockSignals(false);
+    };
+
+    if (cachedFlatpakRemotesFetched && cachedFlatpakRemotesScope == fpUser) {
+        applyRemotes(cachedFlatpakRemotes);
+        return;
+    }
+
     auto fetchRemotes = [this](QStringList &outList) {
         Cmd shell;
-        outList = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
+        outList
+            = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
         return shell.exitCode() == 0;
     };
 
@@ -1546,10 +1566,11 @@ void MainWindow::listFlatpakRemotes() const
         return;
     }
 
-    ui->comboRemote->addItems(list);
-    QString savedRemote = firstRunFP ? settings.value("FlatpakRemote", "flathub").toString() : currentRemote;
-    ui->comboRemote->setCurrentText(savedRemote.isEmpty() ? "flathub" : savedRemote);
-    ui->comboRemote->blockSignals(false);
+    cachedFlatpakRemotes = list;
+    cachedFlatpakRemotesScope = fpUser;
+    cachedFlatpakRemotesFetched = true;
+
+    applyRemotes(list);
 }
 
 bool MainWindow::confirmActions(const QString &names, const QString &action)
@@ -3407,6 +3428,7 @@ void MainWindow::installFlatpak()
     }
     Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
     enableOutput();
+    invalidateFlatpakRemoteCache();
     listFlatpakRemotes();
     if (displayFlatpaksIsRunning) {
         progress->show();
@@ -3945,6 +3967,7 @@ void MainWindow::pushRemotes_clicked()
     auto *dialog = new ManageRemotes(this, fpUser);
     dialog->exec();
     if (dialog->isChanged()) {
+        invalidateFlatpakRemoteCache();
         listFlatpakRemotes();
         displayFlatpaks(true);
     }
@@ -3954,6 +3977,7 @@ void MainWindow::pushRemotes_clicked()
         enableOutput();
         if (cmd.run("socat SYSTEM:'flatpak install -y " + dialog->getUser() + "--from "
                     + dialog->getInstallRef().replace(':', "\\:") + "',stderr STDIO\"")) {
+            invalidateFlatpakRemoteCache();
             listFlatpakRemotes();
             displayFlatpaks(true);
             setCursor(QCursor(Qt::ArrowCursor));
@@ -3987,6 +4011,7 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         }
     }
     lastItemClicked = nullptr;
+    invalidateFlatpakRemoteCache();
     listFlatpakRemotes();
     displayFlatpaks(true);
 }

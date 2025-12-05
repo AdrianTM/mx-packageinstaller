@@ -221,6 +221,9 @@ private:
     QStringList cachedInstalledFlatpaks; // Raw lines from flatpak list --columns=ref,size
     QString cachedInstalledScope;
     QHash<QString, QString> cachedInstalledSizeMap; // canonical ref -> size string
+    mutable QStringList cachedFlatpakRemotes;
+    mutable QString cachedFlatpakRemotesScope;
+    mutable bool cachedFlatpakRemotesFetched {false};
     bool cachedInstalledFetched {false};
     QTemporaryDir tempDir;
     QTimer timer;
@@ -300,6 +303,7 @@ private:
     void hideLibs() const;
     void ifDownloadFailed() const;
     void installFlatpak();
+    void invalidateFlatpakRemoteCache();
     void listFlatpakRemotes() const;
     void listSizeInstalledFP();
     void loadFlatpakData();
