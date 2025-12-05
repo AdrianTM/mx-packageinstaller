@@ -3546,6 +3546,17 @@ void MainWindow::filterChanged(const QString &arg1)
         ui->checkHideLibsMX->blockSignals(block);
     };
 
+    auto resizeCurrentRepoTree = [this]() {
+        if (currentTree == ui->treeFlatpak || currentTree == ui->treePopularApps) {
+            return;
+        }
+        for (int i = 0; i < currentTree->columnCount(); ++i) {
+            if (!currentTree->isColumnHidden(i)) {
+                currentTree->resizeColumnToContents(i);
+            }
+        }
+    };
+
     // Hide and reset all header checkboxes by default
     if (headerEnabled) {
         headerEnabled->setCheckboxVisible(false);
@@ -3662,6 +3673,7 @@ void MainWindow::filterChanged(const QString &arg1)
         setSearchFocus();
         clearChangeListAndButtons();
     }
+    resizeCurrentRepoTree();
     currentTree->setUpdatesEnabled(true);
     currentTree->blockSignals(false);
 }
