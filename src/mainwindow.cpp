@@ -1335,6 +1335,16 @@ void MainWindow::loadFlatpakData()
             flatpaks.append(buildEntry(ref));
         }
     }
+
+    // Build cached app/runtime lists from the already-fetched remote data to avoid re-querying
+    flatpaksApps.clear();
+    flatpaksRuntimes.clear();
+    for (const QString &entry : std::as_const(flatpaks)) {
+        const RemoteLsEntry parsed = parseRemoteLsLine(entry);
+        const QString refForType = !parsed.ref.isEmpty() ? parsed.ref : canonicalFlatpakRef(parsed.ref);
+        const bool isRuntime = isRuntimeToken(refForType) || isRuntimeToken(canonicalFlatpakRef(refForType));
+        (isRuntime ? flatpaksRuntimes : flatpaksApps).append(entry);
+    }
 }
 
 void MainWindow::populateFlatpakTree()
