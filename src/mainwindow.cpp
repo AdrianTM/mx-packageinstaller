@@ -35,6 +35,7 @@
 #include <QNetworkReply>
 #include <QProgressBar>
 #include <QScreen>
+#include <QScopedValueRollback>
 #include <QScrollBar>
 #include <QShortcut>
 #include <QTextStream>
@@ -65,8 +66,10 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     connect(&timer, &QTimer::timeout, this, &MainWindow::updateBar);
     connect(&cmd, &Cmd::started, this, &MainWindow::cmdStart);
     connect(&cmd, &Cmd::done, this, &MainWindow::cmdDone);
-    connect(&cmd, &Cmd::outputAvailable, [](const QString &out) { qDebug() << out.trimmed(); });
-    connect(&cmd, &Cmd::errorAvailable, [](const QString &out) { qWarning() << out.trimmed(); });
+    connect(&cmd, &Cmd::outputAvailable, this,
+            [this](const QString &out) { if (!suppressCmdOutput) qDebug() << out.trimmed(); });
+    connect(&cmd, &Cmd::errorAvailable, this,
+            [this](const QString &out) { if (!suppressCmdOutput) qWarning() << out.trimmed(); });
     setWindowFlags(Qt::Window); // For the close, min and max buttons
 
     setup();
@@ -324,8 +327,8 @@ void MainWindow::listSizeInstalledFP()
         total = sumSizes(cachedInstalledSizeMap.values());
     } else {
         const QString command = "flatpak list " + fpUser + "--columns app,size";
-        Cmd shell;
-        QStringList list = shell.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
+        QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+        QStringList list = cmd.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
         total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
                                 [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
     }
@@ -1276,8 +1279,8 @@ void MainWindow::loadFlatpakData()
 
     // Optimize: Get all installed packages with one command (ref + size), then split by type
     const QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref,size";
-    Cmd shell;
-    const QStringList allInstalled = shell.getOut(allInstalledCommand, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
+    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+    const QStringList allInstalled = cmd.getOut(allInstalledCommand, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
     cachedInstalledFlatpaks = allInstalled;
     cachedInstalledScope = fpUser;
     cachedInstalledFetched = true;
@@ -2519,8 +2522,8 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
         lines = cachedInstalledFlatpaks;
     } else {
         const QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
-        Cmd shell;
-        lines = shell.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
+        QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+        lines = cmd.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
 
         if (type.isEmpty()) {
             cachedInstalledFlatpaks = lines;

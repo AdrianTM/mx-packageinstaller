@@ -225,6 +225,7 @@ private:
     mutable QString cachedFlatpakRemotesScope;
     mutable bool cachedFlatpakRemotesFetched {false};
     bool cachedInstalledFetched {false};
+    bool suppressCmdOutput {false};
     QTemporaryDir tempDir;
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree
