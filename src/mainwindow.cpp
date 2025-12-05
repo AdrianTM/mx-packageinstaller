@@ -323,7 +323,9 @@ void MainWindow::listSizeInstalledFP()
     if (cachedInstalledScope == fpUser && cachedInstalledFetched) {
         total = sumSizes(cachedInstalledSizeMap.values());
     } else {
-        QStringList list = cmd.getOut("flatpak list " + fpUser + "--columns app,size").split('\n', Qt::SkipEmptyParts);
+        QStringList list
+            = cmd.getOut("flatpak list " + fpUser + "--columns app,size", Cmd::QuietMode::Yes)
+                  .split('\n', Qt::SkipEmptyParts);
         total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
                                 [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
     }
@@ -1274,7 +1276,8 @@ void MainWindow::loadFlatpakData()
 
     // Optimize: Get all installed packages with one command (ref + size), then split by type
     const QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref,size";
-    const QStringList allInstalled = cmd.getOut(allInstalledCommand).split('\n', Qt::SkipEmptyParts);
+    const QStringList allInstalled
+        = cmd.getOut(allInstalledCommand, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
     cachedInstalledFlatpaks = allInstalled;
     cachedInstalledScope = fpUser;
     cachedInstalledFetched = true;
@@ -2516,7 +2519,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
         lines = cachedInstalledFlatpaks;
     } else {
         const QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
-        lines = cmd.getOut(command).split('\n', Qt::SkipEmptyParts);
+        lines = cmd.getOut(command, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
 
         if (type.isEmpty()) {
             cachedInstalledFlatpaks = lines;
