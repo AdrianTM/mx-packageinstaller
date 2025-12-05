@@ -122,7 +122,8 @@ void MainWindow::setup()
     ui->comboUser->blockSignals(false);
 
     arch = AptCache::getArch();
-    verName = getDebianVerName();
+    debianVersion = getDebianVerNum();
+    verName = getDebianVerName(debianVersion);
 
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
@@ -1371,9 +1372,9 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
 
     const QString originalRef = entry.ref.trimmed();
     QString ref = originalRef;
+    const QString branch = entry.branch.isEmpty() ? ref.section('/', -1) : entry.branch;
     QString version = entry.version;
     if (version.isEmpty() || version.contains('/')) {
-        const QString branch = entry.branch.isEmpty() ? ref.section('/', -1) : entry.branch;
         version = branch;
     }
     const QString size = entry.size;
@@ -1397,6 +1398,7 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     widget_item->setText(FlatCol::Name, short_name);
     widget_item->setText(FlatCol::LongName, long_name);
     widget_item->setText(FlatCol::Version, version);
+    widget_item->setText(FlatCol::Branch, branch);
     widget_item->setText(FlatCol::Size, size);
     widget_item->setData(FlatCol::FullName, Qt::UserRole, originalRef.isEmpty() ? name : originalRef);
     widget_item->setData(FlatCol::FullName, Qt::UserRole + 1, name); // canonical for matching
@@ -2204,6 +2206,8 @@ void MainWindow::enableTabs(bool enable)
 void MainWindow::hideColumns() const
 {
     ui->tabWidget->setCurrentIndex(Tab::Popular);
+    const bool showFlatpakBranch = debianVersion < Release::Trixie;
+    ui->treeFlatpak->setColumnHidden(FlatCol::Branch, !showFlatpakBranch);
     ui->treeEnabled->hideColumn(TreeCol::Status); // Status of the package: installed, upgradable, etc
     ui->treeMXtest->hideColumn(TreeCol::Status);
     ui->treeBackports->hideColumn(TreeCol::Status);

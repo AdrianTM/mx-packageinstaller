@@ -84,7 +84,7 @@ enum { Check, Name, RepoVersion, InstalledVersion, Description, Status };
 
 namespace FlatCol
 {
-enum { Check, Name, LongName, Version, Size, Status, Duplicate, FullName };
+enum { Check, Name, LongName, Version, Branch, Size, Status, Duplicate, FullName };
 }
 
 namespace Release
@@ -211,6 +211,7 @@ private:
     QSettings settings;
     QString arch;
     QString fpUser;
+    uchar debianVersion {Release::Bookworm};
     QString verName;
     QStringList changeList;
     QStringList flatpaks;
