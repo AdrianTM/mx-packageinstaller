@@ -2,6 +2,8 @@
 
 #include <QDebug>
 #include <QDirIterator>
+#include <QProcess>
+#include <QStandardPaths>
 #include <QRegularExpression>
 #include <QStringView>
 
@@ -11,47 +13,24 @@ AptCache::AptCache()
     : arch(getArch())
 {
     if (!isDirValid()) {
-        qWarning() << "APT cache directory is not valid:" << dir.path();
+        qWarning() << "Pacman sync directory is not valid:" << dir.path();
         return;
     }
 
-    // Pre-allocate map capacity for expected ~70,000 packages to reduce rehashing
-    candidates.reserve(70000);
+    // Pre-allocate map capacity for expected package count to reduce rehashing
+    candidates.reserve(100000);
 
     loadCacheFiles();
 }
 
 void AptCache::loadCacheFiles()
 {
-    // Regex expressions to match package files
-    static const QRegularExpression allBinaryArchRegex(QString(R"(^.*binary-%1_Packages$)").arg(arch));
-    static const QRegularExpression allBinaryAnyRegex(R"(^.*binary-[a-z0-9]+_Packages$)");
-    static const QRegularExpression allRegex(R"(^.*_Packages$)");
-
-    // Exclusion patterns for Debian backports and MX testrepo and temp repositories
-    static const QStringList exclusionPatterns
-        = {R"(debian_.*-backports_.*_Packages)", R"(mx_testrepo.*_test_.*_Packages)", R"(mx_repo.*_temp_.*_Packages)"};
-    static const QRegularExpression excludeRegex(exclusionPatterns.join('|'));
-
-    QDirIterator it(dir.path(), QDir::Files);
+    QDirIterator it(dir.path(), {"*.db"}, QDir::Files);
     while (it.hasNext()) {
         const QString fileName = it.next();
-
-        // Filter files by extension first to reduce unnecessary regex matches
-        if (!fileName.endsWith("_Packages")) {
-            continue;
-        }
-
-        const bool isBinaryArchMatch = allBinaryArchRegex.match(fileName).hasMatch();
-        const bool isBinaryAnyMismatch = !allBinaryAnyRegex.match(fileName).hasMatch();
-        const bool isAllMatch = allRegex.match(fileName).hasMatch();
-        const bool isExcluded = excludeRegex.match(fileName).hasMatch();
-
-        if ((isBinaryArchMatch || (isBinaryAnyMismatch && isAllMatch)) && !isExcluded) {
-            if (!readFile(fileName)) {
-                qWarning() << "Error reading cache file:" << fileName << "-"
-                           << QFile(dir.absoluteFilePath(fileName)).errorString();
-            }
+        if (!readFile(fileName)) {
+            qWarning() << "Error reading sync db file:" << fileName << "-"
+                       << QFile(dir.absoluteFilePath(fileName)).errorString();
         }
     }
 }
@@ -61,7 +40,7 @@ const QHash<QString, PackageInfo>& AptCache::getCandidates() const
     return candidates;
 }
 
-// Return DEB_BUILD_ARCH format which differs from what 'arch' or currentCpuArchitecture return
+// Return pacman arch format
 QString AptCache::getArch()
 {
     return arch_names.value(QSysInfo::currentCpuArchitecture(), QStringLiteral("unknown"));
@@ -89,79 +68,104 @@ void AptCache::updateCandidate(const QString &package, const QString &version, c
 
 bool AptCache::readFile(const QString &fileName)
 {
-    QFile file(dir.absoluteFilePath(fileName));
-    if (!file.open(QFile::ReadOnly)) {
-        qWarning() << "Could not open file:" << file.fileName() << "-" << file.errorString();
+    const QString filePath = dir.absoluteFilePath(fileName);
+    const QString bsdtar = QStandardPaths::findExecutable("bsdtar");
+    const QString program = bsdtar.isEmpty() ? QStringLiteral("tar") : bsdtar;
+
+    auto runExtract = [&](const QStringList &args, QByteArray &output) {
+        QProcess proc;
+        proc.setProgram(program);
+        proc.setArguments(args);
+        proc.start();
+        if (!proc.waitForFinished()) {
+            return false;
+        }
+        output = proc.readAllStandardOutput();
+        return proc.exitStatus() == QProcess::NormalExit && proc.exitCode() == 0;
+    };
+
+    QByteArray output;
+    bool ok = runExtract({"-xOf", filePath, "*/desc"}, output);
+    if ((!ok || output.isEmpty()) && bsdtar.isEmpty()) {
+        output.clear();
+        ok = runExtract({"--zstd", "-xOf", filePath, "*/desc"}, output);
+    }
+    if (!ok || output.isEmpty()) {
+        qWarning() << "Could not read pacman db:" << fileName;
         return false;
     }
-
-    QString content;
-    const qint64 fileSize = file.size();
-
-    // Use memory mapping for files larger than 10MB to avoid large memory copies
-    if (fileSize > 10 * 1024 * 1024) {
-        uchar* mappedData = file.map(0, fileSize);
-        if (mappedData) {
-            content = QString::fromUtf8(reinterpret_cast<const char*>(mappedData), fileSize);
-            file.unmap(mappedData);
-        } else {
-            // Fall back to regular read if mapping fails
-            QByteArray fileContent = file.readAll();
-            content = QString::fromUtf8(fileContent);
-        }
-    } else {
-        QByteArray fileContent = file.readAll();
-        content = QString::fromUtf8(fileContent);
-    }
-
-    if (!content.isEmpty()) {
-        parseFileContent(content);
-    }
-    file.close();
+    parseFileContent(QString::fromUtf8(output));
     return true;
 }
 
 void AptCache::parseFileContent(const QString &content)
 {
-
     QTextStream stream(const_cast<QString*>(&content));
     QString line;
     QString package;
     QString version;
     QString description;
-    bool isArchMatched = false;
+    QString pkgArch;
 
-    constexpr QLatin1String packageStr("Package:");
-    constexpr QLatin1String archStr("Architecture:");
-    constexpr QLatin1String versionStr("Version:");
-    constexpr QLatin1String descStr("Description:");
-    constexpr int packageSize = packageStr.size();
-    constexpr int archSize = archStr.size();
-    constexpr int versionSize = versionStr.size();
-    constexpr int descSize = descStr.size();
+    auto flushPackage = [&]() {
+        if (!package.isEmpty() && !version.isEmpty()
+            && (pkgArch == arch || pkgArch == QLatin1String("any"))) {
+            updateCandidate(package, version, description);
+        }
+        package.clear();
+        version.clear();
+        description.clear();
+        pkgArch.clear();
+    };
 
-    // Assumes the "Description:" line is the last field in the package data block
+    enum class Section { None, Name, Version, Desc, Arch };
+    Section current = Section::None;
+
     while (stream.readLineInto(&line)) {
-        QStringView lineView(line);
-        if (lineView.startsWith(packageStr)) {
-            QStringView packageView = lineView.mid(packageSize).trimmed();
-            package = packageView.toString();
-            // Reset state for new package
-            version.clear();
-            description.clear();
-            isArchMatched = false;
-        } else if (lineView.startsWith(archStr)) {
-            QStringView archView = lineView.mid(archSize).trimmed();
-            isArchMatched = (archView == arch || archView == QLatin1String("all"));
-        } else if (lineView.startsWith(versionStr)) {
-            QStringView versionView = lineView.mid(versionSize).trimmed();
-            version = versionView.toString();
-        } else if (lineView.startsWith(descStr)) {
-            QStringView descView = lineView.mid(descSize).trimmed();
-            description = descView.toString();
-            if (isArchMatched && !package.isEmpty() && !version.isEmpty()) {
-                updateCandidate(package, version, description);
-            }
+        if (line == QLatin1String("%NAME%")) {
+            flushPackage();
+            current = Section::Name;
+            continue;
+        }
+        if (line == QLatin1String("%VERSION%")) {
+            current = Section::Version;
+            continue;
+        }
+        if (line == QLatin1String("%DESC%")) {
+            current = Section::Desc;
+            continue;
+        }
+        if (line == QLatin1String("%ARCH%")) {
+            current = Section::Arch;
+            continue;
+        }
+        if (line.startsWith('%')) {
+            current = Section::None;
+            continue;
+        }
+
+        const QString value = line.trimmed();
+        if (value.isEmpty()) {
+            continue;
+        }
+
+        switch (current) {
+        case Section::Name:
+            package = value;
+            break;
+        case Section::Version:
+            version = value;
+            break;
+        case Section::Desc:
+            description = value;
+            break;
+        case Section::Arch:
+            pkgArch = value;
+            break;
+        case Section::None:
+            break;
         }
     }
+
+    flushPackage();
 }

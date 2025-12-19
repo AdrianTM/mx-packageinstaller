@@ -87,10 +87,6 @@ namespace FlatCol
 enum { Check, Name, LongName, Version, Branch, Size, Status, Duplicate, FullName };
 }
 
-namespace Release
-{
-enum { Jessie = 8, Stretch, Buster, Bullseye, Bookworm, Trixie };
-}
 
 struct PopularInfo {
     QString category;
@@ -130,7 +126,6 @@ private slots:
     void cmdDone();
     void cmdStart();
     void disableOutput();
-    void displayInfoTestOrBackport(const QTreeWidget *tree, const QTreeWidgetItem *item);
     void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
     void displayPackageInfo(const QTreeWidgetItem *item);
     void displayPopularInfo(const QTreeWidgetItem *item, int column);
@@ -186,7 +181,6 @@ private:
     bool displayPackagesIsRunning {false};
     bool firstRunFP {true};
     bool hideLibsChecked {true};
-    bool testInitiallyEnabled {false};
     bool updatedOnce {false};
     bool warningBackports {false};
     bool warningFlatpaks {false};
@@ -194,7 +188,7 @@ private:
     int savedComboIndex {0};
 
     Cmd cmd;
-    LockFile lockFile {"/var/lib/dpkg/lock"};
+    LockFile lockFile {"/var/lib/pacman/db.lck"};
     QHash<QString, VersionNumber> listInstalledVersions();
     QIcon qiconInstalled;
     QIcon qiconUpgradable;
@@ -211,8 +205,6 @@ private:
     QSettings settings;
     QString arch;
     QString fpUser;
-    uchar debianVersion {Release::Bookworm};
-    QString verName;
     QStringList changeList;
     QStringList flatpaks;
     QStringList flatpaksApps;
@@ -226,6 +218,8 @@ private:
     mutable QString cachedFlatpakRemotesScope;
     mutable bool cachedFlatpakRemotesFetched {false};
     bool cachedInstalledFetched {false};
+    QStringList cachedAutoremovable;
+    bool cachedAutoremovableFetched {false};
     bool holdProgressForAptRefresh {false};
     bool holdProgressForFlatpakRefresh {false};
     bool flatpakCancelHidden {false};
@@ -238,14 +232,12 @@ private:
     QUrl getScreenshotUrl(const QString &name);
     const QCommandLineParser &args;
     const QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec " : "/usr/bin/gksu "};
-    const QString tempList {"/etc/apt/sources.list.d/mxpitemp.list"};
 
     QNetworkAccessManager manager;
     QNetworkReply *reply;
 
     [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString categoryTranslation(const QString &item);
-    [[nodiscard]] QString getMXTestRepoUrl();
     [[nodiscard]] QString getArchOption() const;
     [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
     [[nodiscard]] QString getVersion(const QString &name) const;
@@ -259,10 +251,7 @@ private:
     [[nodiscard]] bool checkUpgradable(const QStringList &nameList) const;
     [[nodiscard]] bool isOnline();
     [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;
-    [[nodiscard]] static QString getDebianVerName(uchar version = 0);
     [[nodiscard]] static bool isFilteredName(const QString &name);
-    [[nodiscard]] static uchar getDebianVerNum();
-    [[nodiscard]] static uchar showVersionDialog(const QString &message);
     [[nodiscard]] QList<QTreeWidgetItem *> createTreeItemsList(QHash<QString, PackageInfo> *list) const;
     [[nodiscard]] QHash<QString, PackageInfo> *getCurrentList();
     [[nodiscard]] QTreeWidget *getCurrentTree();
@@ -285,6 +274,7 @@ private:
     bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
                    const QString &postUninstall = QLatin1String(""));
     bool updateApt();
+    QStringList getAutoremovablePackages();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);
     void blockInterfaceFP(bool block);
@@ -301,6 +291,7 @@ private:
     void enableTabs(bool enable);
     void finalizeFlatpakDisplay();
     void formatFlatpakTree() const;
+    void handleAurTab(const QString &searchStr);
     void handleEnabledReposTab(const QString &searchStr);
     void handleFlatpakTab(const QString &searchStr);
     void handleOutputTab();
@@ -331,6 +322,7 @@ private:
     void updateFlatpakCounts(uint totalCount);
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
+    bool buildAurList(const QString &searchTerm);
     // Header checkbox helpers
     CheckableHeaderView *headerEnabled {nullptr};
     CheckableHeaderView *headerMX {nullptr};

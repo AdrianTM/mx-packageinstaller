@@ -34,29 +34,42 @@ endif()
 # Version detection with override and fallback
 set(PROJECT_VERSION_OVERRIDE "" CACHE STRING "Override project version (e.g. 1.2.3)")
 set(PROJECT_VERSION_FROM_CHANGELOG "")
-find_program(DPKG_PARSECHANGELOG_EXECUTABLE NAMES dpkg-parsechangelog)
-if(PROJECT_VERSION_OVERRIDE)
-    set(PROJECT_VERSION_FROM_CHANGELOG ${PROJECT_VERSION_OVERRIDE})
-elseif(DPKG_PARSECHANGELOG_EXECUTABLE)
-    execute_process(
-        COMMAND ${DPKG_PARSECHANGELOG_EXECUTABLE} -SVersion
-        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-        OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
-        OUTPUT_STRIP_TRAILING_WHITESPACE
-        RESULT_VARIABLE DPKG_RESULT
-    )
-    if(NOT DPKG_RESULT EQUAL 0 OR PROJECT_VERSION_FROM_CHANGELOG STREQUAL "")
-        set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
-        message(WARNING "Failed to get version from debian/changelog; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
-    endif()
+
+if(DEFINED PROJECT_VERSION_OVERRIDE AND NOT "${PROJECT_VERSION_OVERRIDE}" STREQUAL "")
+    set(PROJECT_VERSION_FROM_CHANGELOG "${PROJECT_VERSION_OVERRIDE}")
+    message(STATUS "Using version override: ${PROJECT_VERSION_FROM_CHANGELOG}")
 else()
-    set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
-    message(WARNING "dpkg-parsechangelog not found; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
+    find_program(DPKG_PARSECHANGELOG_EXECUTABLE NAMES dpkg-parsechangelog)
+    if(DPKG_PARSECHANGELOG_EXECUTABLE)
+        execute_process(
+            COMMAND ${DPKG_PARSECHANGELOG_EXECUTABLE} -SVersion
+            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+            OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
+            OUTPUT_STRIP_TRAILING_WHITESPACE
+            RESULT_VARIABLE DPKG_RESULT
+            ERROR_QUIET
+        )
+    endif()
+
+    if(DPKG_PARSECHANGELOG_EXECUTABLE AND DPKG_RESULT EQUAL 0 AND NOT "${PROJECT_VERSION_FROM_CHANGELOG}" STREQUAL "")
+        message(STATUS "Using version from debian/changelog: ${PROJECT_VERSION_FROM_CHANGELOG}")
+    elseif(EXISTS ${CMAKE_SOURCE_DIR}/debian/changelog)
+        file(READ ${CMAKE_SOURCE_DIR}/debian/changelog PROJECT_CHANGELOG_CONTENT)
+        string(REGEX MATCH "^[^\\(]*\\(([^)]+)\\)" _match "${PROJECT_CHANGELOG_CONTENT}")
+        if(NOT _match)
+            message(FATAL_ERROR "Could not parse version from debian/changelog")
+        endif()
+        set(PROJECT_VERSION_FROM_CHANGELOG "${CMAKE_MATCH_1}")
+        message(STATUS "Using version parsed from debian/changelog: ${PROJECT_VERSION_FROM_CHANGELOG}")
+    else()
+        message(WARNING "Could not determine version; defaulting to 0.0.0")
+        set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
+    endif()
 endif()
 
 project(mx-packageinstaller
     VERSION ${PROJECT_VERSION_FROM_CHANGELOG}
-    DESCRIPTION "MX Package Installer - A tool for managing packages on MX Linux"
+    DESCRIPTION "MX Package Installer - A tool for managing packages on Arch Linux"
     LANGUAGES CXX
 )
 

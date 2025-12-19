@@ -48,7 +48,7 @@ bool LockFile::isLockedGUI()
     QString proc = getLockingProcess();
     if (!proc.isEmpty()) {
         QMessageBox::warning(nullptr, QObject::tr("Warning"),
-                             QObject::tr("Dpkg/apt database is locked by another program: %1"
+                             QObject::tr("Pacman database is locked by another program: %1"
                                          "\nClose the program, or wait until it is done processing and try again.")
                                  .arg(proc));
         return true;

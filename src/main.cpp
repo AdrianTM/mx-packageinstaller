@@ -87,10 +87,9 @@ int main(int argc, char *argv[])
 
     QCommandLineParser parser;
     parser.setApplicationDescription(
-        QObject::tr("MX Package Installer is a tool used for managing packages on MX Linux\n\
-    - installs popular programs from different sources\n\
-    - installs programs from the MX Test repo\n\
-    - installs programs from Debian Backports repo\n\
+        QObject::tr("MX Package Installer is a tool used for managing packages on Arch Linux\n\
+    - installs programs from enabled repositories\n\
+    - installs programs from the AUR\n\
     - installs flatpaks"));
     parser.addHelpOption();
     parser.addVersionOption();

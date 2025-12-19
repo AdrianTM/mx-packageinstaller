@@ -2,8 +2,8 @@
 
 # Root level functions requiring password for mx-packageinstaller
 
-apt_update() {
-    apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o Acquire::https:Timeout=10 -o Acquire::ftp:Timeout=10
+repo_sync() {
+    pacman -Sy --noconfirm
 }
 
 cleanup_temp() {
@@ -28,8 +28,8 @@ flatpak_add_repos_user() {
 
 main() {
 case "$1" in
-    apt_update)
-        apt_update;;
+    repo_sync)
+        repo_sync;;
     copy_log)
         copy_log;;
     cleanup_temp)
