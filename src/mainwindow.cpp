@@ -1673,6 +1673,26 @@ bool MainWindow::install(const QString &names)
         return false;
     }
     if (currentTree == ui->treeMXtest) {
+        // Check if paru is installed for AUR packages
+        QString paruPath = QStandardPaths::findExecutable("paru");
+        if (paruPath.isEmpty()) {
+            const QStringList fallbackPaths = {"/usr/bin/paru", "/bin/paru", "/usr/local/bin/paru"};
+            for (const QString &path : fallbackPaths) {
+                if (QFile::exists(path)) {
+                    paruPath = path;
+                    break;
+                }
+            }
+        }
+        if (paruPath.isEmpty()) {
+            QMessageBox::critical(this, tr("Error"),
+                                tr("paru is not installed.\n\n"
+                                   "To install AUR packages, please install paru first:\n"
+                                   "pacman -S paru\n\n"
+                                   "Then try installing the AUR package again."));
+            return false;
+        }
+
         // For AUR packages (paru), validate sudo password first since paru calls sudo internally
         if (!validateSudoPassword()) {
             return false;
