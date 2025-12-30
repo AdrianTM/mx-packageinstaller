@@ -51,4 +51,6 @@ package() {
     if [ -d help ]; then
         cp -r help/* "${pkgdir}/usr/share/doc/mx-packageinstaller/" 2>/dev/null || true
     fi
+
+    gzip -c debian/changelog > "${pkgdir}/usr/share/doc/mx-packageinstaller/changelog.gz"
 }
