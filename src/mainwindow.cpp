@@ -167,10 +167,10 @@ void MainWindow::setup()
     headerEnabled->setMinimumSectionSize(22);
     ui->treeEnabled->setHeader(headerEnabled);
 
-    headerMX = new CheckableHeaderView(Qt::Horizontal, ui->treeMXtest);
+    headerMX = new CheckableHeaderView(Qt::Horizontal, ui->treeAUR);
     headerMX->setTargetColumn(TreeCol::Check);
     headerMX->setMinimumSectionSize(22);
-    ui->treeMXtest->setHeader(headerMX);
+    ui->treeAUR->setHeader(headerMX);
 
     headerBP = new CheckableHeaderView(Qt::Horizontal, ui->treeBackports);
     headerBP->setTargetColumn(TreeCol::Check);
@@ -203,7 +203,7 @@ void MainWindow::setup()
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
     connect(shortcutToggle, &QShortcut::activated, this, &MainWindow::checkUncheckItem);
 
-    QList listTree {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak};
+    QList listTree {ui->treePopularApps, ui->treeEnabled, ui->treeAUR, ui->treeBackports, ui->treeFlatpak};
     for (const auto &tree : listTree) {
         if (tree != ui->treeFlatpak) {
             tree->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -834,7 +834,7 @@ void MainWindow::setConnections() const
     connect(ui->treeBackports, &QTreeWidget::itemChanged, this, &MainWindow::treeBackports_itemChanged);
     connect(ui->treeEnabled, &QTreeWidget::itemChanged, this, &MainWindow::treeEnabled_itemChanged);
     connect(ui->treeFlatpak, &QTreeWidget::itemChanged, this, &MainWindow::treeFlatpak_itemChanged);
-    connect(ui->treeMXtest, &QTreeWidget::itemChanged, this, &MainWindow::treeMXtest_itemChanged);
+    connect(ui->treeAUR, &QTreeWidget::itemChanged, this, &MainWindow::treeAUR_itemChanged);
     connect(ui->treePopularApps, &QTreeWidget::customContextMenuRequested, this,
             &MainWindow::treePopularApps_customContextMenuRequested);
     connect(ui->treePopularApps, &QTreeWidget::itemChanged, this, &MainWindow::treePopularApps_itemChanged);
@@ -1056,7 +1056,7 @@ void MainWindow::displayPackages()
 
 void MainWindow::displayAutoremovable(const QTreeWidget *newTree)
 {
-    if (!newTree || newTree == ui->treePopularApps || newTree == ui->treeFlatpak || newTree == ui->treeMXtest) {
+    if (!newTree || newTree == ui->treePopularApps || newTree == ui->treeFlatpak || newTree == ui->treeAUR) {
         return;
     }
     QStringList names = getAutoremovablePackages();
@@ -1077,7 +1077,7 @@ void MainWindow::displayAutoremovable(const QTreeWidget *newTree)
 QTreeWidget *MainWindow::getCurrentTree()
 {
     const QMap<QTreeWidget *, bool *> treeMap
-        = {{ui->treeMXtest, &dirtyTest}, {ui->treeBackports, &dirtyBackports}, {ui->treeEnabled, &dirtyEnabledRepos}};
+        = {{ui->treeAUR, &dirtyTest}, {ui->treeBackports, &dirtyBackports}, {ui->treeEnabled, &dirtyEnabledRepos}};
 
     if (auto it = treeMap.find(currentTree); it != treeMap.end() && *it.value()) {
         *it.value() = false;
@@ -1089,7 +1089,7 @@ QTreeWidget *MainWindow::getCurrentTree()
 
 QHash<QString, PackageInfo> *MainWindow::getCurrentList()
 {
-    if (currentTree == ui->treeMXtest) {
+    if (currentTree == ui->treeAUR) {
         return &mxList;
     } else if (currentTree == ui->treeBackports) {
         return &backportsList;
@@ -1107,7 +1107,7 @@ QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QHash<QString, PackageI
         items.append(createTreeItem(it.key(), it.value().version, it.value().description));
     }
 
-    if (currentTree == ui->treeMXtest) {
+    if (currentTree == ui->treeAUR) {
         return items;
     }
 
@@ -1678,10 +1678,10 @@ bool MainWindow::install(const QString &names)
         return true;
     }
     enableOutput();
-    if (lockFile.isLockedGUI()) {
+    if (currentTree != ui->treeAUR && lockFile.isLockedGUI()) {
         return false;
     }
-    if (currentTree == ui->treeMXtest) {
+    if (currentTree == ui->treeAUR) {
         // Check if paru is installed for AUR packages
         QString paruPath = QStandardPaths::findExecutable("paru");
         if (paruPath.isEmpty()) {
@@ -1994,7 +1994,7 @@ bool MainWindow::buildPackageLists(bool forceDownload)
         setDirty();
     }
     clearUi();
-    if (currentTree == ui->treeMXtest) {
+    if (currentTree == ui->treeAUR) {
         if (!buildAurList(ui->searchBoxMX->text())) {
             ifDownloadFailed();
             return false;
@@ -2075,7 +2075,7 @@ void MainWindow::hideColumns() const
     ui->tabWidget->setCurrentIndex(Tab::EnabledRepos);
     ui->treeFlatpak->setColumnHidden(FlatCol::Branch, false);
     ui->treeEnabled->hideColumn(TreeCol::Status); // Status of the package: installed, upgradable, etc
-    ui->treeMXtest->hideColumn(TreeCol::Status);
+    ui->treeAUR->hideColumn(TreeCol::Status);
     ui->treeBackports->hideColumn(TreeCol::Status);
     ui->treeFlatpak->hideColumn(FlatCol::Status);
     ui->treeFlatpak->hideColumn(FlatCol::Duplicate);
@@ -2106,18 +2106,18 @@ bool MainWindow::readPackageList(bool forceDownload)
     // Early return if lists are already populated and not forced to download
     if (!forceDownload
         && ((currentTree == ui->treeEnabled && !enabledList.isEmpty())
-            || (currentTree == ui->treeMXtest && !mxList.isEmpty())
+            || (currentTree == ui->treeAUR && !mxList.isEmpty())
             || (currentTree == ui->treeBackports && !backportsList.isEmpty()))) {
         return true;
     }
 
     // treeEnabled is updated at downloadPackageList
-    if (currentTree == ui->treeEnabled || currentTree == ui->treeMXtest) {
+    if (currentTree == ui->treeEnabled || currentTree == ui->treeAUR) {
         return true;
     }
 
     // Determine the file path based on the current tree
-    QString filePath = tempDir.filePath((currentTree == ui->treeMXtest) ? "mxPackages" : "allPackages");
+    QString filePath = tempDir.filePath((currentTree == ui->treeAUR) ? "mxPackages" : "allPackages");
 
     QFile file(filePath);
     if (!file.open(QIODevice::ReadOnly | QIODevice::Text)) {
@@ -2126,7 +2126,7 @@ bool MainWindow::readPackageList(bool forceDownload)
     }
 
     // Select the target package map based on the current tree
-    auto &targetMap = (currentTree == ui->treeMXtest) ? mxList : backportsList;
+    auto &targetMap = (currentTree == ui->treeAUR) ? mxList : backportsList;
     targetMap.clear();
 
     // Parse package information from the file
@@ -2185,11 +2185,11 @@ void MainWindow::clearUi()
         ui->labelNumUpgr->clear();
         ui->treeEnabled->clear();
         ui->pushUpgradeAll->setHidden(true);
-    } else if (currentTree == ui->treeMXtest) {
+    } else if (currentTree == ui->treeAUR) {
         ui->labelNumApps_2->clear();
         ui->labelNumInstMX->clear();
         ui->labelNumUpgrMX->clear();
-        ui->treeMXtest->clear();
+        ui->treeAUR->clear();
     } else if (currentTree == ui->treeBackports) {
         ui->labelNumApps_3->clear();
         ui->labelNumInstBP->clear();
@@ -2458,7 +2458,7 @@ void MainWindow::setCurrentTree()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     const QList<QTreeWidget *> trees
-        = {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak};
+        = {ui->treePopularApps, ui->treeEnabled, ui->treeAUR, ui->treeBackports, ui->treeFlatpak};
 
     auto it = std::find_if(trees.cbegin(), trees.cend(), [](const QTreeWidget *tree) { return tree->isVisible(); });
 
@@ -2697,7 +2697,7 @@ void MainWindow::displayPopularInfo(const QTreeWidgetItem *item, int column)
 void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
 {
     const QTreeWidget *tree = item ? item->treeWidget() : nullptr;
-    const bool isAurTree = tree == ui->treeMXtest;
+    const bool isAurTree = tree == ui->treeAUR;
     QString baseCommand;
     if (isAurTree) {
         QString paruPath = QStandardPaths::findExecutable("paru");
@@ -2839,7 +2839,7 @@ void MainWindow::findPackage()
 {
     // Get search text from appropriate search box
     const QMap<QTreeWidget *, QLineEdit *> searchBoxMap = {{ui->treeEnabled, ui->searchBoxEnabled},
-                                                           {ui->treeMXtest, ui->searchBoxMX},
+                                                           {ui->treeAUR, ui->searchBoxMX},
                                                            {ui->treeBackports, ui->searchBoxBP},
                                                            {ui->treeFlatpak, ui->searchBoxFlatpak}};
 
@@ -2850,7 +2850,7 @@ void MainWindow::findPackage()
         return;
     }
 
-    if (currentTree == ui->treeMXtest) {
+    if (currentTree == ui->treeAUR) {
         const QString filterText = ui->comboFilterMX->currentText();
         const QString trimmed = word.trimmed();
 
@@ -3214,7 +3214,7 @@ void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
     } else if (currentTree == ui->treeEnabled) {
         search_str = ui->searchBoxEnabled->text();
         filter_idx = ui->comboFilterEnabled->currentIndex();
-    } else if (currentTree == ui->treeMXtest) {
+    } else if (currentTree == ui->treeAUR) {
         search_str = ui->searchBoxMX->text();
         filter_idx = ui->comboFilterMX->currentIndex();
     } else if (currentTree == ui->treeBackports) {
@@ -3732,7 +3732,7 @@ void MainWindow::filterChanged(const QString &arg1)
         }
         QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
-    } else if (currentTree == ui->treeMXtest) {
+    } else if (currentTree == ui->treeAUR) {
         const QString searchTerm = ui->searchBoxMX->text().trimmed();
         const bool hasSearch = searchTerm.size() >= 2;
         if (arg1 == tr("All packages")) {
@@ -3822,7 +3822,7 @@ void MainWindow::filterChanged(const QString &arg1)
                         headerEnabled->setToolTip(tip);
                         headerEnabled->resizeSection(TreeCol::Check, qMax(headerEnabled->sectionSize(0), 22));
                     }
-                } else if (currentTree == ui->treeMXtest && headerMX) {
+                } else if (currentTree == ui->treeAUR && headerMX) {
                     headerMX->setCheckboxVisible(allowAutoremovableCheckbox);
                     if (allowAutoremovableCheckbox) {
                         headerMX->setToolTip(tip);
@@ -3855,7 +3855,7 @@ void MainWindow::selectAllUpgradable_toggled(bool checked)
     if (s == headerEnabled) {
         tree = ui->treeEnabled;
     } else if (s == headerMX) {
-        tree = ui->treeMXtest;
+        tree = ui->treeAUR;
     } else if (s == headerBP) {
         tree = ui->treeBackports;
     } else {
@@ -3870,7 +3870,7 @@ void MainWindow::selectAllUpgradable_toggled(bool checked)
     QString filterText;
     if (tree == ui->treeEnabled) {
         filterText = ui->comboFilterEnabled->currentText();
-    } else if (tree == ui->treeMXtest) {
+    } else if (tree == ui->treeAUR) {
         filterText = ui->comboFilterMX->currentText();
     } else if (tree == ui->treeBackports) {
         filterText = ui->comboFilterBP->currentText();
@@ -3923,10 +3923,10 @@ void MainWindow::treeEnabled_itemChanged(QTreeWidgetItem *item)
     buildChangeList(item);
 }
 
-void MainWindow::treeMXtest_itemChanged(QTreeWidgetItem *item)
+void MainWindow::treeAUR_itemChanged(QTreeWidgetItem *item)
 {
     if (item->checkState(TreeCol::Check) == Qt::Checked) {
-        ui->treeMXtest->setCurrentItem(item);
+        ui->treeAUR->setCurrentItem(item);
     }
     buildChangeList(item);
 }

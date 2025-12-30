@@ -163,7 +163,7 @@ private slots:
     void treeBackports_itemChanged(QTreeWidgetItem *item);
     void treeEnabled_itemChanged(QTreeWidgetItem *item);
     void treeFlatpak_itemChanged(QTreeWidgetItem *item);
-    void treeMXtest_itemChanged(QTreeWidgetItem *item);
+    void treeAUR_itemChanged(QTreeWidgetItem *item);
     void treePopularApps_customContextMenuRequested(QPoint pos);
     void treePopularApps_expanded();
     void treePopularApps_itemChanged(QTreeWidgetItem *item);

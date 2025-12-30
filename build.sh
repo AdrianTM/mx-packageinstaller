@@ -135,7 +135,7 @@ if [ "$ARCH_BUILD" = true ]; then
     PKG_DEST_DIR="$PWD/build"
     mkdir -p "$PKG_DEST_DIR"
 
-    BUILDDIR="$PWD/build" PKGDEST="$PKG_DEST_DIR" PKGVER="$ARCH_VERSION" makepkg -f
+    PKGDEST="$PKG_DEST_DIR" PKGVER="$ARCH_VERSION" makepkg -f
 
     echo "Cleaning makepkg artifacts..."
     rm -rf pkg

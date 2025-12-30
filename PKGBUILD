@@ -15,9 +15,7 @@ sha256sums=()
 build() {
     cd "${startdir}"
 
-    if [ ! -f build/mx-packageinstaller ] || [ CMakeLists.txt -nt build/CMakeCache.txt ]; then
-        rm -rf build
-
+    if [ ! -f build/mx-packageinstaller ]; then
         cmake -G Ninja \
             -B build \
             -DCMAKE_BUILD_TYPE=Release \
