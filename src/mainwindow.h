@@ -323,6 +323,7 @@ private:
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
     bool buildAurList(const QString &searchTerm);
+    bool validateSudoPassword();
     // Header checkbox helpers
     CheckableHeaderView *headerEnabled {nullptr};
     CheckableHeaderView *headerMX {nullptr};

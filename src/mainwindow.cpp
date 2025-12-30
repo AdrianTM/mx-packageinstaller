@@ -29,6 +29,7 @@
 #include <QDebug>
 #include <QFileInfo>
 #include <QImageReader>
+#include <QInputDialog>
 #include <QMenu>
 #include <QNetworkAccessManager>
 #include <QNetworkProxyFactory>
@@ -244,11 +245,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        const QString removeCommand = (currentTree == ui->treeMXtest)
-            ? "paru -Rns --noconfirm "
-            : "pacman -Rns --noconfirm ";
-        success = (currentTree == ui->treeMXtest) ? cmd.run(removeCommand + names)
-                                                  : cmd.runAsRoot(removeCommand + names);
+        success = cmd.runAsRoot("pacman -Rns --noconfirm " + names);
     }
 
     if (success && !postuninstall.isEmpty()) {
@@ -1607,6 +1604,54 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     return msgBox.exec() == QMessageBox::Ok;
 }
 
+// Validate sudo password and cache credentials for paru
+bool MainWindow::validateSudoPassword()
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+
+    // First check if sudo is already cached (valid for 5 minutes by default)
+    QProcess checkSudo;
+    checkSudo.start("/bin/bash", {"-c", "sudo -n -v 2>&1"});
+    checkSudo.waitForFinished(1000);
+
+    if (checkSudo.exitCode() == 0) {
+        qDebug() << "Sudo credentials already cached";
+        return true;
+    }
+
+    // Prompt for password
+    bool ok = false;
+    QString password = QInputDialog::getText(this,
+                                            tr("Sudo Password Required"),
+                                            tr("Paru needs sudo privileges for package installation.\n"
+                                               "Please enter your password:"),
+                                            QLineEdit::Password,
+                                            QString(),
+                                            &ok);
+
+    if (!ok || password.isEmpty()) {
+        qDebug() << "User cancelled password prompt";
+        return false;
+    }
+
+    // Validate password and cache sudo credentials
+    QProcess validateSudo;
+    validateSudo.start("/bin/bash", {"-c", "echo '" + password + "' | sudo -S -v 2>&1"});
+    validateSudo.waitForFinished(3000);
+
+    QString output = validateSudo.readAllStandardOutput() + validateSudo.readAllStandardError();
+
+    if (validateSudo.exitCode() != 0) {
+        qDebug() << "Sudo validation failed:" << output;
+        QMessageBox::critical(this, tr("Authentication Failed"),
+                            tr("Incorrect password or sudo not configured properly."));
+        return false;
+    }
+
+    qDebug() << "Sudo credentials validated and cached";
+    return true;
+}
+
 bool MainWindow::install(const QString &names)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -1627,11 +1672,15 @@ bool MainWindow::install(const QString &names)
     if (lockFile.isLockedGUI()) {
         return false;
     }
-    const QString installCommand = (currentTree == ui->treeMXtest)
-        ? "paru -S --needed --noconfirm "
-        : "pacman -S --needed --noconfirm ";
-    return (currentTree == ui->treeMXtest) ? cmd.run(installCommand + names)
-                                           : cmd.runAsRoot(installCommand + names);
+    if (currentTree == ui->treeMXtest) {
+        // For AUR packages (paru), validate sudo password first since paru calls sudo internally
+        if (!validateSudoPassword()) {
+            return false;
+        }
+        return cmd.run("socat EXEC:'paru -S --needed --noconfirm " + names + "',pty -");
+    } else {
+        return cmd.runAsRoot("pacman -S --needed --noconfirm " + names);
+    }
 }
 
 // Install a list of application and run postprocess for each of them.
