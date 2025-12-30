@@ -135,7 +135,7 @@ if [ "$ARCH_BUILD" = true ]; then
     PKG_DEST_DIR="$PWD/build"
     mkdir -p "$PKG_DEST_DIR"
 
-    BUILDDIR="$ARCH_BUILDDIR" PKGDEST="$PKG_DEST_DIR" PKGVER="$ARCH_VERSION" makepkg -f
+    BUILDDIR="$PWD/build" PKGDEST="$PKG_DEST_DIR" PKGVER="$ARCH_VERSION" makepkg -f
 
     echo "Cleaning makepkg artifacts..."
     rm -rf pkg
@@ -159,26 +159,13 @@ fi
 # Create build directory
 mkdir -p "$BUILD_DIR"
 
-# Configure CMake with Ninja
-echo "Configuring CMake with Ninja generator..."
-CMAKE_ARGS=(
-    -G Ninja
-    -B "$BUILD_DIR"
-    -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
-    -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
-)
-
-if [ "$USE_CLANG" = true ]; then
-    CMAKE_ARGS+=(-DUSE_CLANG=ON)
-    echo "Using clang compiler"
+# Configure CMake with Ninja (skip if already configured)
+if [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
+    echo "Configuring CMake with Ninja generator..."
+    cmake "${CMAKE_ARGS[@]}"
+else
+    echo "CMake already configured, skipping configure step..."
 fi
-
-if [ "$BUILD_TESTS" = true ]; then
-    CMAKE_ARGS+=(-DBUILD_TESTS=ON)
-    echo "Building with tests enabled"
-fi
-
-cmake "${CMAKE_ARGS[@]}"
 
 # Build the project
 echo "Building project with Ninja..."
