@@ -1683,16 +1683,7 @@ bool MainWindow::install(const QString &names)
     }
     if (currentTree == ui->treeAUR) {
         // Check if paru is installed for AUR packages
-        QString paruPath = QStandardPaths::findExecutable("paru");
-        if (paruPath.isEmpty()) {
-            const QStringList fallbackPaths = {"/usr/bin/paru", "/bin/paru", "/usr/local/bin/paru"};
-            for (const QString &path : fallbackPaths) {
-                if (QFile::exists(path)) {
-                    paruPath = path;
-                    break;
-                }
-            }
-        }
+        const QString paruPath = getParuPath();
         if (paruPath.isEmpty()) {
             QMessageBox::critical(this, tr("Error"),
                                 tr("paru is not installed.\n\n"
@@ -2700,16 +2691,7 @@ void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
     const bool isAurTree = tree == ui->treeAUR;
     QString baseCommand;
     if (isAurTree) {
-        QString paruPath = QStandardPaths::findExecutable("paru");
-        if (paruPath.isEmpty()) {
-            const QStringList fallbackPaths = {"/usr/bin/paru", "/bin/paru", "/usr/local/bin/paru"};
-            for (const QString &path : fallbackPaths) {
-                if (QFile::exists(path)) {
-                    paruPath = path;
-                    break;
-                }
-            }
-        }
+        const QString paruPath = getParuPath();
         if (paruPath.isEmpty()) {
             QMessageBox::critical(this, tr("Error"), tr("paru is not installed."));
             return;
@@ -3243,9 +3225,19 @@ void MainWindow::handleEnabledReposTab(const QString &search_str)
         }
     }
     if (!displayPackagesIsRunning) {
+        // Block signals to prevent triggering filterChanged for other tabs
+        ui->comboFilterEnabled->blockSignals(true);
+        ui->comboFilterMX->blockSignals(true);
+        ui->comboFilterBP->blockSignals(true);
+
         ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
         ui->comboFilterMX->setCurrentIndex(savedComboIndex);
         ui->comboFilterBP->setCurrentIndex(savedComboIndex);
+
+        ui->comboFilterEnabled->blockSignals(false);
+        ui->comboFilterMX->blockSignals(false);
+        ui->comboFilterBP->blockSignals(false);
+
         filterChanged(ui->comboFilterEnabled->currentText());
     }
     if (!ui->searchBoxEnabled->text().isEmpty()) {
@@ -3258,17 +3250,22 @@ void MainWindow::handleEnabledReposTab(const QString &search_str)
 
 void MainWindow::handleAurTab(const QString &search_str)
 {
-    ui->searchBoxMX->setText(search_str);
-    changeList.clear();
-    displayWarning("aur");
-    if (!buildAurList(search_str)) {
+    if (getParuPath().isEmpty()) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Could not query AUR packages. Please check that paru is installed."));
         currentTree->blockSignals(false);
         return;
     }
-    dirtyTest = true;
-    displayPackages();
+    // Block signals to prevent onAurSearchTextChanged from triggering during setText
+    ui->searchBoxMX->blockSignals(true);
+    ui->searchBoxMX->setText(search_str);
+    ui->searchBoxMX->blockSignals(false);
+
+    changeList.clear();
+    displayWarning("aur");
+
+    // Let filterChanged handle the buildAurList, displayPackages, and applyAurStatusFilter calls
+    // to avoid redundant command executions
     filterChanged(ui->comboFilterMX->currentText());
     currentTree->blockSignals(false);
 }
@@ -3292,28 +3289,49 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
         }
     }
     if (Tab::Popular != ui->tabWidget->currentIndex()) {
+        // Block signals to prevent triggering filterChanged for other tabs
+        ui->comboFilterEnabled->blockSignals(true);
+        ui->comboFilterMX->blockSignals(true);
+        ui->comboFilterBP->blockSignals(true);
+
         ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
         ui->comboFilterMX->setCurrentIndex(savedComboIndex);
         ui->comboFilterBP->setCurrentIndex(savedComboIndex);
+
+        ui->comboFilterEnabled->blockSignals(false);
+        ui->comboFilterMX->blockSignals(false);
+        ui->comboFilterBP->blockSignals(false);
+
         filterChanged(ui->comboFilterEnabled->currentText());
     }
     currentTree->blockSignals(false);
+}
+
+QString MainWindow::getParuPath()
+{
+    if (cachedParuPathFetched) {
+        return cachedParuPath;
+    }
+
+    cachedParuPath = QStandardPaths::findExecutable("paru");
+    if (cachedParuPath.isEmpty()) {
+        const QStringList fallbackPaths = {"/usr/bin/paru", "/bin/paru", "/usr/local/bin/paru"};
+        for (const QString &path : fallbackPaths) {
+            if (QFile::exists(path)) {
+                cachedParuPath = path;
+                break;
+            }
+        }
+    }
+    cachedParuPathFetched = true;
+    return cachedParuPath;
 }
 
 bool MainWindow::buildAurList(const QString &searchTerm)
 {
     mxList.clear();
     const QString term = searchTerm.trimmed();
-    QString paruPath = QStandardPaths::findExecutable("paru");
-    if (paruPath.isEmpty()) {
-        const QStringList fallbackPaths = {"/usr/bin/paru", "/bin/paru", "/usr/local/bin/paru"};
-        for (const QString &path : fallbackPaths) {
-            if (QFile::exists(path)) {
-                paruPath = path;
-                break;
-            }
-        }
-    }
+    const QString paruPath = getParuPath();
     if (paruPath.isEmpty()) {
         return false;
     }
@@ -3606,6 +3624,13 @@ void MainWindow::filterChanged(const QString &arg1)
         }
     };
 
+    auto handleAurQueryError = [this]() {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Could not query AUR packages. Please check that paru is installed."));
+        currentTree->setUpdatesEnabled(true);
+        currentTree->blockSignals(false);
+    };
+
     auto applyAurStatusFilter = [this, &uncheckAllItems](int statusFilter) {
         auto parseNameSet = [](const QStringList &lines) {
             QSet<QString> names;
@@ -3733,15 +3758,25 @@ void MainWindow::filterChanged(const QString &arg1)
         QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
     } else if (currentTree == ui->treeAUR) {
+        if (getParuPath().isEmpty()) {
+            handleAurQueryError();
+            return;
+        }
         const QString searchTerm = ui->searchBoxMX->text().trimmed();
         const bool hasSearch = searchTerm.size() >= 2;
         if (arg1 == tr("All packages")) {
-            buildAurList(hasSearch ? searchTerm : QString());
+            if (!buildAurList(hasSearch ? searchTerm : QString())) {
+                handleAurQueryError();
+                return;
+            }
             dirtyTest = true;
             displayPackages();
         } else if (arg1 == tr("Not installed")) {
             if (hasSearch) {
-                buildAurList(searchTerm);
+                if (!buildAurList(searchTerm)) {
+                    handleAurQueryError();
+                    return;
+                }
             } else {
                 mxList.clear();
             }
@@ -3751,17 +3786,26 @@ void MainWindow::filterChanged(const QString &arg1)
                 applyAurStatusFilter(Status::NotInstalled);
             }
         } else if (arg1 == tr("Installed")) {
-            buildAurList(QString());
+            if (!buildAurList(QString())) {
+                handleAurQueryError();
+                return;
+            }
             dirtyTest = true;
             displayPackages();
             applyAurStatusFilter(Status::Installed);
         } else if (arg1 == tr("Upgradable")) {
-            buildAurList(QString());
+            if (!buildAurList(QString())) {
+                handleAurQueryError();
+                return;
+            }
             dirtyTest = true;
             displayPackages();
             applyAurStatusFilter(Status::Upgradable);
         } else if (arg1 == tr("Autoremovable")) {
-            buildAurList(QString());
+            if (!buildAurList(QString())) {
+                handleAurQueryError();
+                return;
+            }
             dirtyTest = true;
             displayPackages();
             applyAurStatusFilter(Status::Autoremovable);

@@ -220,6 +220,8 @@ private:
     bool cachedInstalledFetched {false};
     QStringList cachedAutoremovable;
     bool cachedAutoremovableFetched {false};
+    QString cachedParuPath;
+    bool cachedParuPathFetched {false};
     bool holdProgressForAptRefresh {false};
     bool holdProgressForFlatpakRefresh {false};
     bool flatpakCancelHidden {false};
@@ -325,6 +327,7 @@ private:
     bool buildAurList(const QString &searchTerm);
     bool validateSudoPassword();
     void onAurSearchTextChanged();
+    QString getParuPath();
     // Header checkbox helpers
     CheckableHeaderView *headerEnabled {nullptr};
     CheckableHeaderView *headerMX {nullptr};
