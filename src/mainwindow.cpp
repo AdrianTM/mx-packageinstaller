@@ -237,6 +237,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
+        qDebug() << "Elevating preuninstall command:" << preuninstall;
         success = cmd.runAsRoot(preuninstall);
     }
 
@@ -245,6 +246,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
+        qDebug() << "Elevating remove command:" << "pacman -Rns --noconfirm " + names;
         success = cmd.runAsRoot("pacman -Rns --noconfirm " + names);
     }
 
@@ -255,6 +257,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
+        qDebug() << "Elevating postuninstall command:" << postuninstall;
         success = cmd.runAsRoot(postuninstall);
     }
     return success;
@@ -274,6 +277,7 @@ bool MainWindow::updateApt()
     }
 
     enableOutput();
+    qDebug() << "Elevating repo_sync command:" << "/usr/lib/mx-packageinstaller/mxpi-lib repo_sync";
     if (cmd.runAsRoot("/usr/lib/mx-packageinstaller/mxpi-lib repo_sync", Cmd::QuietMode::Yes)) {
         qDebug() << "repositories updated OK";
         updatedOnce = true;
@@ -1738,6 +1742,7 @@ bool MainWindow::installBatch(const QStringList &name_list)
             return false;
         }
         enableOutput();
+        qDebug() << "Elevating postinstall command:" << postinstall;
         if (!cmd.runAsRoot(postinstall)) {
             result = false;
         }
@@ -1769,6 +1774,7 @@ bool MainWindow::installPopularApp(const QString &name)
         if (lockFile.isLockedGUI()) {
             return false;
         }
+        qDebug() << "Elevating preinstall command:" << preinstall;
         if (!cmd.runAsRoot(preinstall)) {
             return false;
         }
@@ -1786,6 +1792,7 @@ bool MainWindow::installPopularApp(const QString &name)
         if (lockFile.isLockedGUI()) {
             return false;
         }
+        qDebug() << "Elevating postinstall command (popular apps):" << postinstall;
         cmd.runAsRoot(postinstall);
     }
     return result;
@@ -1860,6 +1867,7 @@ bool MainWindow::markKeep()
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = changeList.join(' ');
     enableOutput();
+    qDebug() << "Elevating markKeep command:" << "pacman -D --asexplicit " + names;
     return cmd.runAsRoot("pacman -D --asexplicit " + names);
 }
 
