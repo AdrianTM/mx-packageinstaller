@@ -783,8 +783,7 @@ void MainWindow::setConnections() const
     // Connect search boxes
     connect(ui->searchPopular, &QLineEdit::textChanged, this, &MainWindow::findPopular);
     connect(ui->searchBoxEnabled, &QLineEdit::textChanged, this, &MainWindow::findPackage);
-    connect(ui->searchBoxMX, &QLineEdit::textChanged, this, &MainWindow::onAurSearchTextChanged);
-    connect(&aurSearchTimer, &QTimer::timeout, this, &MainWindow::findPackage);
+    connect(ui->searchBoxMX, &QLineEdit::returnPressed, this, &MainWindow::findPackage);
     connect(ui->searchBoxBP, &QLineEdit::textChanged, this, &MainWindow::findPackage);
     connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackage);
 
@@ -2944,11 +2943,7 @@ void MainWindow::findPackage()
     updateInterface();
 }
 
-void MainWindow::onAurSearchTextChanged()
-{
-    // Debounce AUR search by restarting timer on each keystroke
-    aurSearchTimer.start(300); // 300ms delay
-}
+
 
 void MainWindow::showOutput()
 {

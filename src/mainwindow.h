@@ -227,7 +227,6 @@ private:
     bool suppressCmdOutput {false};
     QTemporaryDir tempDir;
     QTimer timer;
-    QTimer aurSearchTimer;
     QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
     QUrl getScreenshotUrl(const QString &name);
@@ -325,7 +324,6 @@ private:
     void updateTreeItems(QTreeWidget *tree);
     bool buildAurList(const QString &searchTerm);
     bool validateSudoPassword();
-    void onAurSearchTextChanged();
     // Header checkbox helpers
     CheckableHeaderView *headerEnabled {nullptr};
     CheckableHeaderView *headerMX {nullptr};
