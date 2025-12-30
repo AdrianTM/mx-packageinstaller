@@ -787,6 +787,10 @@ void MainWindow::setConnections() const
     connect(ui->searchBoxBP, &QLineEdit::textChanged, this, &MainWindow::findPackage);
     connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackage);
 
+    // Update AUR search hints
+    ui->searchBoxMX->setPlaceholderText(tr("Search AUR (press Enter)"));
+    ui->searchBoxMX->setToolTip(tr("Enter search term and press Enter to search AUR packages"));
+
     // Connect combo filters
     connect(ui->comboFilterEnabled, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterMX, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
