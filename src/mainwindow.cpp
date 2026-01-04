@@ -2602,49 +2602,6 @@ bool MainWindow::buildRepoCache(bool showProgress)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
 
-    auto parseNameSet = [](const QStringList &lines) {
-        QSet<QString> names;
-        names.reserve(lines.size());
-        for (const QString &line : lines) {
-            const QString name = line.section(' ', 0, 0).trimmed();
-            if (!name.isEmpty()) {
-                names.insert(name);
-            }
-        }
-        return names;
-    };
-
-    auto buildInstalledVersions = [&](QHash<QString, QString> &installedVersions) {
-        const QStringList installedLines = shell.getOut("pacman -Q").split('\n', Qt::SkipEmptyParts);
-        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
-            return false;
-        }
-        installedVersions.reserve(installedLines.size());
-        for (const QString &line : installedLines) {
-            const QStringList parts = line.split(' ', Qt::SkipEmptyParts);
-            if (parts.size() >= 2) {
-                installedVersions.insert(parts.at(0), parts.at(1));
-            }
-        }
-        return true;
-    };
-
-    auto buildUpdates = [&](QHash<QString, QString> &updates) {
-        const QStringList updateLines = shell.getOut("pacman -Qu --color never").split('\n', Qt::SkipEmptyParts);
-        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
-            return true;
-        }
-        updates.reserve(updateLines.size());
-        for (const QString &line : updateLines) {
-            const QString name = line.section(' ', 0, 0).trimmed();
-            const QString newVersion = line.section("->", 1).trimmed();
-            if (!name.isEmpty() && !newVersion.isEmpty()) {
-                updates.insert(name, newVersion);
-            }
-        }
-        return true;
-    };
-
     if (installedPackages.isEmpty()) {
         installedPackages = listInstalled();
     }
@@ -2698,18 +2655,21 @@ bool MainWindow::buildRepoCache(bool showProgress)
         flushEntry(pendingDescription);
     }
 
-    repoInstalledSet = parseNameSet(shell.getOut("pacman -Qq").split('\n', Qt::SkipEmptyParts));
-
-    QHash<QString, QString> updates;
-    if (!buildUpdates(updates)) {
-        return finish(false);
-    }
-    for (auto it = updates.cbegin(); it != updates.cend(); ++it) {
-        repoUpgradableSet.insert(it.key());
+    for (auto it = installedPackages.cbegin(); it != installedPackages.cend(); ++it) {
+        repoInstalledSet.insert(it.key());
     }
 
-    const QStringList autoremovable = getAutoremovablePackages();
-    repoAutoremovableSet = QSet<QString>(autoremovable.cbegin(), autoremovable.cend());
+    for (auto it = installedPackages.cbegin(); it != installedPackages.cend(); ++it) {
+        const auto repoIt = repoAllList.constFind(it.key());
+        if (repoIt == repoAllList.constEnd()) {
+            continue;
+        }
+        const VersionNumber installedVersion(it.value().version);
+        const VersionNumber repoVersion(repoIt.value().version);
+        if (installedVersion < repoVersion) {
+            repoUpgradableSet.insert(it.key());
+        }
+    }
 
     repoCacheValid = true;
     return finish(true);
@@ -2720,6 +2680,11 @@ void MainWindow::applyRepoFilter(int statusFilter)
     repoList.clear();
     if (!repoCacheValid) {
         return;
+    }
+
+    if (statusFilter == Status::Autoremovable && repoAutoremovableSet.isEmpty()) {
+        const QStringList autoremovable = getAutoremovablePackages();
+        repoAutoremovableSet = QSet<QString>(autoremovable.cbegin(), autoremovable.cend());
     }
 
     for (auto it = repoAllList.cbegin(); it != repoAllList.cend(); ++it) {
