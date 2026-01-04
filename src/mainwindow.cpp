@@ -271,8 +271,8 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        qDebug() << "Elevating remove command:" << "pacman -Rns --noconfirm " + names;
-        success = cmd.runAsRoot("pacman -Rns --noconfirm " + names);
+        qDebug() << "Elevating remove command:" << "pacman -Rns " + names;
+        success = cmd.runAsRoot("pacman -Rns " + names);
     }
 
     if (success && !postuninstall.isEmpty()) {
@@ -1838,14 +1838,14 @@ bool MainWindow::install(const QString &names)
         if (!validateSudoPassword(&sudoPassword)) {
             return false;
         }
-        const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed --noconfirm " + names;
+        const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed " + names;
         bool result = cmd.runWithInput(command, sudoPassword + '\n');
         // Securely zero password after use
         sudoPassword.fill('\0');
         sudoPassword.clear();
         return result;
     } else {
-        return cmd.runAsRoot("pacman -S --needed --noconfirm " + names);
+        return cmd.runAsRoot("pacman -S --needed " + names);
     }
 }
 
