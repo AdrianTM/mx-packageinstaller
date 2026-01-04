@@ -22,7 +22,6 @@ Cmd::Cmd(QObject *parent)
 QString Cmd::elevationTool()
 {
     if (QFile::exists("/usr/bin/pkexec")) return QStringLiteral("/usr/bin/pkexec");
-    if (QFile::exists("/usr/bin/gksu")) return QStringLiteral("/usr/bin/gksu");
     if (QFile::exists("/usr/bin/sudo")) return QStringLiteral("/usr/bin/sudo");
     return QStringLiteral("/usr/bin/sudo"); // fallback
 }

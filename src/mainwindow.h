@@ -187,7 +187,7 @@ private:
     QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
     const QCommandLineParser &args;
-    const QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec " : "/usr/bin/gksu "};
+    const QString elevate {"/usr/bin/pkexec "};
 
     QNetworkAccessManager manager;
     QNetworkReply *reply {};
