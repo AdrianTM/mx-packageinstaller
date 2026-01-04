@@ -1614,13 +1614,16 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
 }
 
 // Validate sudo password and cache credentials for paru
-bool MainWindow::validateSudoPassword()
+bool MainWindow::validateSudoPassword(QString *passwordOut)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    if (passwordOut) {
+        passwordOut->clear();
+    }
 
     // First check if sudo is already cached (valid for 5 minutes by default)
     QProcess checkSudo;
-    checkSudo.start("/bin/bash", {"-c", "sudo -n -v 2>&1"});
+    checkSudo.start("/usr/bin/sudo", {"-n", "-v"});
     checkSudo.waitForFinished(1000);
 
     if (checkSudo.exitCode() == 0) {
@@ -1645,7 +1648,14 @@ bool MainWindow::validateSudoPassword()
 
     // Validate password and cache sudo credentials
     QProcess validateSudo;
-    validateSudo.start("/bin/bash", {"-c", "echo '" + password + "' | sudo -S -v 2>&1"});
+    validateSudo.start("/usr/bin/sudo", {"-S", "-v"});
+    if (!validateSudo.waitForStarted(1000)) {
+        QMessageBox::critical(this, tr("Authentication Failed"),
+                            tr("Could not start sudo. Please check your system configuration."));
+        return false;
+    }
+    validateSudo.write(password.toUtf8() + '\n');
+    validateSudo.closeWriteChannel();
     validateSudo.waitForFinished(3000);
 
     QString output = validateSudo.readAllStandardOutput() + validateSudo.readAllStandardError();
@@ -1657,6 +1667,9 @@ bool MainWindow::validateSudoPassword()
         return false;
     }
 
+    if (passwordOut) {
+        *passwordOut = password;
+    }
     qDebug() << "Sudo credentials validated and cached";
     return true;
 }
@@ -1694,10 +1707,12 @@ bool MainWindow::install(const QString &names)
         }
 
         // For AUR packages (paru), validate sudo password first since paru calls sudo internally
-        if (!validateSudoPassword()) {
+        QString sudoPassword;
+        if (!validateSudoPassword(&sudoPassword)) {
             return false;
         }
-        return cmd.run("socat EXEC:'paru -S --needed --noconfirm " + names + "',pty -");
+        const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed --noconfirm " + names;
+        return cmd.runWithInput(command, sudoPassword.toUtf8() + '\n');
     } else {
         return cmd.runAsRoot("pacman -S --needed --noconfirm " + names);
     }

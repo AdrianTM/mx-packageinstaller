@@ -61,6 +61,36 @@ bool Cmd::run(const QString &cmd, QuietMode quiet, Elevation elevation)
     return (exitStatus() == QProcess::NormalExit && exitCode() == 0);
 }
 
+bool Cmd::runWithInput(const QString &cmd, const QByteArray &input, QuietMode quiet, Elevation elevation)
+{
+    out_buffer.clear();
+    if (state() != QProcess::NotRunning) {
+        qDebug() << "Process already running:" << program() << arguments();
+        return false;
+    }
+    if (quiet == QuietMode::No) {
+        qDebug().noquote() << cmd;
+    }
+    QEventLoop loop;
+    connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &loop, &QEventLoop::quit);
+    if (elevation == Elevation::Yes && getuid() != 0) {
+        start(elevate, {helper, cmd});
+    } else {
+        start("/bin/bash", {"-c", cmd});
+    }
+    if (!waitForStarted(1000)) {
+        emit done();
+        return false;
+    }
+    if (!input.isEmpty()) {
+        write(input);
+    }
+    closeWriteChannel();
+    loop.exec();
+    emit done();
+    return (exitStatus() == QProcess::NormalExit && exitCode() == 0);
+}
+
 bool Cmd::runAsRoot(const QString &cmd, QuietMode quiet)
 {
     return run(cmd, quiet, Elevation::Yes);

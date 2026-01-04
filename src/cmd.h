@@ -19,6 +19,10 @@ public:
     [[nodiscard]] QString getOutAsRoot(const QString &cmd, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString readAllOutput() const;
     bool run(const QString &cmd, QuietMode quiet = QuietMode::No, Elevation elevation = Elevation::No);
+    bool runWithInput(const QString &cmd,
+                      const QByteArray &input,
+                      QuietMode quiet = QuietMode::No,
+                      Elevation elevation = Elevation::No);
     bool runAsRoot(const QString &cmd, QuietMode quiet = QuietMode::No);
     [[nodiscard]] bool terminateAndKill();
 
