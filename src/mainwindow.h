@@ -326,7 +326,7 @@ private:
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
     bool buildAurList(const QString &searchTerm);
-    bool validateSudoPassword(QString *passwordOut = nullptr);
+    bool validateSudoPassword(QByteArray *passwordOut = nullptr);
     void onAurSearchTextChanged();
     QString getParuPath();
     // Header checkbox helpers

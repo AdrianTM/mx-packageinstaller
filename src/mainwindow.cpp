@@ -1696,10 +1696,11 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
 }
 
 // Validate sudo password and cache credentials for paru
-bool MainWindow::validateSudoPassword(QString *passwordOut)
+bool MainWindow::validateSudoPassword(QByteArray *passwordOut)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (passwordOut) {
+        passwordOut->fill('\0');
         passwordOut->clear();
     }
 
@@ -1725,18 +1726,29 @@ bool MainWindow::validateSudoPassword(QString *passwordOut)
 
     if (!ok || password.isEmpty()) {
         qDebug() << "User cancelled password prompt";
+        // Securely clear the password from QString internal memory
+        password.fill('\0');
         return false;
     }
+
+    // Convert to QByteArray immediately for secure handling
+    QByteArray passwordBytes = password.toUtf8();
+    // Clear QString as soon as possible (best effort, not guaranteed due to QString internals)
+    password.fill('\0');
+    password.clear();
 
     // Validate password and cache sudo credentials
     QProcess validateSudo;
     validateSudo.start("/usr/bin/sudo", {"-S", "-v"});
     if (!validateSudo.waitForStarted(1000)) {
+        // Securely zero password before returning
+        passwordBytes.fill('\0');
+        passwordBytes.clear();
         QMessageBox::critical(this, tr("Authentication Failed"),
                             tr("Could not start sudo. Please check your system configuration."));
         return false;
     }
-    validateSudo.write(password.toUtf8() + '\n');
+    validateSudo.write(passwordBytes + '\n');
     validateSudo.closeWriteChannel();
     validateSudo.waitForFinished(3000);
 
@@ -1744,14 +1756,21 @@ bool MainWindow::validateSudoPassword(QString *passwordOut)
 
     if (validateSudo.exitCode() != 0) {
         qDebug() << "Sudo validation failed:" << output;
+        // Securely zero password before returning
+        passwordBytes.fill('\0');
+        passwordBytes.clear();
         QMessageBox::critical(this, tr("Authentication Failed"),
                             tr("Incorrect password or sudo not configured properly."));
         return false;
     }
 
     if (passwordOut) {
-        *passwordOut = password;
+        *passwordOut = passwordBytes;
     }
+    // Zero the local password copy
+    passwordBytes.fill('\0');
+    passwordBytes.clear();
+
     qDebug() << "Sudo credentials validated and cached";
     return true;
 }
@@ -1789,12 +1808,16 @@ bool MainWindow::install(const QString &names)
         }
 
         // For AUR packages (paru), validate sudo password first since paru calls sudo internally
-        QString sudoPassword;
+        QByteArray sudoPassword;
         if (!validateSudoPassword(&sudoPassword)) {
             return false;
         }
         const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed --noconfirm " + names;
-        return cmd.runWithInput(command, sudoPassword.toUtf8() + '\n');
+        bool result = cmd.runWithInput(command, sudoPassword + '\n');
+        // Securely zero password after use
+        sudoPassword.fill('\0');
+        sudoPassword.clear();
+        return result;
     } else {
         return cmd.runAsRoot("pacman -S --needed --noconfirm " + names);
     }
