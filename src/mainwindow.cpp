@@ -40,8 +40,13 @@
 #include <QScrollBar>
 #include <QShortcut>
 #include <QStandardPaths>
+#include <QDialog>
+#include <QDialogButtonBox>
+#include <QLabel>
+#include <QLineEdit>
 #include <QTextBlock>
 #include <QTextStream>
+#include <QVBoxLayout>
 #include <QtConcurrent/QtConcurrent>
 #include <QtGlobal>
 #include <QtXml/QtXml>
@@ -1715,27 +1720,11 @@ bool MainWindow::validateSudoPassword(QByteArray *passwordOut)
     }
 
     // Prompt for password
-    bool ok = false;
-    QString password = QInputDialog::getText(this,
-                                            tr("Sudo Password Required"),
-                                            tr("Paru needs sudo privileges for package installation.\n"
-                                               "Please enter your password:"),
-                                            QLineEdit::Password,
-                                            QString(),
-                                            &ok);
-
-    if (!ok || password.isEmpty()) {
+    QByteArray passwordBytes;
+    if (!promptSudoPassword(&passwordBytes)) {
         qDebug() << "User cancelled password prompt";
-        // Securely clear the password from QString internal memory
-        password.fill('\0');
         return false;
     }
-
-    // Convert to QByteArray immediately for secure handling
-    QByteArray passwordBytes = password.toUtf8();
-    // Clear QString as soon as possible (best effort, not guaranteed due to QString internals)
-    password.fill('\0');
-    password.clear();
 
     // Validate password and cache sudo credentials
     QProcess validateSudo;
@@ -1773,6 +1762,43 @@ bool MainWindow::validateSudoPassword(QByteArray *passwordOut)
 
     qDebug() << "Sudo credentials validated and cached";
     return true;
+}
+
+bool MainWindow::promptSudoPassword(QByteArray *passwordOut)
+{
+    if (!passwordOut) {
+        return false;
+    }
+
+    QDialog dialog(this);
+    dialog.setWindowTitle(tr("Sudo Password Required"));
+    dialog.setModal(true);
+    dialog.setMinimumWidth(450);
+
+    auto *layout = new QVBoxLayout(&dialog);
+    auto *label = new QLabel(tr("Paru needs sudo privileges for package installation.\n"
+                                "Please enter your password:"), &dialog);
+    label->setWordWrap(true);
+    layout->addWidget(label);
+
+    auto *passwordEdit = new QLineEdit(&dialog);
+    passwordEdit->setEchoMode(QLineEdit::Password);
+    layout->addWidget(passwordEdit);
+
+    auto *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
+    layout->addWidget(buttons);
+    connect(buttons, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
+    connect(buttons, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
+
+    if (dialog.exec() != QDialog::Accepted) {
+        passwordEdit->clear();
+        return false;
+    }
+
+    // Best-effort: QLineEdit exposes QString, so convert immediately and clear widget.
+    *passwordOut = passwordEdit->text().toUtf8();
+    passwordEdit->clear();
+    return !passwordOut->isEmpty();
 }
 
 bool MainWindow::install(const QString &names)
