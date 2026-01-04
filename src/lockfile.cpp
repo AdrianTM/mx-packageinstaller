@@ -31,6 +31,8 @@
 #include "cmd.h"
 
 #include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
 
 LockFile::LockFile(const QString &file_name)
     : file(file_name)
@@ -39,7 +41,26 @@ LockFile::LockFile(const QString &file_name)
 
 bool LockFile::isLocked()
 {
-    return Cmd().runAsRoot("fuser " + fileName());
+    // Check if lock file exists
+    if (!QFile::exists(fileName())) {
+        return false;
+    }
+
+    // Try to open the file
+    QFile lockFile(fileName());
+    if (!lockFile.open(QIODevice::ReadWrite)) {
+        // If we can't open it, assume it's locked
+        return true;
+    }
+
+    // Try non-blocking exclusive lock - if it succeeds, file is not locked
+    // If it fails with EAGAIN/EWOULDBLOCK, file is locked by another process
+    int result = lockf(lockFile.handle(), F_TLOCK, 0);
+    lockFile.close();
+
+    // If lockf returns 0, we got the lock (file not locked by pacman)
+    // If lockf returns -1 and errno is EAGAIN/EWOULDBLOCK, file is locked
+    return (result == -1 && (errno == EAGAIN || errno == EWOULDBLOCK));
 }
 
 // Check if the file is locked and pop up a message
@@ -82,6 +103,9 @@ QString LockFile::fileName() const
 
 QString LockFile::getLockingProcess() const
 {
+    if (!isLocked()) {
+        return {};
+    }
     return Cmd()
         .getOutAsRoot("pid=$(fuser " + fileName()
                       + " 2>/dev/null); [[ -n \"$pid\" ]] && ps --no-headers -o comm -p $pid")
