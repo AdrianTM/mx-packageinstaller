@@ -26,6 +26,7 @@
 
 #include <QCommandLineParser>
 #include <QFile>
+#include <QFutureWatcher>
 #include <QHash>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
@@ -155,6 +156,8 @@ private:
     QSet<QString> repoUpgradableSet;
     QSet<QString> repoAutoremovableSet;
     bool repoCacheValid {false};
+    bool installedPackagesLoading {false};
+    QFutureWatcher<QHash<QString, PackageInfo>> installedPackagesWatcher;
     QProgressBar *bar {};
     QProgressDialog *progress {};
     QPushButton *pushCancel {};
@@ -255,6 +258,8 @@ private:
     void setSearchFocus() const;
     void setup();
     void setupFlatpakDisplay();
+    void startInstalledPackagesLoad();
+    void updateRepoSetsFromInstalled();
     void updateFlatpakCounts(uint totalCount);
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
