@@ -33,42 +33,33 @@ endif()
 
 # Version detection with override and fallback
 set(PROJECT_VERSION_OVERRIDE "" CACHE STRING "Override project version (e.g. 1.2.3)")
-set(PROJECT_VERSION_FROM_CHANGELOG "")
+set(PROJECT_VERSION_FROM_METADATA "")
 
 if(DEFINED PROJECT_VERSION_OVERRIDE AND NOT "${PROJECT_VERSION_OVERRIDE}" STREQUAL "")
-    set(PROJECT_VERSION_FROM_CHANGELOG "${PROJECT_VERSION_OVERRIDE}")
-    message(STATUS "Using version override: ${PROJECT_VERSION_FROM_CHANGELOG}")
-else()
-    find_program(DPKG_PARSECHANGELOG_EXECUTABLE NAMES dpkg-parsechangelog)
-    if(DPKG_PARSECHANGELOG_EXECUTABLE)
-        execute_process(
-            COMMAND ${DPKG_PARSECHANGELOG_EXECUTABLE} -SVersion
-            WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
-            OUTPUT_VARIABLE PROJECT_VERSION_FROM_CHANGELOG
-            OUTPUT_STRIP_TRAILING_WHITESPACE
-            RESULT_VARIABLE DPKG_RESULT
-            ERROR_QUIET
-        )
-    endif()
-
-    if(DPKG_PARSECHANGELOG_EXECUTABLE AND DPKG_RESULT EQUAL 0 AND NOT "${PROJECT_VERSION_FROM_CHANGELOG}" STREQUAL "")
-        message(STATUS "Using version from debian/changelog: ${PROJECT_VERSION_FROM_CHANGELOG}")
-    elseif(EXISTS ${CMAKE_SOURCE_DIR}/debian/changelog)
-        file(READ ${CMAKE_SOURCE_DIR}/debian/changelog PROJECT_CHANGELOG_CONTENT)
-        string(REGEX MATCH "^[^\\(]*\\(([^)]+)\\)" _match "${PROJECT_CHANGELOG_CONTENT}")
-        if(NOT _match)
-            message(FATAL_ERROR "Could not parse version from debian/changelog")
+    set(PROJECT_VERSION_FROM_METADATA "${PROJECT_VERSION_OVERRIDE}")
+    message(STATUS "Using version override: ${PROJECT_VERSION_FROM_METADATA}")
+elseif(EXISTS ${CMAKE_SOURCE_DIR}/PKGBUILD)
+    file(READ ${CMAKE_SOURCE_DIR}/PKGBUILD PROJECT_PKGBUILD_CONTENT)
+    string(REGEX MATCH "^[ \t]*pkgver=([^ \t\r\n]+)" _pkgver_match "${PROJECT_PKGBUILD_CONTENT}")
+    set(PROJECT_PKGBUILD_VER "${CMAKE_MATCH_1}")
+    string(REGEX MATCH "^[ \t]*pkgrel=([^ \t\r\n]+)" _pkgrel_match "${PROJECT_PKGBUILD_CONTENT}")
+    set(PROJECT_PKGBUILD_REL "${CMAKE_MATCH_1}")
+    if(_pkgver_match)
+        set(PROJECT_VERSION_FROM_METADATA "${PROJECT_PKGBUILD_VER}")
+        if(_pkgrel_match)
+            set(PROJECT_VERSION_FROM_METADATA "${PROJECT_VERSION_FROM_METADATA}-${PROJECT_PKGBUILD_REL}")
         endif()
-        set(PROJECT_VERSION_FROM_CHANGELOG "${CMAKE_MATCH_1}")
-        message(STATUS "Using version parsed from debian/changelog: ${PROJECT_VERSION_FROM_CHANGELOG}")
-    else()
-        message(WARNING "Could not determine version; defaulting to 0.0.0")
-        set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
+        message(STATUS "Using version from PKGBUILD: ${PROJECT_VERSION_FROM_METADATA}")
     endif()
 endif()
 
+if("${PROJECT_VERSION_FROM_METADATA}" STREQUAL "")
+    message(WARNING "Could not determine version; defaulting to 0.0.0")
+    set(PROJECT_VERSION_FROM_METADATA "0.0.0")
+endif()
+
 project(mx-packageinstaller
-    VERSION ${PROJECT_VERSION_FROM_CHANGELOG}
+    VERSION ${PROJECT_VERSION_FROM_METADATA}
     DESCRIPTION "MX Package Installer - A tool for managing packages on Arch Linux"
     LANGUAGES CXX
 )
@@ -99,7 +90,6 @@ find_package(Qt6 REQUIRED COMPONENTS
     Gui
     Widgets
     Network
-    Xml
     LinguistTools
 )
 
@@ -116,7 +106,6 @@ set(SOURCES
     src/checkableheaderview.cpp
     src/lockfile.cpp
     src/versionnumber.cpp
-    src/aptcache.cpp
     src/remotes.cpp
     src/about.cpp
     src/cmd.cpp
@@ -128,7 +117,6 @@ set(HEADERS
     src/checkableheaderview.h
     src/lockfile.h
     src/versionnumber.h
-    src/aptcache.h
     src/remotes.h
     src/about.h
     src/cmd.h
@@ -159,7 +147,6 @@ target_link_libraries(mx-packageinstaller
     Qt6::Gui
     Qt6::Widgets
     Qt6::Network
-    Qt6::Xml
 )
 
 # Set compiler flags
@@ -222,8 +209,6 @@ set_target_properties(mx-packageinstaller PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
-# Install target (required by Debian build system)
-# Other files are handled by debian/install
 install(TARGETS mx-packageinstaller
     RUNTIME DESTINATION bin
 )

@@ -92,7 +92,7 @@ private:
     QString str; // Full version string
     int epoch {};
     QStringList upstream_version; // A string list of characters, numbers are grouped together
-    QStringList debian_revision;
+    QStringList release_revision;
 
     // Add characters to separate elements, groups digits together
     [[nodiscard]] static QStringList groupDigits(const QString &value);

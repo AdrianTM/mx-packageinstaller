@@ -33,10 +33,10 @@ QString VersionNumber::toString() const
 
 void VersionNumber::setStrings(const QString &value)
 {
-    // Initialize epoch, upstream, and debian strings
+    // Initialize epoch, upstream, and release strings
     str = value;
     QString upstream_str;
-    QString debian_str;
+    QString release_str;
 
     // Parse epoch and upstream_version
     int colonIndex = value.indexOf(':');
@@ -48,15 +48,15 @@ void VersionNumber::setStrings(const QString &value)
         upstream_str = value;
     }
 
-    // Parse debian_revision
+    // Parse release revision
     int dashIndex = upstream_str.lastIndexOf('-');
     if (dashIndex != -1) {
-        debian_str = upstream_str.mid(dashIndex + 1);
+        release_str = upstream_str.mid(dashIndex + 1);
         upstream_str = upstream_str.left(dashIndex);
     }
 
     upstream_version = groupDigits(upstream_str);
-    debian_revision = groupDigits(debian_str);
+    release_revision = groupDigits(release_str);
 }
 
 VersionNumber &VersionNumber::operator=(const QString &value)
@@ -134,8 +134,8 @@ int VersionNumber::compare(const VersionNumber &first, const VersionNumber &seco
     if (upstreamComparison != 0) {
         return upstreamComparison;
     }
-    if (!first.debian_revision.isEmpty() || !second.debian_revision.isEmpty()) {
-        return compare(first.debian_revision, second.debian_revision);
+    if (!first.release_revision.isEmpty() || !second.release_revision.isEmpty()) {
+        return compare(first.release_revision, second.release_revision);
     }
     return 0;
 }
@@ -171,7 +171,7 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second)
             return -1;
         }
 
-        // Compare remaining digits - follow dpkg semantics
+        // Compare remaining digits
         int firstInt = first.at(i).toInt();
         int secondInt = second.at(i).toInt();
 
@@ -180,7 +180,7 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second)
         } else if (secondInt < firstInt) {
             return -1;
         } else {
-            // Numerically equal - dpkg treats versions like "8" and "08" as equal
+            // Numerically equal - treat "8" and "08" as equal
             // Continue to next component (don't return here)
             continue;
         }

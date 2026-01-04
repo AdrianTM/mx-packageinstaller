@@ -4,7 +4,7 @@
 [![build result](https://build.opensuse.org/projects/home:mx-packaging/packages/mx-packageinstaller/badge.svg?type=default)](https://software.opensuse.org//download.html?project=home%3Amx-packaging&package=mx-packageinstaller)
 [![Continous Integration](https://github.com/AdrianTM/mx-packageinstaller/actions/workflows/main.yml/badge.svg)](https://github.com/AdrianTM/mx-packageinstaller/actions/workflows/main.yml)
 
-A comprehensive package management GUI for MX Linux with support for multiple package sources including APT repositories, Flatpak applications, and curated popular applications.
+A package management GUI for Arch Linux with support for official repositories, AUR, Flatpak applications, and curated popular applications.
 
 ![image](https://github.com/MX-Linux/mx-packageinstaller/assets/418436/315e76dd-a6ff-43c7-af3c-ff02a8c83271)
 
@@ -18,7 +18,6 @@ mx-packageinstaller/
 ├── scripts/           # Helper scripts and policies
 ├── help/              # Documentation and help files
 ├── icons/             # Application icons and resources
-├── debian/            # Debian packaging files
 └── CMakeLists.txt     # Build configuration
 ```
 
@@ -40,7 +39,7 @@ cmake --build build
 # Run tests
 cd build && ctest --verbose
 # or run individual tests
-cd build && ./test_versionnumber && ./test_aptcache
+cd build && ./test_versionnumber
 
 # Continuous testing (requires inotify-tools)
 cd build && make watch_tests
@@ -54,23 +53,21 @@ cmake --build build --target clean
 ./build.sh --tests            # Build with tests
 ./build.sh --clang            # Use Clang compiler
 ./build.sh --clean            # Clean before build
-./build.sh --debian           # Build Debian package
 ```
 
 ## Testing
 
 The project includes comprehensive unit tests for critical components:
 
-- **test_versionnumber**: Tests Debian version comparison logic including epochs, revisions, tildes, and real-world scenarios (14 tests)
-- **test_aptcache**: Tests APT cache parsing, architecture filtering, version selection, and file processing (11 tests)
+- **test_versionnumber**: Tests version comparison logic including epochs and revisions
 
 All tests use QtTest framework and can be run individually or through CMake's test runner.
 
 ## Features
 
-- **Multiple Package Sources**: APT repositories, Flatpak, curated popular applications
+- **Multiple Package Sources**: Arch repositories, AUR, Flatpak, curated popular applications
 - **Architecture Filtering**: Automatic detection and filtering for current system architecture
-- **Version Management**: Sophisticated Debian version comparison and selection
+- **Version Management**: Version comparison and selection
 - **Privilege Escalation**: Secure administrative operations via pkexec/gksu
 - **Comprehensive Testing**: Unit tests for critical package management logic
 - **Internationalization**: Full translation support for multiple languages
@@ -85,4 +82,3 @@ Application logs are written to `/tmp/mxpi.log` during runtime and copied to `/v
 - C++20 compiler (GCC 12+ or Clang)
 - CMake 3.16+
 - Ninja (recommended for faster builds)
-

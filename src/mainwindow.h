@@ -25,7 +25,6 @@
 #pragma once
 
 #include <QCommandLineParser>
-#include <QDomDocument>
 #include <QFile>
 #include <QHash>
 #include <QMessageBox>
@@ -34,11 +33,10 @@
 #include <QProcess>
 #include <QProgressDialog>
 #include <QSettings>
-#include <QTemporaryDir>
+#include <QString>
 #include <QTimer>
 #include <QTreeWidgetItem>
 
-#include "aptcache.h"
 #include "cmd.h"
 #include "checkableheaderview.h"
 #include "lockfile.h"
@@ -57,25 +55,8 @@ enum { Installed = 1, Upgradable, NotInstalled, Autoremovable }; // Also used fo
 
 namespace Tab
 {
-enum { Popular, EnabledRepos, Test, Backports, Flatpak, Output };
+enum { Repos, AUR, Flatpak, Output };
 }
-
-namespace PopCol
-{
-enum {
-    Icon,
-    Check,
-    Name,
-    Info,
-    Description,
-    InstallNames,
-    UninstallNames,
-    Screenshot,
-    PostUninstall,
-    PreUninstall,
-    MAX
-};
-} // Namespace PopCol
 
 namespace TreeCol
 {
@@ -87,20 +68,11 @@ namespace FlatCol
 enum { Check, Name, LongName, Version, Branch, Size, Status, Duplicate, FullName };
 }
 
-
-struct PopularInfo {
-    QString category;
-    QString name;
+struct PackageInfo {
+    QString version;
     QString description;
-    QString installable;
-    QString screenshot;
-    QString preInstall;
-    QString postInstall;
-    QString installNames;
-    QString uninstallNames;
-    QString postUninstall;
-    QString preUninstall;
 };
+
 
 constexpr uint KiB = 1024;
 constexpr uint MiB = KiB * 1024;
@@ -128,18 +100,13 @@ private slots:
     void disableOutput();
     void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
     void displayPackageInfo(const QTreeWidgetItem *item);
-    void displayPopularInfo(const QTreeWidgetItem *item, int column);
     void enableOutput();
     void filterChanged(const QString &arg1);
     void findPackage();
-    void findPopular() const;
     void outputAvailable(const QString &output);
     void showOutput();
     void updateBar();
 
-    void checkHideLibsBP_clicked(bool checked);
-    void checkHideLibsMX_clicked(bool checked);
-    void checkHideLibs_toggled(bool checked);
     void selectAllUpgradable_toggled(bool checked);
     void comboRemote_activated(int index = 0);
     void comboUser_currentIndexChanged(int index);
@@ -147,44 +114,31 @@ private slots:
     void pushAbout_clicked();
     void pushCancel_clicked();
     void pushEnter_clicked();
-    void pushForceUpdateBP_clicked();
-    void pushForceUpdateEnabled_clicked();
     void pushForceUpdateMX_clicked();
+    void pushForceUpdateRepo_clicked();
     void pushForceUpdateFP_clicked();
     void pushHelp_clicked();
     void pushInstall_clicked();
     void pushRemotes_clicked();
-    void pushRemoveAutoremovable_clicked();
     void pushRemoveUnused_clicked();
     void pushUninstall_clicked();
-    void pushUpgradeAll_clicked();
     void pushUpgradeFP_clicked();
     void tabWidget_currentChanged(int index);
-    void treeBackports_itemChanged(QTreeWidgetItem *item);
-    void treeEnabled_itemChanged(QTreeWidgetItem *item);
     void treeFlatpak_itemChanged(QTreeWidgetItem *item);
     void treeAUR_itemChanged(QTreeWidgetItem *item);
-    void treePopularApps_customContextMenuRequested(QPoint pos);
-    void treePopularApps_expanded();
-    void treePopularApps_itemChanged(QTreeWidgetItem *item);
-    void treePopularApps_itemCollapsed(QTreeWidgetItem *item);
-    void treePopularApps_itemExpanded(QTreeWidgetItem *item);
-
+    void treeRepo_itemChanged(QTreeWidgetItem *item);
 private:
     Ui::MainWindow *ui;
 
     QString indexFilterFP;
-    bool dirtyBackports {true};
-    bool dirtyEnabledRepos {true};
-    bool dirtyTest {true};
+    bool dirtyAur {true};
+    bool dirtyRepo {true};
     bool displayFlatpaksIsRunning {false};
     bool displayPackagesIsRunning {false};
     bool firstRunFP {true};
-    bool hideLibsChecked {true};
     bool updatedOnce {false};
-    bool warningBackports {false};
+    bool warningAur {false};
     bool warningFlatpaks {false};
-    bool warningTest {false};
     int savedComboIndex {0};
 
     Cmd cmd;
@@ -192,16 +146,18 @@ private:
     QHash<QString, VersionNumber> listInstalledVersions();
     QIcon qiconInstalled;
     QIcon qiconUpgradable;
-    QList<PopularInfo> popularApps;
     QLocale locale;
-    QHash<QString, PackageInfo> backportsList;
-    QHash<QString, PackageInfo> enabledList;
     QHash<QString, PackageInfo> installedPackages;
-    QHash<QString, PackageInfo> mxList;
+    QHash<QString, PackageInfo> aurList;
+    QHash<QString, PackageInfo> repoList;
+    QHash<QString, PackageInfo> repoAllList;
+    QSet<QString> repoInstalledSet;
+    QSet<QString> repoUpgradableSet;
+    QSet<QString> repoAutoremovableSet;
+    bool repoCacheValid {false};
     QProgressBar *bar {};
     QProgressDialog *progress {};
     QPushButton *pushCancel {};
-    QSettings dictionary;
     QSettings settings;
     QString arch;
     QString fpUser;
@@ -222,26 +178,22 @@ private:
     bool cachedAutoremovableFetched {false};
     QString cachedParuPath;
     bool cachedParuPathFetched {false};
-    bool holdProgressForAptRefresh {false};
+    bool holdProgressForRepoRefresh {false};
     bool holdProgressForFlatpakRefresh {false};
     bool flatpakCancelHidden {false};
     bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
-    QTemporaryDir tempDir;
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
-    QUrl getScreenshotUrl(const QString &name);
     const QCommandLineParser &args;
     const QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec " : "/usr/bin/gksu "};
 
     QNetworkAccessManager manager;
-    QNetworkReply *reply;
+    QNetworkReply *reply {};
 
     [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
-    [[nodiscard]] QString categoryTranslation(const QString &item);
     [[nodiscard]] QString getArchOption() const;
-    [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
     [[nodiscard]] QString getVersion(const QString &name) const;
     [[nodiscard]] QString mapArchToFormat(const QString &arch) const;
     [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
@@ -253,29 +205,17 @@ private:
     [[nodiscard]] bool checkUpgradable(const QStringList &nameList) const;
     [[nodiscard]] bool isOnline();
     [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;
-    [[nodiscard]] static bool isFilteredName(const QString &name);
     [[nodiscard]] QList<QTreeWidgetItem *> createTreeItemsList(QHash<QString, PackageInfo> *list) const;
-    [[nodiscard]] QHash<QString, PackageInfo> *getCurrentList();
-    [[nodiscard]] QTreeWidget *getCurrentTree();
 
     bool buildPackageLists(bool forceDownload = false);
     bool confirmActions(const QString &names, const QString &action);
 
-    bool downloadAndUnzip(const QString &url, QFile &file);
-    bool downloadAndUnzip(const QString &url, const QString &repoName, const QString &branch, const QString &format,
-                          QFile &file);
-    bool downloadFile(const QString &url, QFile &file);
-    bool downloadPackageList(bool forceDownload = false);
     bool install(const QString &names);
-    bool installBatch(const QStringList &nameList);
-    bool installPopularApp(const QString &name);
-    bool installPopularApps();
     bool installSelected();
     bool markKeep();
-    bool readPackageList(bool forceDownload = false);
     bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
                    const QString &postUninstall = QLatin1String(""));
-    bool updateApt();
+    bool updateRepos();
     QStringList getAutoremovablePackages();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);
@@ -285,32 +225,24 @@ private:
     void cancelDownload();
     void centerWindow();
     void clearUi();
-    void displayAutoremovable(const QTreeWidget *newTree);
     void displayFilteredFP(QStringList list, bool raw = false);
     void displayFlatpaks(bool forceUpdate = false);
     void displayPackages();
-    void displayPopularApps() const;
     void displayWarning(const QString &repo);
     void enableTabs(bool enable);
     void finalizeFlatpakDisplay();
     void formatFlatpakTree() const;
+    void handleRepoTab(const QString &searchStr);
     void handleAurTab(const QString &searchStr);
-    void handleEnabledReposTab(const QString &searchStr);
     void handleFlatpakTab(const QString &searchStr);
     void handleOutputTab();
-    void handleTab(const QString &searchStr, QLineEdit *searchBox, const QString &warningMessage, bool dirtyFlag);
     void hideColumns() const;
-    void hideLibs() const;
-    void ifDownloadFailed() const;
     void installFlatpak();
     void invalidateFlatpakRemoteCache();
     void listFlatpakRemotes() const;
     void listSizeInstalledFP();
     void loadFlatpakData();
-    void loadPmFiles();
     void populateFlatpakTree();
-    void processDoc(const QDomDocument &doc);
-    void refreshPopularApps();
     void removeDuplicatesFP() const;
     void resetCheckboxes();
     void saveSearchText(QString &searchStr, int &filterIdx);
@@ -326,12 +258,13 @@ private:
     void updateInterface() const;
     void updateTreeItems(QTreeWidget *tree);
     bool buildAurList(const QString &searchTerm);
+    bool buildRepoCache(bool showProgress);
+    void applyRepoFilter(int statusFilter);
     bool validateSudoPassword(QByteArray *passwordOut = nullptr);
     bool promptSudoPassword(QByteArray *passwordOut);
     void onAurSearchTextChanged();
     QString getParuPath();
     // Header checkbox helpers
-    CheckableHeaderView *headerEnabled {nullptr};
-    CheckableHeaderView *headerMX {nullptr};
-    CheckableHeaderView *headerBP {nullptr};
+    CheckableHeaderView *headerAUR {nullptr};
+    CheckableHeaderView *headerRepo {nullptr};
 };

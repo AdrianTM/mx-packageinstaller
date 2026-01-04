@@ -27,8 +27,6 @@
 #include <QProcess>
 #include <QPushButton>
 #include <QStandardPaths>
-#include <QTextEdit>
-#include <QVBoxLayout>
 
 #include <unistd.h>
 
@@ -65,11 +63,8 @@ void displayDoc(const QString &url, const QString &title)
 void displayAboutMsgBox(const QString &title, const QString &message, const QString &licence_url,
                         const QString &license_title)
 {
-    const auto width = 600;
-    const auto height = 500;
     QMessageBox msgBox(QMessageBox::NoIcon, title, message);
     auto *btnLicense = msgBox.addButton(QObject::tr("License"), QMessageBox::HelpRole);
-    auto *btnChangelog = msgBox.addButton(QObject::tr("Changelog"), QMessageBox::HelpRole);
     auto *btnCancel = msgBox.addButton(QObject::tr("Cancel"), QMessageBox::NoRole);
     btnCancel->setIcon(QIcon::fromTheme("window-close"));
 
@@ -77,29 +72,5 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
 
     if (msgBox.clickedButton() == btnLicense) {
         displayDoc(licence_url, license_title);
-    } else if (msgBox.clickedButton() == btnChangelog) {
-        auto *changelog = new QDialog;
-        changelog->setWindowTitle(QObject::tr("Changelog"));
-        changelog->resize(width, height);
-
-        auto *text = new QTextEdit(changelog);
-        text->setReadOnly(true);
-        QProcess proc;
-        proc.start(
-            "zless",
-            {"/usr/share/doc/" + QFileInfo(QCoreApplication::applicationFilePath()).fileName() + "/changelog.gz"},
-            QIODevice::ReadOnly);
-        proc.waitForFinished();
-        text->setText(proc.readAllStandardOutput());
-
-        auto *btnClose = new QPushButton(QObject::tr("&Close"), changelog);
-        btnClose->setIcon(QIcon::fromTheme("window-close"));
-        QObject::connect(btnClose, &QPushButton::clicked, changelog, &QDialog::close);
-
-        auto *layout = new QVBoxLayout(changelog);
-        layout->addWidget(text);
-        layout->addWidget(btnClose);
-        changelog->setLayout(layout);
-        changelog->exec();
     }
 }

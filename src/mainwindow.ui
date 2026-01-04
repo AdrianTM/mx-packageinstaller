@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version='1.0' encoding='UTF-8'?>
 <ui version="4.0">
  <class>MainWindow</class>
  <widget class="QDialog" name="MainWindow">
@@ -35,7 +35,7 @@
       </sizepolicy>
      </property>
      <property name="currentIndex">
-      <number>4</number>
+      <number>0</number>
      </property>
      <property name="documentMode">
       <bool>false</bool>
@@ -46,7 +46,7 @@
      <property name="movable">
       <bool>false</bool>
      </property>
-     <widget class="QWidget" name="tabPopular">
+     <widget class="QWidget" name="tabRepos">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -54,201 +54,93 @@
        </sizepolicy>
       </property>
       <attribute name="title">
-       <string>Popular Applications</string>
+       <string>Repositories</string>
       </attribute>
-      <layout class="QGridLayout" name="gridLayout">
-       <item row="3" column="0" colspan="4">
-        <widget class="QTreeWidget" name="treePopularApps">
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <property name="tabKeyNavigation">
-          <bool>true</bool>
-         </property>
-         <property name="selectionMode">
-          <enum>QAbstractItemView::SelectionMode::SingleSelection</enum>
-         </property>
-         <column>
-          <property name="text">
-           <string>Category</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string/>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Package</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Info</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Description</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-       <item row="0" column="0" rowspan="2" colspan="2">
-        <widget class="QLabel" name="label">
-         <property name="text">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="3">
-        <widget class="QLineEdit" name="searchPopular">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string>search</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="2">
-        <spacer name="horizontalSpacer">
-         <property name="orientation">
-          <enum>Qt::Orientation::Horizontal</enum>
-         </property>
-         <property name="sizeType">
-          <enum>QSizePolicy::Policy::Expanding</enum>
-         </property>
-         <property name="sizeHint" stdset="0">
-          <size>
-           <width>350</width>
-           <height>20</height>
-          </size>
-         </property>
-        </spacer>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QPushButton" name="iconInstalledPackages_5">
-         <property name="styleSheet">
-          <string notr="true">text-align: left</string>
-         </property>
-         <property name="text">
-          <string>= Installed packages</string>
-         </property>
-         <property name="icon">
-          <iconset theme="package-installed-updated"/>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabEnabled">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <attribute name="title">
-       <string>Enabled Repos</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_2">
-       <item row="2" column="2">
-        <widget class="QLineEdit" name="searchBoxEnabled">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string>search</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="2">
-        <widget class="QPushButton" name="iconInstalledPackages">
-         <property name="styleSheet">
-          <string notr="true">text-align: left</string>
-         </property>
-         <property name="text">
-          <string>= Installed packages</string>
-         </property>
-         <property name="icon">
-          <iconset theme="package-installed-updated"/>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="4" column="0" colspan="3">
-        <widget class="QFrame" name="frame">
+      <layout class="QGridLayout" name="gridLayout_5_repo">
+       <item row="4" column="0" colspan="5">
+        <widget class="QFrame" name="frame_repo">
          <property name="frameShape">
           <enum>QFrame::Shape::StyledPanel</enum>
          </property>
          <property name="frameShadow">
           <enum>QFrame::Shadow::Raised</enum>
          </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_3">
+         <layout class="QHBoxLayout" name="horizontalLayoutRepo">
           <item>
-           <layout class="QGridLayout" name="gridLayout_9">
-            <item row="0" column="6">
-             <widget class="QPushButton" name="pushRemoveAutoremovable">
-              <property name="toolTip">
-               <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all the packages that are marked as &amp;quot;autoremovable&amp;quot;. If you want to manage them, select Autoremovable from drop-down selection box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-              </property>
+           <layout class="QGridLayout" name="gridLayout_6_repo">
+            <item row="0" column="0" colspan="3">
+             <widget class="QLabel" name="labelTotalAppsRepo">
               <property name="text">
-               <string>Autoremove packages</string>
-              </property>
-              <property name="icon">
-               <iconset theme="remove"/>
+               <string>Total packages:</string>
               </property>
              </widget>
             </item>
-            <item row="0" column="7">
-             <widget class="QCheckBox" name="checkHideLibs">
+            <item row="1" column="0">
+             <widget class="QLabel" name="labelInstalledRepo">
               <property name="text">
-               <string>Hide library and developer packages</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
+               <string>Installed:</string>
               </property>
              </widget>
+            </item>
+            <item row="1" column="2">
+             <spacer name="horizontalSpacer_8_repo">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeType">
+               <enum>QSizePolicy::Policy::Preferred</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>17</width>
+                <height>17</height>
+               </size>
+              </property>
+             </spacer>
+            </item>
+            <item row="1" column="5">
+             <widget class="QLabel" name="labelNumUpgrRepo">
+              <property name="text">
+               <string />
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="3" colspan="2">
+             <widget class="QLabel" name="labelUpgradableRepo">
+              <property name="text">
+               <string>Upgradable:</string>
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="1">
+             <widget class="QLabel" name="labelNumInstRepo">
+              <property name="text">
+               <string />
+              </property>
+             </widget>
+            </item>
+            <item row="0" column="3">
+             <widget class="QLabel" name="labelNumAppsRepo">
+              <property name="text">
+               <string />
+              </property>
+             </widget>
+            </item>
+            <item row="1" column="6">
+             <spacer name="horizontalSpacer_9_repo">
+              <property name="orientation">
+               <enum>Qt::Orientation::Horizontal</enum>
+              </property>
+              <property name="sizeHint" stdset="0">
+               <size>
+                <width>37</width>
+                <height>17</height>
+               </size>
+              </property>
+             </spacer>
             </item>
             <item row="0" column="8">
-             <widget class="QPushButton" name="pushForceUpdateEnabled">
+             <widget class="QPushButton" name="pushForceUpdateRepo">
               <property name="minimumSize">
                <size>
                 <width>150</width>
@@ -265,7 +157,7 @@
                <string>Refresh list</string>
               </property>
               <property name="icon">
-               <iconset theme="reload"/>
+               <iconset theme="reload" />
               </property>
               <property name="autoDefault">
                <bool>false</bool>
@@ -273,7 +165,7 @@
              </widget>
             </item>
             <item row="0" column="9">
-             <widget class="QCheckBox" name="checkSelectAllEnabled">
+             <widget class="QCheckBox" name="checkSelectAllRepo">
               <property name="text">
                <string>Select all</string>
               </property>
@@ -282,28 +174,8 @@
               </property>
              </widget>
             </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelInstalled">
-              <property name="sizePolicy">
-               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-                <horstretch>0</horstretch>
-                <verstretch>0</verstretch>
-               </sizepolicy>
-              </property>
-              <property name="text">
-               <string>Installed:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="labelNumInst">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <spacer name="horizontalSpacer_3">
+            <item row="0" column="4" colspan="3">
+             <spacer name="horizontalSpacer_7_repo">
               <property name="orientation">
                <enum>Qt::Orientation::Horizontal</enum>
               </property>
@@ -318,132 +190,54 @@
               </property>
              </spacer>
             </item>
-            <item row="1" column="3">
-             <widget class="QLabel" name="labelUpgradable">
-              <property name="text">
-               <string>Upgradable:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="4">
-             <widget class="QLabel" name="labelNumUpgr">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="5">
-             <spacer name="horizontalSpacer_2">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>17</width>
-                <height>20</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="6">
-             <widget class="QPushButton" name="pushUpgradeAll">
-              <property name="text">
-               <string>Upgrade All</string>
-              </property>
-              <property name="icon">
-               <iconset theme="system-upgrade"/>
-              </property>
-              <property name="autoDefault">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="7" colspan="2">
-             <widget class="QCheckBox" name="checkBoxInstallRecommends">
-              <property name="text">
-               <string>Also Install &quot;Recommended&quot; Packages</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QLabel" name="labelNumApps">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" colspan="3">
-             <widget class="QLabel" name="labelTotalApps">
-              <property name="text">
-               <string>Total packages:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="4" colspan="2">
-             <spacer name="horizontalSpacer_4">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Policy::Expanding</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>47</width>
-                <height>22</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
            </layout>
           </item>
          </layout>
         </widget>
        </item>
-       <item row="3" column="0" colspan="3">
-        <widget class="QTreeWidget" name="treeEnabled">
-         <property name="sortingEnabled">
-          <bool>false</bool>
+       <item row="1" column="4">
+        <widget class="QLineEdit" name="searchBoxRepo">
+         <property name="minimumSize">
+          <size>
+           <width>150</width>
+           <height>0</height>
+          </size>
          </property>
-         <column>
-          <property name="text">
-           <string notr="true"/>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Package Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Repo Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Installed Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Description</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string notr="true">Status</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string notr="true"/>
-          </property>
-         </column>
+         <property name="maximumSize">
+          <size>
+           <width>200</width>
+           <height>16777215</height>
+          </size>
+         </property>
+         <property name="placeholderText">
+          <string>search repositories (type to find more)</string>
+         </property>
+         <property name="clearButtonEnabled">
+          <bool>true</bool>
+         </property>
         </widget>
        </item>
-       <item row="1" column="0" colspan="2">
-        <widget class="QPushButton" name="iconUpgradable">
+       <item row="1" column="0" colspan="4">
+        <widget class="QPushButton" name="iconInstalledPackagesRepo">
+         <property name="styleSheet">
+          <string notr="true">text-align: left</string>
+         </property>
+         <property name="text">
+          <string>= Installed packages</string>
+         </property>
+         <property name="icon">
+          <iconset theme="package-installed-updated" />
+         </property>
+         <property name="autoDefault">
+          <bool>false</bool>
+         </property>
+         <property name="flat">
+          <bool>true</bool>
+         </property>
+        </widget>
+       </item>
+       <item row="0" column="0" colspan="4">
+        <widget class="QPushButton" name="iconUpgradableRepo">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -460,7 +254,7 @@
           <string>= Upgradable package. Newer version available in selected repository.</string>
          </property>
          <property name="icon">
-          <iconset theme="package-installed-outdated"/>
+          <iconset theme="package-installed-outdated" />
          </property>
          <property name="autoDefault">
           <bool>false</bool>
@@ -470,8 +264,8 @@
          </property>
         </widget>
        </item>
-       <item row="1" column="2">
-        <widget class="QComboBox" name="comboFilterEnabled">
+       <item row="0" column="4">
+        <widget class="QComboBox" name="comboFilterRepo">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -520,9 +314,46 @@
          </item>
         </widget>
        </item>
+       <item row="2" column="0" colspan="5">
+        <widget class="QTreeWidget" name="treeRepo">
+         <property name="sortingEnabled">
+          <bool>false</bool>
+         </property>
+         <column>
+          <property name="text">
+           <string notr="true" />
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Package Name</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Repo Version</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Installed Version</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Description</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string notr="true">Status</string>
+          </property>
+         </column>
+        </widget>
+       </item>
       </layout>
      </widget>
-     <widget class="QWidget" name="tabMXtest">
+<widget class="QWidget" name="tabMXtest">
       <property name="sizePolicy">
        <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
         <horstretch>0</horstretch>
@@ -577,7 +408,7 @@
             <item row="1" column="5">
              <widget class="QLabel" name="labelNumUpgrMX">
               <property name="text">
-               <string/>
+               <string />
               </property>
              </widget>
             </item>
@@ -588,27 +419,17 @@
               </property>
              </widget>
             </item>
-            <item row="0" column="7">
-             <widget class="QCheckBox" name="checkHideLibsMX">
-              <property name="text">
-               <string>Hide library and developer packages</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
             <item row="1" column="1">
              <widget class="QLabel" name="labelNumInstMX">
               <property name="text">
-               <string/>
+               <string />
               </property>
              </widget>
             </item>
             <item row="0" column="3">
              <widget class="QLabel" name="labelNumApps_2">
               <property name="text">
-               <string/>
+               <string />
               </property>
              </widget>
             </item>
@@ -643,7 +464,7 @@
                <string>Refresh list</string>
               </property>
               <property name="icon">
-               <iconset theme="reload"/>
+               <iconset theme="reload" />
               </property>
               <property name="autoDefault">
                <bool>false</bool>
@@ -676,20 +497,13 @@
               </property>
              </spacer>
             </item>
-            <item row="1" column="7" colspan="2">
-             <widget class="QCheckBox" name="checkBoxInstallRecommendsMX">
-              <property name="text">
-               <string>Also Install &quot;Recommended&quot; Packages</string>
-              </property>
-             </widget>
-            </item>
            </layout>
           </item>
          </layout>
         </widget>
        </item>
        <item row="1" column="4">
-        <widget class="QLineEdit" name="searchBoxMX">
+        <widget class="QLineEdit" name="searchBoxAUR">
          <property name="minimumSize">
           <size>
            <width>150</width>
@@ -719,7 +533,7 @@
           <string>= Installed packages</string>
          </property>
          <property name="icon">
-          <iconset theme="package-installed-updated"/>
+          <iconset theme="package-installed-updated" />
          </property>
          <property name="autoDefault">
           <bool>false</bool>
@@ -747,7 +561,7 @@
           <string>= Upgradable package. Newer version available in selected repository.</string>
          </property>
          <property name="icon">
-          <iconset theme="package-installed-outdated"/>
+          <iconset theme="package-installed-outdated" />
          </property>
          <property name="autoDefault">
           <bool>false</bool>
@@ -758,7 +572,7 @@
         </widget>
        </item>
        <item row="0" column="4">
-        <widget class="QComboBox" name="comboFilterMX">
+        <widget class="QComboBox" name="comboFilterAUR">
          <property name="enabled">
           <bool>true</bool>
          </property>
@@ -805,23 +619,23 @@
            <string>Autoremovable</string>
           </property>
          </item>
-       </widget>
-      </item>
-      <item row="2" column="0" colspan="5">
-       <widget class="QLabel" name="labelAurHint">
-        <property name="text">
-         <string>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</string>
-        </property>
-       </widget>
-      </item>
-      <item row="3" column="0" colspan="5">
-       <widget class="QTreeWidget" name="treeAUR">
+        </widget>
+       </item>
+       <item row="2" column="0" colspan="5">
+        <widget class="QLabel" name="labelAurHint">
+         <property name="text">
+          <string>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</string>
+         </property>
+        </widget>
+       </item>
+       <item row="3" column="0" colspan="5">
+        <widget class="QTreeWidget" name="treeAUR">
          <property name="sortingEnabled">
           <bool>false</bool>
          </property>
          <column>
           <property name="text">
-           <string notr="true"/>
+           <string notr="true" />
           </property>
          </column>
          <column>
@@ -849,369 +663,6 @@
            <string notr="true">Status</string>
           </property>
          </column>
-        </widget>
-       </item>
-      </layout>
-     </widget>
-     <widget class="QWidget" name="tabBackports">
-      <property name="sizePolicy">
-       <sizepolicy hsizetype="Preferred" vsizetype="Expanding">
-        <horstretch>0</horstretch>
-        <verstretch>0</verstretch>
-       </sizepolicy>
-      </property>
-      <attribute name="title">
-       <string>Debian Backports</string>
-      </attribute>
-      <layout class="QGridLayout" name="gridLayout_4">
-       <item row="0" column="0">
-        <widget class="QPushButton" name="iconUpgradable_3">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="styleSheet">
-          <string notr="true">text-align: left</string>
-         </property>
-         <property name="text">
-          <string>= Upgradable package. Newer version available in selected repository.</string>
-         </property>
-         <property name="icon">
-          <iconset theme="package-installed-outdated"/>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="1">
-        <widget class="QPushButton" name="icon_3">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="sizePolicy">
-          <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
-           <horstretch>0</horstretch>
-           <verstretch>0</verstretch>
-          </sizepolicy>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>24</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="text">
-          <string/>
-         </property>
-         <property name="iconSize">
-          <size>
-           <width>16</width>
-           <height>16</height>
-          </size>
-         </property>
-         <property name="shortcut">
-          <string notr="true"/>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="3" column="0" colspan="5">
-        <widget class="QFrame" name="frame_3">
-         <property name="frameShape">
-          <enum>QFrame::Shape::StyledPanel</enum>
-         </property>
-         <property name="frameShadow">
-          <enum>QFrame::Shadow::Raised</enum>
-         </property>
-         <layout class="QHBoxLayout" name="horizontalLayout_2">
-          <item>
-           <layout class="QGridLayout" name="gridLayout_10">
-            <item row="1" column="3" colspan="2">
-             <widget class="QLabel" name="labelUpgradable_3">
-              <property name="text">
-               <string>Upgradable:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="0">
-             <widget class="QLabel" name="labelInstalled_3">
-              <property name="text">
-               <string>Installed:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="5">
-             <widget class="QLabel" name="labelNumUpgrBP">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="1">
-             <widget class="QLabel" name="labelNumInstBP">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="0" colspan="3">
-             <widget class="QLabel" name="labelTotalApps_3">
-              <property name="text">
-               <string>Total packages:</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="7">
-             <widget class="QCheckBox" name="checkHideLibsBP">
-              <property name="text">
-               <string>Hide library and developer packages</string>
-              </property>
-              <property name="checked">
-               <bool>true</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="3">
-             <widget class="QLabel" name="labelNumApps_3">
-              <property name="text">
-               <string/>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="2">
-             <spacer name="horizontalSpacer_11">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>17</width>
-                <height>17</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="1" column="7" colspan="2">
-             <widget class="QCheckBox" name="checkBoxInstallRecommendsBP">
-              <property name="text">
-               <string>Also Install &quot;Recommended&quot; Packages</string>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="8">
-             <widget class="QPushButton" name="pushForceUpdateBP">
-              <property name="minimumSize">
-               <size>
-                <width>150</width>
-                <height>0</height>
-               </size>
-              </property>
-              <property name="maximumSize">
-               <size>
-                <width>200</width>
-                <height>16777215</height>
-               </size>
-              </property>
-              <property name="text">
-               <string>Refresh list</string>
-              </property>
-              <property name="icon">
-               <iconset theme="reload"/>
-              </property>
-              <property name="autoDefault">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="0" column="9">
-             <widget class="QCheckBox" name="checkSelectAllBP">
-              <property name="text">
-               <string>Select all</string>
-              </property>
-              <property name="visible">
-               <bool>false</bool>
-              </property>
-             </widget>
-            </item>
-            <item row="1" column="6">
-             <spacer name="horizontalSpacer_12">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>37</width>
-                <height>17</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-            <item row="0" column="4" colspan="3">
-             <spacer name="horizontalSpacer_10">
-              <property name="orientation">
-               <enum>Qt::Orientation::Horizontal</enum>
-              </property>
-              <property name="sizeType">
-               <enum>QSizePolicy::Policy::Preferred</enum>
-              </property>
-              <property name="sizeHint" stdset="0">
-               <size>
-                <width>17</width>
-                <height>17</height>
-               </size>
-              </property>
-             </spacer>
-            </item>
-           </layout>
-          </item>
-         </layout>
-        </widget>
-       </item>
-       <item row="2" column="0" colspan="5">
-        <widget class="QTreeWidget" name="treeBackports">
-         <column>
-          <property name="text">
-           <string notr="true"/>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Package Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Repo Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Installed Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Description</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string notr="true">Status</string>
-          </property>
-         </column>
-        </widget>
-       </item>
-       <item row="1" column="4">
-        <widget class="QLineEdit" name="searchBoxBP">
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="placeholderText">
-          <string>search</string>
-         </property>
-         <property name="clearButtonEnabled">
-          <bool>true</bool>
-         </property>
-        </widget>
-       </item>
-       <item row="0" column="4">
-        <widget class="QComboBox" name="comboFilterBP">
-         <property name="enabled">
-          <bool>true</bool>
-         </property>
-         <property name="minimumSize">
-          <size>
-           <width>150</width>
-           <height>0</height>
-          </size>
-         </property>
-         <property name="maximumSize">
-          <size>
-           <width>200</width>
-           <height>16777215</height>
-          </size>
-         </property>
-         <property name="font">
-          <font>
-           <kerning>true</kerning>
-          </font>
-         </property>
-         <property name="toolTip">
-          <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
-         </property>
-         <property name="currentText">
-          <string>All packages</string>
-         </property>
-         <item>
-          <property name="text">
-           <string>All packages</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Installed</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Upgradable</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Not installed</string>
-          </property>
-         </item>
-         <item>
-          <property name="text">
-           <string>Autoremovable</string>
-          </property>
-         </item>
-        </widget>
-       </item>
-       <item row="1" column="0" colspan="4">
-        <widget class="QPushButton" name="iconInstalledPackages_3">
-         <property name="styleSheet">
-          <string notr="true">text-align: left</string>
-         </property>
-         <property name="text">
-          <string>= Installed packages</string>
-         </property>
-         <property name="icon">
-          <iconset theme="package-installed-updated"/>
-         </property>
-         <property name="autoDefault">
-          <bool>false</bool>
-         </property>
-         <property name="flat">
-          <bool>true</bool>
-         </property>
         </widget>
        </item>
       </layout>
@@ -1278,7 +729,7 @@
          </property>
          <column>
           <property name="text">
-           <string notr="true"/>
+           <string notr="true" />
           </property>
          </column>
          <column>
@@ -1292,21 +743,21 @@
           </property>
          </column>
          <column>
-         <property name="text">
-          <string>Version</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Branch</string>
-         </property>
-        </column>
-        <column>
-         <property name="text">
-          <string>Size</string>
-         </property>
-        </column>
-        <column>
+          <property name="text">
+           <string>Version</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Branch</string>
+          </property>
+         </column>
+         <column>
+          <property name="text">
+           <string>Size</string>
+          </property>
+         </column>
+         <column>
           <property name="text">
            <string notr="true">Status</string>
           </property>
@@ -1335,7 +786,7 @@
           <item row="2" column="4">
            <widget class="QLabel" name="labelNumInstFP">
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
@@ -1349,7 +800,7 @@
           <item row="2" column="1">
            <widget class="QLabel" name="labelNumAppFP">
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
@@ -1366,7 +817,7 @@
              <string>Upgrade All</string>
             </property>
             <property name="icon">
-             <iconset theme="system-upgrade"/>
+             <iconset theme="system-upgrade" />
             </property>
             <property name="autoDefault">
              <bool>false</bool>
@@ -1411,7 +862,7 @@
              <string>Advanced</string>
             </property>
             <property name="icon">
-             <iconset theme="configure"/>
+             <iconset theme="configure" />
             </property>
             <property name="autoDefault">
              <bool>false</bool>
@@ -1444,7 +895,7 @@
           <item row="2" column="7">
            <widget class="QLabel" name="labelNumSize">
             <property name="text">
-             <string/>
+             <string />
             </property>
            </widget>
           </item>
@@ -1454,7 +905,7 @@
              <string>Remove unused runtimes</string>
             </property>
             <property name="icon">
-             <iconset theme="sweeper"/>
+             <iconset theme="sweeper" />
             </property>
             <property name="autoDefault">
              <bool>false</bool>
@@ -1473,7 +924,7 @@
           <string>= Installed packages</string>
          </property>
          <property name="icon">
-          <iconset theme="package-installed-updated"/>
+          <iconset theme="package-installed-updated" />
          </property>
          <property name="autoDefault">
           <bool>false</bool>
@@ -1606,7 +1057,7 @@
           <string>Enter</string>
          </property>
          <property name="icon">
-          <iconset theme="key-enter"/>
+          <iconset theme="key-enter" />
          </property>
         </widget>
        </item>
@@ -1635,7 +1086,7 @@
           <bool>true</bool>
          </property>
          <property name="placeholderText">
-          <string notr="true"/>
+          <string notr="true" />
          </property>
         </widget>
        </item>
@@ -1675,7 +1126,7 @@
         <string>Install</string>
        </property>
        <property name="icon">
-        <iconset theme="run-install"/>
+        <iconset theme="run-install" />
        </property>
        <property name="shortcut">
         <string>Alt+I</string>
@@ -1703,7 +1154,7 @@
         <string>Close</string>
        </property>
        <property name="icon">
-        <iconset theme="window-close"/>
+        <iconset theme="window-close" />
        </property>
        <property name="shortcut">
         <string>Alt+C</string>
@@ -1744,7 +1195,7 @@
         <string>About...</string>
        </property>
        <property name="icon">
-        <iconset theme="help-about"/>
+        <iconset theme="help-about" />
        </property>
        <property name="shortcut">
         <string>Alt+B</string>
@@ -1766,7 +1217,7 @@
         <number>0</number>
        </property>
        <property name="text">
-        <string/>
+        <string />
        </property>
        <property name="pixmap">
         <pixmap resource="images.qrc">:/icons/logo.svg</pixmap>
@@ -1791,7 +1242,7 @@
         <string>Help</string>
        </property>
        <property name="icon">
-        <iconset theme="help-contents"/>
+        <iconset theme="help-contents" />
        </property>
        <property name="shortcut">
         <string>Alt+H</string>
@@ -1813,7 +1264,7 @@
         <string>Uninstall</string>
        </property>
        <property name="icon">
-        <iconset theme="archive-remove"/>
+        <iconset theme="archive-remove" />
        </property>
        <property name="shortcut">
         <string>Alt+U</string>
@@ -1845,14 +1296,13 @@
  </widget>
  <tabstops>
   <tabstop>tabWidget</tabstop>
-  <tabstop>treePopularApps</tabstop>
   <tabstop>pushAbout</tabstop>
   <tabstop>pushHelp</tabstop>
   <tabstop>pushInstall</tabstop>
   <tabstop>pushCancel</tabstop>
  </tabstops>
  <resources>
-  <include location="images.qrc"/>
+  <include location="images.qrc" />
  </resources>
- <connections/>
+ <connections />
 </ui>

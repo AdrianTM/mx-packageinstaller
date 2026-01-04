@@ -6,9 +6,6 @@ repo_sync() {
     pacman -Sy --noconfirm
 }
 
-cleanup_temp() {
-    rm /etc/apt/sources.list.d/mxpitemp.list
-}
 
 copy_log() {
     echo -e "-----------------------------------------------------------\nMXPI SESSION\n-----------------------------------------------------------\n" >> /var/log/mxpi.log.old
@@ -32,8 +29,6 @@ case "$1" in
         repo_sync;;
     copy_log)
         copy_log;;
-    cleanup_temp)
-        cleanup_temp;;
     flatpak_add_repos)
         flatpak_add_repos;;
     flatpak_add_repos_user)

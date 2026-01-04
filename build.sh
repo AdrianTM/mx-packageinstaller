@@ -30,7 +30,6 @@ BUILD_DIR="build"
 BUILD_TYPE="Release"
 USE_CLANG=false
 CLEAN=false
-DEBIAN_BUILD=false
 ARCH_BUILD=false
 BUILD_TESTS=false
 
@@ -49,10 +48,6 @@ while [[ $# -gt 0 ]]; do
             CLEAN=true
             shift
             ;;
-        --debian)
-            DEBIAN_BUILD=true
-            shift
-            ;;
         --arch)
             ARCH_BUILD=true
             shift
@@ -68,7 +63,6 @@ while [[ $# -gt 0 ]]; do
             echo "  -c, --clang     Use clang compiler"
             echo "  -t, --tests     Build with unit tests"
             echo "  --clean         Clean build directory before building"
-            echo "  --debian        Build Debian package"
             echo "  --arch          Build Arch Linux package"
             echo "  -h, --help      Show this help message"
             exit 0
@@ -80,32 +74,6 @@ while [[ $# -gt 0 ]]; do
     esac
 done
 
-# Build Debian package
-if [ "$DEBIAN_BUILD" = true ]; then
-    echo "Building Debian package..."
-    debuild -us -uc
-
-    echo "Creating debs directory and moving debian artifacts..."
-    mkdir -p debs
-    mv ../*.deb debs/ 2>/dev/null || true
-    mv ../*.changes debs/ 2>/dev/null || true  
-    mv ../*.dsc debs/ 2>/dev/null || true
-    mv ../*.tar.* debs/ 2>/dev/null || true
-    mv ../*.buildinfo debs/ 2>/dev/null || true
-    mv ../*build* debs/ 2>/dev/null || true
-
-    echo "Cleaning build directory and debian artifacts..."
-    rm -rf "$BUILD_DIR"
-    rm -f debian/*.debhelper.log debian/*.substvars debian/files
-    rm -rf debian/.debhelper/ debian/mx-packageinstaller/ obj-*/
-    rm -f translations/*.qm version.h
-    rm -f ../*build* ../*.buildinfo 2>/dev/null || true
-
-    echo "Debian package build completed!"
-    echo "Debian artifacts moved to debs/ directory"
-    exit 0
-fi
-
 # Build Arch Linux package
 if [ "$ARCH_BUILD" = true ]; then
     echo "Building Arch Linux package..."
@@ -115,17 +83,22 @@ if [ "$ARCH_BUILD" = true ]; then
         exit 1
     fi
 
-    if [ ! -f debian/changelog ]; then
-        echo "Error: debian/changelog not found; cannot determine version for Arch build."
+    if [ ! -f PKGBUILD ]; then
+        echo "Error: PKGBUILD not found; cannot determine version for Arch build."
         exit 1
     fi
-
-    ARCH_VERSION=$(sed -n '1{s/^[^(]*(\([^)]*\)).*/\1/p}' debian/changelog)
-    if [ -z "$ARCH_VERSION" ]; then
-        echo "Error: could not parse version from debian/changelog."
+    PKGVER=$(sed -n 's/^pkgver=//p' PKGBUILD | head -n 1)
+    PKGREL=$(sed -n 's/^pkgrel=//p' PKGBUILD | head -n 1)
+    if [ -z "$PKGVER" ]; then
+        echo "Error: could not parse pkgver from PKGBUILD."
         exit 1
     fi
-    echo "Using version ${ARCH_VERSION} from debian/changelog"
+    if [ -n "$PKGREL" ]; then
+        ARCH_VERSION="${PKGVER}-${PKGREL}"
+    else
+        ARCH_VERSION="${PKGVER}"
+    fi
+    echo "Using version ${ARCH_VERSION} from PKGBUILD"
 
     ARCH_BUILDDIR=$(mktemp -d -p "$PWD" archpkgbuild.XXXXXX)
     trap 'rm -rf "$ARCH_BUILDDIR"' EXIT
@@ -148,12 +121,9 @@ fi
 
 # Clean build directory if requested
 if [ "$CLEAN" = true ]; then
-    echo "Cleaning build directory and debian artifacts..."
+    echo "Cleaning build directory..."
     rm -rf "$BUILD_DIR"
-    rm -f debian/*.debhelper.log debian/*.substvars debian/files
-    rm -rf debian/.debhelper/ debian/mx-packageinstaller/ obj-*/
     rm -f translations/*.qm version.h
-    rm -f ../*build* ../*.buildinfo 2>/dev/null || true
 fi
 
 # Create build directory
