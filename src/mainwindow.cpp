@@ -94,6 +94,17 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
 
     setup();
 
+    connect(&installedPackagesWatcher, &QFutureWatcher<QHash<QString, PackageInfo>>::finished, this, [this] {
+        installedPackages = installedPackagesWatcher.result();
+        installedPackagesLoading = false;
+        updateRepoSetsFromInstalled();
+        if (currentTree == ui->treeRepo && repoCacheValid) {
+            applyRepoFilter(ui->comboFilterRepo->currentIndex());
+            QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
+            updateInterface();
+        }
+    });
+
     // Run flatpak setup and display in a separate thread
     if (arch != "i686" && checkInstalled("flatpak")) {
         auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
@@ -162,7 +173,8 @@ void MainWindow::setup()
     setConnections();
 
     currentTree = ui->treeRepo;
-    buildRepoCache(true);
+    startInstalledPackagesLoad();
+    buildRepoCache(false);
     applyRepoFilter(ui->comboFilterRepo->currentIndex());
     ui->searchBoxRepo->setFocus();
 
@@ -1687,6 +1699,21 @@ bool MainWindow::checkInstalled(const QVariant &names) const
         return false;
     }
 
+    if (installedPackages.isEmpty()) {
+        Cmd shell;
+        for (const QString &name : name_list) {
+            if (name.trimmed().isEmpty()) {
+                continue;
+            }
+            const QString out = shell.getOut("pacman -Qq --color never " + shellQuote(name), Cmd::QuietMode::Yes);
+            Q_UNUSED(out);
+            if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     // Trim whitespace from all package names
     for (QString &name : name_list) {
         name = name.trimmed();
@@ -2602,10 +2629,6 @@ bool MainWindow::buildRepoCache(bool showProgress)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
 
-    if (installedPackages.isEmpty()) {
-        installedPackages = listInstalled();
-    }
-
     const QString infoOutput = shell.getOut("pacman -Ss --color never");
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         return finish(false);
@@ -2655,20 +2678,8 @@ bool MainWindow::buildRepoCache(bool showProgress)
         flushEntry(pendingDescription);
     }
 
-    for (auto it = installedPackages.cbegin(); it != installedPackages.cend(); ++it) {
-        repoInstalledSet.insert(it.key());
-    }
-
-    for (auto it = installedPackages.cbegin(); it != installedPackages.cend(); ++it) {
-        const auto repoIt = repoAllList.constFind(it.key());
-        if (repoIt == repoAllList.constEnd()) {
-            continue;
-        }
-        const VersionNumber installedVersion(it.value().version);
-        const VersionNumber repoVersion(repoIt.value().version);
-        if (installedVersion < repoVersion) {
-            repoUpgradableSet.insert(it.key());
-        }
+    if (!installedPackages.isEmpty()) {
+        updateRepoSetsFromInstalled();
     }
 
     repoCacheValid = true;
@@ -2685,6 +2696,61 @@ void MainWindow::applyRepoFilter(int statusFilter)
     if (statusFilter == Status::Autoremovable && repoAutoremovableSet.isEmpty()) {
         const QStringList autoremovable = getAutoremovablePackages();
         repoAutoremovableSet = QSet<QString>(autoremovable.cbegin(), autoremovable.cend());
+    }
+
+    auto ensureRepoInstalledSet = [&]() {
+        if (!repoInstalledSet.isEmpty()) {
+            return;
+        }
+        if (!installedPackages.isEmpty()) {
+            updateRepoSetsFromInstalled();
+            return;
+        }
+        Cmd shell;
+        QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+        const QStringList lines = shell.getOut("pacman -Qq").split('\n', Qt::SkipEmptyParts);
+        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+            return;
+        }
+        repoInstalledSet.reserve(lines.size());
+        for (const QString &line : lines) {
+            const QString name = line.trimmed();
+            if (!name.isEmpty()) {
+                repoInstalledSet.insert(name);
+            }
+        }
+    };
+
+    auto ensureRepoUpgradableSet = [&]() {
+        if (!repoUpgradableSet.isEmpty()) {
+            return;
+        }
+        if (!installedPackages.isEmpty()) {
+            updateRepoSetsFromInstalled();
+            if (!repoUpgradableSet.isEmpty()) {
+                return;
+            }
+        }
+        Cmd shell;
+        QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+        const QStringList lines = shell.getOut("pacman -Qu --color never").split('\n', Qt::SkipEmptyParts);
+        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+            return;
+        }
+        repoUpgradableSet.reserve(lines.size());
+        for (const QString &line : lines) {
+            const QString name = line.section(' ', 0, 0).trimmed();
+            if (!name.isEmpty()) {
+                repoUpgradableSet.insert(name);
+            }
+        }
+    };
+
+    if (statusFilter == Status::Installed) {
+        ensureRepoInstalledSet();
+    } else if (statusFilter == Status::Upgradable) {
+        ensureRepoInstalledSet();
+        ensureRepoUpgradableSet();
     }
 
     for (auto it = repoAllList.cbegin(); it != repoAllList.cend(); ++it) {
@@ -2710,6 +2776,41 @@ void MainWindow::applyRepoFilter(int statusFilter)
             if (!(*it)->isHidden()) {
                 (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Autoremovable);
             }
+        }
+    }
+
+    if (currentTree == ui->treeRepo) {
+        QMetaObject::invokeMethod(this, &MainWindow::updateInterface, Qt::QueuedConnection);
+    }
+}
+
+void MainWindow::startInstalledPackagesLoad()
+{
+    if (installedPackagesLoading || !installedPackages.isEmpty()) {
+        return;
+    }
+    installedPackagesLoading = true;
+    installedPackagesWatcher.setFuture(QtConcurrent::run([this] { return listInstalled(); }));
+}
+
+void MainWindow::updateRepoSetsFromInstalled()
+{
+    repoInstalledSet.clear();
+    repoUpgradableSet.clear();
+
+    for (auto it = installedPackages.cbegin(); it != installedPackages.cend(); ++it) {
+        repoInstalledSet.insert(it.key());
+    }
+
+    for (auto it = installedPackages.cbegin(); it != installedPackages.cend(); ++it) {
+        const auto repoIt = repoAllList.constFind(it.key());
+        if (repoIt == repoAllList.constEnd()) {
+            continue;
+        }
+        const VersionNumber installedVersion(it.value().version);
+        const VersionNumber repoVersion(repoIt.value().version);
+        if (installedVersion < repoVersion) {
+            repoUpgradableSet.insert(it.key());
         }
     }
 }
@@ -3017,6 +3118,7 @@ void MainWindow::filterChanged(const QString &arg1)
                                   tr("Could not query repository packages. Please check pacman output."));
             return;
         }
+        startInstalledPackagesLoad();
         const int statusFilter = ui->comboFilterRepo->currentIndex();
         applyRepoFilter(statusFilter);
 
