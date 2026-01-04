@@ -279,6 +279,7 @@ private:
     QStringList getAutoremovablePackages();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);
+    [[nodiscard]] static QString shellQuote(const QString &value);
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();

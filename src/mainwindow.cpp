@@ -328,6 +328,16 @@ QString MainWindow::convert(quint64 bytes)
     }
 }
 
+// Quote a token for safe use inside a single-quoted shell context
+// Replaces ' with '\'' (end quote, escaped quote, start quote)
+// Returns a fully single-quoted token, suitable for use inside SYSTEM:'...'
+QString MainWindow::shellQuote(const QString &value)
+{
+    QString escaped = value;
+    escaped.replace('\'', QLatin1String("'\\''"));
+    return QLatin1Char('\'') + escaped + QLatin1Char('\'');
+}
+
 void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -2986,8 +2996,13 @@ void MainWindow::pushInstall_clicked()
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("socat SYSTEM:'flatpak install -y " + fpUser + ui->comboRemote->currentText() + ' '
-                    + changeList.join(' ') + "',stderr STDIO")) {
+        QStringList quotedPackages;
+        quotedPackages.reserve(changeList.size());
+        for (const QString &pkg : std::as_const(changeList)) {
+            quotedPackages.append(shellQuote(pkg));
+        }
+        if (cmd.run("socat SYSTEM:'flatpak install -y " + fpUser + shellQuote(ui->comboRemote->currentText()) + ' '
+                    + quotedPackages.join(' ') + "',stderr STDIO")) {
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
@@ -3105,7 +3120,7 @@ void MainWindow::pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         for (const QString &app : std::as_const(changeList)) {
             enableOutput();
-            if (!cmd.run("socat SYSTEM:'flatpak uninstall " + fpUser + "-y " + app
+            if (!cmd.run("socat SYSTEM:'flatpak uninstall " + fpUser + "-y " + shellQuote(app)
                          + "',stderr STDIO")) { // success if all processed successfuly,
                                                 // failure if one failed
                 success = false;
@@ -4250,7 +4265,7 @@ void MainWindow::pushRemotes_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
         if (cmd.run("socat SYSTEM:'flatpak install -y " + dialog->getUser() + "--from "
-                    + dialog->getInstallRef().replace(':', "\\:") + "',stderr STDIO\"")) {
+                    + shellQuote(dialog->getInstallRef()) + "',stderr STDIO\"")) {
             invalidateFlatpakRemoteCache();
             listFlatpakRemotes();
             displayFlatpaks(true);
