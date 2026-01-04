@@ -55,6 +55,18 @@
 
 using namespace std::chrono_literals;
 
+namespace {
+QString sanitizeOutputForDisplay(const QString &output)
+{
+    static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
+    static const QRegularExpression ansiQuery {R"(\x1B\[[0-9;?]*n)"};
+    QString cleanOutput = output;
+    cleanOutput.remove(ansiEscape);
+    cleanOutput.remove(ansiQuery);
+    return cleanOutput;
+}
+} // namespace
+
 MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
@@ -69,10 +81,17 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     connect(&timer, &QTimer::timeout, this, &MainWindow::updateBar);
     connect(&cmd, &Cmd::started, this, &MainWindow::cmdStart);
     connect(&cmd, &Cmd::done, this, &MainWindow::cmdDone);
-    connect(&cmd, &Cmd::outputAvailable, this,
-            [this](const QString &out) { if (!suppressCmdOutput) qDebug() << out.trimmed(); });
+    connect(&cmd, &Cmd::outputAvailable, this, [this](const QString &out) {
+        if (!suppressCmdOutput) {
+            qDebug() << sanitizeOutputForDisplay(out).trimmed();
+        }
+    });
     connect(&cmd, &Cmd::errorAvailable, this,
-            [this](const QString &out) { if (!suppressCmdOutput) qWarning() << out.trimmed(); });
+            [this](const QString &out) {
+                if (!suppressCmdOutput) {
+                    qWarning() << sanitizeOutputForDisplay(out).trimmed();
+                }
+            });
     setWindowFlags(Qt::Window); // For the close, min and max buttons
 
     setup();
@@ -501,12 +520,10 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
-    static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
     static const QRegularExpression statusKey {R"(^\s*(Installing|Uninstalling)\s+\d+/\d+)"};
 
     // Remove ANSI escape sequences
-    QString cleanOutput = output;
-    cleanOutput.remove(ansiEscape);
+    QString cleanOutput = sanitizeOutputForDisplay(output);
 
     auto replaceLastStatusLine = [&](const QString &key, const QString &line) {
         QTextBlock block = ui->outputBox->document()->lastBlock();
