@@ -38,6 +38,8 @@
 #include <QScopedValueRollback>
 #include <QScrollBar>
 #include <QShortcut>
+<#include <QStandardPaths>
+#include <QTextBlock>
 #include <QTextStream>
 #include <QtConcurrent/QtConcurrent>
 #include <QtGlobal>
@@ -541,21 +543,75 @@ void MainWindow::checkUncheckItem()
 void MainWindow::outputAvailable(const QString &output)
 {
     static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
+    static const QRegularExpression statusKey {R"(^\s*(Installing|Uninstalling)\s+\d+/\d+)"};
 
     // Remove ANSI escape sequences
     QString cleanOutput = output;
     cleanOutput.remove(ansiEscape);
 
-    // Handle carriage return (overwrite current line)
-    if (cleanOutput.contains('\r')) {
-        QTextCursor cursor = ui->outputBox->textCursor();
-        cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
-        cursor.removeSelectedText();
-    }
+    auto replaceLastStatusLine = [&](const QString &key, const QString &line) {
+        QTextBlock block = ui->outputBox->document()->lastBlock();
+        while (block.isValid()) {
+            const QString text = block.text();
+            if (text.trimmed().isEmpty()) {
+                block = block.previous();
+                continue;
+            }
+            const QRegularExpressionMatch match = statusKey.match(text);
+            if (match.hasMatch() && match.captured(0) == key) {
+                QTextCursor cursor(block);
+                cursor.select(QTextCursor::LineUnderCursor);
+                cursor.removeSelectedText();
+                cursor.insertText(line);
+                return true;
+            }
+            break;
+        }
+        return false;
+    };
 
-    // Move cursor to end and insert cleaned output
-    ui->outputBox->moveCursor(QTextCursor::End);
-    ui->outputBox->insertPlainText(cleanOutput);
+    auto insertLine = [&](const QString &line, bool addNewline, bool overwriteCurrentLine) {
+        QTextCursor cursor = ui->outputBox->textCursor();
+        cursor.movePosition(QTextCursor::End);
+        if (overwriteCurrentLine) {
+            cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
+            cursor.removeSelectedText();
+        }
+        cursor.insertText(line);
+        if (addNewline) {
+            cursor.insertText("\n");
+        }
+        ui->outputBox->setTextCursor(cursor);
+    };
+
+    bool overwriteCurrentLine = false;
+    QString buffer;
+    auto flushBuffer = [&](bool addNewline) {
+        if (buffer.isEmpty() && !addNewline) {
+            return;
+        }
+        const QString line = buffer;
+        buffer.clear();
+        const QRegularExpressionMatch match = statusKey.match(line);
+        const QString key = match.hasMatch() ? match.captured(0) : QString();
+        const bool replaced = !key.isEmpty() && !overwriteCurrentLine && replaceLastStatusLine(key, line);
+        if (!replaced) {
+            insertLine(line, addNewline, overwriteCurrentLine);
+        }
+    };
+
+    for (const QChar ch : cleanOutput) {
+        if (ch == QLatin1Char('\r')) {
+            flushBuffer(false);
+            overwriteCurrentLine = true;
+        } else if (ch == QLatin1Char('\n')) {
+            flushBuffer(true);
+            overwriteCurrentLine = false;
+        } else {
+            buffer.append(ch);
+        }
+    }
+    flushBuffer(false);
 
     ui->outputBox->verticalScrollBar()->setValue(ui->outputBox->verticalScrollBar()->maximum());
 }
