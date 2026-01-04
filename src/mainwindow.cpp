@@ -1725,7 +1725,8 @@ QHash<QString, PackageInfo> MainWindow::listInstalled()
         QMessageBox::critical(this, tr("Error"),
                               tr("pacman query returned an error. Please run 'pacman -Qi' in terminal "
                                  "and check the output."));
-        exit(EXIT_FAILURE);
+        // Return empty hash instead of calling exit() - allows graceful degradation
+        return {};
     }
 
     QHash<QString, PackageInfo> installedPackagesMap;
