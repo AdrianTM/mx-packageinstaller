@@ -2045,10 +2045,14 @@ bool MainWindow::isOnline()
         loop.exec();
         reply->disconnect();
         if (reply->error() == QNetworkReply::NoError) {
+            reply->deleteLater();
             return true;
         }
+        // Clean up failed reply before next iteration
+        reply->deleteLater();
+        reply = nullptr;
     }
-    qDebug() << "No network detected:" << reply->url() << error;
+    qDebug() << "No network detected:" << error;
     return false;
 }
 
