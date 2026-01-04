@@ -39,7 +39,7 @@ LockFile::LockFile(const QString &file_name)
 {
 }
 
-bool LockFile::isLocked()
+bool LockFile::isLocked() const
 {
     // Check if lock file exists
     if (!QFile::exists(fileName())) {

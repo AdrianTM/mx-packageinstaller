@@ -32,7 +32,7 @@ public:
 
     [[nodiscard]] QString fileName() const;
     [[nodiscard]] QString getLockingProcess() const;
-    [[nodiscard]] bool isLocked();
+    [[nodiscard]] bool isLocked() const;
     [[nodiscard]] bool isLockedGUI();
 
     [[nodiscard]] bool lock();
