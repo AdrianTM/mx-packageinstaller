@@ -224,8 +224,10 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        qDebug() << "Elevating remove command:" << "pacman -Rns " + names;
-        success = cmd.runAsRoot("pacman -Rns " + names);
+        const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
+        const QString quotedNames = shellQuotePackageList(nameList);
+        qDebug() << "Elevating remove command:" << "pacman -Rns " + quotedNames;
+        success = cmd.runAsRoot("pacman -Rns " + quotedNames);
     }
 
     if (success && !postuninstall.isEmpty()) {
@@ -314,6 +316,20 @@ QString MainWindow::shellQuote(const QString &value)
     QString escaped = value;
     escaped.replace('\'', QLatin1String("'\\''"));
     return QLatin1Char('\'') + escaped + QLatin1Char('\'');
+}
+
+// Quote a list of package names for safe use in shell commands
+// Each package name is wrapped in single quotes after escaping
+QString MainWindow::shellQuotePackageList(const QStringList &packages)
+{
+    QStringList quoted;
+    quoted.reserve(packages.size());
+    for (const QString &pkg : packages) {
+        QString escaped = pkg;
+        escaped.replace('\'', QLatin1String("'\\''"));
+        quoted.append('\'' + escaped + '\'');
+    }
+    return quoted.join(' ');
 }
 
 void MainWindow::listSizeInstalledFP()
@@ -1452,14 +1468,18 @@ bool MainWindow::install(const QString &names)
         if (!validateSudoPassword(&sudoPassword)) {
             return false;
         }
-        const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed " + names;
+        const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
+        const QString quotedNames = shellQuotePackageList(nameList);
+        const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed " + quotedNames;
         bool result = cmd.runWithInput(command, sudoPassword + '\n');
         // Securely zero password after use
         sudoPassword.fill('\0');
         sudoPassword.clear();
         return result;
     } else {
-        return cmd.runAsRoot("pacman -S --needed " + names);
+        const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
+        const QString quotedNames = shellQuotePackageList(nameList);
+        return cmd.runAsRoot("pacman -S --needed " + quotedNames);
     }
 }
 
@@ -1479,10 +1499,10 @@ bool MainWindow::markKeep()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setTabEnabled(Tab::Output, true);
-    QString names = changeList.join(' ');
+    const QString quotedNames = shellQuotePackageList(changeList);
     enableOutput();
-    qDebug() << "Elevating markKeep command:" << "pacman -D --asexplicit " + names;
-    return cmd.runAsRoot("pacman -D --asexplicit " + names);
+    qDebug() << "Elevating markKeep command:" << "pacman -D --asexplicit " + quotedNames;
+    return cmd.runAsRoot("pacman -D --asexplicit " + quotedNames);
 }
 
 bool MainWindow::isOnline()

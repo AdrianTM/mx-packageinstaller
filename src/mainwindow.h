@@ -220,6 +220,7 @@ private:
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);
     [[nodiscard]] static QString shellQuote(const QString &value);
+    [[nodiscard]] static QString shellQuotePackageList(const QStringList &packages);
     void blockInterfaceFP(bool block);
     void buildChangeList(QTreeWidgetItem *item);
     void cancelDownload();
