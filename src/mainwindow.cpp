@@ -35,6 +35,7 @@
 #include <QScopedValueRollback>
 #include <QScrollBar>
 #include <QShortcut>
+#include <QSignalBlocker>
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QDialog>
@@ -103,6 +104,15 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
             updateInterface();
         }
+    });
+
+    connect(&aurInstalledCacheWatcher, &QFutureWatcher<QHash<QString, PackageInfo>>::finished, this, [this] {
+        aurInstalledCacheLoading = false;
+        if (aurInstalledCacheEpochInFlight != aurInstalledCacheEpoch || aurInstalledCacheValid) {
+            return;
+        }
+        aurInstalledCache = aurInstalledCacheWatcher.result();
+        aurInstalledCacheValid = true;
     });
 
     // Run flatpak setup and display in a separate thread
@@ -174,6 +184,7 @@ void MainWindow::setup()
 
     currentTree = ui->treeRepo;
     startInstalledPackagesLoad();
+    startAurInstalledCacheLoad();
     buildRepoCache(false);
     applyRepoFilter(ui->comboFilterRepo->currentIndex());
     ui->searchBoxRepo->setFocus();
@@ -1934,6 +1945,9 @@ void MainWindow::setDirty()
     dirtyAur = true;
     dirtyRepo = true;
     repoCacheValid = false;
+    aurInstalledCacheValid = false;
+    aurInstalledCache.clear();
+    ++aurInstalledCacheEpoch;
     cachedAutoremovableFetched = false;
 }
 
@@ -2492,6 +2506,10 @@ bool MainWindow::buildAurList(const QString &searchTerm)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
     if (term.isEmpty()) {
+        if (aurInstalledCacheValid) {
+            aurList = aurInstalledCache;
+            return true;
+        }
         const QStringList installed
             = shell.getOut("pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
@@ -2533,6 +2551,8 @@ bool MainWindow::buildAurList(const QString &searchTerm)
             const QString description = installedPackages.value(it.key()).description;
             aurList.insert(it.key(), {repoVersion, description});
         }
+        aurInstalledCache = aurList;
+        aurInstalledCacheValid = true;
         return true;
     }
 
@@ -2793,6 +2813,81 @@ void MainWindow::startInstalledPackagesLoad()
     installedPackagesWatcher.setFuture(QtConcurrent::run([this] { return listInstalled(); }));
 }
 
+void MainWindow::startAurInstalledCacheLoad()
+{
+    if (aurInstalledCacheLoading || aurInstalledCacheValid) {
+        return;
+    }
+    const QString paruPath = getParuPath();
+    if (paruPath.isEmpty()) {
+        return;
+    }
+
+    aurInstalledCacheLoading = true;
+    aurInstalledCacheEpochInFlight = aurInstalledCacheEpoch;
+    aurInstalledCacheWatcher.setFuture(QtConcurrent::run([paruPath]() {
+        QHash<QString, PackageInfo> result;
+        Cmd shell;
+
+        const QStringList installedLines
+            = shell.getOut("pacman -Qm --color never", Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+            return result;
+        }
+        if (installedLines.isEmpty()) {
+            return result;
+        }
+
+        QHash<QString, QString> installedVersions;
+        installedVersions.reserve(installedLines.size());
+        QSet<QString> installedNames;
+        installedNames.reserve(installedLines.size());
+        for (const QString &line : installedLines) {
+            const QStringList parts = line.split(' ', Qt::SkipEmptyParts);
+            if (parts.size() >= 2) {
+                const QString name = parts.at(0);
+                installedVersions.insert(name, parts.at(1));
+                installedNames.insert(name);
+            }
+        }
+        if (installedNames.isEmpty()) {
+            return result;
+        }
+
+        QHash<QString, QString> descriptions;
+        const QString infoOutput = shell.getOut("LANG=C pacman -Qi", Cmd::QuietMode::Yes);
+        if (shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0) {
+            QString packageName;
+            QString description;
+            auto flushPackage = [&]() {
+                if (!packageName.isEmpty() && installedNames.contains(packageName)) {
+                    descriptions.insert(packageName, description);
+                }
+                packageName.clear();
+                description.clear();
+            };
+
+            const QStringList lines = infoOutput.split('\n');
+            for (const QString &line : lines) {
+                if (line.startsWith("Name")) {
+                    flushPackage();
+                    packageName = line.section(':', 1).trimmed();
+                } else if (line.startsWith("Description")) {
+                    description = line.section(':', 1).trimmed();
+                }
+            }
+            flushPackage();
+        }
+
+        for (auto it = installedVersions.cbegin(); it != installedVersions.cend(); ++it) {
+            const QString repoVersion = it.value();
+            const QString description = descriptions.value(it.key());
+            result.insert(it.key(), {repoVersion, description});
+        }
+        return result;
+    }));
+}
+
 void MainWindow::updateRepoSetsFromInstalled()
 {
     repoInstalledSet.clear();
@@ -2992,6 +3087,7 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     auto applyAurStatusFilter = [this, &uncheckAllItems](int statusFilter) {
+        QSignalBlocker blocker(currentTree);
         auto parseNameSet = [](const QStringList &lines) {
             QSet<QString> names;
             names.reserve(lines.size());

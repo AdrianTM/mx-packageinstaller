@@ -150,14 +150,20 @@ private:
     QLocale locale;
     QHash<QString, PackageInfo> installedPackages;
     QHash<QString, PackageInfo> aurList;
+    QHash<QString, PackageInfo> aurInstalledCache;
     QHash<QString, PackageInfo> repoList;
     QHash<QString, PackageInfo> repoAllList;
     QSet<QString> repoInstalledSet;
     QSet<QString> repoUpgradableSet;
     QSet<QString> repoAutoremovableSet;
     bool repoCacheValid {false};
+    bool aurInstalledCacheValid {false};
+    bool aurInstalledCacheLoading {false};
+    int aurInstalledCacheEpoch {0};
+    int aurInstalledCacheEpochInFlight {0};
     bool installedPackagesLoading {false};
     QFutureWatcher<QHash<QString, PackageInfo>> installedPackagesWatcher;
+    QFutureWatcher<QHash<QString, PackageInfo>> aurInstalledCacheWatcher;
     QProgressBar *bar {};
     QProgressDialog *progress {};
     QPushButton *pushCancel {};
@@ -259,6 +265,7 @@ private:
     void setup();
     void setupFlatpakDisplay();
     void startInstalledPackagesLoad();
+    void startAurInstalledCacheLoad();
     void updateRepoSetsFromInstalled();
     void updateFlatpakCounts(uint totalCount);
     void updateInterface() const;
