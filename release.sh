@@ -13,6 +13,7 @@ AUR_DIR="aur"
 MAIN_BRANCH="arch"
 ANNOTATION=""
 FORCE_UPDATE=0
+FORCE_VERSION=0
 
 # Helper functions
 print_header() {
@@ -296,15 +297,19 @@ main() {
         print_error "Usage: $0 <version> [--update|--force]"
         echo "Example: $0 1.0.0 or $0 v1.0.0"
         echo "         $0 26.01 --update"
+        echo "         $0 26.01 --force"
         exit 1
     fi
 
     version=$1
     if [ $# -gt 1 ]; then
         case "$2" in
-            --update|--force)
+            --update)
                 mode="update"
                 FORCE_UPDATE=1
+                ;;
+            --force)
+                FORCE_VERSION=1
                 ;;
             *)
                 print_error "Unknown option: $2"
@@ -359,8 +364,12 @@ main() {
     local clean_version=${version#v}
 
     if ! compare_versions "$clean_version" "$latest_tag"; then
-        print_error "Version $clean_version is not higher than latest tag $latest_tag"
-        exit 1
+        if [ "$FORCE_VERSION" -eq 1 ]; then
+            print_warning "Version $clean_version is not higher than latest tag $latest_tag (forced)"
+        else
+            print_error "Version $clean_version is not higher than latest tag $latest_tag"
+            exit 1
+        fi
     fi
     print_success "Version $version > $latest_tag ✓"
 
