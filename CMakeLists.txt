@@ -218,6 +218,19 @@ install(TARGETS mx-packageinstaller
     RUNTIME DESTINATION bin
 )
 
+# Install desktop file
+install(FILES mx-packageinstaller.desktop DESTINATION share/applications)
+
+# Install icons
+install(FILES icons/mx-packageinstaller.svg DESTINATION share/icons/hicolor/scalable/apps)
+install(FILES icons/mx-packageinstaller.png DESTINATION share/icons/hicolor/48x48/apps)
+
+# Install translations
+install(FILES ${qm_files} DESTINATION share/locale/)
+
+# Install help files
+install(DIRECTORY help/ DESTINATION share/doc/mx-packageinstaller)
+
 # Add tests if requested
 if(BUILD_TESTS)
     message(STATUS "Building with tests enabled")
