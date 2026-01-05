@@ -180,6 +180,21 @@ void MainWindow::setup()
         w->setVisible(false);
         w->setChecked(false);
     }
+    // Make legend buttons non-interactive (avoid hover/click hints)
+    const QList<QAbstractButton *> legendButtons {
+        ui->iconInstalledPackagesRepo,
+        ui->iconUpgradableRepo,
+        ui->iconInstalledPackages_2,
+        ui->iconUpgradable_2,
+        ui->iconInstalledPackages_4,
+    };
+    for (auto *button : legendButtons) {
+        if (!button) {
+            continue;
+        }
+        button->setFocusPolicy(Qt::NoFocus);
+        button->setAttribute(Qt::WA_TransparentForMouseEvents, true);
+    }
 
     // Install custom header views with checkbox in column 0 (TreeCol::Check)
     headerEnabled = new CheckableHeaderView(Qt::Horizontal, ui->treeEnabled);
