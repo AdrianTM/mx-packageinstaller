@@ -38,7 +38,7 @@
 #include <QScopedValueRollback>
 #include <QScrollBar>
 #include <QShortcut>
-<#include <QStandardPaths>
+#include <QStandardPaths>
 #include <QTextBlock>
 #include <QTextStream>
 #include <QtConcurrent/QtConcurrent>
@@ -182,8 +182,8 @@ void MainWindow::setup()
     }
     // Make legend buttons non-interactive (avoid hover/click hints)
     const QList<QAbstractButton *> legendButtons {
-        ui->iconInstalledPackagesRepo,
-        ui->iconUpgradableRepo,
+        ui->iconInstalledPackages_5,
+        ui->iconUpgradable,
         ui->iconInstalledPackages_2,
         ui->iconUpgradable_2,
         ui->iconInstalledPackages_4,
