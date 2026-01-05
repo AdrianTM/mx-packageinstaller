@@ -87,11 +87,16 @@ if [ "$ARCH_BUILD" = true ]; then
         echo "Error: PKGBUILD not found; cannot determine version for Arch build."
         exit 1
     fi
-    PKGVER=$(sed -n 's/^pkgver=//p' PKGBUILD | head -n 1)
+    PKGVER_LINE=$(sed -n 's/^pkgver=//p' PKGBUILD | head -n 1)
     PKGREL=$(sed -n 's/^pkgrel=//p' PKGBUILD | head -n 1)
-    if [ -z "$PKGVER" ]; then
+    if [ -z "$PKGVER_LINE" ]; then
         echo "Error: could not parse pkgver from PKGBUILD."
         exit 1
+    fi
+    if [[ "$PKGVER_LINE" =~ ^\$\{PKGVER:-([^}]+)\}$ ]]; then
+        PKGVER="${BASH_REMATCH[1]}"
+    else
+        PKGVER="$PKGVER_LINE"
     fi
     if [ -n "$PKGREL" ]; then
         ARCH_VERSION="${PKGVER}-${PKGREL}"
@@ -108,7 +113,7 @@ if [ "$ARCH_BUILD" = true ]; then
     PKG_DEST_DIR="$PWD/build"
     mkdir -p "$PKG_DEST_DIR"
 
-    PKGDEST="$PKG_DEST_DIR" PKGVER="$ARCH_VERSION" makepkg -f
+    PKGDEST="$PKG_DEST_DIR" PKGVER="$PKGVER" PKGREL="$PKGREL" makepkg -f
 
     echo "Cleaning makepkg artifacts..."
     rm -rf pkg
