@@ -28,6 +28,7 @@
 #include <QFile>
 #include <QFutureWatcher>
 #include <QHash>
+#include <QElapsedTimer>
 #include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
@@ -148,6 +149,8 @@ private:
     QIcon qiconInstalled;
     QIcon qiconUpgradable;
     QLocale locale;
+    QHash<QString, VersionNumber> installedVersionsCache;
+    QElapsedTimer installedVersionsCacheTimer;
     QHash<QString, PackageInfo> installedPackages;
     QHash<QString, PackageInfo> aurList;
     QHash<QString, PackageInfo> aurInstalledCache;
@@ -161,9 +164,12 @@ private:
     bool aurInstalledCacheLoading {false};
     int aurInstalledCacheEpoch {0};
     int aurInstalledCacheEpochInFlight {0};
+    bool aurUpgradesLoading {false};
+    int aurUpgradesEpochInFlight {0};
     bool installedPackagesLoading {false};
     QFutureWatcher<QHash<QString, PackageInfo>> installedPackagesWatcher;
     QFutureWatcher<QHash<QString, PackageInfo>> aurInstalledCacheWatcher;
+    QFutureWatcher<QHash<QString, QString>> aurUpgradesWatcher;
     QProgressBar *bar {};
     QProgressDialog *progress {};
     QPushButton *pushCancel {};
@@ -266,6 +272,7 @@ private:
     void setupFlatpakDisplay();
     void startInstalledPackagesLoad();
     void startAurInstalledCacheLoad();
+    void startAurUpgradesLoad();
     void updateRepoSetsFromInstalled();
     void updateFlatpakCounts(uint totalCount);
     void updateInterface() const;

@@ -40,6 +40,7 @@
 #include <QSysInfo>
 #include <QDialog>
 #include <QDialogButtonBox>
+#include <QElapsedTimer>
 #include <QLabel>
 #include <QLineEdit>
 #include <QTextBlock>
@@ -113,6 +114,39 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
         }
         aurInstalledCache = aurInstalledCacheWatcher.result();
         aurInstalledCacheValid = true;
+    });
+
+    connect(&aurUpgradesWatcher, &QFutureWatcher<QHash<QString, QString>>::finished, this, [this] {
+        aurUpgradesLoading = false;
+        if (aurUpgradesEpochInFlight != aurInstalledCacheEpoch || !aurInstalledCacheValid) {
+            return;
+        }
+        const auto updates = aurUpgradesWatcher.result();
+        if (updates.isEmpty()) {
+            return;
+        }
+        for (auto it = updates.cbegin(); it != updates.cend(); ++it) {
+            if (aurInstalledCache.contains(it.key())) {
+                aurInstalledCache[it.key()].version = it.value();
+            }
+        }
+        if (currentTree == ui->treeAUR && ui->searchBoxAUR->text().trimmed().isEmpty()) {
+            for (auto it = updates.cbegin(); it != updates.cend(); ++it) {
+                if (aurList.contains(it.key())) {
+                    aurList[it.key()].version = it.value();
+                }
+            }
+            QSignalBlocker blocker(currentTree);
+            for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
+                const QString name = (*it)->text(TreeCol::Name);
+                const auto updateIt = updates.constFind(name);
+                if (updateIt != updates.constEnd()) {
+                    (*it)->setText(TreeCol::RepoVersion, updateIt.value());
+                }
+            }
+            updateTreeItems(currentTree);
+            updateInterface();
+        }
     });
 
     // Run flatpak setup and display in a separate thread
@@ -1948,6 +1982,9 @@ void MainWindow::setDirty()
     aurInstalledCacheValid = false;
     aurInstalledCache.clear();
     ++aurInstalledCacheEpoch;
+    aurUpgradesLoading = false;
+    installedVersionsCache.clear();
+    installedVersionsCacheTimer.invalidate();
     cachedAutoremovableFetched = false;
 }
 
@@ -1980,6 +2017,10 @@ void MainWindow::setIcons()
 
 QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
+    if (!installedVersionsCache.isEmpty() && installedVersionsCacheTimer.isValid()
+        && installedVersionsCacheTimer.elapsed() < 1500) {
+        return installedVersionsCache;
+    }
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
@@ -1998,6 +2039,8 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
             installedVersions.insert(packageInfo.at(0), VersionNumber(packageInfo.at(1)));
         }
     }
+    installedVersionsCache = installedVersions;
+    installedVersionsCacheTimer.start();
     return installedVersions;
 }
 
@@ -2455,9 +2498,20 @@ void MainWindow::handleAurTab(const QString &search_str)
     changeList.clear();
     displayWarning("aur");
 
-    // Let filterChanged handle the buildAurList, displayPackages, and applyAurStatusFilter calls
-    // to avoid redundant command executions
-    filterChanged(ui->comboFilterAUR->currentText());
+    const bool needsReload = dirtyAur || ui->treeAUR->topLevelItemCount() == 0;
+    if (needsReload) {
+        // Let filterChanged handle the buildAurList, displayPackages, and applyAurStatusFilter calls
+        // to avoid redundant command executions
+        filterChanged(ui->comboFilterAUR->currentText());
+    } else {
+        if (ui->comboFilterAUR->currentText() == tr("All packages")
+            && ui->searchBoxAUR->text().trimmed().isEmpty()) {
+            startAurUpgradesLoad();
+        }
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
+        setSearchFocus();
+        updateInterface();
+    }
     currentTree->blockSignals(false);
 }
 
@@ -2508,6 +2562,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
     if (term.isEmpty()) {
         if (aurInstalledCacheValid) {
             aurList = aurInstalledCache;
+            startAurUpgradesLoad();
             return true;
         }
         const QStringList installed
@@ -2888,6 +2943,38 @@ void MainWindow::startAurInstalledCacheLoad()
     }));
 }
 
+void MainWindow::startAurUpgradesLoad()
+{
+    if (aurUpgradesLoading || !aurInstalledCacheValid) {
+        return;
+    }
+    const QString paruPath = getParuPath();
+    if (paruPath.isEmpty()) {
+        return;
+    }
+
+    aurUpgradesLoading = true;
+    aurUpgradesEpochInFlight = aurInstalledCacheEpoch;
+    aurUpgradesWatcher.setFuture(QtConcurrent::run([paruPath]() {
+        QHash<QString, QString> updates;
+        Cmd shell;
+        const QStringList lines
+            = shell.getOut(paruPath + " -Qua --color never", Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+            return updates;
+        }
+        updates.reserve(lines.size());
+        for (const QString &line : lines) {
+            const QString name = line.section(' ', 0, 0).trimmed();
+            const QString newVersion = line.section("->", 1).trimmed();
+            if (!name.isEmpty() && !newVersion.isEmpty()) {
+                updates.insert(name, newVersion);
+            }
+        }
+        return updates;
+    }));
+}
+
 void MainWindow::updateRepoSetsFromInstalled()
 {
     repoInstalledSet.clear();
@@ -3105,10 +3192,23 @@ void MainWindow::filterChanged(const QString &arg1)
         const QSet<QString> aurInstalled = parseNameSet(aurInstalledLines);
 
         QSet<QString> aurUpgradable;
+        QHash<QString, QString> aurUpgradableVersions;
         if (statusFilter == Status::Upgradable) {
             const QStringList aurUpgradableLines
                 = cmd.getOut("paru -Qua --color never").split('\n', Qt::SkipEmptyParts);
-            aurUpgradable = parseNameSet(aurUpgradableLines);
+            aurUpgradable.reserve(aurUpgradableLines.size());
+            aurUpgradableVersions.reserve(aurUpgradableLines.size());
+            for (const QString &line : aurUpgradableLines) {
+                const QString name = line.section(' ', 0, 0).trimmed();
+                if (name.isEmpty()) {
+                    continue;
+                }
+                aurUpgradable.insert(name);
+                const QString newVersion = line.section("->", 1).trimmed();
+                if (!newVersion.isEmpty()) {
+                    aurUpgradableVersions.insert(name, newVersion);
+                }
+            }
         }
 
         QSet<QString> aurAutoremovable;
@@ -3128,6 +3228,12 @@ void MainWindow::filterChanged(const QString &arg1)
             } else if (statusFilter == Status::Upgradable) {
                 shouldShow = aurUpgradable.contains(name);
                 status = shouldShow ? Status::Upgradable : Status::NotInstalled;
+                if (shouldShow) {
+                    const QString newVersion = aurUpgradableVersions.value(name);
+                    if (!newVersion.isEmpty()) {
+                        (*it)->setText(TreeCol::RepoVersion, newVersion);
+                    }
+                }
             } else if (statusFilter == Status::Autoremovable) {
                 shouldShow = aurAutoremovable.contains(name);
                 status = shouldShow ? Status::Autoremovable : Status::NotInstalled;
@@ -3139,6 +3245,10 @@ void MainWindow::filterChanged(const QString &arg1)
             (*it)->setData(TreeCol::Status, Qt::UserRole, status);
             (*it)->setData(0, Qt::UserRole, shouldShow);
             hasVisibleMatches = hasVisibleMatches || shouldShow;
+        }
+
+        if (statusFilter == Status::Upgradable) {
+            updateTreeItems(currentTree);
         }
 
         if (statusFilter == Status::Upgradable || statusFilter == Status::Autoremovable) {
