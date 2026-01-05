@@ -1,3 +1,12 @@
+mx-packageinstaller (26.01) mx; urgency=medium
+
+  * Make legend icons non-interactive
+  * Fix network check reply cleanup
+  * Filter ANSI cursor queries from output
+  * Collapse flatpak progress lines
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 05 Jan 2026 12:33:59 -0500
+
 mx-packageinstaller (25.12.4) mx; urgency=medium
 
   * Cache flatpak listings and normalize refs for user scope

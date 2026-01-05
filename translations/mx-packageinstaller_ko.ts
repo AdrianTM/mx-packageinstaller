@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>MX Package Installer</source>
         <translation type="unfinished"/>
     </message>
@@ -54,7 +54,7 @@
         <location filename="../src/mainwindow.ui" line="203"/>
         <location filename="../src/mainwindow.ui" line="719"/>
         <location filename="../src/mainwindow.ui" line="1197"/>
-        <location filename="../src/mainwindow.ui" line="1461"/>
+        <location filename="../src/mainwindow.ui" line="1466"/>
         <source>= Installed packages</source>
         <translation>= 설치된 패키지</translation>
     </message>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="351"/>
-        <location filename="../src/mainwindow.ui" line="1354"/>
+        <location filename="../src/mainwindow.ui" line="1359"/>
         <source>Upgrade All</source>
         <translation>전체 업그레이드</translation>
     </message>
@@ -118,7 +118,7 @@
         <location filename="../src/mainwindow.ui" line="265"/>
         <location filename="../src/mainwindow.ui" line="643"/>
         <location filename="../src/mainwindow.ui" line="1026"/>
-        <location filename="../src/mainwindow.ui" line="1554"/>
+        <location filename="../src/mainwindow.ui" line="1559"/>
         <source>Refresh list</source>
         <translation>항목 새로고침</translation>
     </message>
@@ -126,7 +126,7 @@
         <location filename="../src/mainwindow.ui" line="491"/>
         <location filename="../src/mainwindow.ui" line="778"/>
         <location filename="../src/mainwindow.ui" line="1159"/>
-        <location filename="../src/mainwindow.ui" line="1509"/>
+        <location filename="../src/mainwindow.ui" line="1514"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;패키지 상태에 따라 필터&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -137,7 +137,7 @@
         <location filename="../src/mainwindow.ui" line="785"/>
         <location filename="../src/mainwindow.ui" line="1162"/>
         <location filename="../src/mainwindow.ui" line="1166"/>
-        <location filename="../src/mainwindow.cpp" line="3527"/>
+        <location filename="../src/mainwindow.cpp" line="3621"/>
         <source>All packages</source>
         <translation>전체 패키지</translation>
     </message>
@@ -145,7 +145,7 @@
         <location filename="../src/mainwindow.ui" line="503"/>
         <location filename="../src/mainwindow.ui" line="790"/>
         <location filename="../src/mainwindow.ui" line="1171"/>
-        <location filename="../src/mainwindow.cpp" line="3547"/>
+        <location filename="../src/mainwindow.cpp" line="3641"/>
         <source>Installed</source>
         <translation>설치됨</translation>
     </message>
@@ -153,7 +153,7 @@
         <location filename="../src/mainwindow.ui" line="508"/>
         <location filename="../src/mainwindow.ui" line="795"/>
         <location filename="../src/mainwindow.ui" line="1176"/>
-        <location filename="../src/mainwindow.cpp" line="3548"/>
+        <location filename="../src/mainwindow.cpp" line="3642"/>
         <source>Upgradable</source>
         <translation>업그레이드 가능</translation>
     </message>
@@ -161,11 +161,11 @@
         <location filename="../src/mainwindow.ui" line="513"/>
         <location filename="../src/mainwindow.ui" line="800"/>
         <location filename="../src/mainwindow.ui" line="1181"/>
-        <location filename="../src/mainwindow.ui" line="1546"/>
-        <location filename="../src/mainwindow.cpp" line="3513"/>
-        <location filename="../src/mainwindow.cpp" line="3549"/>
-        <location filename="../src/mainwindow.cpp" line="3736"/>
-        <location filename="../src/mainwindow.cpp" line="3737"/>
+        <location filename="../src/mainwindow.ui" line="1551"/>
+        <location filename="../src/mainwindow.cpp" line="3607"/>
+        <location filename="../src/mainwindow.cpp" line="3643"/>
+        <location filename="../src/mainwindow.cpp" line="3841"/>
+        <location filename="../src/mainwindow.cpp" line="3842"/>
         <source>Not installed</source>
         <translation>미설치</translation>
     </message>
@@ -173,11 +173,11 @@
         <location filename="../src/mainwindow.ui" line="518"/>
         <location filename="../src/mainwindow.ui" line="805"/>
         <location filename="../src/mainwindow.ui" line="1186"/>
-        <location filename="../src/mainwindow.cpp" line="3031"/>
-        <location filename="../src/mainwindow.cpp" line="3484"/>
-        <location filename="../src/mainwindow.cpp" line="3550"/>
-        <location filename="../src/mainwindow.cpp" line="3618"/>
-        <location filename="../src/mainwindow.cpp" line="3721"/>
+        <location filename="../src/mainwindow.cpp" line="3108"/>
+        <location filename="../src/mainwindow.cpp" line="3578"/>
+        <location filename="../src/mainwindow.cpp" line="3644"/>
+        <location filename="../src/mainwindow.cpp" line="3723"/>
+        <location filename="../src/mainwindow.cpp" line="3826"/>
         <source>Autoremovable</source>
         <translation type="unfinished"/>
     </message>
@@ -230,84 +230,84 @@
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1477"/>
-        <location filename="../src/mainwindow.ui" line="1481"/>
-        <location filename="../src/mainwindow.cpp" line="115"/>
-        <location filename="../src/mainwindow.cpp" line="116"/>
+        <location filename="../src/mainwindow.ui" line="1482"/>
+        <location filename="../src/mainwindow.ui" line="1486"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
+        <location filename="../src/mainwindow.cpp" line="119"/>
         <source>For all users</source>
         <translation>전체 사용자용</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1486"/>
+        <location filename="../src/mainwindow.ui" line="1491"/>
         <source>For current user</source>
         <translation>현재 사용자용</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1571"/>
+        <location filename="../src/mainwindow.ui" line="1576"/>
         <source>Remote (repo):</source>
         <translation>원격 (repo):</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1512"/>
-        <location filename="../src/mainwindow.ui" line="1516"/>
-        <location filename="../src/mainwindow.cpp" line="3495"/>
+        <location filename="../src/mainwindow.ui" line="1517"/>
+        <location filename="../src/mainwindow.ui" line="1521"/>
+        <location filename="../src/mainwindow.cpp" line="3589"/>
         <source>All apps</source>
         <translation>전체 앱</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1521"/>
-        <location filename="../src/mainwindow.cpp" line="3501"/>
+        <location filename="../src/mainwindow.ui" line="1526"/>
+        <location filename="../src/mainwindow.cpp" line="3595"/>
         <source>All runtimes</source>
         <translation>전체 런타임</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1526"/>
-        <location filename="../src/mainwindow.cpp" line="3507"/>
+        <location filename="../src/mainwindow.ui" line="1531"/>
+        <location filename="../src/mainwindow.cpp" line="3601"/>
         <source>All available</source>
         <translation>가용한 항목</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1531"/>
-        <location filename="../src/mainwindow.cpp" line="3492"/>
+        <location filename="../src/mainwindow.ui" line="1536"/>
+        <location filename="../src/mainwindow.cpp" line="3586"/>
         <source>Installed apps</source>
         <translation>설치된 앱</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1536"/>
-        <location filename="../src/mainwindow.cpp" line="3489"/>
+        <location filename="../src/mainwindow.ui" line="1541"/>
+        <location filename="../src/mainwindow.cpp" line="3583"/>
         <source>Installed runtimes</source>
         <translation>설치된 런타임</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1541"/>
-        <location filename="../src/mainwindow.cpp" line="3511"/>
-        <location filename="../src/mainwindow.cpp" line="3729"/>
-        <location filename="../src/mainwindow.cpp" line="3730"/>
+        <location filename="../src/mainwindow.ui" line="1546"/>
+        <location filename="../src/mainwindow.cpp" line="3605"/>
+        <location filename="../src/mainwindow.cpp" line="3834"/>
+        <location filename="../src/mainwindow.cpp" line="3835"/>
         <source>All installed</source>
         <translation>설치된 항목</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1333"/>
+        <location filename="../src/mainwindow.ui" line="1338"/>
         <source>Total items </source>
         <translation>전체 아이템</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1347"/>
+        <location filename="../src/mainwindow.ui" line="1352"/>
         <source>Installed apps:</source>
         <translation>설치된 앱:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1399"/>
+        <location filename="../src/mainwindow.ui" line="1404"/>
         <source>Advanced</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1428"/>
+        <location filename="../src/mainwindow.ui" line="1433"/>
         <source>Total installed size:</source>
         <translation>전체 설치 용량:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1442"/>
+        <location filename="../src/mainwindow.ui" line="1447"/>
         <source>Remove unused runtimes</source>
         <translation>사용되지 않는 런타임 제거</translation>
     </message>
@@ -330,435 +330,440 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1294"/>
+        <source>Branch</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="1299"/>
         <source>Size</source>
         <translation>용량</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1588"/>
-        <location filename="../src/mainwindow.cpp" line="3174"/>
-        <location filename="../src/mainwindow.cpp" line="3389"/>
+        <location filename="../src/mainwindow.ui" line="1593"/>
+        <location filename="../src/mainwindow.cpp" line="3251"/>
+        <location filename="../src/mainwindow.cpp" line="3472"/>
         <source>Console Output</source>
         <translation>콘솔 출력</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1594"/>
+        <location filename="../src/mainwindow.ui" line="1599"/>
         <source>Enter</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1604"/>
+        <location filename="../src/mainwindow.ui" line="1609"/>
         <source>Respond here, or just press Enter</source>
         <translation>여기에서 답하거나 엔터를 누르세요.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1663"/>
-        <location filename="../src/mainwindow.cpp" line="1603"/>
-        <location filename="../src/mainwindow.cpp" line="3537"/>
-        <location filename="../src/mainwindow.cpp" line="3545"/>
-        <location filename="../src/mainwindow.cpp" line="3650"/>
-        <location filename="../src/mainwindow.cpp" line="3720"/>
-        <location filename="../src/mainwindow.cpp" line="3726"/>
-        <location filename="../src/mainwindow.cpp" line="4023"/>
+        <location filename="../src/mainwindow.ui" line="1668"/>
+        <location filename="../src/mainwindow.cpp" line="1666"/>
+        <location filename="../src/mainwindow.cpp" line="3631"/>
+        <location filename="../src/mainwindow.cpp" line="3639"/>
+        <location filename="../src/mainwindow.cpp" line="3755"/>
+        <location filename="../src/mainwindow.cpp" line="3825"/>
+        <location filename="../src/mainwindow.cpp" line="3831"/>
+        <location filename="../src/mainwindow.cpp" line="4137"/>
         <source>Install</source>
         <translation>설치</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1669"/>
+        <location filename="../src/mainwindow.ui" line="1674"/>
         <source>Alt+I</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1688"/>
+        <location filename="../src/mainwindow.ui" line="1693"/>
         <source>Quit application</source>
         <translation>종료</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1691"/>
+        <location filename="../src/mainwindow.ui" line="1696"/>
         <source>Close</source>
         <translation>닫기</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1697"/>
+        <location filename="../src/mainwindow.ui" line="1702"/>
         <source>Alt+C</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1729"/>
+        <location filename="../src/mainwindow.ui" line="1734"/>
         <source>About this application</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1732"/>
+        <location filename="../src/mainwindow.ui" line="1737"/>
         <source>About...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1738"/>
+        <location filename="../src/mainwindow.ui" line="1743"/>
         <source>Alt+B</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1776"/>
+        <location filename="../src/mainwindow.ui" line="1781"/>
         <source>Display help </source>
         <translation>도움말 표시</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1779"/>
+        <location filename="../src/mainwindow.ui" line="1784"/>
         <source>Help</source>
         <translation>도움말</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1785"/>
+        <location filename="../src/mainwindow.ui" line="1790"/>
         <source>Alt+H</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1801"/>
+        <location filename="../src/mainwindow.ui" line="1806"/>
         <source>Uninstall</source>
         <translation>설치 제거</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1807"/>
+        <location filename="../src/mainwindow.ui" line="1812"/>
         <source>Alt+U</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="224"/>
+        <location filename="../src/mainwindow.cpp" line="228"/>
         <source>Uninstalling packages...</source>
         <translation>설치된 패키지를 제거합니다...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="229"/>
+        <location filename="../src/mainwindow.cpp" line="233"/>
         <source>Running pre-uninstall operations...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
+        <location filename="../src/mainwindow.cpp" line="253"/>
         <source>Running post-uninstall operations...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="270"/>
         <source>Refreshing sources...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="279"/>
-        <location filename="../src/mainwindow.cpp" line="1651"/>
-        <location filename="../src/mainwindow.cpp" line="1786"/>
-        <location filename="../src/mainwindow.cpp" line="1955"/>
-        <location filename="../src/mainwindow.cpp" line="2022"/>
-        <location filename="../src/mainwindow.cpp" line="2355"/>
-        <location filename="../src/mainwindow.cpp" line="2571"/>
-        <location filename="../src/mainwindow.cpp" line="3024"/>
-        <location filename="../src/mainwindow.cpp" line="3043"/>
-        <location filename="../src/mainwindow.cpp" line="3150"/>
-        <location filename="../src/mainwindow.cpp" line="3166"/>
-        <location filename="../src/mainwindow.cpp" line="3262"/>
-        <location filename="../src/mainwindow.cpp" line="3294"/>
-        <location filename="../src/mainwindow.cpp" line="3831"/>
-        <location filename="../src/mainwindow.cpp" line="3907"/>
-        <location filename="../src/mainwindow.cpp" line="3937"/>
-        <location filename="../src/mainwindow.cpp" line="4039"/>
-        <location filename="../src/mainwindow.cpp" line="4079"/>
+        <location filename="../src/mainwindow.cpp" line="283"/>
+        <location filename="../src/mainwindow.cpp" line="1714"/>
+        <location filename="../src/mainwindow.cpp" line="1849"/>
+        <location filename="../src/mainwindow.cpp" line="2018"/>
+        <location filename="../src/mainwindow.cpp" line="2085"/>
+        <location filename="../src/mainwindow.cpp" line="2428"/>
+        <location filename="../src/mainwindow.cpp" line="2646"/>
+        <location filename="../src/mainwindow.cpp" line="3101"/>
+        <location filename="../src/mainwindow.cpp" line="3120"/>
+        <location filename="../src/mainwindow.cpp" line="3227"/>
+        <location filename="../src/mainwindow.cpp" line="3243"/>
+        <location filename="../src/mainwindow.cpp" line="3339"/>
+        <location filename="../src/mainwindow.cpp" line="3371"/>
+        <location filename="../src/mainwindow.cpp" line="3942"/>
+        <location filename="../src/mainwindow.cpp" line="4018"/>
+        <location filename="../src/mainwindow.cpp" line="4050"/>
+        <location filename="../src/mainwindow.cpp" line="4153"/>
+        <location filename="../src/mainwindow.cpp" line="4193"/>
         <source>Error</source>
         <translation>에러</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="280"/>
+        <location filename="../src/mainwindow.cpp" line="284"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="408"/>
-        <location filename="../src/mainwindow.cpp" line="435"/>
+        <location filename="../src/mainwindow.cpp" line="407"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>Could not determine Debian version. Please select your version:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="441"/>
+        <location filename="../src/mainwindow.cpp" line="440"/>
         <source>Debian Version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="897"/>
+        <location filename="../src/mainwindow.cpp" line="896"/>
         <source>Cancel</source>
         <translation>취소</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="904"/>
+        <location filename="../src/mainwindow.cpp" line="902"/>
         <source>Please wait...</source>
         <translation>기다려 주세요...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1449"/>
+        <location filename="../src/mainwindow.cpp" line="1473"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>MX Test 저장소 사용을 선택하셨습니다. MX Test 저장소의 패키지는 테스트 목적으로만 제공됩니다. 여기서 설치되는 패키지는 사용자의 시스템을 손상시킬 수 있습니다. 따라서 설치 전 시스템 백업을 권장하며, 한 번에 하나의 패키지만 설치하거나 업데이트 하시길 권장합니다. 메인 저장소로 이동되기 전에 검증될 수 있도록 포럼에 피드백을 제공해 주시길 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1458"/>
+        <location filename="../src/mainwindow.cpp" line="1482"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Debian Backports 사용을 선택하셨습니다. Debian Backports 에는 다음 버전의 Debian 배포에 선택되어 사용 안정성을 확보하기 위해 조정되거나 리컴파일 된(소위 &apos;검수 중&apos;인) 패키지를 포함하고 있습니다. 이 패키지들은 Debian 이나 MX Linux 의 안정화 버전만큼 폭넓게 검증되지 않았으며, 원 상태 그대로 제공되기에 Debian 안정화 버전에서 제공되는 다른 컴포넌트들과 호환되지 않을 위험이 있습니다. 사용 시 유의하시길 바랍니다!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1466"/>
+        <location filename="../src/mainwindow.cpp" line="1490"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux는 단지 사용자 편의를 위해 이 flatpaks 저장소를 포함하고 있습니다. 따라서, 각 flatpaks의 기능에 대해 책임지지 않습니다. 자세한 내용은 Wiki에서 확인하시길 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1474"/>
-        <location filename="../src/mainwindow.cpp" line="4067"/>
+        <location filename="../src/mainwindow.cpp" line="1498"/>
+        <location filename="../src/mainwindow.cpp" line="4181"/>
         <source>Warning</source>
         <translation>경고</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1478"/>
+        <location filename="../src/mainwindow.cpp" line="1502"/>
         <source>Do not show this message again</source>
         <translation>이 메시지를 다시 표시하지 않음</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1600"/>
+        <location filename="../src/mainwindow.cpp" line="1663"/>
         <source>Remove</source>
         <translation>제거</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1616"/>
+        <location filename="../src/mainwindow.cpp" line="1679"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>아래 패키지들을 선택하셨습니다. 변경사항을 살펴보시려면 Show Details 버튼을 클릭하세요.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1652"/>
-        <location filename="../src/mainwindow.cpp" line="1787"/>
-        <location filename="../src/mainwindow.cpp" line="2023"/>
+        <location filename="../src/mainwindow.cpp" line="1715"/>
+        <location filename="../src/mainwindow.cpp" line="1850"/>
+        <location filename="../src/mainwindow.cpp" line="2086"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>인터넷이 연결되지 않아 패키지 목록을 다운로드 할 수 없습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1655"/>
+        <location filename="../src/mainwindow.cpp" line="1718"/>
         <source>Installing packages...</source>
         <translation>패키지를 설치하고 있습니다...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1713"/>
+        <location filename="../src/mainwindow.cpp" line="1776"/>
         <source>Post-processing...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1745"/>
+        <location filename="../src/mainwindow.cpp" line="1808"/>
         <source>Pre-processing for </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1759"/>
+        <location filename="../src/mainwindow.cpp" line="1822"/>
         <source>Installing </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1766"/>
+        <location filename="../src/mainwindow.cpp" line="1829"/>
         <source>Post-processing for </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1956"/>
+        <location filename="../src/mainwindow.cpp" line="2019"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2031"/>
+        <location filename="../src/mainwindow.cpp" line="2094"/>
         <source>Downloading package info...</source>
         <translation>패키지 정보 다운로드 중...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2356"/>
+        <location filename="../src/mainwindow.cpp" line="2429"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2572"/>
+        <location filename="../src/mainwindow.cpp" line="2647"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2697"/>
-        <location filename="../src/mainwindow.cpp" line="2802"/>
-        <location filename="../src/mainwindow.cpp" line="2825"/>
+        <location filename="../src/mainwindow.cpp" line="2774"/>
+        <location filename="../src/mainwindow.cpp" line="2879"/>
+        <location filename="../src/mainwindow.cpp" line="2902"/>
         <source>Package info</source>
         <translation>패키지 정보</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2714"/>
-        <location filename="../src/mainwindow.cpp" line="3971"/>
+        <location filename="../src/mainwindow.cpp" line="2791"/>
+        <location filename="../src/mainwindow.cpp" line="4085"/>
         <source>More &amp;info...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2745"/>
+        <location filename="../src/mainwindow.cpp" line="2822"/>
         <source>Packages to be installed: </source>
         <translation>설치될 패키지:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3008"/>
-        <location filename="../src/mainwindow.cpp" line="3020"/>
-        <location filename="../src/mainwindow.cpp" line="3040"/>
-        <location filename="../src/mainwindow.cpp" line="3125"/>
-        <location filename="../src/mainwindow.cpp" line="3147"/>
-        <location filename="../src/mainwindow.cpp" line="3828"/>
-        <location filename="../src/mainwindow.cpp" line="3903"/>
-        <location filename="../src/mainwindow.cpp" line="3931"/>
-        <location filename="../src/mainwindow.cpp" line="4035"/>
+        <location filename="../src/mainwindow.cpp" line="3085"/>
+        <location filename="../src/mainwindow.cpp" line="3097"/>
+        <location filename="../src/mainwindow.cpp" line="3117"/>
+        <location filename="../src/mainwindow.cpp" line="3202"/>
+        <location filename="../src/mainwindow.cpp" line="3224"/>
+        <location filename="../src/mainwindow.cpp" line="3939"/>
+        <location filename="../src/mainwindow.cpp" line="4014"/>
+        <location filename="../src/mainwindow.cpp" line="4044"/>
+        <location filename="../src/mainwindow.cpp" line="4149"/>
         <source>Done</source>
         <translation>완료</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3008"/>
-        <location filename="../src/mainwindow.cpp" line="3020"/>
-        <location filename="../src/mainwindow.cpp" line="3040"/>
-        <location filename="../src/mainwindow.cpp" line="3125"/>
-        <location filename="../src/mainwindow.cpp" line="3147"/>
-        <location filename="../src/mainwindow.cpp" line="3163"/>
-        <location filename="../src/mainwindow.cpp" line="3828"/>
-        <location filename="../src/mainwindow.cpp" line="3903"/>
-        <location filename="../src/mainwindow.cpp" line="3931"/>
-        <location filename="../src/mainwindow.cpp" line="4035"/>
-        <location filename="../src/mainwindow.cpp" line="4076"/>
+        <location filename="../src/mainwindow.cpp" line="3085"/>
+        <location filename="../src/mainwindow.cpp" line="3097"/>
+        <location filename="../src/mainwindow.cpp" line="3117"/>
+        <location filename="../src/mainwindow.cpp" line="3202"/>
+        <location filename="../src/mainwindow.cpp" line="3224"/>
+        <location filename="../src/mainwindow.cpp" line="3240"/>
+        <location filename="../src/mainwindow.cpp" line="3939"/>
+        <location filename="../src/mainwindow.cpp" line="4014"/>
+        <location filename="../src/mainwindow.cpp" line="4044"/>
+        <location filename="../src/mainwindow.cpp" line="4149"/>
+        <location filename="../src/mainwindow.cpp" line="4190"/>
         <source>Processing finished successfully.</source>
         <translation>처리가 성공적으로 완료되었습니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3025"/>
-        <location filename="../src/mainwindow.cpp" line="3044"/>
-        <location filename="../src/mainwindow.cpp" line="3832"/>
-        <location filename="../src/mainwindow.cpp" line="3908"/>
-        <location filename="../src/mainwindow.cpp" line="3938"/>
+        <location filename="../src/mainwindow.cpp" line="3102"/>
+        <location filename="../src/mainwindow.cpp" line="3121"/>
+        <location filename="../src/mainwindow.cpp" line="3943"/>
+        <location filename="../src/mainwindow.cpp" line="4019"/>
+        <location filename="../src/mainwindow.cpp" line="4051"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>설치 중 문제가 생겼습니다. 콘솔 출력을 확인해 보시길 바랍니다.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3054"/>
+        <location filename="../src/mainwindow.cpp" line="3131"/>
         <source>About %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3055"/>
+        <location filename="../src/mainwindow.cpp" line="3132"/>
         <source>Version: </source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3057"/>
+        <location filename="../src/mainwindow.cpp" line="3134"/>
         <source>Package Installer for MX Linux</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3059"/>
+        <location filename="../src/mainwindow.cpp" line="3136"/>
         <source>Copyright (c) MX Linux</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3060"/>
+        <location filename="../src/mainwindow.cpp" line="3137"/>
         <source>%1 License</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3072"/>
+        <location filename="../src/mainwindow.cpp" line="3149"/>
         <source>%1 Help</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3150"/>
+        <location filename="../src/mainwindow.cpp" line="3227"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3163"/>
-        <location filename="../src/mainwindow.cpp" line="4076"/>
+        <location filename="../src/mainwindow.cpp" line="3240"/>
+        <location filename="../src/mainwindow.cpp" line="4190"/>
         <source>Success</source>
         <translation>성공</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3166"/>
-        <location filename="../src/mainwindow.cpp" line="4079"/>
+        <location filename="../src/mainwindow.cpp" line="3243"/>
+        <location filename="../src/mainwindow.cpp" line="4193"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3263"/>
-        <location filename="../src/mainwindow.cpp" line="3295"/>
+        <location filename="../src/mainwindow.cpp" line="3340"/>
+        <location filename="../src/mainwindow.cpp" line="3372"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3331"/>
-        <location filename="../src/mainwindow.cpp" line="3372"/>
+        <location filename="../src/mainwindow.cpp" line="3408"/>
+        <location filename="../src/mainwindow.cpp" line="3454"/>
         <source>Flatpak not installed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3332"/>
+        <location filename="../src/mainwindow.cpp" line="3409"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3372"/>
+        <location filename="../src/mainwindow.cpp" line="3454"/>
         <source>Flatpak was not installed</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3393"/>
+        <location filename="../src/mainwindow.cpp" line="3476"/>
         <source>Needs re-login</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3394"/>
+        <location filename="../src/mainwindow.cpp" line="3477"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3537"/>
-        <location filename="../src/mainwindow.cpp" line="3545"/>
-        <location filename="../src/mainwindow.cpp" line="3648"/>
-        <location filename="../src/mainwindow.cpp" line="3722"/>
+        <location filename="../src/mainwindow.cpp" line="3631"/>
+        <location filename="../src/mainwindow.cpp" line="3639"/>
+        <location filename="../src/mainwindow.cpp" line="3753"/>
+        <location filename="../src/mainwindow.cpp" line="3827"/>
         <source>Mark keep</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3564"/>
+        <location filename="../src/mainwindow.cpp" line="3660"/>
         <source>Select/deselect all upgradable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3565"/>
+        <location filename="../src/mainwindow.cpp" line="3661"/>
         <source>Select/deselect all autoremovable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3650"/>
-        <location filename="../src/mainwindow.cpp" line="3720"/>
+        <location filename="../src/mainwindow.cpp" line="3755"/>
+        <location filename="../src/mainwindow.cpp" line="3825"/>
         <source>Upgrade</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3860"/>
+        <location filename="../src/mainwindow.cpp" line="3971"/>
         <source>Quit?</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3861"/>
+        <location filename="../src/mainwindow.cpp" line="3972"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4023"/>
+        <location filename="../src/mainwindow.cpp" line="4137"/>
         <source>Reinstall</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4040"/>
+        <location filename="../src/mainwindow.cpp" line="4154"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4068"/>
+        <location filename="../src/mainwindow.cpp" line="4182"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation type="unfinished"/>

@@ -3,7 +3,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="131"/>
+        <location filename="../src/mainwindow.cpp" line="135"/>
         <source>MX Package Installer</source>
         <translation>MX Paket-installerare</translation>
     </message>
@@ -54,7 +54,7 @@
         <location filename="../src/mainwindow.ui" line="203"/>
         <location filename="../src/mainwindow.ui" line="719"/>
         <location filename="../src/mainwindow.ui" line="1197"/>
-        <location filename="../src/mainwindow.ui" line="1461"/>
+        <location filename="../src/mainwindow.ui" line="1466"/>
         <source>= Installed packages</source>
         <translation>= Installerade paket</translation>
     </message>
@@ -75,7 +75,7 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="351"/>
-        <location filename="../src/mainwindow.ui" line="1354"/>
+        <location filename="../src/mainwindow.ui" line="1359"/>
         <source>Upgrade All</source>
         <translation>Uppgradera alla</translation>
     </message>
@@ -118,7 +118,7 @@
         <location filename="../src/mainwindow.ui" line="265"/>
         <location filename="../src/mainwindow.ui" line="643"/>
         <location filename="../src/mainwindow.ui" line="1026"/>
-        <location filename="../src/mainwindow.ui" line="1554"/>
+        <location filename="../src/mainwindow.ui" line="1559"/>
         <source>Refresh list</source>
         <translation>Förnya listan</translation>
     </message>
@@ -126,7 +126,7 @@
         <location filename="../src/mainwindow.ui" line="491"/>
         <location filename="../src/mainwindow.ui" line="778"/>
         <location filename="../src/mainwindow.ui" line="1159"/>
-        <location filename="../src/mainwindow.ui" line="1509"/>
+        <location filename="../src/mainwindow.ui" line="1514"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filtrera paket enligt deras status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
@@ -137,7 +137,7 @@
         <location filename="../src/mainwindow.ui" line="785"/>
         <location filename="../src/mainwindow.ui" line="1162"/>
         <location filename="../src/mainwindow.ui" line="1166"/>
-        <location filename="../src/mainwindow.cpp" line="3527"/>
+        <location filename="../src/mainwindow.cpp" line="3621"/>
         <source>All packages</source>
         <translation>Alla paket</translation>
     </message>
@@ -145,7 +145,7 @@
         <location filename="../src/mainwindow.ui" line="503"/>
         <location filename="../src/mainwindow.ui" line="790"/>
         <location filename="../src/mainwindow.ui" line="1171"/>
-        <location filename="../src/mainwindow.cpp" line="3547"/>
+        <location filename="../src/mainwindow.cpp" line="3641"/>
         <source>Installed</source>
         <translation>Installerad</translation>
     </message>
@@ -153,7 +153,7 @@
         <location filename="../src/mainwindow.ui" line="508"/>
         <location filename="../src/mainwindow.ui" line="795"/>
         <location filename="../src/mainwindow.ui" line="1176"/>
-        <location filename="../src/mainwindow.cpp" line="3548"/>
+        <location filename="../src/mainwindow.cpp" line="3642"/>
         <source>Upgradable</source>
         <translation>Uppgraderingsbar</translation>
     </message>
@@ -161,11 +161,11 @@
         <location filename="../src/mainwindow.ui" line="513"/>
         <location filename="../src/mainwindow.ui" line="800"/>
         <location filename="../src/mainwindow.ui" line="1181"/>
-        <location filename="../src/mainwindow.ui" line="1546"/>
-        <location filename="../src/mainwindow.cpp" line="3513"/>
-        <location filename="../src/mainwindow.cpp" line="3549"/>
-        <location filename="../src/mainwindow.cpp" line="3736"/>
-        <location filename="../src/mainwindow.cpp" line="3737"/>
+        <location filename="../src/mainwindow.ui" line="1551"/>
+        <location filename="../src/mainwindow.cpp" line="3607"/>
+        <location filename="../src/mainwindow.cpp" line="3643"/>
+        <location filename="../src/mainwindow.cpp" line="3841"/>
+        <location filename="../src/mainwindow.cpp" line="3842"/>
         <source>Not installed</source>
         <translation>Inte installerad</translation>
     </message>
@@ -173,11 +173,11 @@
         <location filename="../src/mainwindow.ui" line="518"/>
         <location filename="../src/mainwindow.ui" line="805"/>
         <location filename="../src/mainwindow.ui" line="1186"/>
-        <location filename="../src/mainwindow.cpp" line="3031"/>
-        <location filename="../src/mainwindow.cpp" line="3484"/>
-        <location filename="../src/mainwindow.cpp" line="3550"/>
-        <location filename="../src/mainwindow.cpp" line="3618"/>
-        <location filename="../src/mainwindow.cpp" line="3721"/>
+        <location filename="../src/mainwindow.cpp" line="3108"/>
+        <location filename="../src/mainwindow.cpp" line="3578"/>
+        <location filename="../src/mainwindow.cpp" line="3644"/>
+        <location filename="../src/mainwindow.cpp" line="3723"/>
+        <location filename="../src/mainwindow.cpp" line="3826"/>
         <source>Autoremovable</source>
         <translation>Autoremovable</translation>
     </message>
@@ -230,84 +230,84 @@
         <translation>Flatpaks</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1477"/>
-        <location filename="../src/mainwindow.ui" line="1481"/>
-        <location filename="../src/mainwindow.cpp" line="115"/>
-        <location filename="../src/mainwindow.cpp" line="116"/>
+        <location filename="../src/mainwindow.ui" line="1482"/>
+        <location filename="../src/mainwindow.ui" line="1486"/>
+        <location filename="../src/mainwindow.cpp" line="118"/>
+        <location filename="../src/mainwindow.cpp" line="119"/>
         <source>For all users</source>
         <translation>För alla användare</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1486"/>
+        <location filename="../src/mainwindow.ui" line="1491"/>
         <source>For current user</source>
         <translation>För nuvarande användare</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1571"/>
+        <location filename="../src/mainwindow.ui" line="1576"/>
         <source>Remote (repo):</source>
         <translation>Fjärr (förråd):</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1512"/>
-        <location filename="../src/mainwindow.ui" line="1516"/>
-        <location filename="../src/mainwindow.cpp" line="3495"/>
+        <location filename="../src/mainwindow.ui" line="1517"/>
+        <location filename="../src/mainwindow.ui" line="1521"/>
+        <location filename="../src/mainwindow.cpp" line="3589"/>
         <source>All apps</source>
         <translation>Alla program</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1521"/>
-        <location filename="../src/mainwindow.cpp" line="3501"/>
+        <location filename="../src/mainwindow.ui" line="1526"/>
+        <location filename="../src/mainwindow.cpp" line="3595"/>
         <source>All runtimes</source>
         <translation>Alla runtimes</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1526"/>
-        <location filename="../src/mainwindow.cpp" line="3507"/>
+        <location filename="../src/mainwindow.ui" line="1531"/>
+        <location filename="../src/mainwindow.cpp" line="3601"/>
         <source>All available</source>
         <translation>Alla tillgängliga</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1531"/>
-        <location filename="../src/mainwindow.cpp" line="3492"/>
+        <location filename="../src/mainwindow.ui" line="1536"/>
+        <location filename="../src/mainwindow.cpp" line="3586"/>
         <source>Installed apps</source>
         <translation>Installerade program</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1536"/>
-        <location filename="../src/mainwindow.cpp" line="3489"/>
+        <location filename="../src/mainwindow.ui" line="1541"/>
+        <location filename="../src/mainwindow.cpp" line="3583"/>
         <source>Installed runtimes</source>
         <translation>Installerade runtimes</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1541"/>
-        <location filename="../src/mainwindow.cpp" line="3511"/>
-        <location filename="../src/mainwindow.cpp" line="3729"/>
-        <location filename="../src/mainwindow.cpp" line="3730"/>
+        <location filename="../src/mainwindow.ui" line="1546"/>
+        <location filename="../src/mainwindow.cpp" line="3605"/>
+        <location filename="../src/mainwindow.cpp" line="3834"/>
+        <location filename="../src/mainwindow.cpp" line="3835"/>
         <source>All installed</source>
         <translation>Alla installerade</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1333"/>
+        <location filename="../src/mainwindow.ui" line="1338"/>
         <source>Total items </source>
         <translation>Alla poster</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1347"/>
+        <location filename="../src/mainwindow.ui" line="1352"/>
         <source>Installed apps:</source>
         <translation>Installerade program:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1399"/>
+        <location filename="../src/mainwindow.ui" line="1404"/>
         <source>Advanced</source>
         <translation>Avancerat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1428"/>
+        <location filename="../src/mainwindow.ui" line="1433"/>
         <source>Total installed size:</source>
         <translation>Total storlek installerad:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1442"/>
+        <location filename="../src/mainwindow.ui" line="1447"/>
         <source>Remove unused runtimes</source>
         <translation>Ta bort oanvända runtimes</translation>
     </message>
@@ -330,436 +330,441 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1294"/>
+        <source>Branch</source>
+        <translation>Gren</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="1299"/>
         <source>Size</source>
         <translation>Storlek</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1588"/>
-        <location filename="../src/mainwindow.cpp" line="3174"/>
-        <location filename="../src/mainwindow.cpp" line="3389"/>
+        <location filename="../src/mainwindow.ui" line="1593"/>
+        <location filename="../src/mainwindow.cpp" line="3251"/>
+        <location filename="../src/mainwindow.cpp" line="3472"/>
         <source>Console Output</source>
         <translation>Terminal Output</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1594"/>
+        <location filename="../src/mainwindow.ui" line="1599"/>
         <source>Enter</source>
         <translation>Enter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1604"/>
+        <location filename="../src/mainwindow.ui" line="1609"/>
         <source>Respond here, or just press Enter</source>
         <translation>Svara här, eller tryck bara på Enter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1663"/>
-        <location filename="../src/mainwindow.cpp" line="1603"/>
-        <location filename="../src/mainwindow.cpp" line="3537"/>
-        <location filename="../src/mainwindow.cpp" line="3545"/>
-        <location filename="../src/mainwindow.cpp" line="3650"/>
-        <location filename="../src/mainwindow.cpp" line="3720"/>
-        <location filename="../src/mainwindow.cpp" line="3726"/>
-        <location filename="../src/mainwindow.cpp" line="4023"/>
+        <location filename="../src/mainwindow.ui" line="1668"/>
+        <location filename="../src/mainwindow.cpp" line="1666"/>
+        <location filename="../src/mainwindow.cpp" line="3631"/>
+        <location filename="../src/mainwindow.cpp" line="3639"/>
+        <location filename="../src/mainwindow.cpp" line="3755"/>
+        <location filename="../src/mainwindow.cpp" line="3825"/>
+        <location filename="../src/mainwindow.cpp" line="3831"/>
+        <location filename="../src/mainwindow.cpp" line="4137"/>
         <source>Install</source>
         <translation>Installera</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1669"/>
+        <location filename="../src/mainwindow.ui" line="1674"/>
         <source>Alt+I</source>
         <translation>Alt+I</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1688"/>
+        <location filename="../src/mainwindow.ui" line="1693"/>
         <source>Quit application</source>
         <translation>Avsluta programmet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1691"/>
+        <location filename="../src/mainwindow.ui" line="1696"/>
         <source>Close</source>
         <translation>Stäng</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1697"/>
+        <location filename="../src/mainwindow.ui" line="1702"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1729"/>
+        <location filename="../src/mainwindow.ui" line="1734"/>
         <source>About this application</source>
         <translation>Om detta program</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1732"/>
+        <location filename="../src/mainwindow.ui" line="1737"/>
         <source>About...</source>
         <translation>Om...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1738"/>
+        <location filename="../src/mainwindow.ui" line="1743"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1776"/>
+        <location filename="../src/mainwindow.ui" line="1781"/>
         <source>Display help </source>
         <translation>Visa hjälp</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1779"/>
+        <location filename="../src/mainwindow.ui" line="1784"/>
         <source>Help</source>
         <translation>Hjälp</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1785"/>
+        <location filename="../src/mainwindow.ui" line="1790"/>
         <source>Alt+H</source>
         <translation>Alt+H</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1801"/>
+        <location filename="../src/mainwindow.ui" line="1806"/>
         <source>Uninstall</source>
         <translation>Avinstallera</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1807"/>
+        <location filename="../src/mainwindow.ui" line="1812"/>
         <source>Alt+U</source>
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="224"/>
+        <location filename="../src/mainwindow.cpp" line="228"/>
         <source>Uninstalling packages...</source>
         <translation>Avinstallerar paket...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="229"/>
+        <location filename="../src/mainwindow.cpp" line="233"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Kör operationer före avinstallering...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="249"/>
+        <location filename="../src/mainwindow.cpp" line="253"/>
         <source>Running post-uninstall operations...</source>
         <translation>Kör efterinstallations-process...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="266"/>
+        <location filename="../src/mainwindow.cpp" line="270"/>
         <source>Refreshing sources...</source>
         <translation>Uppdaterar källor...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="279"/>
-        <location filename="../src/mainwindow.cpp" line="1651"/>
-        <location filename="../src/mainwindow.cpp" line="1786"/>
-        <location filename="../src/mainwindow.cpp" line="1955"/>
-        <location filename="../src/mainwindow.cpp" line="2022"/>
-        <location filename="../src/mainwindow.cpp" line="2355"/>
-        <location filename="../src/mainwindow.cpp" line="2571"/>
-        <location filename="../src/mainwindow.cpp" line="3024"/>
-        <location filename="../src/mainwindow.cpp" line="3043"/>
-        <location filename="../src/mainwindow.cpp" line="3150"/>
-        <location filename="../src/mainwindow.cpp" line="3166"/>
-        <location filename="../src/mainwindow.cpp" line="3262"/>
-        <location filename="../src/mainwindow.cpp" line="3294"/>
-        <location filename="../src/mainwindow.cpp" line="3831"/>
-        <location filename="../src/mainwindow.cpp" line="3907"/>
-        <location filename="../src/mainwindow.cpp" line="3937"/>
-        <location filename="../src/mainwindow.cpp" line="4039"/>
-        <location filename="../src/mainwindow.cpp" line="4079"/>
+        <location filename="../src/mainwindow.cpp" line="283"/>
+        <location filename="../src/mainwindow.cpp" line="1714"/>
+        <location filename="../src/mainwindow.cpp" line="1849"/>
+        <location filename="../src/mainwindow.cpp" line="2018"/>
+        <location filename="../src/mainwindow.cpp" line="2085"/>
+        <location filename="../src/mainwindow.cpp" line="2428"/>
+        <location filename="../src/mainwindow.cpp" line="2646"/>
+        <location filename="../src/mainwindow.cpp" line="3101"/>
+        <location filename="../src/mainwindow.cpp" line="3120"/>
+        <location filename="../src/mainwindow.cpp" line="3227"/>
+        <location filename="../src/mainwindow.cpp" line="3243"/>
+        <location filename="../src/mainwindow.cpp" line="3339"/>
+        <location filename="../src/mainwindow.cpp" line="3371"/>
+        <location filename="../src/mainwindow.cpp" line="3942"/>
+        <location filename="../src/mainwindow.cpp" line="4018"/>
+        <location filename="../src/mainwindow.cpp" line="4050"/>
+        <location filename="../src/mainwindow.cpp" line="4153"/>
+        <location filename="../src/mainwindow.cpp" line="4193"/>
         <source>Error</source>
         <translation>Fel</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="280"/>
+        <location filename="../src/mainwindow.cpp" line="284"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Det blev ett problem vid uppdatering av källorna. Några källor kanske inte har haft några uppdateringar. För mer info kolla:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="408"/>
-        <location filename="../src/mainwindow.cpp" line="435"/>
+        <location filename="../src/mainwindow.cpp" line="407"/>
+        <location filename="../src/mainwindow.cpp" line="434"/>
         <source>Could not determine Debian version. Please select your version:</source>
         <translation>Kunde inte bestämma Debian version. Var vänlig välj din version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="441"/>
+        <location filename="../src/mainwindow.cpp" line="440"/>
         <source>Debian Version</source>
         <translation>Debian Version</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="897"/>
+        <location filename="../src/mainwindow.cpp" line="896"/>
         <source>Cancel</source>
         <translation>Avbryt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="904"/>
+        <location filename="../src/mainwindow.cpp" line="902"/>
         <source>Please wait...</source>
         <translation>Var vänlig vänta...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1449"/>
+        <location filename="../src/mainwindow.cpp" line="1473"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>Du kommer att använda MX Test-förråd, vars paket enbart är avsedda för testning. Det är möjligt att de får ditt system att sluta fungera, så du uppmanas att göra backup av systemet och enbart installera eller uppdatera ett paket i taget. Var vänlig ge feedback på forumet så paketet kan utvärderas innan det flyttas till Main.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1458"/>
+        <location filename="../src/mainwindow.cpp" line="1482"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Du är på väg att använda Debian Backports, som innehåller paket från nästa Debianutgåva (kallad &apos;testing&apos;), justerade och omkompilerade för användning i Debian stable. De kan inte testas lika noga som i de stabila utgåvorna av Debian och MX Linux, och kommer som de är, med risk för inkompatibilitet med andra komponenter i Debian stable. Använd försiktigt!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1466"/>
+        <location filename="../src/mainwindow.cpp" line="1490"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux inkluderar detta förråd av flatpaks enbart för anvädarnas bekvämlighet och är inte ansvarigt för funktionen av enskilda flatpaks. För mer information, se flatpaks i Wiki.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1474"/>
-        <location filename="../src/mainwindow.cpp" line="4067"/>
+        <location filename="../src/mainwindow.cpp" line="1498"/>
+        <location filename="../src/mainwindow.cpp" line="4181"/>
         <source>Warning</source>
         <translation>Varning</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1478"/>
+        <location filename="../src/mainwindow.cpp" line="1502"/>
         <source>Do not show this message again</source>
         <translation>Visa inte det här meddelandet igen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1600"/>
+        <location filename="../src/mainwindow.cpp" line="1663"/>
         <source>Remove</source>
         <translation>Ta bort</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1616"/>
+        <location filename="../src/mainwindow.cpp" line="1679"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>Följande paket valdes. Klicka för att se detaljer i ändringslistan.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1652"/>
-        <location filename="../src/mainwindow.cpp" line="1787"/>
-        <location filename="../src/mainwindow.cpp" line="2023"/>
+        <location filename="../src/mainwindow.cpp" line="1715"/>
+        <location filename="../src/mainwindow.cpp" line="1850"/>
+        <location filename="../src/mainwindow.cpp" line="2086"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>Internet inte tillgängligt, kan inte ladda ner paketlistan</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1655"/>
+        <location filename="../src/mainwindow.cpp" line="1718"/>
         <source>Installing packages...</source>
         <translation>Installerar paketen...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1713"/>
+        <location filename="../src/mainwindow.cpp" line="1776"/>
         <source>Post-processing...</source>
         <translation>Efterbehandlar...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1745"/>
+        <location filename="../src/mainwindow.cpp" line="1808"/>
         <source>Pre-processing for </source>
         <translation>Förbereder för</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1759"/>
+        <location filename="../src/mainwindow.cpp" line="1822"/>
         <source>Installing </source>
         <translation>Installerar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1766"/>
+        <location filename="../src/mainwindow.cpp" line="1829"/>
         <source>Post-processing for </source>
         <translation>Efterbehandlar för</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1956"/>
+        <location filename="../src/mainwindow.cpp" line="2019"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
         <translation>Ett fel uppstod vid nerladdning eller skrivning till filen: %1. Var vänlig kontrollera din internetförbindelse och ledigt utrymme på din disk</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2031"/>
+        <location filename="../src/mainwindow.cpp" line="2094"/>
         <source>Downloading package info...</source>
         <translation>Laddar ner paketinformation...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2356"/>
+        <location filename="../src/mainwindow.cpp" line="2429"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>dpkg-query kommandot gav ett fel. Var vänlig kör &apos;dpkg-query -W&apos; i en terminal och kolla resultatet..</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2572"/>
+        <location filename="../src/mainwindow.cpp" line="2647"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>dpkg-query kommandot gav ett fel, var vänlig kör &apos;dpkg-query -W&apos; i en terminal och kontrollera utdata.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2697"/>
-        <location filename="../src/mainwindow.cpp" line="2802"/>
-        <location filename="../src/mainwindow.cpp" line="2825"/>
+        <location filename="../src/mainwindow.cpp" line="2774"/>
+        <location filename="../src/mainwindow.cpp" line="2879"/>
+        <location filename="../src/mainwindow.cpp" line="2902"/>
         <source>Package info</source>
         <translation>Paketinformation</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2714"/>
-        <location filename="../src/mainwindow.cpp" line="3971"/>
+        <location filename="../src/mainwindow.cpp" line="2791"/>
+        <location filename="../src/mainwindow.cpp" line="4085"/>
         <source>More &amp;info...</source>
         <translation>Mer &amp;info...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2745"/>
+        <location filename="../src/mainwindow.cpp" line="2822"/>
         <source>Packages to be installed: </source>
         <translation>Paket som ska installeras:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3008"/>
-        <location filename="../src/mainwindow.cpp" line="3020"/>
-        <location filename="../src/mainwindow.cpp" line="3040"/>
-        <location filename="../src/mainwindow.cpp" line="3125"/>
-        <location filename="../src/mainwindow.cpp" line="3147"/>
-        <location filename="../src/mainwindow.cpp" line="3828"/>
-        <location filename="../src/mainwindow.cpp" line="3903"/>
-        <location filename="../src/mainwindow.cpp" line="3931"/>
-        <location filename="../src/mainwindow.cpp" line="4035"/>
+        <location filename="../src/mainwindow.cpp" line="3085"/>
+        <location filename="../src/mainwindow.cpp" line="3097"/>
+        <location filename="../src/mainwindow.cpp" line="3117"/>
+        <location filename="../src/mainwindow.cpp" line="3202"/>
+        <location filename="../src/mainwindow.cpp" line="3224"/>
+        <location filename="../src/mainwindow.cpp" line="3939"/>
+        <location filename="../src/mainwindow.cpp" line="4014"/>
+        <location filename="../src/mainwindow.cpp" line="4044"/>
+        <location filename="../src/mainwindow.cpp" line="4149"/>
         <source>Done</source>
         <translation>Klar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3008"/>
-        <location filename="../src/mainwindow.cpp" line="3020"/>
-        <location filename="../src/mainwindow.cpp" line="3040"/>
-        <location filename="../src/mainwindow.cpp" line="3125"/>
-        <location filename="../src/mainwindow.cpp" line="3147"/>
-        <location filename="../src/mainwindow.cpp" line="3163"/>
-        <location filename="../src/mainwindow.cpp" line="3828"/>
-        <location filename="../src/mainwindow.cpp" line="3903"/>
-        <location filename="../src/mainwindow.cpp" line="3931"/>
-        <location filename="../src/mainwindow.cpp" line="4035"/>
-        <location filename="../src/mainwindow.cpp" line="4076"/>
+        <location filename="../src/mainwindow.cpp" line="3085"/>
+        <location filename="../src/mainwindow.cpp" line="3097"/>
+        <location filename="../src/mainwindow.cpp" line="3117"/>
+        <location filename="../src/mainwindow.cpp" line="3202"/>
+        <location filename="../src/mainwindow.cpp" line="3224"/>
+        <location filename="../src/mainwindow.cpp" line="3240"/>
+        <location filename="../src/mainwindow.cpp" line="3939"/>
+        <location filename="../src/mainwindow.cpp" line="4014"/>
+        <location filename="../src/mainwindow.cpp" line="4044"/>
+        <location filename="../src/mainwindow.cpp" line="4149"/>
+        <location filename="../src/mainwindow.cpp" line="4190"/>
         <source>Processing finished successfully.</source>
         <translation>Processen framgångsrikt avslutad.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3025"/>
-        <location filename="../src/mainwindow.cpp" line="3044"/>
-        <location filename="../src/mainwindow.cpp" line="3832"/>
-        <location filename="../src/mainwindow.cpp" line="3908"/>
-        <location filename="../src/mainwindow.cpp" line="3938"/>
+        <location filename="../src/mainwindow.cpp" line="3102"/>
+        <location filename="../src/mainwindow.cpp" line="3121"/>
+        <location filename="../src/mainwindow.cpp" line="3943"/>
+        <location filename="../src/mainwindow.cpp" line="4019"/>
+        <location filename="../src/mainwindow.cpp" line="4051"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Problem hittade under installationen, var vänlig kolla terminal-output.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3054"/>
+        <location filename="../src/mainwindow.cpp" line="3131"/>
         <source>About %1</source>
         <translation>Om %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3055"/>
+        <location filename="../src/mainwindow.cpp" line="3132"/>
         <source>Version: </source>
         <translation>Version:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3057"/>
+        <location filename="../src/mainwindow.cpp" line="3134"/>
         <source>Package Installer for MX Linux</source>
         <translation>Paketinstallerare för MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3059"/>
+        <location filename="../src/mainwindow.cpp" line="3136"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3060"/>
+        <location filename="../src/mainwindow.cpp" line="3137"/>
         <source>%1 License</source>
         <translation>%1 Licens</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3072"/>
+        <location filename="../src/mainwindow.cpp" line="3149"/>
         <source>%1 Help</source>
         <translation>%1 Hjälp</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3150"/>
+        <location filename="../src/mainwindow.cpp" line="3227"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Vi mötte ett problem vid avinstallering, var vänlig kolla output</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3163"/>
-        <location filename="../src/mainwindow.cpp" line="4076"/>
+        <location filename="../src/mainwindow.cpp" line="3240"/>
+        <location filename="../src/mainwindow.cpp" line="4190"/>
         <source>Success</source>
         <translation>Det lyckades</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3166"/>
-        <location filename="../src/mainwindow.cpp" line="4079"/>
+        <location filename="../src/mainwindow.cpp" line="3243"/>
+        <location filename="../src/mainwindow.cpp" line="4193"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Vi stötte på ett problem när programmet avinstallerades</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3263"/>
-        <location filename="../src/mainwindow.cpp" line="3295"/>
+        <location filename="../src/mainwindow.cpp" line="3340"/>
+        <location filename="../src/mainwindow.cpp" line="3372"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>Kunde inte ladda ned paketlistan. Var vänlig kontrollera dina APT-källor.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3331"/>
-        <location filename="../src/mainwindow.cpp" line="3372"/>
+        <location filename="../src/mainwindow.cpp" line="3408"/>
+        <location filename="../src/mainwindow.cpp" line="3454"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak ej installerad</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3332"/>
+        <location filename="../src/mainwindow.cpp" line="3409"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak är ej installerad.
 OK att fortsätta och installera det?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3372"/>
+        <location filename="../src/mainwindow.cpp" line="3454"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak blev ej installerad</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3393"/>
+        <location filename="../src/mainwindow.cpp" line="3476"/>
         <source>Needs re-login</source>
         <translation>Behöver logga in igen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3394"/>
+        <location filename="../src/mainwindow.cpp" line="3477"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Du kan behöva logga ut/logga in för att se installerade poster i menyn</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3537"/>
-        <location filename="../src/mainwindow.cpp" line="3545"/>
-        <location filename="../src/mainwindow.cpp" line="3648"/>
-        <location filename="../src/mainwindow.cpp" line="3722"/>
+        <location filename="../src/mainwindow.cpp" line="3631"/>
+        <location filename="../src/mainwindow.cpp" line="3639"/>
+        <location filename="../src/mainwindow.cpp" line="3753"/>
+        <location filename="../src/mainwindow.cpp" line="3827"/>
         <source>Mark keep</source>
         <translation>Markera behåll</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3564"/>
+        <location filename="../src/mainwindow.cpp" line="3660"/>
         <source>Select/deselect all upgradable</source>
         <translation>Välj/avmarkera alla uppgraderingsbara</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3565"/>
+        <location filename="../src/mainwindow.cpp" line="3661"/>
         <source>Select/deselect all autoremovable</source>
         <translation>Välj/avmarkera alla autoremovable</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3650"/>
-        <location filename="../src/mainwindow.cpp" line="3720"/>
+        <location filename="../src/mainwindow.cpp" line="3755"/>
+        <location filename="../src/mainwindow.cpp" line="3825"/>
         <source>Upgrade</source>
         <translation>Uppgradera</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3860"/>
+        <location filename="../src/mainwindow.cpp" line="3971"/>
         <source>Quit?</source>
         <translation>Avsluta?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3861"/>
+        <location filename="../src/mainwindow.cpp" line="3972"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Process körs fortfarande, att avsluta kan lämna systemet i ett instabilt tillstånd.&lt;p&gt;&lt;b&gt;Är du säker att du vill avsluta MX Paket-installerare?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4023"/>
+        <location filename="../src/mainwindow.cpp" line="4137"/>
         <source>Reinstall</source>
         <translation>Ominstallera</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4040"/>
+        <location filename="../src/mainwindow.cpp" line="4154"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Problem upptäcktes vid sista operationen, var vänlig kontrollera  konsol-output.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4068"/>
+        <location filename="../src/mainwindow.cpp" line="4182"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Potentiellt dfarlig operation.
