@@ -25,6 +25,7 @@
 #pragma once
 
 #include <QCommandLineParser>
+#include <QAction>
 #include <QFile>
 #include <QFutureWatcher>
 #include <QHash>
@@ -201,6 +202,9 @@ private:
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree
     QTreeWidgetItem *lastItemClicked {};
+    QAction *lineEditToggleMaskAction {};
+    QAction *lineEditClearAction {};
+    bool lineEditMasked {false};
     const QCommandLineParser &args;
     const QString elevate {"/usr/bin/pkexec "};
 
@@ -270,6 +274,7 @@ private:
     void setSearchFocus() const;
     void setup();
     void setupFlatpakDisplay();
+    void setLineEditMasked(bool masked);
     void startInstalledPackagesLoad();
     void startAurInstalledCacheLoad();
     void startAurUpgradesLoad();

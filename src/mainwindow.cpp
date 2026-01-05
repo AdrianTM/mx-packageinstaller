@@ -27,7 +27,9 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QAction>
 #include <QFileInfo>
+#include <QIcon>
 #include <QMenu>
 #include <QNetworkProxyFactory>
 #include <QProgressBar>
@@ -62,9 +64,11 @@ QString sanitizeOutputForDisplay(const QString &output)
 {
     static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
     static const QRegularExpression ansiQuery {R"(\x1B\[[0-9;?]*n)"};
+    static const QRegularExpression ansiCursorStyle {R"(\x1B\[[0-9;?]*\s*q)"};
     QString cleanOutput = output;
     cleanOutput.remove(ansiEscape);
     cleanOutput.remove(ansiQuery);
+    cleanOutput.remove(ansiCursorStyle);
     return cleanOutput;
 }
 } // namespace
@@ -215,6 +219,19 @@ void MainWindow::setup()
 
     hideColumns();
     setConnections();
+    if (!lineEditToggleMaskAction) {
+        const QIcon hiddenIcon = QIcon::fromTheme("view-hidden", QIcon::fromTheme("view-visible"));
+        lineEditToggleMaskAction = ui->lineEdit->addAction(hiddenIcon, QLineEdit::TrailingPosition);
+        lineEditToggleMaskAction->setCheckable(true);
+        lineEditToggleMaskAction->setToolTip(tr("Show/hide input"));
+        connect(lineEditToggleMaskAction, &QAction::toggled, this, [this](bool checked) { setLineEditMasked(checked); });
+
+        const QIcon clearIcon = QIcon::fromTheme("edit-clear");
+        lineEditClearAction = ui->lineEdit->addAction(clearIcon, QLineEdit::TrailingPosition);
+        lineEditClearAction->setToolTip(tr("Clear input"));
+        connect(lineEditClearAction, &QAction::triggered, ui->lineEdit, &QLineEdit::clear);
+    }
+    setLineEditMasked(false);
 
     currentTree = ui->treeRepo;
     startInstalledPackagesLoad();
@@ -502,9 +519,13 @@ void MainWindow::checkUncheckItem()
 void MainWindow::outputAvailable(const QString &output)
 {
     static const QRegularExpression statusKey {R"(^\s*(Installing|Uninstalling)\s+\d+/\d+)"};
+    static const QRegularExpression sudoPrompt {R"(sudo.*password)", QRegularExpression::CaseInsensitiveOption};
 
     // Remove ANSI escape sequences
     QString cleanOutput = sanitizeOutputForDisplay(output);
+    if (sudoPrompt.match(cleanOutput).hasMatch()) {
+        setLineEditMasked(true);
+    }
 
     auto replaceLastStatusLine = [&](const QString &key, const QString &line) {
         QTextBlock block = ui->outputBox->document()->lastBlock();
@@ -542,6 +563,7 @@ void MainWindow::outputAvailable(const QString &output)
     };
 
     bool overwriteCurrentLine = false;
+    bool pendingCarriageReturn = false;
     QString buffer;
     auto flushBuffer = [&](bool addNewline) {
         if (buffer.isEmpty() && !addNewline) {
@@ -559,16 +581,30 @@ void MainWindow::outputAvailable(const QString &output)
 
     for (const QChar ch : cleanOutput) {
         if (ch == QLatin1Char('\r')) {
-            flushBuffer(false);
-            overwriteCurrentLine = true;
-        } else if (ch == QLatin1Char('\n')) {
+            pendingCarriageReturn = true;
+            continue;
+        }
+        if (ch == QLatin1Char('\n')) {
+            if (pendingCarriageReturn) {
+                pendingCarriageReturn = false;
+            }
             flushBuffer(true);
             overwriteCurrentLine = false;
-        } else {
-            buffer.append(ch);
+            continue;
         }
+        if (pendingCarriageReturn) {
+            pendingCarriageReturn = false;
+            flushBuffer(false);
+            overwriteCurrentLine = true;
+        }
+        buffer.append(ch);
     }
-    flushBuffer(false);
+    if (pendingCarriageReturn) {
+        pendingCarriageReturn = false;
+        flushBuffer(false);
+    } else {
+        flushBuffer(false);
+    }
 
     ui->outputBox->verticalScrollBar()->setValue(ui->outputBox->verticalScrollBar()->maximum());
 }
@@ -798,6 +834,24 @@ void MainWindow::setSearchFocus() const
     }
 }
 
+void MainWindow::setLineEditMasked(bool masked)
+{
+    if (!ui || !ui->lineEdit) {
+        return;
+    }
+    lineEditMasked = masked;
+    ui->lineEdit->setEchoMode(masked ? QLineEdit::Password : QLineEdit::Normal);
+    if (lineEditToggleMaskAction) {
+        QSignalBlocker blocker(lineEditToggleMaskAction);
+        lineEditToggleMaskAction->setChecked(masked);
+        QIcon icon = QIcon::fromTheme(masked ? "view-hidden" : "view-visible", QIcon::fromTheme("view-visible"));
+        if (!icon.isNull()) {
+            lineEditToggleMaskAction->setIcon(icon);
+        }
+        lineEditToggleMaskAction->setToolTip(masked ? tr("Show input") : tr("Hide input"));
+    }
+}
+
 void MainWindow::displayFilteredFP(QStringList list, bool raw)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -884,6 +938,11 @@ void MainWindow::displayPackages()
     }
     auto *newTree = currentTree == ui->treeRepo ? ui->treeRepo : ui->treeAUR;
     auto *list = currentTree == ui->treeRepo ? &repoList : &aurList;
+    const bool shouldRestoreChecks = (currentTree == ui->treeAUR) && !changeList.isEmpty();
+    QSet<QString> restoreChecked;
+    if (shouldRestoreChecks) {
+        restoreChecked = QSet<QString>(changeList.cbegin(), changeList.cend());
+    }
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
     newTree->setUpdatesEnabled(false);
@@ -893,6 +952,15 @@ void MainWindow::displayPackages()
     newTree->setSortingEnabled(false);
     newTree->addTopLevelItems(createTreeItemsList(list));
     newTree->sortItems(TreeCol::Name, Qt::AscendingOrder);
+
+    if (!restoreChecked.isEmpty()) {
+        for (QTreeWidgetItemIterator it(newTree); *it; ++it) {
+            QTreeWidgetItem *item = *it;
+            if (restoreChecked.contains(item->text(TreeCol::Name))) {
+                item->setCheckState(TreeCol::Check, Qt::Checked);
+            }
+        }
+    }
 
     updateTreeItems(newTree);
     newTree->blockSignals(false);
@@ -1520,19 +1588,13 @@ bool MainWindow::install(const QString &names)
             return false;
         }
 
-        // For AUR packages (paru), validate sudo password first since paru calls sudo internally
-        QByteArray sudoPassword;
-        if (!validateSudoPassword(&sudoPassword)) {
-            return false;
-        }
         const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
         const QString quotedNames = shellQuotePackageList(nameList);
-        const QString command = paruPath + " --sudoflags \"-S -p ''\" -S --needed " + quotedNames;
-        bool result = cmd.runWithInput(command, sudoPassword + '\n');
-        // Securely zero password after use
-        sudoPassword.fill('\0');
-        sudoPassword.clear();
-        return result;
+        QString command = "LANG=C PAGER=cat PARU_PAGER=cat " + paruPath + " -S --needed " + quotedNames;
+        if (QFile::exists("/usr/bin/script")) {
+            command = "/usr/bin/script -qefc " + shellQuote(command) + " /dev/null";
+        }
+        return cmd.run(command);
     } else {
         const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
         const QString quotedNames = shellQuotePackageList(nameList);
@@ -3612,18 +3674,21 @@ void MainWindow::pushForceUpdateFP_clicked()
 // Pressing Enter or buttonEnter will do the same thing
 void MainWindow::pushEnter_clicked()
 {
-    if (currentTree == ui->treeFlatpak
-        && ui->lineEdit->text().isEmpty()) { // Add "Y" as default response for flatpaks to work like pacman
-        cmd.write("y");
-    }
     lineEdit_returnPressed();
 }
 
 void MainWindow::lineEdit_returnPressed()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    cmd.write(ui->lineEdit->text().toUtf8() + '\n');
-    ui->outputBox->appendPlainText(ui->lineEdit->text() + '\n');
+    const QString input = ui->lineEdit->text();
+    setLineEditMasked(false);
+    if (input.trimmed().isEmpty()) {
+        ui->lineEdit->clear();
+        ui->lineEdit->setFocus();
+        return;
+    }
+    cmd.write(input.toUtf8() + '\n');
+    ui->outputBox->appendPlainText(input + '\n');
     ui->lineEdit->clear();
     ui->lineEdit->setFocus();
 }
