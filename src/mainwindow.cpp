@@ -2815,6 +2815,32 @@ void MainWindow::setDirty()
     dirtyTest = true;
 }
 
+void MainWindow::rebuildPackageViews()
+{
+    setDirty();
+    // Rebuild Enabled Repos (temporarily switch currentTree so dirty flag is cleared)
+    QTreeView *savedTree = currentTree;
+    if (currentTree != ui->treeEnabled) {
+        currentTree = ui->treeEnabled;
+        buildPackageLists();
+        currentTree = savedTree;
+        // Also update original tree if it's an APT tab (data already loaded, just refresh display)
+        if (currentTree == ui->treeMXtest) {
+            displayPackages();
+            dirtyTest = false;
+        } else if (currentTree == ui->treeBackports) {
+            displayPackages();
+            dirtyBackports = false;
+        }
+    } else {
+        buildPackageLists();
+    }
+    // Only refresh Popular if we're on that tab, otherwise it stays dirty for tab switch
+    if (currentTree == ui->treePopularApps) {
+        refreshPopularApps();
+    }
+}
+
 void MainWindow::setIcons()
 {
 
@@ -3304,9 +3330,7 @@ void MainWindow::pushInstall_clicked()
         } else {
             success = installSelected();
         }
-        setDirty();
-        buildPackageLists();
-        refreshPopularApps();
+        rebuildPackageViews();
         if (success) {
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
@@ -3462,9 +3486,7 @@ void MainWindow::pushUninstall_clicked()
     }
 
     bool success = uninstall(names, preuninstall, postuninstall);
-    setDirty();
-    buildPackageLists();
-    refreshPopularApps();
+    rebuildPackageViews();
     if (success) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
@@ -4243,8 +4265,7 @@ void MainWindow::pushUpgradeAll_clicked()
         }
     }
     bool success = install(names.join(' '));
-    setDirty();
-    buildPackageLists();
+    rebuildPackageViews();
     if (success) {
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
@@ -4466,9 +4487,7 @@ void MainWindow::pushRemoveAutoremovable_clicked()
                             "carefully the list of packages to be removed."));
     showOutput();
     bool success = uninstall(names);
-    setDirty();
-    buildPackageLists();
-    refreshPopularApps();
+    rebuildPackageViews();
     if (success) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());

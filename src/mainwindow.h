@@ -315,6 +315,7 @@ private:
     void setConnections();
     void setCurrentTree();
     void setDirty();
+    void rebuildPackageViews();
     void setIcons();
     void setProgressDialog();
     void setSearchFocus() const;
