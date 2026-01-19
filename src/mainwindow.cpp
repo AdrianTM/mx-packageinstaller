@@ -217,11 +217,14 @@ void MainWindow::setup()
     }
     // Make legend buttons non-interactive (avoid hover/click hints)
     const QList<QAbstractButton *> legendButtons {
+        ui->iconInstalledPackages,
+        ui->iconInstalledPackages_2,
+        ui->iconInstalledPackages_3,
+        ui->iconInstalledPackages_4,
         ui->iconInstalledPackages_5,
         ui->iconUpgradable,
-        ui->iconInstalledPackages_2,
         ui->iconUpgradable_2,
-        ui->iconInstalledPackages_4,
+        ui->iconUpgradable_3,
     };
     for (auto *button : legendButtons) {
         if (!button) {
