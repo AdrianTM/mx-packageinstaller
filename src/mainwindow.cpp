@@ -355,7 +355,7 @@ void MainWindow::setupModels()
     connect(backportsModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
     connect(flatpakModel, &FlatpakModel::checkStateChanged, this, &MainWindow::onFlatpakCheckStateChanged);
     // Use QStandardItemModel's built-in itemChanged signal for PopularModel
-    connect(popularModel, &QStandardItemModel::itemChanged, this, &MainWindow::onPopularItemChanged);
+    connect(popularModel, &PopularModel::checkStateChanged, this, &MainWindow::onPopularItemChanged);
 }
 
 bool MainWindow::uninstall(const QString &names, const QString &preuninstall, const QString &postuninstall)
@@ -1171,16 +1171,6 @@ void MainWindow::displayPopularApps()
 
     // Apply category spanning
     applyPopularCategorySpanning();
-
-    // Hide internal data columns
-    ui->treePopularApps->setColumnHidden(PopCol::InstallNames, true);
-    ui->treePopularApps->setColumnHidden(PopCol::UninstallNames, true);
-    ui->treePopularApps->setColumnHidden(PopCol::Screenshot, true);
-    ui->treePopularApps->setColumnHidden(PopCol::PostUninstall, true);
-    ui->treePopularApps->setColumnHidden(PopCol::PreUninstall, true);
-
-    // Don't expand categories by default - let user expand them
-    // ui->treePopularApps->expandAll();
 
     // Set appropriate widths for columns
     ui->treePopularApps->setColumnWidth(PopCol::Icon, 120);  // Category column
@@ -2410,13 +2400,6 @@ void MainWindow::hideColumns()
 {
     ui->tabWidget->setCurrentIndex(Tab::Popular);
 
-    // Hide internal data columns in Popular Apps
-    ui->treePopularApps->setColumnHidden(PopCol::InstallNames, true);
-    ui->treePopularApps->setColumnHidden(PopCol::UninstallNames, true);
-    ui->treePopularApps->setColumnHidden(PopCol::Screenshot, true);
-    ui->treePopularApps->setColumnHidden(PopCol::PostUninstall, true);
-    ui->treePopularApps->setColumnHidden(PopCol::PreUninstall, true);
-
     const bool showFlatpakBranch = debianVersion < Release::Trixie;
     ui->treeFlatpak->setColumnHidden(FlatCol::Branch, !showFlatpakBranch);
     ui->treeEnabled->hideColumn(TreeCol::Status); // Status of the package: installed, upgradable, etc
@@ -3058,14 +3041,14 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
 
     // Get data from model via index
     QString desc = index.sibling(index.row(), PopCol::Description).data().toString();
-    QString install_names = index.sibling(index.row(), PopCol::InstallNames).data().toString();
+    QString install_names = index.sibling(index.row(), PopCol::Name).data(Qt::UserRole).toString();
     QString title = index.sibling(index.row(), PopCol::Name).data().toString();
     QString msg = "<b>" + title + "</b><p>" + desc + "<p>";
     if (!install_names.isEmpty()) {
         msg += tr("Packages to be installed: ") + install_names;
     }
 
-    QUrl url = index.sibling(index.row(), PopCol::Screenshot).data(Qt::UserRole).toString(); // screenshot url
+    QUrl url = index.sibling(index.row(), PopCol::Description).data(Qt::UserRole).toString(); // screenshot url
 
     if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none")) {
         url = getScreenshotUrl(install_names.split(' ').first());
@@ -3413,27 +3396,21 @@ void MainWindow::pushUninstall_clicked()
     QString preuninstall;
     QString postuninstall;
     if (currentTree == ui->treePopularApps) {
-        QList<QStandardItem *> checkedItems = popularModel->checkedItems();
-        for (QStandardItem *item : checkedItems) {
-            // The check item is in column PopCol::Check
-            QStandardItem *parentItem = item->parent() ? item->parent() : popularModel->invisibleRootItem();
-            int row = item->row();
+        QModelIndexList checkedItems = popularModel->checkedItems();
+        for (const QModelIndex &index : checkedItems) {
+            const PopularAppData *app = popularModel->getAppData(index);
+            if (!app) {
+                continue;
+            }
 
-            QStandardItem *uninstallItem = parentItem->child(row, PopCol::UninstallNames);
-            QStandardItem *postItem = parentItem->child(row, PopCol::PostUninstall);
-            QStandardItem *preItem = parentItem->child(row, PopCol::PreUninstall);
-
-            if (uninstallItem) {
-                QString uninstallNames = uninstallItem->data(Qt::UserRole).toString();
-                names += uninstallNames.replace('\n', ' ') + ' ';
+            names += app->uninstallNames.trimmed().replace('\n', ' ') + ' ';
+            if (!app->postUninstall.isEmpty()) {
+                postuninstall += app->postUninstall + '\n';
             }
-            if (postItem) {
-                postuninstall += postItem->data(Qt::UserRole).toString() + '\n';
+            if (!app->preUninstall.isEmpty()) {
+                preuninstall += app->preUninstall + '\n';
             }
-            if (preItem) {
-                preuninstall += preItem->data(Qt::UserRole).toString() + '\n';
-            }
-            item->setCheckState(Qt::Unchecked);
+            popularModel->setData(index, Qt::Unchecked, Qt::CheckStateRole);
         }
     } else if (currentTree == ui->treeFlatpak) {
         bool success = true;
@@ -4048,33 +4025,21 @@ void MainWindow::onFlatpakCheckStateChanged(const QString &fullName, Qt::CheckSt
     buildFlatpakChangeList(fullName, state, status);
 }
 
-void MainWindow::onPopularItemChanged(QStandardItem *item)
+void MainWindow::onPopularItemChanged(const QModelIndex &index)
 {
-    Q_UNUSED(item)
+    Q_UNUSED(index)
 
     // Check all checked items to determine button states
     bool hasCheckedItems = false;
     bool allCheckedAreInstalled = true;
 
-    for (int catRow = 0; catRow < popularModel->rowCount(); ++catRow) {
-        QStandardItem *categoryItem = popularModel->item(catRow);
-        if (!categoryItem) {
-            continue;
-        }
+    QModelIndexList checkedItems = popularModel->checkedItems();
+    hasCheckedItems = !checkedItems.isEmpty();
 
-        for (int row = 0; row < categoryItem->rowCount(); ++row) {
-            QStandardItem *checkItem = categoryItem->child(row, PopCol::Check);
-            if (checkItem && checkItem->checkState() == Qt::Checked) {
-                hasCheckedItems = true;
-
-                // Check if this item is installed by checking if checkbox has icon
-                if (checkItem->icon().isNull()) {
-                    allCheckedAreInstalled = false;
-                    break;
-                }
-            }
-        }
-        if (hasCheckedItems && !allCheckedAreInstalled) {
+    for (const QModelIndex &idx : checkedItems) {
+        const PopularAppData *app = popularModel->getAppData(idx);
+        if (app && !app->isInstalled) {
+            allCheckedAreInstalled = false;
             break;
         }
     }

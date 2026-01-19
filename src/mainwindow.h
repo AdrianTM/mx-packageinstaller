@@ -143,7 +143,7 @@ private slots:
     void tabWidget_currentChanged(int index);
     void onPackageCheckStateChanged(const QString &packageName, Qt::CheckState state);
     void onFlatpakCheckStateChanged(const QString &fullName, Qt::CheckState state, int status);
-    void onPopularItemChanged(QStandardItem *item);
+    void onPopularItemChanged(const QModelIndex &index);
     void treePopularApps_customContextMenuRequested(QPoint pos);
     void treePopularApps_expanded();
     void treePopularApps_itemCollapsed(const QModelIndex &index);
