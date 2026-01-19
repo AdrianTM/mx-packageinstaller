@@ -32,6 +32,7 @@ USE_CLANG=false
 CLEAN=false
 DEBIAN_BUILD=false
 BUILD_TESTS=false
+RUN_TESTS_ONLY=false
 
 # Parse command line arguments
 while [[ $# -gt 0 ]]; do
@@ -56,12 +57,17 @@ while [[ $# -gt 0 ]]; do
             BUILD_TESTS=true
             shift
             ;;
+        --test)
+            RUN_TESTS_ONLY=true
+            shift
+            ;;
         -h|--help)
             echo "Usage: $0 [OPTIONS]"
             echo "Options:"
             echo "  -d, --debug     Build in Debug mode (default: Release)"
             echo "  -c, --clang     Use clang compiler"
-            echo "  -t, --tests     Build with unit tests"
+            echo "  -t, --tests     Build with unit tests enabled and run them"
+            echo "  --test          Run tests only (no build)"
             echo "  --clean         Clean build directory before building"
             echo "  --debian        Build Debian package"
             echo "  -h, --help      Show this help message"
@@ -73,6 +79,17 @@ while [[ $# -gt 0 ]]; do
             ;;
     esac
 done
+
+# Run tests only (no build)
+if [ "$RUN_TESTS_ONLY" = true ]; then
+    if [ ! -d "$BUILD_DIR/Testing" ]; then
+        echo "Error: Tests not found. Build with --tests first."
+        exit 1
+    fi
+    echo "Running tests..."
+    cd "$BUILD_DIR/Testing" && ctest --verbose
+    exit $?
+fi
 
 # Build Debian package
 if [ "$DEBIAN_BUILD" = true ]; then
