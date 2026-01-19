@@ -3482,37 +3482,50 @@ void MainWindow::tabWidget_currentChanged(int index)
     if (index != Tab::Output) {
         setCurrentTree();
     }
-    currentTree->blockSignals(true);
-    auto setTabsEnabled = [this](bool enable) {
-        for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak}) {
-            if (tab != ui->tabWidget->currentIndex()) {
-                ui->tabWidget->setTabEnabled(tab, enable);
-            }
+
+    // Defer heavy work to next event loop iteration so tab switches immediately
+    QMetaObject::invokeMethod(this, [this, index, search_str]() {
+        // Guard against stale lambda execution if user switched tabs again
+        if (ui->tabWidget->currentIndex() != index) {
+            return;
         }
-    };
-    setTabsEnabled(false);
-    switch (index) {
-    case Tab::Popular:
-        handleTab(search_str, ui->searchPopular, "", false);
-        break;
-    case Tab::EnabledRepos:
-        handleEnabledReposTab(search_str);
-        break;
-    case Tab::Test:
-        handleTab(search_str, ui->searchBoxMX, "test", dirtyTest);
-        break;
-    case Tab::Backports:
-        handleTab(search_str, ui->searchBoxBP, "backports", dirtyBackports);
-        break;
-    case Tab::Flatpak:
-        handleFlatpakTab(search_str);
-        break;
-    case Tab::Output:
-        handleOutputTab();
-        break;
-    }
-    setTabsEnabled(true);
-    ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
+
+        // Only block signals for non-Output tabs since Output doesn't need tree interaction
+        if (index != Tab::Output) {
+            currentTree->blockSignals(true);
+        }
+
+        auto setTabsEnabled = [this](bool enable) {
+            for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak}) {
+                if (tab != ui->tabWidget->currentIndex()) {
+                    ui->tabWidget->setTabEnabled(tab, enable);
+                }
+            }
+        };
+        setTabsEnabled(false);
+        switch (index) {
+        case Tab::Popular:
+            handleTab(search_str, ui->searchPopular, "", false);
+            break;
+        case Tab::EnabledRepos:
+            handleEnabledReposTab(search_str);
+            break;
+        case Tab::Test:
+            handleTab(search_str, ui->searchBoxMX, "test", dirtyTest);
+            break;
+        case Tab::Backports:
+            handleTab(search_str, ui->searchBoxBP, "backports", dirtyBackports);
+            break;
+        case Tab::Flatpak:
+            handleFlatpakTab(search_str);
+            break;
+        case Tab::Output:
+            handleOutputTab();
+            break;
+        }
+        setTabsEnabled(true);
+        ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
+    }, Qt::QueuedConnection);
 }
 
 void MainWindow::resetCheckboxes()
