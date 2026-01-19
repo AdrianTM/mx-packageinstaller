@@ -297,6 +297,8 @@ private:
     void handleFlatpakTab(const QString &searchStr);
     void handleOutputTab();
     void handleTab(const QString &searchStr, QLineEdit *searchBox, const QString &warningMessage, bool dirtyFlag);
+    void resizeCurrentColumns();
+    [[nodiscard]] bool shouldRefreshFilters(const QString &searchStr);
     void hideColumns();
     void ifDownloadFailed() const;
     void installFlatpak();

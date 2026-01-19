@@ -128,6 +128,11 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                     }
                     enabledModel->updateInstalledVersions(versionStrings);
 
+                    // Ensure enabled tree is sorted after background load
+                    if (enabledProxy) {
+                        enabledProxy->sort(TreeCol::Name, Qt::AscendingOrder);
+                    }
+
                     // Mark as not dirty since we just loaded it
                     dirtyEnabledRepos = false;
                 }
@@ -3534,19 +3539,25 @@ void MainWindow::resetCheckboxes()
     // Popular apps are processed in a different way, tree is reset after install/removal
     if (currentTree == ui->treePopularApps) {
         if (ui->tabWidget->currentIndex() != Tab::Output) { // Don't clear selections on output tab for pop apps
-            popularModel->uncheckAll();
+            if (popularModel && !popularModel->checkedItems().isEmpty()) {
+                popularModel->uncheckAll();
+            }
         }
     } else if (currentTree == ui->treeFlatpak) {
         currentTree->clearSelection();
         if (flatpakModel) {
-            flatpakModel->setAllChecked(false);
+            if (!flatpakModel->checkedPackages().isEmpty()) {
+                flatpakModel->setAllChecked(false);
+            }
         }
     } else {
         // Package-based tabs (Enabled, Test, Backports)
         currentTree->clearSelection();
         auto *model = getCurrentModel();
         if (model) {
-            model->uncheckAll();
+            if (!model->checkedPackages().isEmpty()) {
+                model->uncheckAll();
+            }
         }
     }
 }
@@ -3569,6 +3580,31 @@ void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
     }
 }
 
+void MainWindow::resizeCurrentColumns()
+{
+    auto *model = getCurrentModel();
+    if (!model || !currentTree || currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
+        return;
+    }
+    for (int i = 0; i < model->columnCount(); ++i) {
+        if (!currentTree->isColumnHidden(i)) {
+            currentTree->resizeColumnToContents(i);
+        }
+    }
+}
+
+bool MainWindow::shouldRefreshFilters(const QString &searchStr)
+{
+    auto *proxy = getCurrentProxy();
+    if (!proxy) {
+        return true;
+    }
+    const bool statusMatch = proxy->statusFilter() == savedComboIndex;
+    const bool searchMatch = proxy->searchText() == searchStr;
+    const bool hideMatch = proxy->hideLibraries() == hideLibsChecked;
+    return !(statusMatch && searchMatch && hideMatch);
+}
+
 void MainWindow::handleEnabledReposTab(const QString &search_str)
 {
     ui->searchBoxEnabled->setText(search_str);
@@ -3578,6 +3614,8 @@ void MainWindow::handleEnabledReposTab(const QString &search_str)
         if (!timer.isActive()) {
             timer.start(100ms);
         }
+        connect(this, &MainWindow::displayPackagesFinished, this, &MainWindow::updateInterface,
+                Qt::SingleShotConnection);
     } else if (enabledModel->rowCount() == 0 || dirtyEnabledRepos) {
         if (!buildPackageLists()) {
             QMessageBox::critical(this, tr("Error"),
@@ -3587,22 +3625,21 @@ void MainWindow::handleEnabledReposTab(const QString &search_str)
         }
     }
     if (!displayPackagesIsRunning) {
-        ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
-        ui->comboFilterMX->setCurrentIndex(savedComboIndex);
-        ui->comboFilterBP->setCurrentIndex(savedComboIndex);
-        filterChanged(ui->comboFilterEnabled->currentText());
-
-        // Ensure columns are resized after tab switch
-        QMetaObject::invokeMethod(this, [this]() {
-            auto *model = getCurrentModel();
-            if (model && currentTree && currentTree != ui->treePopularApps && currentTree != ui->treeFlatpak) {
-                for (int i = 0; i < model->columnCount(); ++i) {
-                    if (!currentTree->isColumnHidden(i)) {
-                        currentTree->resizeColumnToContents(i);
-                    }
-                }
-            }
-        }, Qt::QueuedConnection);
+        if (ui->comboFilterEnabled->currentIndex() != savedComboIndex) {
+            ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
+        }
+        if (ui->comboFilterMX->currentIndex() != savedComboIndex) {
+            ui->comboFilterMX->setCurrentIndex(savedComboIndex);
+        }
+        if (ui->comboFilterBP->currentIndex() != savedComboIndex) {
+            ui->comboFilterBP->setCurrentIndex(savedComboIndex);
+        }
+        if (shouldRefreshFilters(search_str)) {
+            filterChanged(ui->comboFilterEnabled->currentText());
+        } else {
+            updateInterface();
+            resizeCurrentColumns();
+        }
     }
     if (!ui->searchBoxEnabled->text().isEmpty()) {
         QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
@@ -3623,7 +3660,14 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
     }
     changeList.clear();
     auto *model = getCurrentModel();
-    if (model && (model->rowCount() == 0 || dirtyFlag)) {
+    if (displayPackagesIsRunning) {
+        progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
+        }
+        connect(this, &MainWindow::displayPackagesFinished, this, &MainWindow::updateInterface,
+                Qt::SingleShotConnection);
+    } else if (model && (model->rowCount() == 0 || dirtyFlag)) {
         if (!buildPackageLists()) {
             QMessageBox::critical(this, tr("Error"),
                                   tr("Could not download the list of packages. Please check your APT sources."));
@@ -3631,22 +3675,22 @@ void MainWindow::handleTab(const QString &search_str, QLineEdit *searchBox, cons
             return;
         }
     }
-    if (Tab::Popular != ui->tabWidget->currentIndex()) {
-        ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
-        ui->comboFilterMX->setCurrentIndex(savedComboIndex);
-        ui->comboFilterBP->setCurrentIndex(savedComboIndex);
-        filterChanged(ui->comboFilterEnabled->currentText());
-    }
-
-    // Ensure columns are resized after tab switch
-    if (model && currentTree && currentTree != ui->treePopularApps && currentTree != ui->treeFlatpak) {
-        QMetaObject::invokeMethod(this, [this, model]() {
-            for (int i = 0; i < model->columnCount(); ++i) {
-                if (!currentTree->isColumnHidden(i)) {
-                    currentTree->resizeColumnToContents(i);
-                }
-            }
-        }, Qt::QueuedConnection);
+    if (Tab::Popular != ui->tabWidget->currentIndex() && !displayPackagesIsRunning) {
+        if (ui->comboFilterEnabled->currentIndex() != savedComboIndex) {
+            ui->comboFilterEnabled->setCurrentIndex(savedComboIndex);
+        }
+        if (ui->comboFilterMX->currentIndex() != savedComboIndex) {
+            ui->comboFilterMX->setCurrentIndex(savedComboIndex);
+        }
+        if (ui->comboFilterBP->currentIndex() != savedComboIndex) {
+            ui->comboFilterBP->setCurrentIndex(savedComboIndex);
+        }
+        if (shouldRefreshFilters(search_str)) {
+            filterChanged(ui->comboFilterEnabled->currentText());
+        } else {
+            updateInterface();
+            resizeCurrentColumns();
+        }
     }
 
     currentTree->blockSignals(false);
