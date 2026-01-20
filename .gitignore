@@ -28,7 +28,6 @@ Makefile*
 *-build-*
 build
 debug
-Testing
 
 # Local adhoc test binaries
 timer_test_*
