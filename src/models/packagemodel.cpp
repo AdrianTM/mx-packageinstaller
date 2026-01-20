@@ -21,6 +21,8 @@
  **********************************************************************/
 #include "packagemodel.h"
 
+#include "../versionnumber.h"
+
 PackageModel::PackageModel(QObject *parent)
     : QAbstractTableModel(parent)
 {
@@ -242,8 +244,10 @@ void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versio
         auto it = versions.find(pkg.name);
         if (it != versions.end()) {
             pkg.installedVersion = it.value();
-            if (!pkg.repoVersion.isEmpty() && pkg.installedVersion != pkg.repoVersion) {
-                pkg.status = Status::Upgradable;
+            if (!pkg.repoVersion.isEmpty()) {
+                const VersionNumber repoVersion(pkg.repoVersion);
+                const VersionNumber installedVersion(pkg.installedVersion);
+                pkg.status = (repoVersion > installedVersion) ? Status::Upgradable : Status::Installed;
             } else {
                 pkg.status = Status::Installed;
             }
