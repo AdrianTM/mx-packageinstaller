@@ -1,3 +1,9 @@
+mx-packageinstaller (26.01.3) mx; urgency=medium
+
+  * Fix version comparison
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 19 Jan 2026 22:33:15 -0500
+
 mx-packageinstaller (26.01.2) mx; urgency=medium
 
   * Refactored code: app should use about 50MB less and be more responsive
