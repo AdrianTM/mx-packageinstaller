@@ -4313,16 +4313,28 @@ void MainWindow::pushCancel_clicked()
 
 void MainWindow::checkHideLibsMX_clicked(bool checked)
 {
+    ui->treeMXtest->setUpdatesEnabled(false);
     hideLibsChecked = checked;
+    settings.setValue("HideLibs", checked);
     ui->checkHideLibs->setChecked(checked);
     ui->checkHideLibsBP->setChecked(checked);
+
+    mxtestProxy->setHideLibraries(checked);
+    filterChanged(ui->comboFilterMX->currentText());
+    ui->treeMXtest->setUpdatesEnabled(true);
 }
 
 void MainWindow::checkHideLibsBP_clicked(bool checked)
 {
+    ui->treeBackports->setUpdatesEnabled(false);
     hideLibsChecked = checked;
+    settings.setValue("HideLibs", checked);
     ui->checkHideLibs->setChecked(checked);
     ui->checkHideLibsMX->setChecked(checked);
+
+    backportsProxy->setHideLibraries(checked);
+    filterChanged(ui->comboFilterBP->currentText());
+    ui->treeBackports->setUpdatesEnabled(true);
 }
 
 // On change flatpak remote
