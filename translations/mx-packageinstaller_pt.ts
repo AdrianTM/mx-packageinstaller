@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="157"/>
         <source>Full Name</source>
-        <translation type="unfinished"/>
+        <translation>Nome Completo</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="159"/>
@@ -829,22 +829,22 @@ Verificar cuidadosamente a lista de pacotes a serem removidos.</translation>
 <context>
     <name>PackageModel</name>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="141"/>
+        <location filename="../src/models/packagemodel.cpp" line="143"/>
         <source>Package</source>
         <translation>Pacote</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
         <translation>Versão do repositório</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <location filename="../src/models/packagemodel.cpp" line="147"/>
         <source>Installed</source>
         <translation>Instalados</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <location filename="../src/models/packagemodel.cpp" line="149"/>
         <source>Description</source>
         <translation>Descrição</translation>
     </message>

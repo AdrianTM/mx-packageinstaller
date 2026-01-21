@@ -829,22 +829,22 @@ Asegúrate de comprobar coidadosamente a lista de paquetes a eliminar.</translat
 <context>
     <name>PackageModel</name>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="141"/>
+        <location filename="../src/models/packagemodel.cpp" line="143"/>
         <source>Package</source>
         <translation>Paquete</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
         <translation>Versión de repositorio</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <location filename="../src/models/packagemodel.cpp" line="147"/>
         <source>Installed</source>
         <translation>Instalado</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <location filename="../src/models/packagemodel.cpp" line="149"/>
         <source>Description</source>
         <translation>Descrición</translation>
     </message>

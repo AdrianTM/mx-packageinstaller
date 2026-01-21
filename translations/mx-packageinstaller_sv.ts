@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="157"/>
         <source>Full Name</source>
-        <translation type="unfinished"/>
+        <translation>Fullständigt namn</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="159"/>
@@ -829,22 +829,22 @@ Var vänlig kontrollera listan över paket som ska tas bort noga.</translation>
 <context>
     <name>PackageModel</name>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="141"/>
+        <location filename="../src/models/packagemodel.cpp" line="143"/>
         <source>Package</source>
         <translation>Paket</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
         <translation>Förrådsversion</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <location filename="../src/models/packagemodel.cpp" line="147"/>
         <source>Installed</source>
         <translation>Installerad</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <location filename="../src/models/packagemodel.cpp" line="149"/>
         <source>Description</source>
         <translation>Beskrivning</translation>
     </message>

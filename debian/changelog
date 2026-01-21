@@ -1,3 +1,10 @@
+mx-packageinstaller (26.01.4) mx; urgency=medium
+
+  * Performance fix: switching tabs should work better
+  * Fix hide/show libs for MX Test and Backports tabs
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 21 Jan 2026 11:35:24 -0500
+
 mx-packageinstaller (26.01.3) mx; urgency=medium
 
   * Fix version comparison

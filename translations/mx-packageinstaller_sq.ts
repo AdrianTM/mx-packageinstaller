@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="157"/>
         <source>Full Name</source>
-        <translation type="unfinished"/>
+        <translation>Emër i Plotë</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="159"/>
@@ -32,7 +32,7 @@
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="161"/>
         <source>Branch</source>
-        <translation type="unfinished"/>
+        <translation>Degë</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="163"/>
@@ -829,22 +829,22 @@ Ju lutemi, sigurohuni se kontrolluat me kujdes listën e paketave për heqje.</t
 <context>
     <name>PackageModel</name>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="141"/>
+        <location filename="../src/models/packagemodel.cpp" line="143"/>
         <source>Package</source>
         <translation>Paketë</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
         <translation>Version Depoje</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <location filename="../src/models/packagemodel.cpp" line="147"/>
         <source>Installed</source>
         <translation>Të instaluara</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <location filename="../src/models/packagemodel.cpp" line="149"/>
         <source>Description</source>
         <translation>Përshkrim</translation>
     </message>

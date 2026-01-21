@@ -22,7 +22,7 @@
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="157"/>
         <source>Full Name</source>
-        <translation type="unfinished"/>
+        <translation>Πλήρες όνομα</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="159"/>
@@ -74,7 +74,7 @@
         <location filename="../src/mainwindow.ui" line="1137"/>
         <location filename="../src/mainwindow.ui" line="1373"/>
         <source>= Installed packages</source>
-        <translation>= Εγκατεστημένα πακέτα</translation>
+        <translation>= Εγκατεστημένο πακέτο</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="159"/>
@@ -250,7 +250,7 @@
         <location filename="../src/mainwindow.ui" line="1433"/>
         <location filename="../src/mainwindow.cpp" line="3939"/>
         <source>All runtimes</source>
-        <translation>Όλες οι runtimes</translation>
+        <translation>Όλες οι εκτελέσιμες βιβλιοθήκες</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1438"/>
@@ -268,7 +268,7 @@
         <location filename="../src/mainwindow.ui" line="1448"/>
         <location filename="../src/mainwindow.cpp" line="3927"/>
         <source>Installed runtimes</source>
-        <translation>Εγκατεστημένα runtimes</translation>
+        <translation>Εγκατεστημένες εκτελέσιμες βιβλιοθήκες</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1453"/>
@@ -276,7 +276,7 @@
         <location filename="../src/mainwindow.cpp" line="4178"/>
         <location filename="../src/mainwindow.cpp" line="4179"/>
         <source>All installed</source>
-        <translation>Όλα εγκατεστημένα</translation>
+        <translation>Όλες οι εγκατεστημένες</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1233"/>
@@ -301,7 +301,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1342"/>
         <source>Remove unused runtimes</source>
-        <translation>Αφαίρεση αχρησιμοποίητων runtimes</translation>
+        <translation>Αφαίρεση μη χρησιμοποιημένων εκτελέσιμων βιβλιοθηκών</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="277"/>
@@ -773,7 +773,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="40"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Προσθέστε ή αφαιρέστε διευθύνσεις (αποθετήρια) flatpak, ή εγκαταστήστε εφαρμογές χρησιμοποιώντας τη τοποθεσία αναφοράς URL ή τη διαδρομή του</translation>
+        <translation>Προσθέστε ή αφαιρέστε διευθύνσεις (αποθετήρια) flatpak, ή εγκαταστήστε εφαρμογές χρησιμοποιώντας τη τοποθεσία αναφοράς URL ή τη διαδρομή τους</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="49"/>
@@ -829,22 +829,22 @@ Please make sure you check carefully the list of packages to be removed.</source
 <context>
     <name>PackageModel</name>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="141"/>
+        <location filename="../src/models/packagemodel.cpp" line="143"/>
         <source>Package</source>
         <translation>Πακέτο</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
         <translation>Έκδοση αποθετηρίου</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <location filename="../src/models/packagemodel.cpp" line="147"/>
         <source>Installed</source>
-        <translation>Εγκατεστημένα</translation>
+        <translation>Εγκατεστημένο</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <location filename="../src/models/packagemodel.cpp" line="149"/>
         <source>Description</source>
         <translation>Περιγραφή</translation>
     </message>
