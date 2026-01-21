@@ -96,13 +96,15 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     setup();
 
     // Run package display in a separate thread
-    auto packageFuture [[maybe_unused]] = QtConcurrent::run([this] {
+    // Run package preload in background
+    [[maybe_unused]] auto future = QtConcurrent::run([this] {
         AptCache cache;
         enabledList = cache.getCandidates();
+
+        // Set the model on main thread after preload
         QMetaObject::invokeMethod(
             this,
             [this] {
-                // Explicitly load enabled model even though tab isn't visible yet
                 if (enabledModel && !enabledList.isEmpty()) {
                     QVector<PackageData> packages;
                     packages.reserve(enabledList.size() + installedPackages.size());
@@ -3619,6 +3621,7 @@ bool MainWindow::shouldRefreshFilters(const QString &searchStr)
 {
     auto *proxy = getCurrentProxy();
     if (!proxy) {
+        qDebug() << "shouldRefreshFilters: no proxy";
         return true;
     }
     const bool statusMatch = proxy->statusFilter() == savedComboIndex;
@@ -3890,20 +3893,7 @@ void MainWindow::filterChanged(const QString &arg1)
         ui->checkHideLibsMX->blockSignals(block);
     };
 
-    auto resizeCurrentRepoTree = [this]() {
-        if (currentTree == ui->treeFlatpak || currentTree == ui->treePopularApps) {
-            return;
-        }
-        auto *model = getCurrentModel();
-        if (!model) {
-            return;
-        }
-        for (int i = 0; i < model->columnCount(); ++i) {
-            if (!currentTree->isColumnHidden(i)) {
-                currentTree->resizeColumnToContents(i);
-            }
-        }
-    };
+
 
     // Hide and reset all header checkboxes by default
     if (headerEnabled) {
@@ -3962,6 +3952,9 @@ void MainWindow::filterChanged(const QString &arg1)
         ui->checkHideLibsMX->setChecked(shouldHideLibs);
         ui->checkHideLibsBP->setChecked(shouldHideLibs);
         blockSignalsForAll(false);
+        if (auto *proxy = getCurrentProxy()) {
+            proxy->setHideLibraries(shouldHideLibs);
+        }
         resetTree();
         clearChangeListAndButtons();
         ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
@@ -3971,6 +3964,9 @@ void MainWindow::filterChanged(const QString &arg1)
         ui->checkHideLibsMX->setChecked(shouldHideLibs);
         ui->checkHideLibsBP->setChecked(shouldHideLibs);
         blockSignalsForAll(false);
+        if (auto *proxy = getCurrentProxy()) {
+            proxy->setHideLibraries(shouldHideLibs);
+        }
 
         ui->pushInstall->setText(isAutoremovable ? tr("Mark keep") : tr("Install"));
 
@@ -4019,7 +4015,7 @@ void MainWindow::filterChanged(const QString &arg1)
         setSearchFocus();
         clearChangeListAndButtons();
     }
-    resizeCurrentRepoTree();
+    resizeCurrentColumns();
     currentTree->setUpdatesEnabled(true);
     currentTree->blockSignals(false);
 }

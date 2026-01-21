@@ -88,4 +88,6 @@ private:
     QHash<QString, int> m_nameToRow;
     QIcon m_iconInstalled;
     QIcon m_iconUpgradable;
+    int m_countInstalled = 0;
+    int m_countUpgradable = 0;
 };

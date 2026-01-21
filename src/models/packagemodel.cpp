@@ -160,8 +160,15 @@ void PackageModel::setPackageData(const QVector<PackageData> &packages)
     m_packages = packages;
     m_nameToRow.clear();
     m_nameToRow.reserve(m_packages.size());
+    m_countInstalled = 0;
+    m_countUpgradable = 0;
     for (int i = 0; i < m_packages.size(); ++i) {
         m_nameToRow.insert(m_packages.at(i).name, i);
+        if (m_packages.at(i).status == Status::Installed) {
+            ++m_countInstalled;
+        } else if (m_packages.at(i).status == Status::Upgradable) {
+            ++m_countUpgradable;
+        }
     }
     endResetModel();
 }
@@ -171,6 +178,8 @@ void PackageModel::clear()
     beginResetModel();
     m_packages.clear();
     m_nameToRow.clear();
+    m_countInstalled = 0;
+    m_countUpgradable = 0;
     endResetModel();
 }
 
@@ -231,6 +240,11 @@ void PackageModel::setAutoremovable(const QStringList &names)
     QSet<QString> nameSet(names.begin(), names.end());
     for (int i = 0; i < m_packages.size(); ++i) {
         if (nameSet.contains(m_packages[i].name)) {
+            if (m_packages[i].status == Status::Installed) {
+                --m_countInstalled;
+            } else if (m_packages[i].status == Status::Upgradable) {
+                --m_countUpgradable;
+            }
             m_packages[i].status = Status::Autoremovable;
             emit dataChanged(index(i, TreeCol::Check), index(i, TreeCol::Status));
         }
@@ -239,6 +253,8 @@ void PackageModel::setAutoremovable(const QStringList &names)
 
 void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versions)
 {
+    m_countInstalled = 0;
+    m_countUpgradable = 0;
     for (int i = 0; i < m_packages.size(); ++i) {
         PackageData &pkg = m_packages[i];
         auto it = versions.find(pkg.name);
@@ -255,6 +271,11 @@ void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versio
             pkg.installedVersion.clear();
             pkg.status = Status::NotInstalled;
         }
+        if (pkg.status == Status::Installed) {
+            ++m_countInstalled;
+        } else if (pkg.status == Status::Upgradable) {
+            ++m_countUpgradable;
+        }
     }
 
     if (!m_packages.isEmpty()) {
@@ -270,13 +291,21 @@ void PackageModel::setIcons(const QIcon &installed, const QIcon &upgradable)
 
 int PackageModel::countByStatus(int status) const
 {
-    int count = 0;
-    for (const PackageData &pkg : m_packages) {
-        if (pkg.status == status) {
-            ++count;
+    switch (status) {
+    case Status::Installed:
+        return m_countInstalled;
+    case Status::Upgradable:
+        return m_countUpgradable;
+    default:
+        // For other statuses, still iterate (less common)
+        int count = 0;
+        for (const PackageData &pkg : m_packages) {
+            if (pkg.status == status) {
+                ++count;
+            }
         }
+        return count;
     }
-    return count;
 }
 
 QStringList PackageModel::checkedPackageNames() const
