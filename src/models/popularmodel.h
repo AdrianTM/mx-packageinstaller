@@ -29,7 +29,7 @@
 namespace PopCol
 {
 enum {
-    Icon,
+    Category,
     Check,
     Name,
     Info,

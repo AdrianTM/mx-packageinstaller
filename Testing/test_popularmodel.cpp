@@ -61,7 +61,7 @@ void TestPopularModel::testSetPopularApps()
 
     QCOMPARE(model.rowCount(), 2);
 
-    QModelIndex categoryIndex = model.index(0, PopCol::Icon);
+    QModelIndex categoryIndex = model.index(0, PopCol::Category);
     QVERIFY(categoryIndex.isValid());
     QVERIFY(model.rowCount(categoryIndex) > 0);
 
@@ -84,7 +84,7 @@ void TestPopularModel::testCheckedItems()
 
     model.setPopularApps(createApps());
 
-    QModelIndex categoryIndex = model.index(0, PopCol::Icon);
+    QModelIndex categoryIndex = model.index(0, PopCol::Category);
     QVERIFY(categoryIndex.isValid());
 
     QModelIndex checkIndex = model.index(1, PopCol::Check, categoryIndex);
@@ -109,7 +109,7 @@ void TestPopularModel::testUncheckAll()
 
     model.setPopularApps(createApps());
 
-    QModelIndex categoryIndex = model.index(0, PopCol::Icon);
+    QModelIndex categoryIndex = model.index(0, PopCol::Category);
     QVERIFY(categoryIndex.isValid());
 
     QModelIndex checkIndex = model.index(0, PopCol::Check, categoryIndex);

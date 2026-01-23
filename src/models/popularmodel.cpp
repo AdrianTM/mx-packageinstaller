@@ -201,10 +201,10 @@ QVariant PopularModel::data(const QModelIndex &index, int role) const
 
         const CategoryData &category = m_categories[categoryIdx];
 
-        if (role == Qt::DisplayRole && index.column() == PopCol::Icon) {
+        if (role == Qt::DisplayRole && index.column() == PopCol::Category) {
             return category.name;
         }
-        if (role == Qt::DecorationRole && index.column() == PopCol::Icon) {
+        if (role == Qt::DecorationRole && index.column() == PopCol::Category) {
             return m_iconFolder;
         }
         if (role == Qt::FontRole) {
@@ -325,7 +325,7 @@ QVariant PopularModel::headerData(int section, Qt::Orientation orientation, int 
     }
 
     switch (section) {
-    case PopCol::Icon:
+    case PopCol::Category:
         return tr("Category");
     case PopCol::Check:
         return QString();

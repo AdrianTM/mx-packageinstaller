@@ -65,7 +65,7 @@ void TestPopularFilterProxy::testSearchFiltersCategories()
     proxy.setSearchText("browser");
 
     QCOMPARE(proxy.rowCount(), 1);
-    QCOMPARE(proxy.index(0, PopCol::Icon).data().toString(), QString("Internet"));
+    QCOMPARE(proxy.index(0, PopCol::Category).data().toString(), QString("Internet"));
 }
 
 void TestPopularFilterProxy::testSearchFiltersChildren()
@@ -79,7 +79,7 @@ void TestPopularFilterProxy::testSearchFiltersChildren()
     proxy.setSourceModel(&model);
     proxy.setSearchText("Chromium");
 
-    QModelIndex categoryIndex = proxy.index(0, PopCol::Icon);
+    QModelIndex categoryIndex = proxy.index(0, PopCol::Category);
     QVERIFY(categoryIndex.isValid());
     QCOMPARE(proxy.rowCount(categoryIndex), 1);
 

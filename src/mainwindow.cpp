@@ -1168,20 +1168,20 @@ void MainWindow::displayPopularApps()
     ui->treePopularApps->setSortingEnabled(true);
     ui->treePopularApps->header()->setSortIndicatorShown(true);
     ui->treePopularApps->header()->setSectionsClickable(true);
-    ui->treePopularApps->header()->setSectionResizeMode(PopCol::Icon, QHeaderView::Fixed);
-    ui->treePopularApps->header()->setSectionResizeMode(PopCol::Check, QHeaderView::Fixed);
+    ui->treePopularApps->header()->setSectionResizeMode(PopCol::Category, QHeaderView::Interactive);
+    ui->treePopularApps->header()->setSectionResizeMode(PopCol::Check, QHeaderView::Interactive);
     ui->treePopularApps->header()->setSectionResizeMode(PopCol::Info, QHeaderView::Fixed);
     // Default header sort indicator (children default to Name)
     ui->treePopularApps->header()->setSortIndicator(PopCol::Name, Qt::AscendingOrder);
     // Keep categories sorted A-Z by their label; child sorting handled separately
-    ui->treePopularApps->sortByColumn(PopCol::Icon, Qt::AscendingOrder);
+    ui->treePopularApps->sortByColumn(PopCol::Category, Qt::AscendingOrder);
 
     // Apply category spanning
     applyPopularCategorySpanning();
 
     // Set appropriate widths for columns
-    ui->treePopularApps->setColumnWidth(PopCol::Icon, 120);  // Category column
-    ui->treePopularApps->setColumnWidth(PopCol::Check, 30);  // Checkbox column
+    ui->treePopularApps->setColumnWidth(PopCol::Category, 120);  // Category column
+    ui->treePopularApps->setColumnWidth(PopCol::Check, 40);  // Checkbox column
     ui->treePopularApps->setColumnWidth(PopCol::Info, 30);   // Info icon column
 
     // Let Name and Description take remaining space
@@ -3387,7 +3387,7 @@ void MainWindow::treePopularApps_itemExpanded(const QModelIndex &index)
     if (!index.parent().isValid()) {
         // Map proxy index to source model before setting data
         QModelIndex sourceIndex = popularProxy->mapToSource(index);
-        QModelIndex iconIndex = sourceIndex.siblingAtColumn(PopCol::Icon);
+        QModelIndex iconIndex = sourceIndex.siblingAtColumn(PopCol::Category);
         if (iconIndex.isValid()) {
             popularModel->setData(iconIndex, QIcon::fromTheme("folder-open"), Qt::DecorationRole);
         }
@@ -3408,7 +3408,7 @@ void MainWindow::treePopularApps_itemCollapsed(const QModelIndex &index)
     if (!index.parent().isValid()) {
         // Map proxy index to source model before setting data
         QModelIndex sourceIndex = popularProxy->mapToSource(index);
-        QModelIndex iconIndex = sourceIndex.siblingAtColumn(PopCol::Icon);
+        QModelIndex iconIndex = sourceIndex.siblingAtColumn(PopCol::Category);
         if (iconIndex.isValid()) {
             popularModel->setData(iconIndex, QIcon::fromTheme("folder"), Qt::DecorationRole);
         }

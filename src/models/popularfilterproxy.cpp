@@ -31,13 +31,13 @@ PopularFilterProxy::PopularFilterProxy(QObject *parent)
 void PopularFilterProxy::sort(int column, Qt::SortOrder order)
 {
     // Keep categories sorted A-Z/ Z-A; child ordering is driven by source sortChildren.
-    if (column == PopCol::Icon) {
+    if (column == PopCol::Category) {
         m_categorySortOrder = order;
     } else if (column == PopCol::Name || column == PopCol::Description) {
         m_childSortColumn = column;
         m_childSortOrder = order;
     }
-    QSortFilterProxyModel::sort(PopCol::Icon, Qt::AscendingOrder);
+    QSortFilterProxyModel::sort(PopCol::Category, Qt::AscendingOrder);
     invalidate();
 }
 
@@ -72,8 +72,8 @@ bool PopularFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
 
     if (leftIsCategory && rightIsCategory) {
         // For categories, always sort by the Icon column (category name) in ascending order
-        const QString leftCategory = left.sibling(left.row(), PopCol::Icon).data(Qt::DisplayRole).toString();
-        const QString rightCategory = right.sibling(right.row(), PopCol::Icon).data(Qt::DisplayRole).toString();
+        const QString leftCategory = left.sibling(left.row(), PopCol::Category).data(Qt::DisplayRole).toString();
+        const QString rightCategory = right.sibling(right.row(), PopCol::Category).data(Qt::DisplayRole).toString();
         const int cmp = QString::localeAwareCompare(leftCategory, rightCategory);
         return (m_categorySortOrder == Qt::DescendingOrder) ? (cmp > 0) : (cmp < 0);
     }
