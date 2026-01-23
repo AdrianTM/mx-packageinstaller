@@ -1,6 +1,6 @@
 mx-packageinstaller (26.01.5) mx; urgency=medium
 
-  * Make culumns in Popular tab resizable
+  * Make columns in Popular tab resizable
 
  -- Adrian <adrian@mxlinux.org>  Fri, 23 Jan 2026 10:17:18 -0500
 
