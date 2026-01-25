@@ -95,7 +95,41 @@ bool PackageFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
 bool PackageFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+    // When using custom sort order, preserve source model order (don't sort)
+    if (m_customSortOrder) {
+        return left.row() < right.row();
+    }
+
+    // Special handling for Check column: sort by status icon (Installed/Upgradable) instead of checkbox
+    if (left.column() == TreeCol::Check) {
+        auto *model = qobject_cast<PackageModel *>(sourceModel());
+        if (model) {
+            const PackageData *leftPkg = model->packageAt(left.row());
+            const PackageData *rightPkg = model->packageAt(right.row());
+            if (leftPkg && rightPkg) {
+                // Sort priority: Upgradable (2) > Installed (1) > NotInstalled (3) > Autoremovable (4)
+                // This puts upgradable packages at top, then installed, then others
+                auto getPriority = [](int status) {
+                    if (status == Status::Upgradable) return 0;
+                    if (status == Status::Installed) return 1;
+                    if (status == Status::NotInstalled) return 2;
+                    if (status == Status::Autoremovable) return 3;
+                    return 4;
+                };
+                int leftPriority = getPriority(leftPkg->status);
+                int rightPriority = getPriority(rightPkg->status);
+                return leftPriority < rightPriority;
+            }
+        }
+    }
+
     return QSortFilterProxyModel::lessThan(left, right);
+}
+
+void PackageFilterProxy::setCustomSortOrder(bool custom)
+{
+    m_customSortOrder = custom;
+    invalidate();
 }
 
 bool PackageFilterProxy::matchesSearch(const QString &name, const QString &description) const

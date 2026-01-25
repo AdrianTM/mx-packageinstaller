@@ -72,6 +72,29 @@ QString sanitizeOutputForDisplay(const QString &output)
     cleanOutput.remove(ansiCursorStyle);
     return cleanOutput;
 }
+
+class FlatpakTreeItem : public QTreeWidgetItem
+{
+public:
+    using QTreeWidgetItem::QTreeWidgetItem;
+
+    bool operator<(const QTreeWidgetItem &other) const override
+    {
+        const int column = treeWidget() ? treeWidget()->sortColumn() : 0;
+        if (column == FlatCol::Check) {
+            const int leftStatus = data(FlatCol::Status, Qt::UserRole).toInt();
+            const int rightStatus = other.data(FlatCol::Status, Qt::UserRole).toInt();
+            auto priority = [](int status) {
+                if (status == Status::Upgradable) return 0;
+                if (status == Status::Installed) return 1;
+                if (status == Status::NotInstalled) return 2;
+                return 3;
+            };
+            return priority(leftStatus) < priority(rightStatus);
+        }
+        return QTreeWidgetItem::operator<(other);
+    }
+};
 } // namespace
 
 MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
@@ -301,6 +324,14 @@ void MainWindow::setup()
     ui->treeAUR->setColumnWidth(TreeCol::InstalledVersion, 150);
     ui->treeAUR->header()->setStretchLastSection(true); // Description column stretches
 
+    // Detect when user manually sorts AUR results - disable custom sort to allow it
+    connect(ui->treeAUR->header(), &QHeaderView::sortIndicatorChanged, this, [this](int logicalIndex, Qt::SortOrder order) {
+        Q_UNUSED(logicalIndex)
+        Q_UNUSED(order)
+        // User clicked a column header to sort - disable custom sort mode
+        aurProxy->setCustomSortOrder(false);
+    });
+
     hideColumns();
     setConnections();
     if (!lineEditToggleMaskAction) {
@@ -346,6 +377,7 @@ void MainWindow::setup()
     connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked,
             [this](QTreeWidgetItem *item) { ui->treeFlatpak->setCurrentItem(item); });
     connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked, this, &MainWindow::checkUncheckItem);
+    ui->treeFlatpak->setSortingEnabled(true);
 
     // Repo and AUR trees now use QTreeView - no item-based connections needed
 }
@@ -1069,10 +1101,13 @@ void MainWindow::displayPackages()
         packages.append(createPackageData(it.key(), it.value().version, it.value().description));
     }
 
-    // Sort AUR search results: exact match first, then prefix matches, then others
+    // Sort packages alphabetically by name, with special handling for AUR searches
+    bool isAurSearch = false;
     if (currentTab == Tab::AUR) {
         const QString searchTerm = ui->searchBoxAUR->text().trimmed().toLower();
         if (!searchTerm.isEmpty() && searchTerm.size() >= 2) {
+            isAurSearch = true;
+            // Smart sort for AUR search: exact match first, then prefix matches, then others
             std::sort(packages.begin(), packages.end(), [&searchTerm](const PackageData &a, const PackageData &b) {
                 const QString aName = a.name.toLower();
                 const QString bName = b.name.toLower();
@@ -1090,11 +1125,6 @@ void MainWindow::displayPackages()
                 // Priority 3: Alphabetical
                 return aName < bName;
             });
-            // Disable view sorting to preserve our custom sort order
-            ui->treeAUR->setSortingEnabled(false);
-        } else {
-            // Re-enable sorting when not searching
-            ui->treeAUR->setSortingEnabled(true);
         }
     }
 
@@ -1131,6 +1161,27 @@ void MainWindow::displayPackages()
     }
 
     model->setPackageData(packages);
+
+    // Apply sorting settings AFTER setting data
+    if (currentTab == Tab::AUR) {
+        if (isAurSearch) {
+            // Tell proxy to preserve source model order (our custom smart sort)
+            aurProxy->setCustomSortOrder(true);
+            // Keep view sorting enabled so users can manually sort if desired
+            ui->treeAUR->setSortingEnabled(true);
+            // Set initial sort by Name to match our custom order
+            ui->treeAUR->sortByColumn(TreeCol::Name, Qt::AscendingOrder);
+        } else {
+            // Re-enable proxy sorting and view sorting when not searching
+            aurProxy->setCustomSortOrder(false);
+            ui->treeAUR->setSortingEnabled(true);
+            ui->treeAUR->sortByColumn(TreeCol::Name, Qt::AscendingOrder);
+        }
+    } else if (currentTab == Tab::Repos) {
+        // Enable sorting and set to sort by Name column alphabetically
+        ui->treeRepo->setSortingEnabled(true);
+        ui->treeRepo->sortByColumn(TreeCol::Name, Qt::AscendingOrder);
+    }
 
     QApplication::restoreOverrideCursor();
 
@@ -1378,7 +1429,7 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
         return nullptr;
     }
 
-    auto *widget_item = new QTreeWidgetItem(ui->treeFlatpak);
+    auto *widget_item = new FlatpakTreeItem(ui->treeFlatpak);
     widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
     widget_item->setText(FlatCol::Name, short_name);
     widget_item->setText(FlatCol::LongName, long_name);
