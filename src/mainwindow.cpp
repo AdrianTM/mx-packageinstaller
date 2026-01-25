@@ -1069,6 +1069,35 @@ void MainWindow::displayPackages()
         packages.append(createPackageData(it.key(), it.value().version, it.value().description));
     }
 
+    // Sort AUR search results: exact match first, then prefix matches, then others
+    if (currentTab == Tab::AUR) {
+        const QString searchTerm = ui->searchBoxAUR->text().trimmed().toLower();
+        if (!searchTerm.isEmpty() && searchTerm.size() >= 2) {
+            std::sort(packages.begin(), packages.end(), [&searchTerm](const PackageData &a, const PackageData &b) {
+                const QString aName = a.name.toLower();
+                const QString bName = b.name.toLower();
+
+                // Priority 1: Exact match
+                const bool aExact = (aName == searchTerm);
+                const bool bExact = (bName == searchTerm);
+                if (aExact != bExact) return aExact;
+
+                // Priority 2: Starts with search term (prefix match)
+                const bool aPrefix = aName.startsWith(searchTerm);
+                const bool bPrefix = bName.startsWith(searchTerm);
+                if (aPrefix != bPrefix) return aPrefix;
+
+                // Priority 3: Alphabetical
+                return aName < bName;
+            });
+            // Disable view sorting to preserve our custom sort order
+            ui->treeAUR->setSortingEnabled(false);
+        } else {
+            // Re-enable sorting when not searching
+            ui->treeAUR->setSortingEnabled(true);
+        }
+    }
+
     // Update installed versions for all packages
     const auto installedVersions = listInstalledVersions();
     QSet<QString> autoremovableSet;
