@@ -38,32 +38,28 @@
 #include <QSettings>
 #include <QString>
 #include <QTimer>
-#include <QTreeWidgetItem>
+
+class QTreeWidget;
+class QTreeWidgetItem;
 
 #include "cmd.h"
 #include "checkableheaderview.h"
 #include "lockfile.h"
 #include "remotes.h"
 #include "versionnumber.h"
+#include "models/packagemodel.h"
+#include "models/packagefilterproxy.h"
 
 namespace Ui
 {
 class MainWindow;
 }
 
-namespace Status
-{
-enum { Installed = 1, Upgradable, NotInstalled, Autoremovable }; // Also used for filter combo index
-}
+// Use Status and TreeCol from packagemodel.h
 
 namespace Tab
 {
 enum { Repos, AUR, Flatpak, Output };
-}
-
-namespace TreeCol
-{
-enum { Check, Name, RepoVersion, InstalledVersion, Description, Status };
 }
 
 namespace FlatCol
@@ -101,8 +97,6 @@ private slots:
     void cmdDone();
     void cmdStart();
     void disableOutput();
-    void displayPackageInfo(const QTreeWidget *tree, QPoint pos);
-    void displayPackageInfo(const QTreeWidgetItem *item);
     void enableOutput();
     void filterChanged(const QString &arg1);
     void findPackage();
@@ -128,8 +122,6 @@ private slots:
     void pushUpgradeFP_clicked();
     void tabWidget_currentChanged(int index);
     void treeFlatpak_itemChanged(QTreeWidgetItem *item);
-    void treeAUR_itemChanged(QTreeWidgetItem *item);
-    void treeRepo_itemChanged(QTreeWidgetItem *item);
 private:
     Ui::MainWindow *ui;
 
@@ -200,7 +192,7 @@ private:
     bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
     QTimer timer;
-    QTreeWidget *currentTree {}; // current/calling tree
+    QTreeWidget *currentTree {}; // current/calling tree (Flatpak only)
     QTreeWidgetItem *lastItemClicked {};
     QAction *lineEditToggleMaskAction {};
     QAction *lineEditClearAction {};
@@ -218,13 +210,12 @@ private:
     [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
     [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
     [[nodiscard]] QTreeWidgetItem *createFlatpakItem(const QString &item, const QStringList &installedAll) const;
-    [[nodiscard]] QTreeWidgetItem *createTreeItem(const QString &name, const QString &version,
-                                                  const QString &description) const;
+    [[nodiscard]] PackageData createPackageData(const QString &name, const QString &version,
+                                                const QString &description) const;
     [[nodiscard]] bool checkInstalled(const QVariant &names) const;
     [[nodiscard]] bool checkUpgradable(const QStringList &nameList) const;
     [[nodiscard]] bool isOnline();
     [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;
-    [[nodiscard]] QList<QTreeWidgetItem *> createTreeItemsList(QHash<QString, PackageInfo> *list) const;
 
     bool buildPackageLists(bool forceDownload = false);
     bool confirmActions(const QString &names, const QString &action);
@@ -281,7 +272,6 @@ private:
     void updateRepoSetsFromInstalled();
     void updateFlatpakCounts(uint totalCount);
     void updateInterface() const;
-    void updateTreeItems(QTreeWidget *tree);
     bool buildAurList(const QString &searchTerm);
     bool buildRepoCache(bool showProgress);
     void applyRepoFilter(int statusFilter);
@@ -292,4 +282,9 @@ private:
     // Header checkbox helpers
     CheckableHeaderView *headerAUR {nullptr};
     CheckableHeaderView *headerRepo {nullptr};
+    // Model/Proxy for QTreeView
+    PackageModel *repoModel {nullptr};
+    PackageFilterProxy *repoProxy {nullptr};
+    PackageModel *aurModel {nullptr};
+    PackageFilterProxy *aurProxy {nullptr};
 };

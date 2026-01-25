@@ -114,6 +114,8 @@ set(SOURCES
     src/remotes.cpp
     src/about.cpp
     src/cmd.cpp
+    src/models/packagemodel.cpp
+    src/models/packagefilterproxy.cpp
 )
 
 set(HEADERS
@@ -125,6 +127,8 @@ set(HEADERS
     src/remotes.h
     src/about.h
     src/cmd.h
+    src/models/packagemodel.h
+    src/models/packagefilterproxy.h
 )
 
 set(UI_FILES

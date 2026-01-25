@@ -315,40 +315,10 @@
         </widget>
        </item>
        <item row="2" column="0" colspan="5">
-        <widget class="QTreeWidget" name="treeRepo">
+        <widget class="QTreeView" name="treeRepo">
          <property name="sortingEnabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
-         <column>
-          <property name="text">
-           <string notr="true" />
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Package Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Repo Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Installed Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Description</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string notr="true">Status</string>
-          </property>
-         </column>
         </widget>
        </item>
       </layout>
@@ -629,40 +599,10 @@
         </widget>
        </item>
        <item row="3" column="0" colspan="5">
-        <widget class="QTreeWidget" name="treeAUR">
+        <widget class="QTreeView" name="treeAUR">
          <property name="sortingEnabled">
-          <bool>false</bool>
+          <bool>true</bool>
          </property>
-         <column>
-          <property name="text">
-           <string notr="true" />
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Package Name</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Repo Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Installed Version</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string>Description</string>
-          </property>
-         </column>
-         <column>
-          <property name="text">
-           <string notr="true">Status</string>
-          </property>
-         </column>
         </widget>
        </item>
       </layout>

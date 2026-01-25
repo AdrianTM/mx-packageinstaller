@@ -40,6 +40,7 @@
 #include <QSignalBlocker>
 #include <QStandardPaths>
 #include <QSysInfo>
+#include <QTreeView>
 #include <QDialog>
 #include <QDialogButtonBox>
 #include <QElapsedTimer>
@@ -104,7 +105,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
         installedPackages = installedPackagesWatcher.result();
         installedPackagesLoading = false;
         updateRepoSetsFromInstalled();
-        if (currentTree == ui->treeRepo && repoCacheValid) {
+        if (ui->tabWidget->currentIndex() == Tab::Repos && repoCacheValid) {
             applyRepoFilter(ui->comboFilterRepo->currentIndex());
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
             updateInterface();
@@ -134,21 +135,20 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                 aurInstalledCache[it.key()].version = it.value();
             }
         }
-        if (currentTree == ui->treeAUR && ui->searchBoxAUR->text().trimmed().isEmpty()) {
+        if (ui->tabWidget->currentIndex() == Tab::AUR && ui->searchBoxAUR->text().trimmed().isEmpty()) {
             for (auto it = updates.cbegin(); it != updates.cend(); ++it) {
                 if (aurList.contains(it.key())) {
                     aurList[it.key()].version = it.value();
                 }
             }
-            QSignalBlocker blocker(currentTree);
-            for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                const QString name = (*it)->text(TreeCol::Name);
-                const auto updateIt = updates.constFind(name);
-                if (updateIt != updates.constEnd()) {
-                    (*it)->setText(TreeCol::RepoVersion, updateIt.value());
+            // Update model with new versions
+            for (int row = 0; row < aurModel->rowCount(); ++row) {
+                const auto *pkg = aurModel->packageAt(row);
+                if (pkg && updates.contains(pkg->name)) {
+                    QModelIndex idx = aurModel->index(row, TreeCol::RepoVersion);
+                    aurModel->setData(idx, updates.value(pkg->name), Qt::EditRole);
                 }
             }
-            updateTreeItems(currentTree);
             updateInterface();
         }
     });
@@ -232,6 +232,75 @@ void MainWindow::setup()
     headerAUR->setMinimumSectionSize(22);
     ui->treeAUR->setHeader(headerAUR);
 
+    // Initialize models and proxies for QTreeView
+    repoModel = new PackageModel(this);
+    repoProxy = new PackageFilterProxy(this);
+    repoProxy->setSourceModel(repoModel);
+    ui->treeRepo->setModel(repoProxy);
+    repoModel->setIcons(qiconInstalled, qiconUpgradable);
+
+    aurModel = new PackageModel(this);
+    aurProxy = new PackageFilterProxy(this);
+    aurProxy->setSourceModel(aurModel);
+    ui->treeAUR->setModel(aurProxy);
+    aurModel->setIcons(qiconInstalled, qiconUpgradable);
+
+    // Connect model signals to update changeList when checkboxes change
+    connect(repoModel, &PackageModel::checkStateChanged, this, [this](const QString &packageName, Qt::CheckState state) {
+        if (state == Qt::Checked) {
+            if (!changeList.contains(packageName)) {
+                changeList.append(packageName);
+            }
+        } else {
+            changeList.removeAll(packageName);
+        }
+        // Update buttons without stealing focus
+        ui->pushInstall->setEnabled(!changeList.isEmpty());
+        ui->pushUninstall->setEnabled(checkInstalled(changeList));
+
+        // Check for Autoremovable filter
+        const QString filterText = ui->comboFilterRepo->currentText();
+        if (filterText == tr("Autoremovable")) {
+            ui->pushInstall->setText(tr("Mark keep"));
+        } else {
+            ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
+        }
+    });
+
+    connect(aurModel, &PackageModel::checkStateChanged, this, [this](const QString &packageName, Qt::CheckState state) {
+        if (state == Qt::Checked) {
+            if (!changeList.contains(packageName)) {
+                changeList.append(packageName);
+            }
+        } else {
+            changeList.removeAll(packageName);
+        }
+        // Update buttons without stealing focus
+        ui->pushInstall->setEnabled(!changeList.isEmpty());
+        ui->pushUninstall->setEnabled(checkInstalled(changeList));
+
+        // Check for Autoremovable filter
+        const QString filterText = ui->comboFilterAUR->currentText();
+        if (filterText == tr("Autoremovable")) {
+            ui->pushInstall->setText(tr("Mark keep"));
+        } else {
+            ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
+        }
+    });
+
+    // Configure column sizing for Repos and AUR tabs
+    ui->treeRepo->header()->setSectionResizeMode(TreeCol::Check, QHeaderView::ResizeToContents);
+    ui->treeRepo->setColumnWidth(TreeCol::Name, 200);
+    ui->treeRepo->setColumnWidth(TreeCol::RepoVersion, 150);
+    ui->treeRepo->setColumnWidth(TreeCol::InstalledVersion, 150);
+    ui->treeRepo->header()->setStretchLastSection(true); // Description column stretches
+
+    ui->treeAUR->header()->setSectionResizeMode(TreeCol::Check, QHeaderView::ResizeToContents);
+    ui->treeAUR->setColumnWidth(TreeCol::Name, 200);
+    ui->treeAUR->setColumnWidth(TreeCol::RepoVersion, 150);
+    ui->treeAUR->setColumnWidth(TreeCol::InstalledVersion, 150);
+    ui->treeAUR->header()->setStretchLastSection(true); // Description column stretches
+
     hideColumns();
     setConnections();
     if (!lineEditToggleMaskAction) {
@@ -248,7 +317,7 @@ void MainWindow::setup()
     }
     setLineEditMasked(false);
 
-    currentTree = ui->treeRepo;
+    currentTree = ui->treeFlatpak; // For Flatpak only now
     startInstalledPackagesLoad();
     startAurInstalledCacheLoad();
     buildRepoCache(false);
@@ -270,16 +339,15 @@ void MainWindow::setup()
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
     connect(shortcutToggle, &QShortcut::activated, this, &MainWindow::checkUncheckItem);
 
-    QList listTree {ui->treeRepo, ui->treeAUR, ui->treeFlatpak};
-    for (const auto &tree : listTree) {
-        if (tree != ui->treeFlatpak) {
-            tree->setContextMenuPolicy(Qt::CustomContextMenu);
-        }
-        connect(tree, &QTreeWidget::itemDoubleClicked, [tree](QTreeWidgetItem *item) { tree->setCurrentItem(item); });
-        connect(tree, &QTreeWidget::itemDoubleClicked, this, &MainWindow::checkUncheckItem);
-        connect(tree, &QTreeWidget::customContextMenuRequested, this,
-                [this, tree](QPoint pos) { displayPackageInfo(tree, pos); });
-    }
+    // Setup Flatpak tree (still using QTreeWidget)
+    ui->treeFlatpak->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeFlatpak, &QTreeWidget::customContextMenuRequested, this,
+            [this](QPoint pos) { /* TODO: Re-implement context menu */ });
+    connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked,
+            [this](QTreeWidgetItem *item) { ui->treeFlatpak->setCurrentItem(item); });
+    connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked, this, &MainWindow::checkUncheckItem);
+
+    // Repo and AUR trees now use QTreeView - no item-based connections needed
 }
 
 bool MainWindow::uninstall(const QString &names, const QString &preuninstall, const QString &postuninstall)
@@ -454,7 +522,8 @@ void MainWindow::blockInterfaceFP(bool)
 // Update interface when changing AUR tab
 void MainWindow::updateInterface() const
 {
-    if (currentTree == ui->treeFlatpak) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Flatpak) {
         return;
     }
     if (displayPackagesIsRunning) {
@@ -463,17 +532,28 @@ void MainWindow::updateInterface() const
     }
     QApplication::restoreOverrideCursor();
     progress->hide();
+
     int upgradeCount = 0;
     int installCount = 0;
     int visibleCount = 0;
 
-    for (QTreeWidgetItemIterator it(currentTree); *it; ++it) {
-        if ((*it)->isHidden()) {
+    // Get counts from the model
+    const PackageModel *model = (currentTab == Tab::Repos) ? repoModel : aurModel;
+    const PackageFilterProxy *proxy = (currentTab == Tab::Repos) ? repoProxy : aurProxy;
+
+    visibleCount = proxy->rowCount();
+    for (int row = 0; row < model->rowCount(); ++row) {
+        const auto *pkg = model->packageAt(row);
+        if (!pkg) {
             continue;
         }
-        ++visibleCount;
-        auto userData = (*it)->data(TreeCol::Status, Qt::UserRole).toInt();
-        switch (userData) {
+        // Check if visible through proxy
+        QModelIndex sourceIdx = model->index(row, 0);
+        if (!proxy->mapFromSource(sourceIdx).isValid()) {
+            continue;
+        }
+
+        switch (pkg->status) {
         case Status::Upgradable:
             ++upgradeCount;
             break;
@@ -495,10 +575,10 @@ void MainWindow::updateInterface() const
         searchBox->setFocus();
     };
 
-    if (ui->tabWidget->currentIndex() == Tab::Repos) {
+    if (currentTab == Tab::Repos) {
         updateLabelsAndFocus(ui->labelNumAppsRepo, ui->labelNumUpgrRepo, ui->labelNumInstRepo,
                              ui->pushForceUpdateRepo, ui->searchBoxRepo);
-    } else if (ui->tabWidget->currentIndex() == Tab::AUR) {
+    } else if (currentTab == Tab::AUR) {
         updateLabelsAndFocus(ui->labelNumApps_2, ui->labelNumUpgrMX, ui->labelNumInstMX, ui->pushForceUpdateMX,
                              ui->searchBoxAUR);
     }
@@ -519,16 +599,37 @@ void MainWindow::updateBar()
 
 void MainWindow::checkUncheckItem()
 {
-    auto *currentTreeWidget = qobject_cast<QTreeWidget *>(focusWidget());
+    QWidget *focused = focusWidget();
 
-    if (!currentTreeWidget || !currentTreeWidget->currentItem() || currentTreeWidget->currentItem()->childCount() > 0) {
+    // Handle QTreeWidget (Flatpak)
+    auto *currentTreeWidget = qobject_cast<QTreeWidget *>(focused);
+    if (currentTreeWidget && currentTreeWidget->currentItem() && currentTreeWidget->currentItem()->childCount() == 0) {
+        const auto col = static_cast<int>(TreeCol::Check);
+        const auto newCheckState
+            = (currentTreeWidget->currentItem()->checkState(col) == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
+        currentTreeWidget->currentItem()->setCheckState(col, newCheckState);
         return;
     }
-    const auto col = static_cast<int>(TreeCol::Check);
-    const auto newCheckState
-        = (currentTreeWidget->currentItem()->checkState(col) == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
 
-    currentTreeWidget->currentItem()->setCheckState(col, newCheckState);
+    // Handle QTreeView (Repo/AUR)
+    auto *currentTreeView = qobject_cast<QTreeView *>(focused);
+    if (currentTreeView) {
+        QModelIndex currentIndex = currentTreeView->currentIndex();
+        if (!currentIndex.isValid()) {
+            return;
+        }
+
+        // Get the checkbox index (column 0)
+        QModelIndex checkIndex = currentIndex.sibling(currentIndex.row(), TreeCol::Check);
+        QAbstractItemModel *model = currentTreeView->model();
+
+        if (model) {
+            Qt::CheckState currentState = static_cast<Qt::CheckState>(
+                model->data(checkIndex, Qt::CheckStateRole).toInt());
+            Qt::CheckState newState = (currentState == Qt::Checked) ? Qt::Unchecked : Qt::Checked;
+            model->setData(checkIndex, newState, Qt::CheckStateRole);
+        }
+    }
 }
 
 void MainWindow::outputAvailable(const QString &output)
@@ -816,8 +917,8 @@ void MainWindow::setConnections() const
     connect(headerRepo, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(headerAUR, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(ui->treeFlatpak, &QTreeWidget::itemChanged, this, &MainWindow::treeFlatpak_itemChanged);
-    connect(ui->treeAUR, &QTreeWidget::itemChanged, this, &MainWindow::treeAUR_itemChanged);
-    connect(ui->treeRepo, &QTreeWidget::itemChanged, this, &MainWindow::treeRepo_itemChanged);
+    // Removed: connect(ui->treeAUR, &QTreeWidget::itemChanged, this, &MainWindow::treeAUR_itemChanged);
+    // Removed: connect(ui->treeRepo, &QTreeWidget::itemChanged, this, &MainWindow::treeRepo_itemChanged);
 }
 
 void MainWindow::setProgressDialog()
@@ -946,46 +1047,70 @@ void MainWindow::displayPackages()
 
     displayPackagesIsRunning = true;
 
-    if (currentTree != ui->treeAUR && currentTree != ui->treeRepo) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab != Tab::Repos && currentTab != Tab::AUR) {
         displayPackagesIsRunning = false;
         emit displayPackagesFinished();
         return;
     }
-    auto *newTree = currentTree == ui->treeRepo ? ui->treeRepo : ui->treeAUR;
-    auto *list = currentTree == ui->treeRepo ? &repoList : &aurList;
-    const bool shouldRestoreChecks = (currentTree == ui->treeAUR) && !changeList.isEmpty();
-    QSet<QString> restoreChecked;
-    if (shouldRestoreChecks) {
-        restoreChecked = QSet<QString>(changeList.cbegin(), changeList.cend());
-    }
+
+    // Determine which model to update
+    PackageModel *model = (currentTab == Tab::Repos) ? repoModel : aurModel;
+    auto *list = (currentTab == Tab::Repos) ? &repoList : &aurList;
+    const bool shouldRestoreChecks = (currentTab == Tab::AUR) && !changeList.isEmpty();
 
     QApplication::setOverrideCursor(Qt::WaitCursor);
-    newTree->setUpdatesEnabled(false);
-    newTree->blockSignals(true);
 
-    newTree->clear();
-    newTree->setSortingEnabled(false);
-    newTree->addTopLevelItems(createTreeItemsList(list));
-    newTree->sortItems(TreeCol::Name, Qt::AscendingOrder);
+    // Create QVector<PackageData> from the hash
+    QVector<PackageData> packages;
+    packages.reserve(list->size());
 
-    if (!restoreChecked.isEmpty()) {
-        for (QTreeWidgetItemIterator it(newTree); *it; ++it) {
-            QTreeWidgetItem *item = *it;
-            if (restoreChecked.contains(item->text(TreeCol::Name))) {
-                item->setCheckState(TreeCol::Check, Qt::Checked);
+    for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
+        packages.append(createPackageData(it.key(), it.value().version, it.value().description));
+    }
+
+    // Update installed versions for all packages
+    const auto installedVersions = listInstalledVersions();
+    QSet<QString> autoremovableSet;
+    if (currentTab == Tab::AUR) {
+        // Get autoremovable packages for AUR
+        const QStringList autoremovableList = getAutoremovablePackages();
+        autoremovableSet = QSet<QString>(autoremovableList.cbegin(), autoremovableList.cend());
+    }
+
+    for (auto &pkg : packages) {
+        const VersionNumber installedVersion = installedVersions.value(pkg.name);
+        pkg.installedVersion = installedVersion.toString();
+
+        if (!pkg.installedVersion.isEmpty()) {
+            const VersionNumber repoVersion(pkg.repoVersion);
+            if (currentTab == Tab::AUR && autoremovableSet.contains(pkg.name)) {
+                pkg.status = Status::Autoremovable;
+            } else if (installedVersion >= repoVersion) {
+                pkg.status = Status::Installed;
+            } else {
+                pkg.status = Status::Upgradable;
             }
+        } else {
+            pkg.status = Status::NotInstalled;
+        }
+
+        // Restore checked state if needed
+        if (shouldRestoreChecks && changeList.contains(pkg.name)) {
+            pkg.checkState = Qt::Checked;
         }
     }
 
-    updateTreeItems(newTree);
-    newTree->blockSignals(false);
-    newTree->setUpdatesEnabled(true);
+    model->setPackageData(packages);
+
     QApplication::restoreOverrideCursor();
 
     displayPackagesIsRunning = false;
     emit displayPackagesFinished();
 }
 
+/* Removed - no longer in header, using model-based approach for Repo/AUR
+// Keep createTreeItemsList for Flatpak (still using QTreeWidget)
 QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QHash<QString, PackageInfo> *list) const
 {
     QList<QTreeWidgetItem *> items;
@@ -1053,6 +1178,7 @@ void MainWindow::updateTreeItems(QTreeWidget *tree)
         }
     }
 }
+*/
 
 void MainWindow::displayFlatpaks(bool force_update)
 {
@@ -1409,11 +1535,12 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     QStringList detailed_installed_names;
     QString detailed_to_install;
     QString detailed_removed_names;
-    if (currentTree == ui->treeFlatpak && names != "flatpak") {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Flatpak && names != "flatpak") {
         detailed_installed_names = changeList;
     }
 
-    if (currentTree != ui->treeFlatpak) {
+    if (currentTab != Tab::Flatpak) {
         detailed_installed_names = changeList;
         detailed_installed_names.sort();
         qDebug() << "detailed installed names sorted " << detailed_installed_names;
@@ -1588,10 +1715,11 @@ bool MainWindow::install(const QString &names)
         return true;
     }
     enableOutput();
-    if (currentTree != ui->treeAUR && lockFile.isLockedGUI()) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab != Tab::AUR && lockFile.isLockedGUI()) {
         return false;
     }
-    if (currentTree == ui->treeAUR) {
+    if (currentTab == Tab::AUR) {
         // Check if paru is installed for AUR packages
         const QString paruPath = getParuPath();
         if (paruPath.isEmpty()) {
@@ -1686,13 +1814,14 @@ bool MainWindow::buildPackageLists(bool forceDownload)
         setDirty();
     }
     clearUi();
-    if (currentTree == ui->treeRepo) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Repos) {
         if (!repoCacheValid && !buildRepoCache(true)) {
             return false;
         }
         applyRepoFilter(ui->comboFilterRepo->currentIndex());
         dirtyRepo = false;
-    } else if (currentTree == ui->treeAUR) {
+    } else if (currentTab == Tab::AUR) {
         if (!buildAurList(ui->searchBoxAUR->text())) {
             return false;
         }
@@ -1753,22 +1882,23 @@ void MainWindow::clearUi()
     ui->pushUninstall->setEnabled(false);
 
     // Clear UI elements based on the current tree
-    if (currentTree == ui->treeRepo) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Repos) {
         ui->labelNumAppsRepo->clear();
         ui->labelNumInstRepo->clear();
         ui->labelNumUpgrRepo->clear();
-        ui->treeRepo->clear();
-    } else if (currentTree == ui->treeAUR) {
+        // ui->treeRepo->clear();  // QTreeView - model handles this
+    } else if (currentTab == Tab::AUR) {
         ui->labelNumApps_2->clear();
         ui->labelNumInstMX->clear();
         ui->labelNumUpgrMX->clear();
-        ui->treeAUR->clear();
+        // ui->treeAUR->clear();  // QTreeView - model handles this
     }
 
     // Reset all filter combos
-    if (currentTree == ui->treeRepo) {
+    if (currentTab == Tab::Repos) {
         ui->comboFilterRepo->setCurrentIndex(savedComboIndex);
-    } else if (currentTree == ui->treeAUR) {
+    } else if (currentTab == Tab::AUR) {
         ui->comboFilterAUR->setCurrentIndex(savedComboIndex);
     }
     ui->comboFilterFlatpak->setCurrentIndex(0);
@@ -1855,12 +1985,30 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
     if (name_list.isEmpty()) {
         return false;
     }
+
+    // Determine which model to check based on current tab
+    const int currentTab = ui->tabWidget->currentIndex();
+    PackageModel *model = nullptr;
+    if (currentTab == Tab::Repos) {
+        model = repoModel;
+    } else if (currentTab == Tab::AUR) {
+        model = aurModel;
+    } else {
+        return false; // Not a model-based tab
+    }
+
+    // Check only the current tab's model
     for (const QString &name : name_list) {
-        auto item_list = currentTree->findItems(name, Qt::MatchExactly, TreeCol::Name);
-        if (item_list.isEmpty() || item_list.at(0)->data(TreeCol::Status, Qt::UserRole) != Status::Upgradable) {
-            return false;
+        int row = model->findPackageRow(name);
+        if (row < 0) {
+            return false; // Package not found
+        }
+        const PackageData *pkg = model->packageAt(row);
+        if (!pkg || pkg->status != Status::Upgradable) {
+            return false; // Package not upgradable
         }
     }
+
     return true;
 }
 
@@ -2027,6 +2175,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
     return refs;
 }
 
+/* Removed - no longer in header, using model-based approach
 QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
                                             const QString &description) const
 {
@@ -2038,17 +2187,35 @@ QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &
     widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
     return widget_item;
 }
+*/
+
+PackageData MainWindow::createPackageData(const QString &name, const QString &version,
+                                          const QString &description) const
+{
+    PackageData data;
+    data.name = name;
+    data.repoVersion = version;
+    data.description = description;
+    data.checkState = Qt::Unchecked;
+    data.status = Status::NotInstalled;
+    return data;
+}
 
 void MainWindow::setCurrentTree()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    const QList<QTreeWidget *> trees = {ui->treeRepo, ui->treeAUR, ui->treeFlatpak};
+    const int currentTab = ui->tabWidget->currentIndex();
 
-    auto it = std::find_if(trees.cbegin(), trees.cend(), [](const QTreeWidget *tree) { return tree->isVisible(); });
-
-    if (it != trees.cend()) {
-        currentTree = *it;
+    // Only set currentTree for Flatpak (still using QTreeWidget)
+    // Repo and AUR now use QTreeView with models
+    if (currentTab == Tab::Flatpak) {
+        currentTree = ui->treeFlatpak;
     }
+    // else if (currentTab == Tab::Repos) {
+    //     currentTree = ui->treeRepo;  // QTreeView now
+    // } else if (currentTab == Tab::AUR) {
+    //     currentTree = ui->treeAUR;  // QTreeView now
+    // }
 }
 
 void MainWindow::setDirty()
@@ -2152,6 +2319,8 @@ void MainWindow::disableOutput()
     disconnect(&cmd, &Cmd::errorAvailable, this, &MainWindow::outputAvailable);
 }
 
+// TODO: Re-implement displayPackageInfo for QTreeView
+/*
 void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
 {
     auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
@@ -2215,15 +2384,22 @@ void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
     layout->addItem(horizontalSpacer, 0, 1);
     info.exec();
 }
+*/
 
 void MainWindow::findPackage()
 {
-    // Get search text from appropriate search box
-    const QMap<QTreeWidget *, QLineEdit *> searchBoxMap = {{ui->treeRepo, ui->searchBoxRepo},
-                                                           {ui->treeAUR, ui->searchBoxAUR},
-                                                           {ui->treeFlatpak, ui->searchBoxFlatpak}};
+    // Determine current tab and search box
+    const int currentTab = ui->tabWidget->currentIndex();
+    QLineEdit *searchBox = nullptr;
 
-    QLineEdit *searchBox = searchBoxMap.value(currentTree, nullptr);
+    if (currentTab == Tab::Repos) {
+        searchBox = ui->searchBoxRepo;
+    } else if (currentTab == Tab::AUR) {
+        searchBox = ui->searchBoxAUR;
+    } else if (currentTab == Tab::Flatpak) {
+        searchBox = ui->searchBoxFlatpak;
+    }
+
     if (!searchBox) {
         return;
     }
@@ -2234,9 +2410,11 @@ void MainWindow::findPackage()
         return;
     }
 
-    if (currentTree == ui->treeRepo) {
-        // Repo search is local-only; filter the already displayed list.
-    } else if (currentTree == ui->treeAUR) {
+    if (currentTab == Tab::Repos) {
+        // Repo search is local-only; filter via proxy
+        repoProxy->setSearchText(word);
+        return;
+    } else if (currentTab == Tab::AUR) {
         const QString filterText = ui->comboFilterAUR->currentText();
         const QString trimmed = word.trimmed();
 
@@ -2244,44 +2422,37 @@ void MainWindow::findPackage()
             return;
         }
 
-        if (trimmed.isEmpty()) {
-            if (filterText == tr("All packages")) {
-                buildAurList(trimmed);
-                dirtyAur = true;
-                displayPackages();
-            } else if (filterText == tr("Not installed")) {
-                aurList.clear();
-                dirtyAur = true;
-                displayPackages();
-                updateInterface();
+        // For "All packages" and "Not installed", rebuild list based on search
+        if (filterText == tr("All packages")) {
+            const bool hasSearch = trimmed.size() >= 2;
+            if (!buildAurList(hasSearch ? trimmed : QString())) {
                 return;
             }
-            // Fall through to local filtering for Installed/Upgradable/Autoremovable.
-        } else if (filterText == tr("All packages") || filterText == tr("Not installed")) {
-            buildAurList(trimmed);
             dirtyAur = true;
             displayPackages();
-
-            if (filterText == tr("Not installed")) {
-                const QStringList aurInstalledLines
-                    = cmd.getOut("pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
-                QSet<QString> aurInstalled;
-                aurInstalled.reserve(aurInstalledLines.size());
-                for (const QString &line : aurInstalledLines) {
-                    const QString name = line.section(' ', 0, 0).trimmed();
-                    if (!name.isEmpty()) {
-                        aurInstalled.insert(name);
-                    }
+            aurProxy->setStatusFilter(0); // No status filter for "All packages"
+            aurModel->uncheckAll();
+        } else if (filterText == tr("Not installed")) {
+            if (trimmed.size() >= 2) {
+                if (!buildAurList(trimmed)) {
+                    return;
                 }
-                for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                    const QString name = (*it)->text(TreeCol::Name);
-                    const bool shouldShow = !aurInstalled.contains(name);
-                    (*it)->setHidden(!shouldShow);
-                    (*it)->setData(0, Qt::UserRole, shouldShow);
-                }
+                dirtyAur = true;
+                displayPackages();
             }
+            // Apply Not installed filter
+            aurProxy->setStatusFilter(Status::NotInstalled);
+            aurModel->uncheckAll();
         }
-        // Continue to local filtering for Installed/Upgradable/Autoremovable and for search refinement.
+
+        // Apply proxy search filter for AUR (for other filters like Installed, Upgradable, etc.)
+        aurProxy->setSearchText(word);
+        return;
+    }
+
+    // Flatpak tab - uses QTreeWidget, old iterator-based search
+    if (currentTab != Tab::Flatpak) {
+        return;
     }
 
     currentTree->setUpdatesEnabled(false);
@@ -2357,7 +2528,8 @@ void MainWindow::pushInstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
-    if (currentTree == ui->treeFlatpak) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Flatpak) {
         // Confirmation dialog
         if (!confirmActions(changeList.join(' '), "install")) {
             displayFlatpaks(true);
@@ -2389,8 +2561,8 @@ void MainWindow::pushInstall_clicked()
         }
     } else {
         bool success = false;
-        if ((currentTree == ui->treeRepo && ui->comboFilterRepo->currentText() == tr("Autoremovable"))
-            || (currentTree == ui->treeAUR && ui->comboFilterAUR->currentText() == tr("Autoremovable"))) {
+        if ((currentTab == Tab::Repos && ui->comboFilterRepo->currentText() == tr("Autoremovable"))
+            || (currentTab == Tab::AUR && ui->comboFilterAUR->currentText() == tr("Autoremovable"))) {
             success = markKeep();
         } else {
             success = installSelected();
@@ -2399,7 +2571,12 @@ void MainWindow::pushInstall_clicked()
         buildPackageLists();
         if (success) {
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
-            ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
+            // Navigate to current tab's widget
+            if (currentTab == Tab::Repos) {
+                ui->tabWidget->setCurrentWidget(ui->tabRepos);
+            } else if (currentTab == Tab::AUR) {
+                ui->tabWidget->setCurrentWidget(ui->tabMXtest);
+            }
         } else {
             QMessageBox::critical(this, tr("Error"),
                                   tr("Problem detected while installing, please inspect the console output."));
@@ -2442,7 +2619,8 @@ void MainWindow::pushUninstall_clicked()
     QString names;
     QString preuninstall;
     QString postuninstall;
-    if (currentTree == ui->treeFlatpak) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Flatpak) {
         bool success = true;
 
         // Confirmation dialog
@@ -2491,7 +2669,12 @@ void MainWindow::pushUninstall_clicked()
     buildPackageLists();
     if (success) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
-        ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
+        // Navigate to current tab's widget
+        if (currentTab == Tab::Repos) {
+            ui->tabWidget->setCurrentWidget(ui->tabRepos);
+        } else if (currentTab == Tab::AUR) {
+            ui->tabWidget->setCurrentWidget(ui->tabMXtest);
+        }
     } else {
         QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling the program"));
     }
@@ -2500,7 +2683,7 @@ void MainWindow::pushUninstall_clicked()
 
 void MainWindow::tabWidget_currentChanged(int index)
 {
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++ index=" << index;
     ui->tabWidget->setTabText(Tab::Output, tr("Console Output"));
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
@@ -2539,22 +2722,31 @@ void MainWindow::tabWidget_currentChanged(int index)
 
 void MainWindow::resetCheckboxes()
 {
-    currentTree->blockSignals(true);
-    currentTree->clearSelection();
-    for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-        (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
+    // TODO: Reimplement for QTreeView/model-based approach
+    // This function uses QTreeWidget API (QTreeWidgetItemIterator) which doesn't work with QTreeView
+    // For Flatpak (still using QTreeWidget), keep the old implementation
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Flatpak && currentTree == ui->treeFlatpak) {
+        currentTree->blockSignals(true);
+        currentTree->clearSelection();
+        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
+            (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
+        }
+        currentTree->blockSignals(false);
     }
+    // For Repo/AUR tabs: checkbox state is in the model, should be cleared differently
 }
 
 void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
 {
-    if (currentTree == ui->treeRepo) {
+    const int currentTab = ui->tabWidget->currentIndex();
+    if (currentTab == Tab::Repos) {
         search_str = ui->searchBoxRepo->text();
         filter_idx = ui->comboFilterRepo->currentIndex();
-    } else if (currentTree == ui->treeAUR) {
+    } else if (currentTab == Tab::AUR) {
         search_str = ui->searchBoxAUR->text();
         filter_idx = ui->comboFilterAUR->currentIndex();
-    } else if (currentTree == ui->treeFlatpak) {
+    } else if (currentTab == Tab::Flatpak) {
         search_str = ui->searchBoxFlatpak->text();
     }
 }
@@ -2564,7 +2756,7 @@ void MainWindow::handleAurTab(const QString &search_str)
     if (getParuPath().isEmpty()) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Could not query AUR packages. Please check that paru is installed."));
-        currentTree->blockSignals(false);
+        // currentTree->blockSignals(false);  // Removed - using QTreeView now
         return;
     }
     // Block signals to prevent onAurSearchTextChanged from triggering during setText
@@ -2575,11 +2767,17 @@ void MainWindow::handleAurTab(const QString &search_str)
     changeList.clear();
     displayWarning("aur");
 
-    const bool needsReload = dirtyAur || ui->treeAUR->topLevelItemCount() == 0;
+    const bool needsReload = dirtyAur || aurModel->rowCount() == 0;
     if (needsReload) {
+        // Block combo AND tabWidget signals to prevent any recursive/looping calls
+        ui->comboFilterAUR->blockSignals(true);
+        ui->tabWidget->blockSignals(true);
         // Let filterChanged handle the buildAurList, displayPackages, and applyAurStatusFilter calls
         // to avoid redundant command executions
         filterChanged(ui->comboFilterAUR->currentText());
+        ui->comboFilterAUR->blockSignals(false);
+        ui->tabWidget->blockSignals(false);
+        // Don't call findPackage() - filterChanged already handled everything
     } else {
         if (ui->comboFilterAUR->currentText() == tr("All packages")
             && ui->searchBoxAUR->text().trimmed().isEmpty()) {
@@ -2589,7 +2787,7 @@ void MainWindow::handleAurTab(const QString &search_str)
         setSearchFocus();
         updateInterface();
     }
-    currentTree->blockSignals(false);
+    // currentTree->blockSignals(false);  // Removed - using QTreeView now
 }
 
 void MainWindow::handleRepoTab(const QString &search_str)
@@ -2924,14 +3122,10 @@ void MainWindow::applyRepoFilter(int statusFilter)
     displayPackages();
 
     if (statusFilter == Status::Autoremovable) {
-        for (QTreeWidgetItemIterator it(ui->treeRepo); (*it) != nullptr; ++it) {
-            if (!(*it)->isHidden()) {
-                (*it)->setData(TreeCol::Status, Qt::UserRole, Status::Autoremovable);
-            }
-        }
+        repoModel->setAutoremovable(repoAutoremovableSet.values());
     }
 
-    if (currentTree == ui->treeRepo) {
+    if (ui->tabWidget->currentIndex() == Tab::Repos) {
         QMetaObject::invokeMethod(this, &MainWindow::updateInterface, Qt::QueuedConnection);
     }
 }
@@ -3186,12 +3380,29 @@ void MainWindow::handleOutputTab()
 
 void MainWindow::filterChanged(const QString &arg1)
 {
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    currentTree->blockSignals(true);
-    currentTree->setUpdatesEnabled(false);
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++" << "arg1=" << arg1 << "sender=" << sender();
+
+    // Prevent recursive calls
+    static bool isProcessing = false;
+    if (isProcessing) {
+        qDebug() << "Skipping recursive filterChanged call";
+        return;
+    }
+
+    struct Guard {
+        ~Guard() { isProcessing = false; }
+    } guard;
+    isProcessing = true;
+
+    const int currentTab = ui->tabWidget->currentIndex();
+
+    // For Flatpak tab, use old QTreeWidget-based approach
+    if (currentTab == Tab::Flatpak && currentTree == ui->treeFlatpak) {
+        currentTree->blockSignals(true);
+        currentTree->setUpdatesEnabled(false);
     // Defer label updates until after filtering completes.
 
-    // Helper functions
+    // Helper functions (for Flatpak only)
     auto resetTree = [this]() {
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
@@ -3324,9 +3535,7 @@ void MainWindow::filterChanged(const QString &arg1)
             hasVisibleMatches = hasVisibleMatches || shouldShow;
         }
 
-        if (statusFilter == Status::Upgradable) {
-            updateTreeItems(currentTree);
-        }
+        // Removed: updateTreeItems call (using models now)
 
         if (statusFilter == Status::Upgradable || statusFilter == Status::Autoremovable) {
             if (headerAUR) {
@@ -3354,49 +3563,104 @@ void MainWindow::filterChanged(const QString &arg1)
     }
 
     // Handle Flatpak tree
-    if (currentTree == ui->treeFlatpak) {
-        if (arg1 == tr("Installed runtimes")) {
-            handleFlatpakFilter(installedRuntimesFP, false);
-            clearChangeListAndButtons();
-        } else if (arg1 == tr("Installed apps")) {
-            handleFlatpakFilter(installedAppsFP, false);
-            clearChangeListAndButtons();
-        } else if (arg1 == tr("All apps")) {
-            if (flatpaksApps.isEmpty()) {
-                flatpaksApps = listFlatpaks(ui->comboRemote->currentText(), "--app");
-            }
-            handleFlatpakFilter(flatpaksApps);
-            clearChangeListAndButtons();
-        } else if (arg1 == tr("All runtimes")) {
-            if (flatpaksRuntimes.isEmpty()) {
-                flatpaksRuntimes = listFlatpaks(ui->comboRemote->currentText(), "--runtime");
-            }
-            handleFlatpakFilter(flatpaksRuntimes);
-            clearChangeListAndButtons();
-        } else if (arg1 == tr("All available")) {
-            resetTree();
-            ui->labelNumAppFP->setText(QString::number(currentTree->topLevelItemCount()));
-            clearChangeListAndButtons();
-        } else if (arg1 == tr("All installed")) {
-            displayFilteredFP(installedAppsFP + installedRuntimesFP);
-        } else if (arg1 == tr("Not installed")) {
-            for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                bool isNotInstalled = (*it)->data(FlatCol::Status, Qt::UserRole) == Status::NotInstalled;
-                if (!isNotInstalled) {
-                    (*it)->setHidden(true);
-                    (*it)->setCheckState(FlatCol::Check, Qt::Unchecked);
-                    changeList.removeOne((*it)->data(FlatCol::FullName, Qt::UserRole).toString());
-                }
-                (*it)->setData(0, Qt::UserRole, isNotInstalled);
-            }
-            ui->pushUninstall->setEnabled(false);
+    // currentTree check is redundant here since we're already in the Flatpak tab check
+    if (arg1 == tr("Installed runtimes")) {
+        handleFlatpakFilter(installedRuntimesFP, false);
+        clearChangeListAndButtons();
+    } else if (arg1 == tr("Installed apps")) {
+        handleFlatpakFilter(installedAppsFP, false);
+        clearChangeListAndButtons();
+    } else if (arg1 == tr("All apps")) {
+        if (flatpaksApps.isEmpty()) {
+            flatpaksApps = listFlatpaks(ui->comboRemote->currentText(), "--app");
         }
-        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
-        setSearchFocus();
-    } else if (currentTree == ui->treeRepo) {
+        handleFlatpakFilter(flatpaksApps);
+        clearChangeListAndButtons();
+    } else if (arg1 == tr("All runtimes")) {
+        if (flatpaksRuntimes.isEmpty()) {
+            flatpaksRuntimes = listFlatpaks(ui->comboRemote->currentText(), "--runtime");
+        }
+        handleFlatpakFilter(flatpaksRuntimes);
+        clearChangeListAndButtons();
+    } else if (arg1 == tr("All available")) {
+        resetTree();
+        ui->labelNumAppFP->setText(QString::number(currentTree->topLevelItemCount()));
+        clearChangeListAndButtons();
+    } else if (arg1 == tr("All installed")) {
+        displayFilteredFP(installedAppsFP + installedRuntimesFP);
+    } else if (arg1 == tr("Not installed")) {
+        for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
+            bool isNotInstalled = (*it)->data(FlatCol::Status, Qt::UserRole) == Status::NotInstalled;
+            if (!isNotInstalled) {
+                (*it)->setHidden(true);
+                (*it)->setCheckState(FlatCol::Check, Qt::Unchecked);
+                changeList.removeOne((*it)->data(FlatCol::FullName, Qt::UserRole).toString());
+            }
+            (*it)->setData(0, Qt::UserRole, isNotInstalled);
+        }
+        ui->pushUninstall->setEnabled(false);
+    }
+    QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
+    setSearchFocus();
+    resizeCurrentRepoTree();
+    currentTree->setUpdatesEnabled(true);
+    currentTree->blockSignals(false);
+    return;
+    }
+
+    // For Repo and AUR tabs, use new model-based approach
+    // Hide and reset all header checkboxes by default
+    if (headerRepo) {
+        headerRepo->setCheckboxVisible(false);
+        headerRepo->setChecked(false);
+    }
+    if (headerAUR) {
+        headerAUR->setCheckboxVisible(false);
+        headerAUR->setChecked(false);
+    }
+
+    auto clearChangeListAndButtons = [this]() {
+        ui->pushInstall->setEnabled(false);
+        ui->pushUninstall->setEnabled(false);
+        changeList.clear();
+    };
+
+    auto handleAurQueryError = [this]() {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Could not query AUR packages. Please check that paru is installed."));
+    };
+
+    auto uncheckAllItems = [this]() {
+        const int currentTab = ui->tabWidget->currentIndex();
+        if (currentTab == Tab::Repos) {
+            repoModel->uncheckAll();
+        } else if (currentTab == Tab::AUR) {
+            aurModel->uncheckAll();
+        }
+        changeList.clear();
+    };
+
+    auto applyAurStatusFilter = [this, &uncheckAllItems](int statusFilter) {
+        uncheckAllItems();
+
+        // Apply status filter via proxy
+        aurProxy->setStatusFilter(statusFilter);
+
+        // Show header checkbox for upgradable/autoremovable if there are visible rows
+        if (statusFilter == Status::Upgradable || statusFilter == Status::Autoremovable) {
+            const int visibleCount = aurProxy->rowCount();
+            if (headerAUR && visibleCount > 0) {
+                const QString tip = (statusFilter == Status::Upgradable) ? tr("Select/deselect all upgradable")
+                                                                         : tr("Select/deselect all autoremovable");
+                headerAUR->setCheckboxVisible(true);
+                headerAUR->setToolTip(tip);
+                headerAUR->setChecked(false);
+            }
+        }
+    };
+
+    if (currentTab == Tab::Repos) {
         if (!repoCacheValid && !buildRepoCache(true)) {
-            currentTree->setUpdatesEnabled(true);
-            currentTree->blockSignals(false);
             QMessageBox::critical(this, tr("Error"),
                                   tr("Could not query repository packages. Please check pacman output."));
             return;
@@ -3405,33 +3669,25 @@ void MainWindow::filterChanged(const QString &arg1)
         const int statusFilter = ui->comboFilterRepo->currentIndex();
         applyRepoFilter(statusFilter);
 
+        // Show header checkbox for upgradable/autoremovable
         if (statusFilter == Status::Upgradable || statusFilter == Status::Autoremovable) {
-            bool hasVisibleMatches = false;
-            for (QTreeWidgetItemIterator it(currentTree); (*it) != nullptr; ++it) {
-                if (!(*it)->isHidden() && (*it)->data(TreeCol::Status, Qt::UserRole).toInt() == statusFilter) {
-                    hasVisibleMatches = true;
-                    break;
-                }
-            }
-            if (headerRepo) {
+            // Use proxy row count to respect search filtering
+            const int visibleCount = repoProxy->rowCount();
+            if (headerRepo && visibleCount > 0) {
                 const QString tip = (statusFilter == Status::Upgradable) ? tr("Select/deselect all upgradable")
                                                                          : tr("Select/deselect all autoremovable");
-                headerRepo->setCheckboxVisible(hasVisibleMatches);
-                if (hasVisibleMatches) {
-                    headerRepo->setToolTip(tip);
-                    headerRepo->resizeSection(TreeCol::Check, qMax(headerRepo->sectionSize(0), 22));
-                }
+                headerRepo->setCheckboxVisible(true);
+                headerRepo->setToolTip(tip);
+                headerRepo->resizeSection(TreeCol::Check, qMax(headerRepo->sectionSize(0), 22));
             }
         }
 
         QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         setSearchFocus();
         clearChangeListAndButtons();
-        resizeCurrentRepoTree();
-        currentTree->setUpdatesEnabled(true);
-        currentTree->blockSignals(false);
+        // resizeCurrentRepoTree();  // TODO: Reimplement for QTreeView
         return;
-    } else if (currentTree == ui->treeAUR) {
+    } else if (currentTab == Tab::AUR) {
         if (getParuPath().isEmpty()) {
             handleAurQueryError();
             return;
@@ -3439,26 +3695,27 @@ void MainWindow::filterChanged(const QString &arg1)
         const QString searchTerm = ui->searchBoxAUR->text().trimmed();
         const bool hasSearch = searchTerm.size() >= 2;
         if (arg1 == tr("All packages")) {
+            // All packages: show installed if no search, search AUR if searching
             if (!buildAurList(hasSearch ? searchTerm : QString())) {
                 handleAurQueryError();
                 return;
             }
             dirtyAur = true;
             displayPackages();
+            // No status filter - show all
+            aurProxy->setStatusFilter(0);
+            uncheckAllItems();
         } else if (arg1 == tr("Not installed")) {
             if (hasSearch) {
                 if (!buildAurList(searchTerm)) {
                     handleAurQueryError();
                     return;
                 }
-            } else {
-                aurList.clear();
+                dirtyAur = true;
+                displayPackages();
             }
-            dirtyAur = true;
-            displayPackages();
-            if (hasSearch) {
-                applyAurStatusFilter(Status::NotInstalled);
-            }
+            // Always apply filter (if no search, list will be empty or filtered appropriately)
+            applyAurStatusFilter(Status::NotInstalled);
         } else if (arg1 == tr("Installed")) {
             if (!buildAurList(QString())) {
                 handleAurQueryError();
@@ -3484,98 +3741,74 @@ void MainWindow::filterChanged(const QString &arg1)
             displayPackages();
             applyAurStatusFilter(Status::Autoremovable);
         }
-        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
+        // Don't queue findPackage() here - it causes infinite loop
+        // filterChanged() already handled building list and displaying packages
         setSearchFocus();
         clearChangeListAndButtons();
-        resizeCurrentRepoTree();
-        currentTree->setUpdatesEnabled(true);
-        currentTree->blockSignals(false);
+        // resizeCurrentRepoTree();  // TODO: Reimplement for QTreeView
         return;
     }
-    resizeCurrentRepoTree();
-    currentTree->setUpdatesEnabled(true);
-    currentTree->blockSignals(false);
 }
 
 // Toggle selection of all visible upgradable items in the current tab
 void MainWindow::selectAllUpgradable_toggled(bool checked)
 {
-    QTreeWidget *tree = nullptr;
+    PackageModel *model = nullptr;
+    PackageFilterProxy *proxy = nullptr;
+
     if (sender() == headerRepo) {
-        tree = ui->treeRepo;
+        model = repoModel;
+        proxy = repoProxy;
     } else if (sender() == headerAUR) {
-        tree = ui->treeAUR;
+        model = aurModel;
+        proxy = aurProxy;
     }
-    if (!tree) {
+    if (!model || !proxy) {
         return;
     }
 
-    // Batch update: avoid emitting itemChanged for every item
-    tree->setUpdatesEnabled(false);
-    tree->blockSignals(true);
     // Determine desired status based on current filter text
     int targetStatus = Status::Upgradable;
     QString filterText;
-    if (tree == ui->treeRepo) {
+    if (sender() == headerRepo) {
         filterText = ui->comboFilterRepo->currentText();
-    } else if (tree == ui->treeAUR) {
+    } else if (sender() == headerAUR) {
         filterText = ui->comboFilterAUR->currentText();
     }
     if (filterText == tr("Autoremovable")) {
         targetStatus = Status::Autoremovable;
     }
 
-    for (QTreeWidgetItemIterator it(tree); *it; ++it) {
-        QTreeWidgetItem *item = *it;
-        const bool visible = !item->isHidden();
-        const bool match = item->data(TreeCol::Status, Qt::UserRole).toInt() == targetStatus;
-        if (visible && match) {
-            item->setCheckState(TreeCol::Check, checked ? Qt::Checked : Qt::Unchecked);
-        }
-    }
-    // Rebuild changeList and update buttons once, instead of per-item
-    changeList.clear();
-    if (checked) {
-        for (QTreeWidgetItemIterator it(tree); *it; ++it) {
-            QTreeWidgetItem *item = *it;
-            const bool visible = !item->isHidden();
-            const bool match = item->data(TreeCol::Status, Qt::UserRole).toInt() == targetStatus;
-            if (visible && match && item->checkState(TreeCol::Check) == Qt::Checked) {
-                changeList.append(item->text(TreeCol::Name));
+    // Collect visible source rows from proxy
+    QVector<int> visibleRows;
+    for (int proxyRow = 0; proxyRow < proxy->rowCount(); ++proxyRow) {
+        QModelIndex proxyIndex = proxy->index(proxyRow, 0);
+        QModelIndex sourceIndex = proxy->mapToSource(proxyIndex);
+        if (sourceIndex.isValid()) {
+            const PackageData *pkg = model->packageAt(sourceIndex.row());
+            if (pkg && pkg->status == targetStatus) {
+                visibleRows.append(sourceIndex.row());
             }
         }
     }
 
+    // Check/uncheck only visible rows with matching status
+    model->setCheckedForVisible(visibleRows, checked);
+
+    // Rebuild changeList from checked packages
+    changeList = model->checkedPackageNames();
+
     // Update action buttons coherently after batch toggle
     ui->pushInstall->setEnabled(!changeList.isEmpty());
-    if (tree != ui->treeFlatpak) {
-        ui->pushUninstall->setEnabled(checkInstalled(changeList));
-        if (targetStatus == Status::Autoremovable) {
-            ui->pushInstall->setText(tr("Mark keep"));
-        } else {
-            ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
-        }
+    ui->pushUninstall->setEnabled(checkInstalled(changeList));
+    if (targetStatus == Status::Autoremovable) {
+        ui->pushInstall->setText(tr("Mark keep"));
+    } else {
+        ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
     }
-
-    tree->blockSignals(false);
-    tree->setUpdatesEnabled(true);
 }
 
-void MainWindow::treeAUR_itemChanged(QTreeWidgetItem *item)
-{
-    if (item->checkState(TreeCol::Check) == Qt::Checked) {
-        ui->treeAUR->setCurrentItem(item);
-    }
-    buildChangeList(item);
-}
-
-void MainWindow::treeRepo_itemChanged(QTreeWidgetItem *item)
-{
-    if (item->checkState(TreeCol::Check) == Qt::Checked) {
-        ui->treeRepo->setCurrentItem(item);
-    }
-    buildChangeList(item);
-}
+// Removed: treeAUR_itemChanged and treeRepo_itemChanged (using models now)
 
 void MainWindow::treeFlatpak_itemChanged(QTreeWidgetItem *item)
 {
@@ -3594,6 +3827,7 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
      * if all apps are upgradable -> change Install label to Upgrade;
      */
 
+    const int currentTab = ui->tabWidget->currentIndex();
     lastItemClicked = item;
     QString newapp;
     if (currentTree == ui->treeFlatpak) {
@@ -3613,11 +3847,11 @@ void MainWindow::buildChangeList(QTreeWidgetItem *item)
         changeList.removeOne(newapp);
     }
 
-    if (currentTree != ui->treeFlatpak) {
+    if (currentTab != Tab::Flatpak) {
         ui->pushUninstall->setEnabled(checkInstalled(changeList));
         ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
-        if ((currentTree == ui->treeRepo && ui->comboFilterRepo->currentText() == tr("Autoremovable"))
-            || (currentTree == ui->treeAUR && ui->comboFilterAUR->currentText() == tr("Autoremovable"))) {
+        if ((currentTab == Tab::Repos && ui->comboFilterRepo->currentText() == tr("Autoremovable"))
+            || (currentTab == Tab::AUR && ui->comboFilterAUR->currentText() == tr("Autoremovable"))) {
             ui->pushInstall->setText(tr("Mark keep"));
         }
     } else { // For Flatpaks allow selection only of installed or not installed items so one clicks
