@@ -134,6 +134,23 @@ fi
 # Create build directory
 mkdir -p "$BUILD_DIR"
 
+# Set up CMake arguments
+CMAKE_ARGS=(
+    -S .
+    -B "$BUILD_DIR"
+    -G Ninja
+    -DCMAKE_BUILD_TYPE="$BUILD_TYPE"
+)
+
+if [ "$USE_CLANG" = true ]; then
+    CMAKE_ARGS+=(-DCMAKE_CXX_COMPILER=clang++)
+    CMAKE_ARGS+=(-DCMAKE_C_COMPILER=clang)
+fi
+
+if [ "$BUILD_TESTS" = true ]; then
+    CMAKE_ARGS+=(-DBUILD_TESTING=ON)
+fi
+
 # Configure CMake with Ninja (skip if already configured)
 if [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
     echo "Configuring CMake with Ninja generator..."
@@ -142,7 +159,7 @@ else
     echo "CMake already configured, skipping configure step..."
 fi
 
-# Build the project
+# Build the project (Ninja will automatically detect source changes)
 echo "Building project with Ninja..."
 cmake --build "$BUILD_DIR" --parallel
 

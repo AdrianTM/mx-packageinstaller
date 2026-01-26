@@ -39,17 +39,17 @@ print_success() {
     echo -e "${GREEN}✅ $1${NC}"
 }
 
-# Validate version format (semantic versioning or YY.MM format)
+# Validate version format (semantic versioning or YY.MM format, with optional suffix)
 validate_version() {
     local version=$1
 
     # Remove 'v' prefix if present for validation
     local clean_version=${version#v}
 
-    # Check semantic version format (major.minor.patch) or YY.MM format
-    if ! [[ $clean_version =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?$ ]]; then
+    # Check semantic version format with optional suffix (26.01arch, 1.0.0beta2, etc.)
+    if ! [[ $clean_version =~ ^[0-9]+\.[0-9]+(\.[0-9]+)?[a-zA-Z0-9]*$ ]]; then
         print_error "Invalid version format: $version"
-        echo "Expected formats: 1.0.0, v1.0.0, or YY.MM (like 26.01)"
+        echo "Expected formats: 1.0.0, v1.0.0, 26.01, 26.01arch, 1.0.0beta2, etc."
         exit 1
     fi
 
@@ -297,13 +297,17 @@ main() {
         print_error "Usage: $0 <version> [--update|--force]"
         echo "Example: $0 1.0.0 or $0 v1.0.0"
         echo "         $0 26.01 --update"
-        echo "         $0 26.01 --force"
+        echo "         $0 26.01arch --force"
+        echo "         $0 26.01arch --update"
         exit 1
     fi
 
     version=$1
-    if [ $# -gt 1 ]; then
-        case "$2" in
+    shift
+    
+    # Parse remaining options
+    while [ $# -gt 0 ]; do
+        case "$1" in
             --update)
                 mode="update"
                 FORCE_UPDATE=1
@@ -312,11 +316,12 @@ main() {
                 FORCE_VERSION=1
                 ;;
             *)
-                print_error "Unknown option: $2"
+                print_error "Unknown option: $1"
                 exit 1
                 ;;
         esac
-    fi
+        shift
+    done
 
     print_header
 
