@@ -77,7 +77,8 @@ check_tag_exists() {
 
 # Get latest tag version for comparison
 get_latest_tag() {
-    local latest_tag=$(git tag -l | sort -V | tail -n1)
+    # Filter to only version-like tags (starting with optional 'v' then digits)
+    local latest_tag=$(git tag -l | grep -E '^v?[0-9]+\.[0-9]+' | sort -V | tail -n1)
     if [ -z "$latest_tag" ]; then
         echo "0.0.0"  # No tags exist yet
     else
@@ -399,7 +400,7 @@ main() {
 
     # Push the tag immediately (needed for checksum calculation)
     print_step "Pushing tag to GitHub..."
-    git push origin "$version"
+    git push mxlinux "$version"
     print_success "Tag pushed to GitHub"
 
     # Update AUR package (now with real checksum)
