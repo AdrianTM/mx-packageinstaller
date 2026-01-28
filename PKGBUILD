@@ -15,17 +15,13 @@ sha256sums=()
 build() {
     cd "${startdir}"
 
-    if [ ! -f build/mx-packageinstaller ]; then
-        cmake -G Ninja \
-            -B build \
-            -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_INSTALL_PREFIX=/usr \
-            -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
+    cmake -G Ninja \
+        -B build \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_INSTALL_PREFIX=/usr \
+        -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 
-        cmake --build build --parallel
-    else
-        echo "Binary already built, skipping build step..."
-    fi
+    cmake --build build --parallel
 }
 
 package() {

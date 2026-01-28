@@ -135,6 +135,7 @@ private:
     bool warningAur {false};
     bool warningFlatpaks {false};
     int savedComboIndex {0};
+    int previousTab {Tab::Repos};
 
     Cmd cmd;
     LockFile lockFile {"/var/lib/pacman/db.lck"};

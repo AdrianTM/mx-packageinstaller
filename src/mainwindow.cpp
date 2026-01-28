@@ -2798,6 +2798,7 @@ void MainWindow::tabWidget_currentChanged(int index)
         break;
     }
     setTabsEnabled(true);
+    previousTab = index;
 }
 
 void MainWindow::resetCheckboxes()
@@ -2819,16 +2820,17 @@ void MainWindow::resetCheckboxes()
 
 void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
 {
-    const int currentTab = ui->tabWidget->currentIndex();
-    if (currentTab == Tab::Repos) {
+    // Read from the PREVIOUS tab to carry search text over to the new tab
+    if (previousTab == Tab::Repos) {
         search_str = ui->searchBoxRepo->text();
         filter_idx = ui->comboFilterRepo->currentIndex();
-    } else if (currentTab == Tab::AUR) {
+    } else if (previousTab == Tab::AUR) {
         search_str = ui->searchBoxAUR->text();
         filter_idx = ui->comboFilterAUR->currentIndex();
-    } else if (currentTab == Tab::Flatpak) {
+    } else if (previousTab == Tab::Flatpak) {
         search_str = ui->searchBoxFlatpak->text();
     }
+    // If previousTab was Output, search_str stays empty (as initialized)
 }
 
 void MainWindow::handleAurTab(const QString &search_str)
@@ -3823,6 +3825,8 @@ void MainWindow::filterChanged(const QString &arg1)
         }
         // Don't queue findPackage() here - it causes infinite loop
         // filterChanged() already handled building list and displaying packages
+        // Update proxy search filter to match current search box text
+        aurProxy->setSearchText(searchTerm);
         setSearchFocus();
         clearChangeListAndButtons();
         // resizeCurrentRepoTree();  // TODO: Reimplement for QTreeView

@@ -151,13 +151,9 @@ if [ "$BUILD_TESTS" = true ]; then
     CMAKE_ARGS+=(-DBUILD_TESTING=ON)
 fi
 
-# Configure CMake with Ninja (skip if already configured)
-if [ ! -f "$BUILD_DIR/CMakeCache.txt" ]; then
-    echo "Configuring CMake with Ninja generator..."
-    cmake "${CMAKE_ARGS[@]}"
-else
-    echo "CMake already configured, skipping configure step..."
-fi
+# Configure CMake with Ninja (always run - cmake is fast and handles incremental updates)
+echo "Configuring CMake with Ninja generator..."
+cmake "${CMAKE_ARGS[@]}"
 
 # Build the project (Ninja will automatically detect source changes)
 echo "Building project with Ninja..."
