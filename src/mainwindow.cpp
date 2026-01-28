@@ -1778,7 +1778,7 @@ bool MainWindow::promptSudoPassword(QByteArray *passwordOut)
     return !passwordOut->isEmpty();
 }
 
-bool MainWindow::install(const QString &names)
+bool MainWindow::install(const QString &names, int sourceTab)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
@@ -1795,7 +1795,8 @@ bool MainWindow::install(const QString &names)
         return true;
     }
     enableOutput();
-    const int currentTab = ui->tabWidget->currentIndex();
+    // Use provided sourceTab or fall back to current tab (for backwards compatibility)
+    const int currentTab = (sourceTab >= 0) ? sourceTab : ui->tabWidget->currentIndex();
     if (currentTab != Tab::AUR && lockFile.isLockedGUI()) {
         return false;
     }
@@ -1825,13 +1826,13 @@ bool MainWindow::install(const QString &names)
     }
 }
 
-bool MainWindow::installSelected()
+bool MainWindow::installSelected(int sourceTab)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = changeList.join(' ');
 
-    bool result = install(names);
+    bool result = install(names, sourceTab);
     changeList.clear();
     installedPackages = listInstalled();
     return result;
@@ -2607,8 +2608,8 @@ void MainWindow::showOutput()
 void MainWindow::pushInstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    showOutput();
     const int currentTab = ui->tabWidget->currentIndex();
+    showOutput();
     if (currentTab == Tab::Flatpak) {
         // Confirmation dialog
         if (!confirmActions(changeList.join(' '), "install")) {
@@ -2645,7 +2646,7 @@ void MainWindow::pushInstall_clicked()
             || (currentTab == Tab::AUR && ui->comboFilterAUR->currentText() == tr("Autoremovable"))) {
             success = markKeep();
         } else {
-            success = installSelected();
+            success = installSelected(currentTab);
         }
         setDirty();
         buildPackageLists();
@@ -2693,13 +2694,12 @@ void MainWindow::pushHelp_clicked()
 void MainWindow::pushUninstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-
+    const int currentTab = ui->tabWidget->currentIndex();
     showOutput();
 
     QString names;
     QString preuninstall;
     QString postuninstall;
-    const int currentTab = ui->tabWidget->currentIndex();
     if (currentTab == Tab::Flatpak) {
         bool success = true;
 

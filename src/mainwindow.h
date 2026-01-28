@@ -220,8 +220,8 @@ private:
     bool buildPackageLists(bool forceDownload = false);
     bool confirmActions(const QString &names, const QString &action);
 
-    bool install(const QString &names);
-    bool installSelected();
+    bool install(const QString &names, int sourceTab = -1);
+    bool installSelected(int sourceTab = -1);
     bool markKeep();
     bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
                    const QString &postUninstall = QLatin1String(""));
