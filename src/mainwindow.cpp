@@ -4010,6 +4010,7 @@ void MainWindow::lineEdit_returnPressed()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     const QString input = ui->lineEdit->text();
+    const bool wasMasked = lineEditMasked;
     setLineEditMasked(false);
     if (input.trimmed().isEmpty()) {
         ui->lineEdit->clear();
@@ -4017,7 +4018,9 @@ void MainWindow::lineEdit_returnPressed()
         return;
     }
     cmd.write(input.toUtf8() + '\n');
-    ui->outputBox->appendPlainText(input + '\n');
+    if (!wasMasked) {
+        ui->outputBox->appendPlainText(input + '\n');
+    }
     ui->lineEdit->clear();
     ui->lineEdit->setFocus();
 }
