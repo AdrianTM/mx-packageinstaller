@@ -98,8 +98,8 @@ bool AptCache::readFile(const QString &fileName)
     QString content;
     const qint64 fileSize = file.size();
 
-    // Use memory mapping for files larger than 10MB to avoid large memory copies
-    if (fileSize > 10 * 1024 * 1024) {
+    constexpr qint64 MemoryMapThreshold = 10 * 1024 * 1024; // 10 MB
+    if (fileSize > MemoryMapThreshold) {
         uchar* mappedData = file.map(0, fileSize);
         if (mappedData) {
             content = QString::fromUtf8(reinterpret_cast<const char*>(mappedData), fileSize);

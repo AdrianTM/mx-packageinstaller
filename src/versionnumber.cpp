@@ -55,8 +55,8 @@ void VersionNumber::setStrings(const QString &value)
         upstream_str = upstream_str.left(dashIndex);
     }
 
-    upstream_version = groupDigits(upstream_str);
-    debian_revision = groupDigits(debian_str);
+    upstreamVersion = groupDigits(upstream_str);
+    debianRevision = groupDigits(debian_str);
 }
 
 VersionNumber &VersionNumber::operator=(const QString &value)
@@ -130,12 +130,12 @@ int VersionNumber::compare(const VersionNumber &first, const VersionNumber &seco
     } else if (second.epoch < first.epoch) {
         return -1;
     }
-    int upstreamComparison = compare(first.upstream_version, second.upstream_version);
+    int upstreamComparison = compare(first.upstreamVersion, second.upstreamVersion);
     if (upstreamComparison != 0) {
         return upstreamComparison;
     }
-    if (!first.debian_revision.isEmpty() || !second.debian_revision.isEmpty()) {
-        return compare(first.debian_revision, second.debian_revision);
+    if (!first.debianRevision.isEmpty() || !second.debianRevision.isEmpty()) {
+        return compare(first.debianRevision, second.debianRevision);
     }
     return 0;
 }

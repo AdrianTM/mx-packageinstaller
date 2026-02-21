@@ -112,7 +112,7 @@ void ManageRemotes::addItem()
 
 void ManageRemotes::setInstall()
 {
-    install_ref = editInstallFlatpakref->text();
+    installRef = editInstallFlatpakref->text();
     close();
 }
 

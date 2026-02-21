@@ -257,22 +257,22 @@ private:
     [[nodiscard]] PackageFilterProxy *getCurrentProxy();
 
     bool buildPackageLists(bool forceDownload = false);
-    bool confirmActions(const QString &names, const QString &action);
+    [[nodiscard]] bool confirmActions(const QString &names, const QString &action);
 
-    bool downloadAndUnzip(const QString &url, QFile &file);
-    bool downloadAndUnzip(const QString &url, const QString &repoName, const QString &branch, const QString &format,
-                          QFile &file);
-    bool downloadFile(const QString &url, QFile &file);
-    bool downloadPackageList(bool forceDownload = false);
+    [[nodiscard]] bool downloadAndUnzip(const QString &url, QFile &file);
+    [[nodiscard]] bool downloadAndUnzip(const QString &url, const QString &repoName, const QString &branch,
+                                        const QString &format, QFile &file);
+    [[nodiscard]] bool downloadFile(const QString &url, QFile &file);
+    [[nodiscard]] bool downloadPackageList(bool forceDownload = false);
     bool install(const QString &names);
-    bool installBatch(const QStringList &nameList);
-    bool installPopularApp(const QString &name);
-    bool installPopularApps();
-    bool installSelected();
-    bool markKeep();
-    bool readPackageList(bool forceDownload = false);
-    bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
-                   const QString &postUninstall = QLatin1String(""));
+    [[nodiscard]] bool installBatch(const QStringList &nameList);
+    [[nodiscard]] bool installPopularApp(const QString &name);
+    [[nodiscard]] bool installPopularApps();
+    [[nodiscard]] bool installSelected();
+    [[nodiscard]] bool markKeep();
+    [[nodiscard]] bool readPackageList(bool forceDownload = false);
+    [[nodiscard]] bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
+                                 const QString &postUninstall = QLatin1String(""));
     bool updateApt();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);
