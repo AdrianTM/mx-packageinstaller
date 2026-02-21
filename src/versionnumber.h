@@ -23,6 +23,8 @@
 #include <QMetaType>
 #include <QStringList>
 
+#include <compare>
+
 /** \brief A data type for version numbers.
  *
  * This class provides a data type for version numbers. Think of it
@@ -81,12 +83,8 @@ public:
     VersionNumber &operator=(const VersionNumber &value) = default;
     VersionNumber &operator=(const QString &value);
 
-    [[nodiscard]] bool operator<(const VersionNumber &value) const;
-    [[nodiscard]] bool operator<=(const VersionNumber &value) const;
-    [[nodiscard]] bool operator>(const VersionNumber &value) const;
-    [[nodiscard]] bool operator>=(const VersionNumber &value) const;
+    [[nodiscard]] std::strong_ordering operator<=>(const VersionNumber &value) const;
     [[nodiscard]] bool operator==(const VersionNumber &value) const;
-    [[nodiscard]] bool operator!=(const VersionNumber &value) const;
 
 private:
     QString str; // Full version string

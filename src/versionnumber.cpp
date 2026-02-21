@@ -65,34 +65,21 @@ VersionNumber &VersionNumber::operator=(const QString &value)
     return *this;
 }
 
-bool VersionNumber::operator<(const VersionNumber &value) const
+std::strong_ordering VersionNumber::operator<=>(const VersionNumber &value) const
 {
-    return compare(*this, value) == 1;
-}
-
-bool VersionNumber::operator<=(const VersionNumber &value) const
-{
-    return !(*this > value);
-}
-
-bool VersionNumber::operator>(const VersionNumber &value) const
-{
-    return compare(*this, value) == -1;
-}
-
-bool VersionNumber::operator>=(const VersionNumber &value) const
-{
-    return !(*this < value);
+    int result = compare(*this, value);
+    if (result > 0) {
+        return std::strong_ordering::less;
+    }
+    if (result < 0) {
+        return std::strong_ordering::greater;
+    }
+    return std::strong_ordering::equal;
 }
 
 bool VersionNumber::operator==(const VersionNumber &value) const
 {
     return compare(*this, value) == 0;
-}
-
-bool VersionNumber::operator!=(const VersionNumber &value) const
-{
-    return !(*this == value);
 }
 
 // Transform QString into QStringList with digits grouped together
