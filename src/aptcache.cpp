@@ -38,7 +38,7 @@ void AptCache::loadCacheFiles()
         const QString fileName = it.next();
 
         // Filter files by extension first to reduce unnecessary regex matches
-        if (!fileName.endsWith("_Packages")) {
+        if (!fileName.endsWith(QLatin1String("_Packages"))) {
             continue;
         }
 

@@ -212,7 +212,7 @@ private:
     QUrl getScreenshotUrl(const QString &name);
     const QCommandLineParser &args;
     const QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec " : "/usr/bin/gksu "};
-    const QString tempList {"/etc/apt/sources.list.d/mxpitemp.list"};
+    const QString tempList {QStringLiteral("/etc/apt/sources.list.d/mxpitemp.list")};
 
     // Models
     PackageModel *enabledModel {nullptr};
@@ -238,8 +238,8 @@ private:
     [[nodiscard]] QString getLocalizedName(const QDomElement &element) const;
     [[nodiscard]] QString getVersion(const QString &name) const;
     [[nodiscard]] QString mapArchToFormat(const QString &arch) const;
-    [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
-    [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
+    [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QString()) const;
+    [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QString());
     [[nodiscard]] FlatpakData createFlatpakData(const QString &item, const QStringList &installedAll) const;
     [[nodiscard]] PackageData createPackageData(const QString &name, const QString &version,
                                                 const QString &description) const;
@@ -271,8 +271,8 @@ private:
     [[nodiscard]] bool installSelected();
     [[nodiscard]] bool markKeep();
     [[nodiscard]] bool readPackageList(bool forceDownload = false);
-    [[nodiscard]] bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
-                                 const QString &postUninstall = QLatin1String(""));
+    [[nodiscard]] bool uninstall(const QString &names, const QString &preUninstall = QString(),
+                                 const QString &postUninstall = QString());
     bool updateApt();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);

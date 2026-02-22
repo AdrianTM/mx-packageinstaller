@@ -146,7 +146,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     });
 
     // Run flatpak setup and display in a separate thread
-    if (arch != "i386" && checkInstalled("flatpak")) {
+    if (arch != QLatin1String("i386") && checkInstalled(QStringLiteral("flatpak"))) {
         auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
             Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
             QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
@@ -168,12 +168,12 @@ void MainWindow::setup()
     ui->tabWidget->setTabEnabled(Tab::Backports, false);
     ui->pushRemoveAutoremovable->setHidden(true);
 
-    QFont font("monospace");
+    QFont font(QStringLiteral("monospace"));
     font.setStyleHint(QFont::Monospace);
     ui->outputBox->setFont(font);
 
-    QString defaultFSUser = settings.value("FlatpakUser", tr("For all users")).toString();
-    fpUser = defaultFSUser == tr("For all users") ? "--system " : "--user ";
+    QString defaultFSUser = settings.value(QStringLiteral("FlatpakUser"), tr("For all users")).toString();
+    fpUser = defaultFSUser == tr("For all users") ? QStringLiteral("--system ") : QStringLiteral("--user ");
     ui->comboUser->blockSignals(true);
     ui->comboUser->setCurrentText(defaultFSUser);
     ui->comboUser->blockSignals(false);
@@ -182,7 +182,7 @@ void MainWindow::setup()
     debianVersion = getDebianVerNum();
     verName = getDebianVerName(debianVersion);
 
-    ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
+    ui->tabWidget->setTabVisible(Tab::Flatpak, arch != QLatin1String("i386"));
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
 
@@ -266,17 +266,17 @@ void MainWindow::setup()
     ui->pushUpgradeAll->setVisible(false);
 
     const auto size = this->size();
-    if (settings.contains("geometry")) {
+    if (settings.contains(QStringLiteral("geometry"))) {
         restoreGeometry(settings.value("geometry").toByteArray());
         if (isMaximized()) { // Add option to resize if maximized
             resize(size);
             centerWindow();
         }
     }
-    const QString aptConfigOutput = cmd.getOut("apt-config shell APTOPT APT::Install-Recommends/b").trimmed();
-    ui->checkBoxInstallRecommends->setChecked(aptConfigOutput == "APTOPT='true'");
-    ui->checkBoxInstallRecommendsMX->setChecked(aptConfigOutput == "APTOPT='true'");
-    ui->checkBoxInstallRecommendsBP->setChecked(aptConfigOutput == "APTOPT='true'");
+    const QString aptConfigOutput = cmd.getOut(QStringLiteral("apt-config shell APTOPT APT::Install-Recommends/b")).trimmed();
+    ui->checkBoxInstallRecommends->setChecked(aptConfigOutput == QLatin1String("APTOPT='true'"));
+    ui->checkBoxInstallRecommendsMX->setChecked(aptConfigOutput == QLatin1String("APTOPT='true'"));
+    ui->checkBoxInstallRecommendsBP->setChecked(aptConfigOutput == QLatin1String("APTOPT='true'"));
 
     // Check/uncheck tree items spacebar press or double-click
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
@@ -479,7 +479,7 @@ void MainWindow::listSizeInstalledFP()
     if (cachedInstalledScope == fpUser && cachedInstalledFetched) {
         total = sumSizes(cachedInstalledSizeMap.values());
     } else {
-        const QString command = "flatpak list " + fpUser + "--columns app,size";
+        const QString command = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("--columns app,size");
         QScopedValueRollback<bool> guard(suppressCmdOutput, true);
         QStringList list = cmd.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
         total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
@@ -566,13 +566,13 @@ uchar MainWindow::getDebianVerNum()
 
     // Then try matching codename
     const QString codename = version.toLower();
-    if (codename == "bullseye") {
+    if (codename == QLatin1String("bullseye")) {
         return Release::Bullseye;
     }
-    if (codename == "bookworm") {
+    if (codename == QLatin1String("bookworm")) {
         return Release::Bookworm;
     }
-    if (codename == "trixie") {
+    if (codename == QLatin1String("trixie")) {
         return Release::Trixie;
     }
 
@@ -636,7 +636,7 @@ QString MainWindow::getLocalizedName(const QDomElement &element) const
 QString MainWindow::categoryTranslation(const QString &item)
 {
     // Return original item for English locale
-    if (locale.name() == "en_US") {
+    if (locale.name() == QLatin1String("en_US")) {
         return item;
     }
 
@@ -796,7 +796,7 @@ void MainWindow::loadPmFiles()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    const QString pmFolderPath {"/usr/share/mx-packageinstaller-pkglist"};
+    const QString pmFolderPath {QStringLiteral("/usr/share/mx-packageinstaller-pkglist")};
     const QStringList pmFileList = QDir(pmFolderPath).entryList({"*.pm"});
 
     for (const QString &fileName : pmFileList) {
@@ -901,7 +901,7 @@ QString MainWindow::mapArchToFormat(const QString &arch) const
 
 bool MainWindow::isPackageInstallable(const QString &installable, const QString &modArch) const
 {
-    return installable.split(',').contains(modArch) || installable == "all";
+    return installable.split(',').contains(modArch) || installable == QLatin1String("all");
 }
 
 namespace
@@ -914,7 +914,7 @@ struct ParsedFlatpakRef {
 QString canonicalFlatpakRef(const QString &ref)
 {
     QString cleaned = ref.trimmed();
-    if (cleaned.startsWith("app/") || cleaned.startsWith("runtime/")) {
+    if (cleaned.startsWith(QLatin1String("app/")) || cleaned.startsWith(QLatin1String("runtime/"))) {
         cleaned = cleaned.section('/', 1);
     }
     return cleaned;
@@ -922,7 +922,7 @@ QString canonicalFlatpakRef(const QString &ref)
 
 bool isRuntimeToken(const QString &token)
 {
-    return token.startsWith("runtime/") || token.contains(".runtime/") || token.contains(".Platform");
+    return token.startsWith(QLatin1String("runtime/")) || token.contains(QLatin1String(".runtime/")) || token.contains(QLatin1String(".Platform"));
 }
 
 ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
@@ -932,7 +932,7 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
     const QRegularExpressionMatch match = refRegex.match(line);
     if (match.hasMatch()) {
         const QString refWithType = match.captured(0);
-        return {refWithType.section('/', 1), refWithType.startsWith("runtime/")};
+        return {refWithType.section('/', 1), refWithType.startsWith(QLatin1String("runtime/"))};
     }
 
     const QStringList tokens = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
@@ -940,7 +940,7 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
         if (token.contains('/')) {
             const bool isRuntime = isRuntimeToken(token);
             // If the token already lacks the app/runtime prefix, keep it intact
-            const bool hasTypePrefix = token.startsWith("app/") || token.startsWith("runtime/");
+            const bool hasTypePrefix = token.startsWith(QLatin1String("app/")) || token.startsWith(QLatin1String("runtime/"));
             QString ref = hasTypePrefix ? token.section('/', 1) : token;
             return {ref.trimmed(), isRuntime};
         }
@@ -1202,7 +1202,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     auto normalizeRef = [](const QString &line) {
         const RemoteLsEntry entry = parseRemoteLsLine(line);
         QString ref = entry.ref.trimmed();
-        if (ref.startsWith("app/") || ref.startsWith("runtime/")) {
+        if (ref.startsWith(QLatin1String("app/")) || ref.startsWith(QLatin1String("runtime/"))) {
             ref = ref.section('/', 1); // Strip leading type segment (app/runtime)
         }
         return ref;
@@ -1451,7 +1451,7 @@ void MainWindow::loadFlatpakData()
     cachedInstalledFetched = false;
 
     // Optimize: Get all installed packages with one command (ref + size), then split by type
-    const QString allInstalledCommand = "flatpak list " + fpUser + "2>/dev/null --columns=ref,size";
+    const QString allInstalledCommand = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("2>/dev/null --columns=ref,size");
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
     const QStringList allInstalled = cmd.getOut(allInstalledCommand, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
     cachedInstalledFlatpaks = allInstalled;
@@ -1466,7 +1466,7 @@ void MainWindow::loadFlatpakData()
 
     // Split by type based on flatpak naming convention
     for (const QString &itemRaw : allInstalled) {
-        if (itemRaw.startsWith("Ref")) { // header row on some versions
+        if (itemRaw.startsWith(QLatin1String("Ref"))) { // header row on some versions
             continue;
         }
 
@@ -1573,7 +1573,7 @@ FlatpakData MainWindow::createFlatpakData(const QString &item, const QStringList
 
     // Skip unwanted packages
     static const QSet<QString> unwantedPackages
-        = {QLatin1String("Locale"), QLatin1String("Sources"), QLatin1String("Debug")};
+        = {QStringLiteral("Locale"), QStringLiteral("Sources"), QStringLiteral("Debug")};
     if (unwantedPackages.contains(short_name)) {
         return data; // Return empty data
     }
@@ -1650,26 +1650,26 @@ void MainWindow::displayWarning(const QString &repo)
     QString msg;
     QString key;
 
-    if (repo == "test") {
+    if (repo == QLatin1String("test")) {
         displayed = &warningTest;
-        key = "NoWarningTest";
+        key = QStringLiteral("NoWarningTest");
         msg = tr("You are about to use the MX Test repository, whose packages are provided for "
                  "testing purposes only. It is possible that they might break your system, so it "
                  "is suggested that you back up your system and install or update only one package "
                  "at a time. Please provide feedback in the Forum so the package can be evaluated "
                  "before moving up to Main.");
 
-    } else if (repo == "backports") {
+    } else if (repo == QLatin1String("backports")) {
         displayed = &warningBackports;
-        key = "NoWarningBackports";
+        key = QStringLiteral("NoWarningBackports");
         msg = tr("You are about to use Debian Backports, which contains packages taken from the next "
                  "Debian release (called 'testing'), adjusted and recompiled for usage on Debian stable. "
                  "They cannot be tested as extensively as in the stable releases of Debian and MX Linux, "
                  "and are provided on an as-is basis, with risk of incompatibilities with other components "
                  "in Debian stable. Use with care!");
-    } else if (repo == "flatpaks") {
+    } else if (repo == QLatin1String("flatpaks")) {
         displayed = &warningFlatpaks;
-        key = "NoWarningFlatpaks";
+        key = QStringLiteral("NoWarningFlatpaks");
         msg = tr("MX Linux includes this repository of flatpaks for the users' convenience only, and "
                  "is not responsible for the functionality of the individual flatpaks themselves. "
                  "For more, consult flatpaks in the Wiki.");
@@ -1707,7 +1707,7 @@ void MainWindow::listFlatpakRemotes() const
     QString currentRemote = ui->comboRemote->currentText();
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
-    const bool isUserScope = fpUser.startsWith("--user");
+    const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
 
     auto applyRemotes = [&](const QStringList &list) {
         ui->comboRemote->addItems(list);
@@ -1786,9 +1786,9 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
 
     const QString frontend {"DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo "
                             "kde || echo gnome) LANG=C "};
-    const QString aptget {"apt-get -s -V -o=Dpkg::Use-Pty=0 "};
-    const QString aptitude {"aptitude -sy -V -o=Dpkg::Use-Pty=0 "};
-    if (currentTree == ui->treeFlatpak && names != "flatpak") {
+    const QString aptget {QStringLiteral("apt-get -s -V -o=Dpkg::Use-Pty=0 ")};
+    const QString aptitude {QStringLiteral("aptitude -sy -V -o=Dpkg::Use-Pty=0 ")};
+    if (currentTree == ui->treeFlatpak && names != QLatin1String("flatpak")) {
         detailed_installed_names = changeList;
     } else if (currentTree == ui->treeBackports) {
         recommends
@@ -1908,7 +1908,7 @@ bool MainWindow::install(const QString &names)
     enableOutput();
     QString frontend {
         "DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde || echo gnome) "};
-    QString aptget {"apt-get -o=Dpkg::Use-Pty=0 install -y "};
+    QString aptget {QStringLiteral("apt-get -o=Dpkg::Use-Pty=0 install -y ")};
 
     if (lockFile.isLockedGUI()) {
         return false;
@@ -2087,7 +2087,7 @@ bool MainWindow::installSelected()
         // Add testrepo unless already enabled
         if (!testInitiallyEnabled) {
             QString suite = verName;
-            if (arch == "amd64") {
+            if (arch == QLatin1String("amd64")) {
                 cmd.runAsRoot("apt-get update --print-uris | tac | "
                               "grep -m1 -oE 'https?://.*/mx/repo/dists/"
                               + suite + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > "
@@ -2231,7 +2231,7 @@ bool MainWindow::downloadAndUnzip(const QString &url, QFile &file)
 
     // Determine and execute unzip command based on file extension
     const QString fileExt = QFileInfo(file).suffix();
-    const QString unzipCommand = (fileExt == "gz") ? "gunzip -f " : "unxz -f ";
+    const QString unzipCommand = (fileExt == QLatin1String("gz")) ? QStringLiteral("gunzip -f ") : QStringLiteral("unxz -f ");
 
     if (!cmd.run(unzipCommand + file.fileName())) {
         qDebug() << "Could not unzip file:" << file.fileName();
@@ -2354,10 +2354,10 @@ bool MainWindow::downloadPackageList(bool forceDownload)
             }
 
             // Download and process each component
-            const QString url = "http://deb.debian.org/debian/dists/";
+            const QString url = QStringLiteral("http://deb.debian.org/debian/dists/");
             for (const QString &component : components) {
                 QFile file(basePath + component + "Packages.xz");
-                const QString branch = "-backports/" + component;
+                const QString branch = QStringLiteral("-backports/") + component;
                 if (!downloadAndUnzip(url, verName, branch, "xz", file)) {
                     return false;
                 }
@@ -2399,7 +2399,7 @@ void MainWindow::enableTabs(bool enable)
     }
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
-    ui->tabWidget->setTabVisible(Tab::Flatpak, arch != "i386");
+    ui->tabWidget->setTabVisible(Tab::Flatpak, arch != QLatin1String("i386"));
     setCursor(QCursor(Qt::ArrowCursor));
 }
 
@@ -2453,11 +2453,11 @@ bool MainWindow::readPackageList(bool forceDownload)
     QTextStream stream(&file);
     QString line, package, version, description;
     while (stream.readLineInto(&line)) {
-        if (line.startsWith("Package: ")) {
+        if (line.startsWith(QLatin1String("Package: "))) {
             package = line.section(' ', 1);
-        } else if (line.startsWith("Version: ")) {
+        } else if (line.startsWith(QLatin1String("Version: "))) {
             version = line.section(' ', 1);
-        } else if (line.startsWith("Description: ")) {
+        } else if (line.startsWith(QLatin1String("Description: "))) {
             description = line.section(' ', 1);
             if (!package.isEmpty()) {
                 targetMap.insert(package, {version, description});
@@ -2643,7 +2643,7 @@ QHash<QString, PackageInfo> MainWindow::listInstalled()
     }
 
     QHash<QString, PackageInfo> installedPackagesMap;
-    const QString statusPrefix = "ii ";
+    const QString statusPrefix = QStringLiteral("ii ");
     const auto lines = list.split('\n', Qt::SkipEmptyParts);
 
     for (const QString &line : lines) {
@@ -2681,17 +2681,17 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         return {};
     }
 
-    const bool isUserScope = fpUser.startsWith("--user");
+    const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
 
     auto buildRemoteLsCommand = [&](const QString &scope) {
-        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
+        return QStringLiteral("flatpak remote-ls ") + scope + remote + ' ' + arch_fp + QStringLiteral("--columns=ver,branch,ref,installed-size ");
     };
 
     QString typeFlag;
     if (type == QLatin1String("--app")) {
-        typeFlag = "--app ";
+        typeFlag = QStringLiteral("--app ");
     } else if (type == QLatin1String("--runtime")) {
-        typeFlag = "--runtime ";
+        typeFlag = QStringLiteral("--runtime ");
     }
     const QString commandSuffix = typeFlag + "2>/dev/null";
 
@@ -2714,7 +2714,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
 
         // Try to update the remote if it's empty
-        QString updateCommand = "flatpak update " + fpUser + "--appstream " + remote + " 2>/dev/null";
+        QString updateCommand = QStringLiteral("flatpak update ") + fpUser + QStringLiteral("--appstream ") + remote + QStringLiteral(" 2>/dev/null");
         qDebug() << "Running remote update command:" << updateCommand;
 
         Cmd updateShell;
@@ -2750,7 +2750,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
     if (cachedInstalledScope == fpUser && cachedInstalledFetched) {
         lines = cachedInstalledFlatpaks;
     } else {
-        const QString command = "flatpak list " + fpUser + "2>/dev/null " + type + " --columns=ref";
+        const QString command = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("2>/dev/null ") + type + QStringLiteral(" --columns=ref");
         QScopedValueRollback<bool> guard(suppressCmdOutput, true);
         lines = cmd.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
 
@@ -2763,7 +2763,7 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
 
     QStringList refs;
     for (const QString &lineRaw : lines) {
-        if (lineRaw.startsWith("Ref")) { // skip header if present
+        if (lineRaw.startsWith(QLatin1String("Ref"))) { // skip header if present
             continue;
         }
         const QString line = lineRaw.section('\t', 0, 0);
@@ -2846,8 +2846,8 @@ void MainWindow::rebuildPackageViews()
 void MainWindow::setIcons()
 {
 
-    const QString icon_upgradable {"package-installed-outdated"};
-    const QString icon_installed {"package-installed-updated"};
+    const QString icon_upgradable {QStringLiteral("package-installed-outdated")};
+    const QString icon_installed {QStringLiteral("package-installed-updated")};
 
     const QIcon backup_icon_upgradable(":/icons/package-installed-outdated.png");
     const QIcon backup_icon_installed(":/icons/package-installed-updated.png");
@@ -2875,7 +2875,7 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
-    const QString command = "LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'";
+    const QString command = QStringLiteral("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'");
     const QStringList packageList = shell.getOut(command, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
 
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
@@ -2885,7 +2885,7 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
         return installedVersions;
     }
     for (const QString &line : packageList) {
-        const QString statusPrefix = "ii ";
+        const QString statusPrefix = QStringLiteral("ii ");
         if (!line.startsWith(statusPrefix)) {
             continue;
         }
@@ -2922,12 +2922,12 @@ QUrl MainWindow::getScreenshotUrl(const QString &name)
     QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
     if (jsonDoc.isObject()) {
         QJsonObject jsonObj = jsonDoc.object();
-        if (jsonObj.contains("screenshots") && jsonObj["screenshots"].isArray()) {
-            QJsonArray screenshotsArray = jsonObj["screenshots"].toArray();
+        if (jsonObj.contains(QStringLiteral("screenshots")) && jsonObj[QStringLiteral("screenshots")].isArray()) {
+            QJsonArray screenshotsArray = jsonObj[QStringLiteral("screenshots")].toArray();
             if (!screenshotsArray.isEmpty()) {
                 QJsonObject firstScreenshot = screenshotsArray.first().toObject();
-                if (firstScreenshot.contains("small_image_url")) {
-                    QUrl result = QUrl(firstScreenshot["small_image_url"].toString());
+                if (firstScreenshot.contains(QStringLiteral("small_image_url"))) {
+                    QUrl result = QUrl(firstScreenshot[QStringLiteral("small_image_url")].toString());
                     reply->deleteLater();
                     return result;
                 }
@@ -2994,8 +2994,8 @@ void MainWindow::displayInfoTestOrBackport(QTreeView *tree, const QModelIndex &i
 
     while (!in.atEnd()) {
         QString line = in.readLine();
-        if (line.startsWith("Package: ")) {
-            if (line == "Package: " + item_name) {
+        if (line.startsWith(QLatin1String("Package: "))) {
+            if (line == QStringLiteral("Package: ") + item_name) {
                 packageFound = true;
                 msg += line + '\n';
             } else if (packageFound) {
@@ -3076,7 +3076,7 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
     QString desc = index.sibling(index.row(), PopCol::Description).data().toString();
     QString install_names = index.sibling(index.row(), PopCol::Name).data(Qt::UserRole).toString();
     QString title = index.sibling(index.row(), PopCol::Name).data().toString();
-    QString msg = "<b>" + title + "</b><p>" + desc + "<p>";
+    QString msg = QStringLiteral("<b>") + title + QStringLiteral("</b><p>") + desc + QStringLiteral("<p>");
     if (!install_names.isEmpty()) {
         msg += tr("Packages to be installed: ") + install_names;
     }
@@ -3361,10 +3361,10 @@ void MainWindow::pushAbout_clicked()
 void MainWindow::pushHelp_clicked()
 {
     QString lang = locale.bcp47Name();
-    QString url {"/usr/share/doc/mx-packageinstaller/mx-package-installer.html"};
+    QString url {QStringLiteral("/usr/share/doc/mx-packageinstaller/mx-package-installer.html")};
 
-    if (lang.startsWith("fr")) {
-        url = "https://mxlinux.org/wiki/help-files/help-mx-installateur-de-paquets";
+    if (lang.startsWith(QLatin1String("fr"))) {
+        url = QStringLiteral("https://mxlinux.org/wiki/help-files/help-mx-installateur-de-paquets");
     }
     displayDoc(url, tr("%1 Help").arg(windowTitle()));
 }
