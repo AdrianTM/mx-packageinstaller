@@ -932,7 +932,7 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
     const QRegularExpressionMatch match = refRegex.match(line);
     if (match.hasMatch()) {
         const QString refWithType = match.captured(0);
-        return {refWithType.section('/', 1), refWithType.startsWith(QLatin1String("runtime/"))};
+        return {.ref = refWithType.section('/', 1), .isRuntime = refWithType.startsWith(QLatin1String("runtime/"))};
     }
 
     const QStringList tokens = line.split(QRegularExpression("\\s+"), Qt::SkipEmptyParts);
@@ -942,14 +942,14 @@ ParsedFlatpakRef parseInstalledFlatpakLine(const QString &line)
             // If the token already lacks the app/runtime prefix, keep it intact
             const bool hasTypePrefix = token.startsWith(QLatin1String("app/")) || token.startsWith(QLatin1String("runtime/"));
             QString ref = hasTypePrefix ? token.section('/', 1) : token;
-            return {ref.trimmed(), isRuntime};
+            return {.ref = ref.trimmed(), .isRuntime = isRuntime};
         }
     }
 
     // Fallback: return the line as-is if it looks like a ref without type prefix
     const QString fallbackRef = line.contains('/') ? line.trimmed() : QString();
     const bool isRuntime = isRuntimeToken(fallbackRef);
-    return {fallbackRef, isRuntime};
+    return {.ref = fallbackRef, .isRuntime = isRuntime};
 }
 
 struct RemoteLsEntry {
