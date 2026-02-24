@@ -2394,6 +2394,9 @@ bool MainWindow::downloadPackageList(bool forceDownload)
 
 void MainWindow::enableTabs(bool enable)
 {
+    if (enable) {
+        operationInProgress = false;
+    }
     for (int tab = 0; tab < ui->tabWidget->count() - 1; ++tab) { // Enable all except last (Console)
         ui->tabWidget->setTabEnabled(tab, enable);
     }
@@ -3288,6 +3291,7 @@ void MainWindow::findPackage()
 
 void MainWindow::showOutput()
 {
+    operationInProgress = true;
     ui->outputBox->clear();
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
@@ -3552,7 +3556,9 @@ void MainWindow::tabWidget_currentChanged(int index)
             handleOutputTab();
             break;
         }
-        setTabsEnabled(true);
+        if (index != Tab::Output || !operationInProgress) {
+            setTabsEnabled(true);
+        }
         ui->pushUpgradeAll->setVisible((currentTree == ui->treeEnabled) && (ui->labelNumUpgr->text().toInt() > 0));
     }, Qt::QueuedConnection);
 }

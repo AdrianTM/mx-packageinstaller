@@ -164,6 +164,7 @@ private:
     bool hideLibsChecked {true};
     bool testInitiallyEnabled {false};
     bool updatedOnce {false};
+    bool operationInProgress {false};
     bool warningBackports {false};
     bool warningFlatpaks {false};
     bool warningTest {false};
