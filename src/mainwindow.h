@@ -24,6 +24,7 @@
  **********************************************************************/
 #pragma once
 
+#include <QCloseEvent>
 #include <QCommandLineParser>
 #include <QAction>
 #include <QFile>
@@ -86,6 +87,7 @@ public:
     ~MainWindow() override;
 
 protected:
+    void closeEvent(QCloseEvent *event) override;
     void keyPressEvent(QKeyEvent *event) override;
 
 signals:

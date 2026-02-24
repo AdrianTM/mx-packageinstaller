@@ -4127,6 +4127,22 @@ void MainWindow::comboUser_currentIndexChanged(int index)
     displayFlatpaks(true);
 }
 
+void MainWindow::closeEvent(QCloseEvent *event)
+{
+    if (cmd.state() != QProcess::NotRunning) {
+        if (QMessageBox::warning(this, tr("Quit?"),
+                                 tr("Process still running, quitting might leave the system in an unstable "
+                                    "state.<p><b>Are you sure you want to exit MX Package Installer?</b>"),
+                                 QMessageBox::Yes, QMessageBox::No)
+            == QMessageBox::No) {
+            event->ignore();
+            return;
+        }
+        cleanup();
+    }
+    event->accept();
+}
+
 // Process keystrokes
 void MainWindow::keyPressEvent(QKeyEvent *event)
 {
