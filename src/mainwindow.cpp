@@ -332,6 +332,46 @@ void MainWindow::setup()
         aurProxy->setCustomSortOrder(false);
     });
 
+    // Repo tree double-click and right-click: show package info popup
+    connect(ui->treeRepo, &QTreeView::doubleClicked, this, [this](const QModelIndex &index) {
+        if (!index.isValid()) return;
+        const QString packageName = index.sibling(index.row(), TreeCol::Name).data(Qt::DisplayRole).toString();
+        if (!packageName.isEmpty()) showRepoPackageInfo(packageName);
+    });
+    ui->treeRepo->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeRepo, &QTreeView::customContextMenuRequested, this, [this](QPoint pos) {
+        const QModelIndex index = ui->treeRepo->indexAt(pos);
+        if (!index.isValid()) return;
+        const QString packageName = index.sibling(index.row(), TreeCol::Name).data(Qt::DisplayRole).toString();
+        if (packageName.isEmpty()) return;
+        QMenu menu(this);
+        auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
+        menu.addAction(action);
+        connect(action, &QAction::triggered, this, [this, packageName] { showRepoPackageInfo(packageName); });
+        menu.exec(ui->treeRepo->viewport()->mapToGlobal(pos));
+    });
+
+    // AUR tree double-click: show package info popup
+    connect(ui->treeAUR, &QTreeView::doubleClicked, this, [this](const QModelIndex &index) {
+        if (!index.isValid()) return;
+        const QString packageName = index.sibling(index.row(), TreeCol::Name).data(Qt::DisplayRole).toString();
+        if (!packageName.isEmpty()) showAurPackageInfo(packageName);
+    });
+
+    // AUR tree right-click: context menu with "More info"
+    ui->treeAUR->setContextMenuPolicy(Qt::CustomContextMenu);
+    connect(ui->treeAUR, &QTreeView::customContextMenuRequested, this, [this](QPoint pos) {
+        const QModelIndex index = ui->treeAUR->indexAt(pos);
+        if (!index.isValid()) return;
+        const QString packageName = index.sibling(index.row(), TreeCol::Name).data(Qt::DisplayRole).toString();
+        if (packageName.isEmpty()) return;
+        QMenu menu(this);
+        auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
+        menu.addAction(action);
+        connect(action, &QAction::triggered, this, [this, packageName] { showAurPackageInfo(packageName); });
+        menu.exec(ui->treeAUR->viewport()->mapToGlobal(pos));
+    });
+
     hideColumns();
     setConnections();
     if (!lineEditToggleMaskAction) {
@@ -372,11 +412,19 @@ void MainWindow::setup()
 
     // Setup Flatpak tree (still using QTreeWidget)
     ui->treeFlatpak->setContextMenuPolicy(Qt::CustomContextMenu);
-    connect(ui->treeFlatpak, &QTreeWidget::customContextMenuRequested, this,
-            [this](QPoint pos) { /* TODO: Re-implement context menu */ });
-    connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked,
-            [this](QTreeWidgetItem *item) { ui->treeFlatpak->setCurrentItem(item); });
-    connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked, this, &MainWindow::checkUncheckItem);
+    connect(ui->treeFlatpak, &QTreeWidget::customContextMenuRequested, this, [this](QPoint pos) {
+        auto *item = ui->treeFlatpak->itemAt(pos);
+        if (!item || item->childCount() > 0) return;
+        QMenu menu(this);
+        auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
+        menu.addAction(action);
+        connect(action, &QAction::triggered, this, [this, item] { showFlatpakPackageInfo(item); });
+        menu.exec(ui->treeFlatpak->viewport()->mapToGlobal(pos));
+    });
+    connect(ui->treeFlatpak, &QTreeWidget::itemDoubleClicked, this, [this](QTreeWidgetItem *item) {
+        if (!item || item->childCount() > 0) return;
+        showFlatpakPackageInfo(item);
+    });
     ui->treeFlatpak->setSortingEnabled(true);
 
     // Repo and AUR trees now use QTreeView - no item-based connections needed
@@ -2400,72 +2448,128 @@ void MainWindow::disableOutput()
     disconnect(&cmd, &Cmd::errorAvailable, this, &MainWindow::outputAvailable);
 }
 
-// TODO: Re-implement displayPackageInfo for QTreeView
-/*
-void MainWindow::displayPackageInfo(const QTreeWidget *tree, QPoint pos)
+void MainWindow::showAurPackageInfo(const QString &packageName)
 {
-    auto *t_widget = qobject_cast<QTreeWidget *>(focusWidget());
-    if (!t_widget) {
-        qWarning() << "No tree widget in focus";
+    const QString paruPath = getParuPath();
+    if (paruPath.isEmpty()) {
+        QMessageBox::critical(this, tr("Error"), tr("paru is not installed."));
         return;
     }
 
-    auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
-    QMenu menu(this);
-    menu.addAction(action);
-    connect(action, &QAction::triggered, this, [this, t_widget] { displayPackageInfo(t_widget->currentItem()); });
-    menu.exec(t_widget->mapToGlobal(pos));
-}
-
-void MainWindow::displayPackageInfo(const QTreeWidgetItem *item)
-{
-    const QTreeWidget *tree = item ? item->treeWidget() : nullptr;
-    const bool isAurTree = tree == ui->treeAUR;
-    QString baseCommand;
-    if (isAurTree) {
-        const QString paruPath = getParuPath();
-        if (paruPath.isEmpty()) {
-            QMessageBox::critical(this, tr("Error"), tr("paru is not installed."));
-            return;
-        }
-        baseCommand = paruPath + " -Si --color never ";
-    } else {
-        baseCommand = "pacman -Si --color never ";
-    }
-    const QString packageName = item->text(TreeCol::Name);
     auto isErrorOutput = [](const QString &text) {
         const QString trimmed = text.trimmed();
-        if (trimmed.isEmpty()) {
-            return true;
-        }
+        if (trimmed.isEmpty()) return true;
         const QString lower = trimmed.toLower();
-        return lower.startsWith("error:") || lower.contains("was not found") || lower.contains("target not found")
-               || lower.contains("could not find");
+        return lower.startsWith("error:") || lower.contains("was not found")
+               || lower.contains("target not found") || lower.contains("could not find");
     };
 
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    Cmd shell;
+    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+
     QString msg;
-    if (isAurTree && installedPackages.contains(packageName)) {
-        msg = cmd.getOut("pacman -Qi --color never " + packageName);
+    // For installed packages, pacman -Qi gives more detail (install date, size, etc.)
+    if (installedPackages.contains(packageName)) {
+        msg = shell.getOut("pacman -Qi --color never " + packageName);
     }
     if (isErrorOutput(msg)) {
-        msg = cmd.getOut(baseCommand + packageName);
-    }
-    if (isErrorOutput(msg) && isAurTree) {
-        msg = cmd.getOut(baseCommand.replace(" -Si ", " -Qi ") + packageName);
+        msg = shell.getOut(paruPath + " -Si --color never " + packageName);
     }
     if (isErrorOutput(msg)) {
-        msg = cmd.getOut("pacman -Qi --color never " + packageName);
+        msg = shell.getOut("pacman -Qi --color never " + packageName);
+    }
+    QApplication::restoreOverrideCursor();
+
+    if (msg.trimmed().isEmpty()) {
+        QMessageBox::information(this, tr("Package info"),
+                                 tr("No information available for '%1'.").arg(packageName));
+        return;
     }
 
-    QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg.trimmed(), QMessageBox::Close);
-
-    // Make it wider
+    QMessageBox info(QMessageBox::NoIcon, tr("Package info: %1").arg(packageName),
+                     msg.trimmed(), QMessageBox::Close);
     auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(info.layout());
     layout->addItem(horizontalSpacer, 0, 1);
     info.exec();
 }
-*/
+
+void MainWindow::showRepoPackageInfo(const QString &packageName)
+{
+    auto isErrorOutput = [](const QString &text) {
+        const QString trimmed = text.trimmed();
+        if (trimmed.isEmpty()) return true;
+        const QString lower = trimmed.toLower();
+        return lower.startsWith("error:") || lower.contains("was not found")
+               || lower.contains("target not found") || lower.contains("could not find");
+    };
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    Cmd shell;
+    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+
+    // pacman -Qi for installed packages (includes install date, size, requiredby, etc.)
+    QString msg = shell.getOut("pacman -Qi --color never " + packageName);
+    if (isErrorOutput(msg)) {
+        msg = shell.getOut("pacman -Si --color never " + packageName);
+    }
+    QApplication::restoreOverrideCursor();
+
+    if (msg.trimmed().isEmpty()) {
+        QMessageBox::information(this, tr("Package info"),
+                                 tr("No information available for '%1'.").arg(packageName));
+        return;
+    }
+
+    QMessageBox info(QMessageBox::NoIcon, tr("Package info: %1").arg(packageName),
+                     msg.trimmed(), QMessageBox::Close);
+    auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    auto *layout = qobject_cast<QGridLayout *>(info.layout());
+    layout->addItem(horizontalSpacer, 0, 1);
+    info.exec();
+}
+
+void MainWindow::showFlatpakPackageInfo(QTreeWidgetItem *item)
+{
+    if (!item) return;
+
+    const QString ref = item->data(FlatCol::FullName, Qt::UserRole).toString();
+    if (ref.isEmpty()) return;
+
+    const int status = item->data(FlatCol::Status, Qt::UserRole).toInt();
+    const bool installed = (status == Status::Installed || status == Status::Upgradable);
+
+    QApplication::setOverrideCursor(Qt::WaitCursor);
+    Cmd shell;
+    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+
+    QString msg;
+    if (installed) {
+        msg = shell.getOut("flatpak info " + fpUser + ref);
+    }
+    if (msg.trimmed().isEmpty() || msg.trimmed().toLower().startsWith("error")) {
+        const QString remote = ui->comboRemote->currentText();
+        if (!remote.isEmpty()) {
+            msg = shell.getOut("flatpak remote-info " + fpUser + remote + " " + ref);
+        }
+    }
+    QApplication::restoreOverrideCursor();
+
+    if (msg.trimmed().isEmpty()) {
+        QMessageBox::information(this, tr("Package info"),
+                                 tr("No information available for '%1'.").arg(ref));
+        return;
+    }
+
+    const QString displayName = item->text(FlatCol::Name);
+    QMessageBox info(QMessageBox::NoIcon, tr("Package info: %1").arg(displayName),
+                     msg.trimmed(), QMessageBox::Close);
+    auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    auto *layout = qobject_cast<QGridLayout *>(info.layout());
+    layout->addItem(horizontalSpacer, 0, 1);
+    info.exec();
+}
 
 void MainWindow::findPackage()
 {

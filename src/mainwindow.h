@@ -281,6 +281,9 @@ private:
     bool validateSudoPassword(QByteArray *passwordOut = nullptr);
     bool promptSudoPassword(QByteArray *passwordOut);
     void onAurSearchTextChanged();
+    void showAurPackageInfo(const QString &packageName);
+    void showRepoPackageInfo(const QString &packageName);
+    void showFlatpakPackageInfo(QTreeWidgetItem *item);
     QString getParuPath();
     // Header checkbox helpers
     CheckableHeaderView *headerAUR {nullptr};
