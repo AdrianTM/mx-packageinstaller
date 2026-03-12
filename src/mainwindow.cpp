@@ -3420,13 +3420,7 @@ void MainWindow::pushAbout_clicked()
 
 void MainWindow::pushHelp_clicked()
 {
-    QString lang = locale.bcp47Name();
-    QString url {QStringLiteral("/usr/share/doc/mx-packageinstaller/mx-package-installer.html")};
-
-    if (lang.startsWith(QLatin1String("fr"))) {
-        url = QStringLiteral("https://mxlinux.org/wiki/help-files/help-mx-installateur-de-paquets");
-    }
-    displayDoc(url, tr("%1 Help").arg(windowTitle()));
+    displayHelpDoc("/usr/share/doc/mx-packageinstaller/mx-package-installer.html", tr("%1 Help").arg(windowTitle()));
 }
 
 // Resize columns when expanding
