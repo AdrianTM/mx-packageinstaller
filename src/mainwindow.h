@@ -214,7 +214,6 @@ private:
     QModelIndex lastIndexClicked {};
     QUrl getScreenshotUrl(const QString &name);
     const QCommandLineParser &args;
-    const QString elevate {QFile::exists("/usr/bin/pkexec") ? "/usr/bin/pkexec " : "/usr/bin/gksu "};
     const QString tempList {QStringLiteral("/etc/apt/sources.list.d/mxpitemp.list")};
 
     // Models
@@ -274,8 +273,8 @@ private:
     [[nodiscard]] bool installSelected();
     [[nodiscard]] bool markKeep();
     [[nodiscard]] bool readPackageList(bool forceDownload = false);
-    [[nodiscard]] bool uninstall(const QString &names, const QString &preUninstall = QString(),
-                                 const QString &postUninstall = QString());
+    [[nodiscard]] bool uninstall(const QString &names, const QStringList &preUninstall = {},
+                                 const QStringList &postUninstall = {});
     bool updateApt();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);

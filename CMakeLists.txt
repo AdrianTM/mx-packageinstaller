@@ -115,6 +115,10 @@ set(SOURCES
     src/models/popularfilterproxy.cpp
 )
 
+set(HELPER_SOURCES
+    src/helper.cpp
+)
+
 set(HEADERS
     src/log.h
     src/mainwindow.h
@@ -152,12 +156,21 @@ add_executable(mx-packageinstaller
     ${RESOURCE_FILES}
 )
 
+add_executable(helper
+    ${HELPER_SOURCES}
+)
+
 # Link Qt6 libraries
 target_link_libraries(mx-packageinstaller
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
     Qt6::Network
+    Qt6::Xml
+)
+
+target_link_libraries(helper
+    Qt6::Core
     Qt6::Xml
 )
 
@@ -171,19 +184,39 @@ target_compile_options(mx-packageinstaller PRIVATE
     -Werror
 )
 
+target_compile_options(helper PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+    -Werror
+)
+
 # Add compiler-specific flags
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
     target_compile_options(mx-packageinstaller PRIVATE -Werror=return-stack-address)
+    target_compile_options(helper PRIVATE -Werror=return-stack-address)
 else()
     target_compile_options(mx-packageinstaller PRIVATE
         -Werror=return-local-addr
         # Suppress false positive LTO warnings with Qt6 QHash (GCC only)
         -Wno-alloc-size-larger-than
     )
+    target_compile_options(helper PRIVATE
+        -Werror=return-local-addr
+        -Wno-alloc-size-larger-than
+    )
 endif()
 
 # Set compile definitions
 target_compile_definitions(mx-packageinstaller PRIVATE
+    QT_DEPRECATED_WARNINGS
+    QT_DISABLE_DEPRECATED_BEFORE=0x060000
+    VERSION="${PROJECT_VERSION}"
+)
+
+target_compile_definitions(helper PRIVATE
     QT_DEPRECATED_WARNINGS
     QT_DISABLE_DEPRECATED_BEFORE=0x060000
     VERSION="${PROJECT_VERSION}"
@@ -221,10 +254,19 @@ set_target_properties(mx-packageinstaller PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
+set_target_properties(helper PROPERTIES
+    OUTPUT_NAME "helper"
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
 # Install target (required by Debian build system)
 # Other files are handled by debian/install
 install(TARGETS mx-packageinstaller
     RUNTIME DESTINATION bin
+)
+
+install(TARGETS helper
+    RUNTIME DESTINATION lib/mx-packageinstaller
 )
 
 # Add tests if requested

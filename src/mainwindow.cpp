@@ -55,6 +55,8 @@
 using namespace std::chrono_literals;
 
 namespace {
+constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
+
 QString sanitizeOutputForDisplay(const QString &output)
 {
     static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
@@ -63,6 +65,59 @@ QString sanitizeOutputForDisplay(const QString &output)
     cleanOutput.remove(ansiEscape);
     cleanOutput.remove(ansiQuery);
     return cleanOutput;
+}
+
+QString debconfFrontend()
+{
+    return QFile::exists("/usr/bin/debconf-kde-helper") ? QStringLiteral("kde") : QStringLiteral("gnome");
+}
+
+QHash<QString, QString> debconfEnvironment()
+{
+    return {{QStringLiteral("DEBIAN_FRONTEND"), debconfFrontend()}};
+}
+
+QStringList packageArgs(const QString &names)
+{
+    return names.split(' ', Qt::SkipEmptyParts);
+}
+
+QString mxTestSourceLine(QString repoDistsUrl, const QString &suite, const QString &arch)
+{
+    if (repoDistsUrl.endsWith(QLatin1String("dists/"))) {
+        repoDistsUrl.chop(QStringLiteral("dists/").size());
+    }
+    if (repoDistsUrl.endsWith(QLatin1Char('/'))) {
+        repoDistsUrl.chop(1);
+    }
+    const QString prefix
+        = (arch == QLatin1String("amd64")) ? QStringLiteral("deb ") : QStringLiteral("deb [arch=%1] ").arg(arch);
+    return prefix + repoDistsUrl + ' ' + suite + QStringLiteral(" test\n");
+}
+
+QString backportsSourceLine(const QString &suite)
+{
+    return QStringLiteral("deb http://ftp.debian.org/debian %1-backports main contrib non-free\n").arg(suite);
+}
+
+bool runHooksAsRoot(Cmd &cmd, const QStringList &hooks, Cmd::QuietMode quiet = Cmd::QuietMode::No)
+{
+    for (const QString &hook : hooks) {
+        if (!hook.trimmed().isEmpty() && !cmd.runHookAsRoot(hook, quiet)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
+{
+    return cmd.procAsRoot(QStringLiteral("mxpi-lib"), {action}, nullptr, nullptr, quiet);
+}
+
+bool runMxpiLib(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
+{
+    return cmd.proc(QString::fromLatin1(MxpiLibPath), {action}, nullptr, nullptr, quiet);
 }
 } // namespace
 
@@ -148,7 +203,8 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // Run flatpak setup and display in a separate thread
     if (arch != QLatin1String("i386") && checkInstalled(QStringLiteral("flatpak"))) {
         auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
+            Cmd helperCmd;
+            runMxpiLibAsRoot(helperCmd, QStringLiteral("flatpak_add_repos"));
             QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
         });
     }
@@ -365,7 +421,7 @@ void MainWindow::setupModels()
     connect(popularModel, &PopularModel::checkStateChanged, this, &MainWindow::onPopularItemChanged);
 }
 
-bool MainWindow::uninstall(const QString &names, const QString &preuninstall, const QString &postuninstall)
+bool MainWindow::uninstall(const QString &names, const QStringList &preuninstall, const QStringList &postuninstall)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
@@ -387,7 +443,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        success = cmd.runAsRoot(preuninstall);
+        success = runHooksAsRoot(cmd, preuninstall);
     }
 
     if (success) {
@@ -395,9 +451,9 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        success = cmd.runAsRoot("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i "
-                                "&& echo kde || echo gnome) apt-get -o=Dpkg::Use-Pty=0 remove -y "
-                                + names); // use -y since there is a confirm dialog already
+        QStringList args {"-o=Dpkg::Use-Pty=0", "remove", "-y"};
+        args += packageArgs(names);
+        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
     }
 
     if (success && !postuninstall.isEmpty()) {
@@ -407,7 +463,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        success = cmd.runAsRoot(postuninstall);
+        success = runHooksAsRoot(cmd, postuninstall);
     }
     return success;
 }
@@ -426,7 +482,7 @@ bool MainWindow::updateApt()
     }
 
     enableOutput();
-    if (cmd.run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib apt_update", Cmd::QuietMode::Yes)) {
+    if (runMxpiLibAsRoot(cmd, QStringLiteral("apt_update"))) {
         qDebug() << "sources updated OK";
         updatedOnce = true;
         return true;
@@ -1730,7 +1786,7 @@ void MainWindow::listFlatpakRemotes() const
 
     auto addUserRemotes = []() {
         Cmd addRemotes;
-        return addRemotes.run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", Cmd::QuietMode::Yes);
+        return runMxpiLib(addRemotes, QStringLiteral("flatpak_add_repos_user"));
     };
 
     QStringList list;
@@ -1784,8 +1840,7 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     QString recommends_aptitude;
     QString aptitude_info;
 
-    const QString frontend {"DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo "
-                            "kde || echo gnome) LANG=C "};
+    const QString frontend {QStringLiteral("DEBIAN_FRONTEND=%1 LANG=C ").arg(debconfFrontend())};
     const QString aptget {QStringLiteral("apt-get -s -V -o=Dpkg::Use-Pty=0 ")};
     const QString aptitude {QStringLiteral("aptitude -sy -V -o=Dpkg::Use-Pty=0 ")};
     if (currentTree == ui->treeFlatpak && names != QLatin1String("flatpak")) {
@@ -1795,31 +1850,30 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
             = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         recommends_aptitude
             = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--with-recommends " : "--without-recommends ";
-        detailed_names = cmd.getOutAsRoot(
+        detailed_names = cmd.getOut(
             frontend + aptget + action + ' ' + recommends + "-t " + verName + "-backports --reinstall " + names
             + R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
-        aptitude_info = cmd.getOutAsRoot(frontend + aptitude + action + ' ' + recommends_aptitude + "-t " + verName
-                                         + "-backports " + names + " |tail -2 |head -1");
+        aptitude_info = cmd.getOut(frontend + aptitude + action + ' ' + recommends_aptitude + "-t " + verName
+                                   + "-backports " + names + " |tail -2 |head -1");
     } else if (currentTree == ui->treeMXtest) {
         recommends
             = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         recommends_aptitude
             = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--with-recommends " : "--without-recommends ";
-        detailed_names = cmd.getOutAsRoot(
+        detailed_names = cmd.getOut(
             frontend + aptget + action + " -t mx " + recommends + "--reinstall " + names
             + R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
-        aptitude_info = cmd.getOutAsRoot(frontend + aptitude + action + " -t mx " + recommends_aptitude + names
-                                         + " |tail -2 |head -1");
+        aptitude_info = cmd.getOut(frontend + aptitude + action + " -t mx " + recommends_aptitude + names
+                                   + " |tail -2 |head -1");
     } else {
         recommends
             = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
         recommends_aptitude
             = (ui->checkBoxInstallRecommends->isChecked()) ? "--with-recommends " : "--without-recommends ";
-        detailed_names = cmd.getOutAsRoot(
+        detailed_names = cmd.getOut(
             frontend + aptget + action + ' ' + recommends + "--reinstall " + names
             + R"lit(|grep 'Inst\|Remv'| awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
-        aptitude_info
-            = cmd.getOutAsRoot(frontend + aptitude + action + ' ' + recommends_aptitude + names + " |tail -2 |head -1");
+        aptitude_info = cmd.getOut(frontend + aptitude + action + ' ' + recommends_aptitude + names + " |tail -2 |head -1");
     }
 
     if (currentTree != ui->treeFlatpak) {
@@ -1906,10 +1960,6 @@ bool MainWindow::install(const QString &names)
         return true;
     }
     enableOutput();
-    QString frontend {
-        "DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde || echo gnome) "};
-    QString aptget {QStringLiteral("apt-get -o=Dpkg::Use-Pty=0 install -y ")};
-
     if (lockFile.isLockedGUI()) {
         return false;
     }
@@ -1918,15 +1968,22 @@ bool MainWindow::install(const QString &names)
     if (currentTree == ui->treeBackports) {
         recommends
             = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        success = cmd.runAsRoot(frontend + aptget + recommends + "-t " + verName + "-backports --reinstall " + names);
+        QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends.trimmed(), "-t", verName + "-backports",
+                          "--reinstall"};
+        args += packageArgs(names);
+        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
     } else if (currentTree == ui->treeMXtest) {
         recommends
             = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        success = cmd.runAsRoot(frontend + aptget + recommends + " -t mx " + names);
+        QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends.trimmed(), "-t", "mx"};
+        args += packageArgs(names);
+        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
     } else {
         recommends
             = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        success = cmd.runAsRoot(frontend + aptget + recommends + "--reinstall " + names);
+        QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends.trimmed(), "--reinstall"};
+        args += packageArgs(names);
+        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
     }
     return success;
 }
@@ -1936,13 +1993,15 @@ bool MainWindow::installBatch(const QStringList &name_list)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     bool result = true;
-    QString postinstall;
+    QStringList postinstallHooks;
     QString install_names;
 
     for (const QString &name : name_list) {
         for (const auto &item : std::as_const(popularApps)) {
             if (item.name == name) {
-                postinstall += item.postInstall + '\n';
+                if (!item.postInstall.isEmpty()) {
+                    postinstallHooks << item.postInstall;
+                }
                 install_names += item.installNames + ' ';
             }
         }
@@ -1954,14 +2013,14 @@ bool MainWindow::installBatch(const QStringList &name_list)
         }
     }
 
-    if (postinstall != '\n') {
+    if (!postinstallHooks.isEmpty()) {
         qDebug() << "Post-install";
         ui->tabWidget->setTabText(Tab::Output, tr("Post-processing..."));
         if (lockFile.isLockedGUI()) {
             return false;
         }
         enableOutput();
-        if (!cmd.runAsRoot(postinstall)) {
+        if (!runHooksAsRoot(cmd, postinstallHooks)) {
             result = false;
         }
     }
@@ -1992,9 +2051,10 @@ bool MainWindow::installPopularApp(const QString &name)
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        if (!cmd.runAsRoot(preinstall)) {
+        if (!cmd.runHookAsRoot(preinstall)) {
             if (QFile::exists(tempList)) {
-                Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
+                Cmd helperCmd;
+                runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
                 updateApt();
             }
             return false;
@@ -2013,10 +2073,11 @@ bool MainWindow::installPopularApp(const QString &name)
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        cmd.runAsRoot(postinstall);
+        cmd.runHookAsRoot(postinstall);
     }
     if (QFile::exists(tempList)) {
-        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
+        Cmd helperCmd;
+        runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
         updateApt();
     }
     return result;
@@ -2086,31 +2147,22 @@ bool MainWindow::installSelected()
     if (currentTree == ui->treeMXtest) {
         // Add testrepo unless already enabled
         if (!testInitiallyEnabled) {
-            QString suite = verName;
-            if (arch == QLatin1String("amd64")) {
-                cmd.runAsRoot("apt-get update --print-uris | tac | "
-                              "grep -m1 -oE 'https?://.*/mx/repo/dists/"
-                              + suite + "/main' | sed 's:^:deb :; s:/repo/dists/:/testrepo :; s:/main: test:' > "
-                              + tempList);
-            } else {
-                cmd.runAsRoot("apt-get update --print-uris | tac | "
-                              "grep -m1 -oE 'https?://.*/mx/repo/dists/"
-                              + suite
-                              + "/main' | sed 's:^:deb [arch='$(dpkg --print-architecture)'] :; "
-                                "s:/repo/dists/:/testrepo :; s:/main: test:' > "
-                              + tempList);
+            if (!cmd.writeFileAsRoot(tempList, mxTestSourceLine(getMXTestRepoUrl(), verName, arch), Cmd::QuietMode::Yes)) {
+                return false;
             }
         }
         updateApt();
     } else if (currentTree == ui->treeBackports) {
-        cmd.runAsRoot("echo deb http://ftp.debian.org/debian " + verName + "-backports main contrib non-free > "
-                      + tempList);
+        if (!cmd.writeFileAsRoot(tempList, backportsSourceLine(verName), Cmd::QuietMode::Yes)) {
+            return false;
+        }
         updateApt();
     }
     bool result = install(names);
     if (currentTree == ui->treeBackports || currentTree == ui->treeMXtest) {
         if (QFile::exists(tempList)) {
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
+            Cmd helperCmd;
+            runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
             updateApt();
         }
     }
@@ -2125,7 +2177,9 @@ bool MainWindow::markKeep()
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = changeList.join(' ');
     enableOutput();
-    return cmd.runAsRoot("apt-mark manual " + names);
+    QStringList args {"manual"};
+    args += packageArgs(names);
+    return cmd.procAsRoot("apt-mark", args);
 }
 
 bool MainWindow::isFilteredName(const QString &name)
@@ -2543,10 +2597,12 @@ void MainWindow::cleanup()
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }
     if (QFile::exists(tempList)) {
-        Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib cleanup_temp", Cmd::QuietMode::Yes);
+        Cmd helperCmd;
+        runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
         updateApt();
     }
-    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib copy_log", Cmd::QuietMode::Yes);
+    Cmd helperCmd;
+    runMxpiLibAsRoot(helperCmd, QStringLiteral("copy_log"));
     settings.setValue("geometry", saveGeometry());
     settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
     settings.setValue("FlatpakUser", ui->comboUser->currentText());
@@ -3428,8 +3484,8 @@ void MainWindow::pushUninstall_clicked()
     showOutput();
 
     QString names;
-    QString preuninstall;
-    QString postuninstall;
+    QStringList preuninstall;
+    QStringList postuninstall;
     if (currentTree == ui->treePopularApps) {
         QModelIndexList checkedItems = popularModel->checkedItems();
         for (const QModelIndex &index : checkedItems) {
@@ -3440,10 +3496,10 @@ void MainWindow::pushUninstall_clicked()
 
             names += app->uninstallNames.trimmed().replace('\n', ' ') + ' ';
             if (!app->postUninstall.isEmpty()) {
-                postuninstall += app->postUninstall + '\n';
+                postuninstall << app->postUninstall;
             }
             if (!app->preUninstall.isEmpty()) {
-                preuninstall += app->preUninstall + '\n';
+                preuninstall << app->preUninstall;
             }
             popularModel->setData(index, Qt::Unchecked, Qt::CheckStateRole);
         }
@@ -3802,7 +3858,8 @@ void MainWindow::installFlatpak()
         currentTree->blockSignals(false);
         return;
     }
-    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
+    Cmd helperCmd;
+    runMxpiLibAsRoot(helperCmd, QStringLiteral("flatpak_add_repos"));
     enableOutput();
     invalidateFlatpakRemoteCache();
     listFlatpakRemotes();
@@ -4410,7 +4467,8 @@ void MainWindow::comboUser_currentIndexChanged(int index)
         if (!updated) {
             setCursor(QCursor(Qt::BusyCursor));
             enableOutput();
-            Cmd().run("/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos_user", Cmd::QuietMode::Yes);
+            Cmd helperCmd;
+            runMxpiLib(helperCmd, QStringLiteral("flatpak_add_repos_user"));
             setCursor(QCursor(Qt::ArrowCursor));
             updated = true;
         }
@@ -4511,7 +4569,7 @@ QString MainWindow::getMXTestRepoUrl()
 
 void MainWindow::pushRemoveAutoremovable_clicked()
 {
-    QString names = cmd.getOutAsRoot(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')");
+    QString names = cmd.getOut(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')");
     QMessageBox::warning(this, tr("Warning"),
                          tr("Potentially dangerous operation.\nPlease make sure you check "
                             "carefully the list of packages to be removed."));
