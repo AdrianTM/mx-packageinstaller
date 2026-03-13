@@ -1,15 +1,15 @@
-<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="zh_TW">
+<?xml version="1.0" ?><!DOCTYPE TS><TS version="2.1" language="en_US">
 <context>
     <name>Cmd</name>
     <message>
         <location filename="../src/cmd.cpp" line="124"/>
         <source>Administrator Access Required</source>
-        <translation type="unfinished"/>
+        <translation>Administrator Access Required</translation>
     </message>
     <message>
         <location filename="../src/cmd.cpp" line="125"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
-        <translation type="unfinished"/>
+        <translation>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</translation>
     </message>
 </context>
 <context>
@@ -17,27 +17,27 @@
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="155"/>
         <source>Package</source>
-        <translation>套件</translation>
+        <translation>Package</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="157"/>
         <source>Full Name</source>
-        <translation type="unfinished"/>
+        <translation>Full Name</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="159"/>
         <source>Version</source>
-        <translation>版本</translation>
+        <translation>Version</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="161"/>
         <source>Branch</source>
-        <translation type="unfinished"/>
+        <translation>Branch</translation>
     </message>
     <message>
         <location filename="../src/models/flatpakmodel.cpp" line="163"/>
         <source>Size</source>
-        <translation type="unfinished"/>
+        <translation>Size</translation>
     </message>
 </context>
 <context>
@@ -46,17 +46,17 @@
         <location filename="../src/mainwindow.ui" line="20"/>
         <location filename="../src/mainwindow.cpp" line="192"/>
         <source>MX Package Installer</source>
-        <translation>MX 軟體安裝工具</translation>
+        <translation>MX Package Installer</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="57"/>
         <source>Popular Applications</source>
-        <translation>熱門程式</translation>
+        <translation>Popular Applications</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="76"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="95"/>
@@ -65,7 +65,7 @@
         <location filename="../src/mainwindow.ui" line="1057"/>
         <location filename="../src/mainwindow.ui" line="1178"/>
         <source>search</source>
-        <translation>搜尋</translation>
+        <translation>search</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
@@ -74,63 +74,63 @@
         <location filename="../src/mainwindow.ui" line="1137"/>
         <location filename="../src/mainwindow.ui" line="1373"/>
         <source>= Installed packages</source>
-        <translation type="unfinished"/>
+        <translation>= Installed packages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="159"/>
         <source>Enabled Repos</source>
-        <translation type="unfinished"/>
+        <translation>Enabled Repos</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="229"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all the packages that are marked as &amp;quot;autoremovable&amp;quot;. If you want to manage them, select Autoremovable from drop-down selection box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all the packages that are marked as &amp;quot;autoremovable&amp;quot;. If you want to manage them, select Autoremovable from drop-down selection box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="232"/>
         <source>Autoremove packages</source>
-        <translation type="unfinished"/>
+        <translation>Autoremove packages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="350"/>
         <location filename="../src/mainwindow.ui" line="1254"/>
         <source>Upgrade All</source>
-        <translation>全部升級</translation>
+        <translation>Upgrade All</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="293"/>
         <location filename="../src/mainwindow.ui" line="524"/>
         <location filename="../src/mainwindow.ui" line="901"/>
         <source>Installed:</source>
-        <translation>已安裝：</translation>
+        <translation>Installed:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="377"/>
         <location filename="../src/mainwindow.ui" line="517"/>
         <location filename="../src/mainwindow.ui" line="922"/>
         <source>Total packages:</source>
-        <translation>軟體總數：</translation>
+        <translation>Total packages:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="363"/>
         <location filename="../src/mainwindow.ui" line="649"/>
         <location filename="../src/mainwindow.ui" line="962"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"/>
+        <translation>Also Install &quot;Recommended&quot; Packages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="323"/>
         <location filename="../src/mainwindow.ui" line="554"/>
         <location filename="../src/mainwindow.ui" line="894"/>
         <source>Upgradable:</source>
-        <translation>可升級：</translation>
+        <translation>Upgradable:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="242"/>
         <location filename="../src/mainwindow.ui" line="561"/>
         <location filename="../src/mainwindow.ui" line="929"/>
         <source>Hide library and developer packages</source>
-        <translation>隱藏函式庫和軟體研發程式</translation>
+        <translation>Hide library and developer packages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="264"/>
@@ -138,7 +138,7 @@
         <location filename="../src/mainwindow.ui" line="981"/>
         <location filename="../src/mainwindow.ui" line="1466"/>
         <source>Refresh list</source>
-        <translation>重新載入清單</translation>
+        <translation>Refresh list</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="458"/>
@@ -146,7 +146,7 @@
         <location filename="../src/mainwindow.ui" line="1087"/>
         <location filename="../src/mainwindow.ui" line="1421"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;依軟體狀態篩選。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="461"/>
@@ -157,7 +157,7 @@
         <location filename="../src/mainwindow.ui" line="1094"/>
         <location filename="../src/mainwindow.cpp" line="3953"/>
         <source>All packages</source>
-        <translation>所有軟體</translation>
+        <translation>All packages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="470"/>
@@ -165,7 +165,7 @@
         <location filename="../src/mainwindow.ui" line="1099"/>
         <location filename="../src/mainwindow.cpp" line="3979"/>
         <source>Installed</source>
-        <translation>已安裝</translation>
+        <translation>Installed</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="475"/>
@@ -173,7 +173,7 @@
         <location filename="../src/mainwindow.ui" line="1104"/>
         <location filename="../src/mainwindow.cpp" line="3980"/>
         <source>Upgradable</source>
-        <translation>可升級</translation>
+        <translation>Upgradable</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="480"/>
@@ -185,7 +185,7 @@
         <location filename="../src/mainwindow.cpp" line="4186"/>
         <location filename="../src/mainwindow.cpp" line="4187"/>
         <source>Not installed</source>
-        <translation>未安裝</translation>
+        <translation>Not installed</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="485"/>
@@ -197,29 +197,29 @@
         <location filename="../src/mainwindow.cpp" line="4061"/>
         <location filename="../src/mainwindow.cpp" line="4152"/>
         <source>Autoremovable</source>
-        <translation type="unfinished"/>
+        <translation>Autoremovable</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="427"/>
         <location filename="../src/mainwindow.ui" line="729"/>
         <location filename="../src/mainwindow.ui" line="830"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation type="unfinished"/>
+        <translation>= Upgradable package. Newer version available in selected repository.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="500"/>
         <source>MX Test Repo</source>
-        <translation>MX 測試倉庫</translation>
+        <translation>MX Test Repo</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="809"/>
         <source>Debian Backports</source>
-        <translation type="unfinished"/>
+        <translation>Debian Backports</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1160"/>
         <source>Flatpaks</source>
-        <translation type="unfinished"/>
+        <translation>Flatpaks</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1389"/>
@@ -227,48 +227,48 @@
         <location filename="../src/mainwindow.cpp" line="175"/>
         <location filename="../src/mainwindow.cpp" line="176"/>
         <source>For all users</source>
-        <translation type="unfinished"/>
+        <translation>For all users</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1398"/>
         <source>For current user</source>
-        <translation type="unfinished"/>
+        <translation>For current user</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1483"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"/>
+        <translation>Remote (repo):</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1424"/>
         <location filename="../src/mainwindow.ui" line="1428"/>
         <location filename="../src/mainwindow.cpp" line="3929"/>
         <source>All apps</source>
-        <translation type="unfinished"/>
+        <translation>All apps</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1433"/>
         <location filename="../src/mainwindow.cpp" line="3935"/>
         <source>All runtimes</source>
-        <translation type="unfinished"/>
+        <translation>All runtimes</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1438"/>
         <location filename="../src/mainwindow.cpp" line="3941"/>
         <source>All available</source>
-        <translation type="unfinished"/>
+        <translation>All available</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1443"/>
         <location filename="../src/mainwindow.cpp" line="3926"/>
         <source>Installed apps</source>
-        <translation type="unfinished"/>
+        <translation>Installed apps</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1448"/>
         <location filename="../src/mainwindow.cpp" line="3923"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"/>
+        <translation>Installed runtimes</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1453"/>
@@ -276,46 +276,46 @@
         <location filename="../src/mainwindow.cpp" line="4180"/>
         <location filename="../src/mainwindow.cpp" line="4181"/>
         <source>All installed</source>
-        <translation type="unfinished"/>
+        <translation>All installed</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1233"/>
         <source>Total items </source>
-        <translation type="unfinished"/>
+        <translation>Total items </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1247"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"/>
+        <translation>Installed apps:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1299"/>
         <source>Advanced</source>
-        <translation>進階選項</translation>
+        <translation>Advanced</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1328"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"/>
+        <translation>Total installed size:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1342"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"/>
+        <translation>Remove unused runtimes</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="277"/>
         <location filename="../src/mainwindow.ui" line="623"/>
         <location filename="../src/mainwindow.ui" line="994"/>
         <source>Select all</source>
-        <translation type="unfinished"/>
+        <translation>Select all</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1500"/>
         <location filename="../src/mainwindow.cpp" line="3508"/>
         <location filename="../src/mainwindow.cpp" line="3816"/>
         <source>Console Output</source>
-        <translation>終端機輸出</translation>
+        <translation>Console Output</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1506"/>
@@ -325,7 +325,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1516"/>
         <source>Respond here, or just press Enter</source>
-        <translation>在此回覆，或只按 Enter</translation>
+        <translation>Respond here, or just press Enter</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1575"/>
@@ -337,7 +337,7 @@
         <location filename="../src/mainwindow.cpp" line="4151"/>
         <location filename="../src/mainwindow.cpp" line="4178"/>
         <source>Install</source>
-        <translation>安裝</translation>
+        <translation>Install</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1581"/>
@@ -347,12 +347,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1600"/>
         <source>Quit application</source>
-        <translation>退出程式</translation>
+        <translation>Quit application</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1603"/>
         <source>Close</source>
-        <translation>關閉</translation>
+        <translation>Close</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1609"/>
@@ -362,12 +362,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1641"/>
         <source>About this application</source>
-        <translation>關於本程式</translation>
+        <translation>About this application</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1644"/>
         <source>About...</source>
-        <translation>關於……</translation>
+        <translation>About...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1650"/>
@@ -377,12 +377,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1688"/>
         <source>Display help </source>
-        <translation>顯示說明</translation>
+        <translation>Display help </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1691"/>
         <source>Help</source>
-        <translation>說明</translation>
+        <translation>Help</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1697"/>
@@ -392,7 +392,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1713"/>
         <source>Uninstall</source>
-        <translation>移除</translation>
+        <translation>Uninstall</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1719"/>
@@ -402,22 +402,22 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="380"/>
         <source>Uninstalling packages...</source>
-        <translation>正在移除軟體……</translation>
+        <translation>Uninstalling packages...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="385"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"/>
+        <translation>Running pre-uninstall operations...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="405"/>
         <source>Running post-uninstall operations...</source>
-        <translation type="unfinished"/>
+        <translation>Running post-uninstall operations...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="422"/>
         <source>Refreshing sources...</source>
-        <translation>更新來源……</translation>
+        <translation>Refreshing sources...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="435"/>
@@ -439,139 +439,139 @@
         <location filename="../src/mainwindow.cpp" line="4487"/>
         <location filename="../src/mainwindow.cpp" line="4525"/>
         <source>Error</source>
-        <translation>錯誤</translation>
+        <translation>Current kernel doesn&apos;t support selected compression algorithm, please edit the configuration file and select a different algorithm.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="436"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation>更新來源時發生問題。可能有一些軟體來源並未提供更新檔。詳細訊息請見：</translation>
+        <translation>There was a problem updating sources. Some sources may not have provided updates. For more info check: </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="553"/>
         <location filename="../src/mainwindow.cpp" line="580"/>
         <source>Could not determine Debian version. Please select your version:</source>
-        <translation type="unfinished"/>
+        <translation>Could not determine Debian version. Please select your version:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="586"/>
         <source>Debian Version</source>
-        <translation type="unfinished"/>
+        <translation>Debian Version</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1111"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1117"/>
         <source>Please wait...</source>
-        <translation>請稍待……</translation>
+        <translation>Please wait...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1656"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation type="unfinished"/>
+        <translation>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1665"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation>即將利用 Debian 回溯移植倉庫，裡面的軟體來自 Debian 下一個正式發行版（稱為 &apos;testing&apos; ），經過調校、編譯，以供 Debian 安定版使用。這些軟體的測試過程沒辦法像 Debian 和 MX Linux 的安定版那麼精細，基本上它們以依其所是的狀態提供出來，有可能與 Debian 安定版當中的其他元件並不相容。小心使用！</translation>
+        <translation>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1673"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation type="unfinished"/>
+        <translation>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1681"/>
         <location filename="../src/mainwindow.cpp" line="4515"/>
         <source>Warning</source>
-        <translation>注意</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1685"/>
         <source>Do not show this message again</source>
-        <translation>不再顯示此一訊息</translation>
+        <translation>Do not show this message again</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1846"/>
         <source>Remove</source>
-        <translation>刪除</translation>
+        <translation>Remove</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1862"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"/>
+        <translation>The following packages were selected. Click Show Details for list of changes.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1898"/>
         <location filename="../src/mainwindow.cpp" line="2033"/>
         <location filename="../src/mainwindow.cpp" line="2286"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation>無法連上網際網路，因此不能下載軟體列表。</translation>
+        <translation>Internet is not available, won&apos;t be able to download the list of packages</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1901"/>
         <source>Installing packages...</source>
-        <translation>正在安裝軟體……</translation>
+        <translation>Installing packages...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1959"/>
         <source>Post-processing...</source>
-        <translation>後續處理當中……</translation>
+        <translation>Post-processing...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1991"/>
         <source>Pre-processing for </source>
-        <translation>前置處理</translation>
+        <translation>Pre-processing for </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2005"/>
         <source>Installing </source>
-        <translation>正在安裝……</translation>
+        <translation>Installing </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2012"/>
         <source>Post-processing for </source>
-        <translation>後續處理</translation>
+        <translation>Post-processing for </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2209"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
-        <translation type="unfinished"/>
+        <translation>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2294"/>
         <source>Downloading package info...</source>
-        <translation>正在下載軟體資料……</translation>
+        <translation>Downloading package info...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2643"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation type="unfinished"/>
+        <translation>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2887"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation type="unfinished"/>
+        <translation>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3022"/>
         <location filename="../src/mainwindow.cpp" line="3141"/>
         <location filename="../src/mainwindow.cpp" line="3170"/>
         <source>Package info</source>
-        <translation>軟體資料</translation>
+        <translation>Package info</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3050"/>
         <location filename="../src/mainwindow.cpp" line="4430"/>
         <source>More &amp;info...</source>
-        <translation type="unfinished"/>
+        <translation>More &amp;info...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3084"/>
         <source>Packages to be installed: </source>
-        <translation>即將安裝的軟體：</translation>
+        <translation>Packages to be installed: </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3311"/>
@@ -584,7 +584,7 @@
         <location filename="../src/mainwindow.cpp" line="4389"/>
         <location filename="../src/mainwindow.cpp" line="4483"/>
         <source>Done</source>
-        <translation>完成</translation>
+        <translation>Done</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3311"/>
@@ -599,7 +599,7 @@
         <location filename="../src/mainwindow.cpp" line="4483"/>
         <location filename="../src/mainwindow.cpp" line="4522"/>
         <source>Processing finished successfully.</source>
-        <translation>程序順利進行完畢。</translation>
+        <translation>Processing finished successfully.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3328"/>
@@ -608,87 +608,88 @@
         <location filename="../src/mainwindow.cpp" line="4364"/>
         <location filename="../src/mainwindow.cpp" line="4396"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation>安裝軟體時發現問題，請參考終端機輸出的訊息。</translation>
+        <translation>Problem detected while installing, please inspect the console output.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3355"/>
         <source>About %1</source>
-        <translation>大約 %1</translation>
+        <translation>About %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3356"/>
         <source>Version: </source>
-        <translation>版本：</translation>
+        <translation>Version: </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3358"/>
         <source>Package Installer for MX Linux</source>
-        <translation>MX Linux 軟體安裝工具</translation>
+        <translation>Package Installer for MX Linux</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3360"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>版權所有 (c) MX Linux</translation>
+        <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3361"/>
         <source>%1 License</source>
-        <translation>%1 許可</translation>
+        <translation>%1 License</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3373"/>
         <source>%1 Help</source>
-        <translation>%1 幫助</translation>
+        <translation>%1 Help</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3486"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"/>
+        <translation>We encountered a problem uninstalling, please check output</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3497"/>
         <location filename="../src/mainwindow.cpp" line="4522"/>
         <source>Success</source>
-        <translation>成功</translation>
+        <translation>Success</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3500"/>
         <location filename="../src/mainwindow.cpp" line="4525"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation>移除該程式時發生問題</translation>
+        <translation>We encountered a problem uninstalling the program</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3653"/>
         <location filename="../src/mainwindow.cpp" line="3704"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
-        <translation type="unfinished"/>
+        <translation>Could not download the list of packages. Please check your APT sources.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3752"/>
         <location filename="../src/mainwindow.cpp" line="3798"/>
         <source>Flatpak not installed</source>
-        <translation type="unfinished"/>
+        <translation>Flatpak not installed</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3753"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation type="unfinished"/>
+        <translation>Flatpak is not currently installed.
+OK to go ahead and install it?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3798"/>
         <source>Flatpak was not installed</source>
-        <translation type="unfinished"/>
+        <translation>Flatpak was not installed</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3820"/>
         <source>Needs re-login</source>
-        <translation type="unfinished"/>
+        <translation>Needs re-login</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3821"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation type="unfinished"/>
+        <translation>You might need to logout/login to see installed items in the menu</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3966"/>
@@ -696,51 +697,52 @@ OK to go ahead and install it?</source>
         <location filename="../src/mainwindow.cpp" line="4089"/>
         <location filename="../src/mainwindow.cpp" line="4153"/>
         <source>Mark keep</source>
-        <translation type="unfinished"/>
+        <translation>Mark keep</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3994"/>
         <source>Select/deselect all upgradable</source>
-        <translation type="unfinished"/>
+        <translation>Select/deselect all upgradable</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3995"/>
         <source>Select/deselect all autoremovable</source>
-        <translation type="unfinished"/>
+        <translation>Select/deselect all autoremovable</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4091"/>
         <location filename="../src/mainwindow.cpp" line="4151"/>
         <source>Upgrade</source>
-        <translation>升級</translation>
+        <translation>Upgrade</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4304"/>
         <location filename="../src/mainwindow.cpp" line="4441"/>
         <source>Quit?</source>
-        <translation>退出？</translation>
+        <translation>Quit?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4305"/>
         <location filename="../src/mainwindow.cpp" line="4442"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4131"/>
         <source>Reinstall</source>
-        <translation>重新安裝</translation>
+        <translation>Reinstall</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4488"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"/>
+        <translation>Problem detected during last operation, please inspect the console output.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4516"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"/>
+        <translation>Potentially dangerous operation.
+Please make sure you check carefully the list of packages to be removed.</translation>
     </message>
 </context>
 <context>
@@ -748,82 +750,82 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="16"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"/>
+        <translation>Manage Flatpak Remotes</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="23"/>
         <source>For all users</source>
-        <translation type="unfinished"/>
+        <translation>For all users</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation type="unfinished"/>
+        <translation>For current user</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="35"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"/>
+        <translation>enter Flatpak remote URL</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="38"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"/>
+        <translation>enter Flatpakref location to install app</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="40"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"/>
+        <translation>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="49"/>
         <source>Remove remote</source>
-        <translation type="unfinished"/>
+        <translation>Remove remote</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="54"/>
         <source>Add remote</source>
-        <translation type="unfinished"/>
+        <translation>Add remote</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="59"/>
         <source>Install app</source>
-        <translation type="unfinished"/>
+        <translation>Install app</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="64"/>
         <source>Close</source>
-        <translation>關閉</translation>
+        <translation>Close</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="81"/>
         <source>Not removable</source>
-        <translation type="unfinished"/>
+        <translation>Not removable</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="82"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"/>
+        <translation>Flathub is the main Flatpak remote and won&apos;t be removed</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="101"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"/>
+        <translation>Error adding remote</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="102"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"/>
+        <translation>Could not add remote - command returned an error. Please double-check the remote address and try again</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="107"/>
         <source>Success</source>
-        <translation>成功</translation>
+        <translation>Success</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="107"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"/>
+        <translation>Remote added successfully</translation>
     </message>
 </context>
 <context>
@@ -831,22 +833,22 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/models/packagemodel.cpp" line="143"/>
         <source>Package</source>
-        <translation>套件</translation>
+        <translation>Package</translation>
     </message>
     <message>
         <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
-        <translation type="unfinished"/>
+        <translation>Repo Version</translation>
     </message>
     <message>
         <location filename="../src/models/packagemodel.cpp" line="147"/>
         <source>Installed</source>
-        <translation>已安裝</translation>
+        <translation>Installed</translation>
     </message>
     <message>
         <location filename="../src/models/packagemodel.cpp" line="149"/>
         <source>Description</source>
-        <translation>簡介</translation>
+        <translation>Description</translation>
     </message>
 </context>
 <context>
@@ -854,22 +856,22 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/models/popularmodel.cpp" line="329"/>
         <source>Category</source>
-        <translation type="unfinished"/>
+        <translation>Category</translation>
     </message>
     <message>
         <location filename="../src/models/popularmodel.cpp" line="333"/>
         <source>Package</source>
-        <translation>套件</translation>
+        <translation>Package</translation>
     </message>
     <message>
         <location filename="../src/models/popularmodel.cpp" line="335"/>
         <source>Info</source>
-        <translation>資料</translation>
+        <translation>Info</translation>
     </message>
     <message>
         <location filename="../src/models/popularmodel.cpp" line="337"/>
         <source>Description</source>
-        <translation>簡介</translation>
+        <translation>Description</translation>
     </message>
 </context>
 <context>
@@ -877,34 +879,35 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/about.cpp" line="71"/>
         <source>License</source>
-        <translation>授權條款</translation>
+        <translation>License</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="72"/>
         <location filename="../src/about.cpp" line="82"/>
         <source>Changelog</source>
-        <translation>變更紀錄</translation>
+        <translation>Changelog</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="73"/>
         <source>Cancel</source>
-        <translation>取消</translation>
+        <translation>Cancel</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="95"/>
         <source>&amp;Close</source>
-        <translation>關閉（&amp;C）</translation>
+        <translation>&amp;Close</translation>
     </message>
     <message>
         <location filename="../src/lockfile.cpp" line="50"/>
         <source>Warning</source>
-        <translation>注意</translation>
+        <translation>Warning</translation>
     </message>
     <message>
         <location filename="../src/lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Dpkg/apt database is locked by another program: %1
+Close the program, or wait until it is done processing and try again.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="90"/>
@@ -913,28 +916,32 @@ Close the program, or wait until it is done processing and try again.</source>
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation type="unfinished"/>
+        <translation>MX Package Installer is a tool used for managing packages on MX Linux
+    - installs popular programs from different sources
+    - installs programs from the MX Test repo
+    - installs programs from Debian Backports repo
+    - installs flatpaks</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="98"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
-        <translation type="unfinished"/>
+        <translation>Skip online check if it falsely reports lack of internet access.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="108"/>
         <location filename="../src/main.cpp" line="116"/>
         <source>Error</source>
-        <translation>錯誤</translation>
+        <translation>Current kernel doesn&apos;t support selected compression algorithm, please edit the configuration file and select a different algorithm.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="109"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>您似乎是以 root 身份登錄，請登出並以一般使用者身份登錄以使用此程式。</translation>
+        <translation>You seem to be logged in as root, please log out and log in as normal user to use this program.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="117"/>
         <source>You must run this program with admin access.</source>
-        <translation>您必須以系統管理員權限執行此程式。</translation>
+        <translation>You must run this program with admin access.</translation>
     </message>
 </context>
 </TS>

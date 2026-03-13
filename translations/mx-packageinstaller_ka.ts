@@ -4,12 +4,12 @@
     <message>
         <location filename="../src/cmd.cpp" line="124"/>
         <source>Administrator Access Required</source>
-        <translation type="unfinished"/>
+        <translation>საჭიროა ადმინისტრატორის წვდომა</translation>
     </message>
     <message>
         <location filename="../src/cmd.cpp" line="125"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
-        <translation type="unfinished"/>
+        <translation>ეს ოპერაცია ადმინისტრატორის პრივილეგიებს მოითხოვს. გაუშვით აპლიკაცია თავიდან და შეიყვანეთ პაროლი, როცა გკითხავენ.</translation>
     </message>
 </context>
 <context>
@@ -46,17 +46,17 @@
         <location filename="../src/mainwindow.ui" line="20"/>
         <location filename="../src/mainwindow.cpp" line="192"/>
         <source>MX Package Installer</source>
-        <translation type="unfinished"/>
+        <translation>MX-ის პაკეტების დამყენებელი</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="57"/>
         <source>Popular Applications</source>
-        <translation type="unfinished"/>
+        <translation>პოპულარული აპლიკაციები</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="76"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;Manage popular packages&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;&lt;span style=&quot; font-size:16pt;&quot;&gt;პოპულარული პაკეტების მართვა&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="95"/>
@@ -74,28 +74,28 @@
         <location filename="../src/mainwindow.ui" line="1137"/>
         <location filename="../src/mainwindow.ui" line="1373"/>
         <source>= Installed packages</source>
-        <translation type="unfinished"/>
+        <translation>= დაყენებული პაკეტები</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="159"/>
         <source>Enabled Repos</source>
-        <translation type="unfinished"/>
+        <translation>ჩართული რეპოები</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="229"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Remove all the packages that are marked as &amp;quot;autoremovable&amp;quot;. If you want to manage them, select Autoremovable from drop-down selection box.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;ყველა პაკეტის წაშლა, რომელიც მონიშნულია, როგორც &amp;quot;ავტოწაშლადი&amp;quot;. თუ გნებავთ, მართოთ ისინი, აირჩიეთ &apos;ავტოწაშლადი&apos; ჩამოსაშლელ მენიუში.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="232"/>
         <source>Autoremove packages</source>
-        <translation type="unfinished"/>
+        <translation>პაკეტების ავტომატური წაშლა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="350"/>
         <location filename="../src/mainwindow.ui" line="1254"/>
         <source>Upgrade All</source>
-        <translation type="unfinished"/>
+        <translation>ყველას განახლება</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="293"/>
@@ -109,14 +109,14 @@
         <location filename="../src/mainwindow.ui" line="517"/>
         <location filename="../src/mainwindow.ui" line="922"/>
         <source>Total packages:</source>
-        <translation type="unfinished"/>
+        <translation>პაკეტები სულ:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="363"/>
         <location filename="../src/mainwindow.ui" line="649"/>
         <location filename="../src/mainwindow.ui" line="962"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
-        <translation type="unfinished"/>
+        <translation>ასევე მოხდება &apos;რეკომენდებული&apos; პაკეტების დაყენება</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="323"/>
@@ -130,7 +130,7 @@
         <location filename="../src/mainwindow.ui" line="561"/>
         <location filename="../src/mainwindow.ui" line="929"/>
         <source>Hide library and developer packages</source>
-        <translation type="unfinished"/>
+        <translation>ბიბლიოთეკისა და პროგრამისტის პაკეტების დამალვა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="264"/>
@@ -138,7 +138,7 @@
         <location filename="../src/mainwindow.ui" line="981"/>
         <location filename="../src/mainwindow.ui" line="1466"/>
         <source>Refresh list</source>
-        <translation type="unfinished"/>
+        <translation>სიის განახლება</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="458"/>
@@ -146,7 +146,7 @@
         <location filename="../src/mainwindow.ui" line="1087"/>
         <location filename="../src/mainwindow.ui" line="1421"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;პაკეტების გაფილტვრა მათი სტატუსის მიხედვით.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="461"/>
@@ -155,15 +155,15 @@
         <location filename="../src/mainwindow.ui" line="767"/>
         <location filename="../src/mainwindow.ui" line="1090"/>
         <location filename="../src/mainwindow.ui" line="1094"/>
-        <location filename="../src/mainwindow.cpp" line="3947"/>
+        <location filename="../src/mainwindow.cpp" line="3953"/>
         <source>All packages</source>
-        <translation type="unfinished"/>
+        <translation>ყველა პაკეტი</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="470"/>
         <location filename="../src/mainwindow.ui" line="772"/>
         <location filename="../src/mainwindow.ui" line="1099"/>
-        <location filename="../src/mainwindow.cpp" line="3973"/>
+        <location filename="../src/mainwindow.cpp" line="3979"/>
         <source>Installed</source>
         <translation>დაყენებულია</translation>
     </message>
@@ -171,7 +171,7 @@
         <location filename="../src/mainwindow.ui" line="475"/>
         <location filename="../src/mainwindow.ui" line="777"/>
         <location filename="../src/mainwindow.ui" line="1104"/>
-        <location filename="../src/mainwindow.cpp" line="3974"/>
+        <location filename="../src/mainwindow.cpp" line="3980"/>
         <source>Upgradable</source>
         <translation>განახლებადი</translation>
     </message>
@@ -180,41 +180,41 @@
         <location filename="../src/mainwindow.ui" line="782"/>
         <location filename="../src/mainwindow.ui" line="1109"/>
         <location filename="../src/mainwindow.ui" line="1458"/>
-        <location filename="../src/mainwindow.cpp" line="3941"/>
-        <location filename="../src/mainwindow.cpp" line="3975"/>
-        <location filename="../src/mainwindow.cpp" line="4180"/>
-        <location filename="../src/mainwindow.cpp" line="4181"/>
+        <location filename="../src/mainwindow.cpp" line="3947"/>
+        <location filename="../src/mainwindow.cpp" line="3981"/>
+        <location filename="../src/mainwindow.cpp" line="4186"/>
+        <location filename="../src/mainwindow.cpp" line="4187"/>
         <source>Not installed</source>
-        <translation type="unfinished"/>
+        <translation>დაყენებული არაა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="485"/>
         <location filename="../src/mainwindow.ui" line="787"/>
         <location filename="../src/mainwindow.ui" line="1114"/>
-        <location filename="../src/mainwindow.cpp" line="3330"/>
-        <location filename="../src/mainwindow.cpp" line="3912"/>
-        <location filename="../src/mainwindow.cpp" line="3976"/>
-        <location filename="../src/mainwindow.cpp" line="4055"/>
-        <location filename="../src/mainwindow.cpp" line="4146"/>
+        <location filename="../src/mainwindow.cpp" line="3334"/>
+        <location filename="../src/mainwindow.cpp" line="3918"/>
+        <location filename="../src/mainwindow.cpp" line="3982"/>
+        <location filename="../src/mainwindow.cpp" line="4061"/>
+        <location filename="../src/mainwindow.cpp" line="4152"/>
         <source>Autoremovable</source>
-        <translation type="unfinished"/>
+        <translation>ავტოწაშლადი</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="427"/>
         <location filename="../src/mainwindow.ui" line="729"/>
         <location filename="../src/mainwindow.ui" line="830"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
-        <translation type="unfinished"/>
+        <translation>= განახლებადი პაკეტი. მონიშნულ რეპოზიტორიაში ხელმისაწვდომია უფრო ახალი ვერსია.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="500"/>
         <source>MX Test Repo</source>
-        <translation type="unfinished"/>
+        <translation>MX-ის სატესტო რეპო</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="809"/>
         <source>Debian Backports</source>
-        <translation type="unfinished"/>
+        <translation>Debian Backports</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1160"/>
@@ -227,66 +227,66 @@
         <location filename="../src/mainwindow.cpp" line="175"/>
         <location filename="../src/mainwindow.cpp" line="176"/>
         <source>For all users</source>
-        <translation type="unfinished"/>
+        <translation>ყველა მომხმარებლისსთვის</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1398"/>
         <source>For current user</source>
-        <translation type="unfinished"/>
+        <translation>მიმდინარე მომხმარებლისთვის</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1483"/>
         <source>Remote (repo):</source>
-        <translation type="unfinished"/>
+        <translation>დაშორებული (რეპო):</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1424"/>
         <location filename="../src/mainwindow.ui" line="1428"/>
-        <location filename="../src/mainwindow.cpp" line="3923"/>
+        <location filename="../src/mainwindow.cpp" line="3929"/>
         <source>All apps</source>
-        <translation type="unfinished"/>
+        <translation>ყველა აპი</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1433"/>
-        <location filename="../src/mainwindow.cpp" line="3929"/>
+        <location filename="../src/mainwindow.cpp" line="3935"/>
         <source>All runtimes</source>
-        <translation type="unfinished"/>
+        <translation>ყველა გაშვების გარემო</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1438"/>
-        <location filename="../src/mainwindow.cpp" line="3935"/>
+        <location filename="../src/mainwindow.cpp" line="3941"/>
         <source>All available</source>
-        <translation type="unfinished"/>
+        <translation>ყველა ხელმისაწვდომი</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1443"/>
-        <location filename="../src/mainwindow.cpp" line="3920"/>
+        <location filename="../src/mainwindow.cpp" line="3926"/>
         <source>Installed apps</source>
-        <translation type="unfinished"/>
+        <translation>დაყენებული აპები</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1448"/>
-        <location filename="../src/mainwindow.cpp" line="3917"/>
+        <location filename="../src/mainwindow.cpp" line="3923"/>
         <source>Installed runtimes</source>
-        <translation type="unfinished"/>
+        <translation>დაყენებული გაშვების გარემოები</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1453"/>
-        <location filename="../src/mainwindow.cpp" line="3939"/>
-        <location filename="../src/mainwindow.cpp" line="4174"/>
-        <location filename="../src/mainwindow.cpp" line="4175"/>
+        <location filename="../src/mainwindow.cpp" line="3945"/>
+        <location filename="../src/mainwindow.cpp" line="4180"/>
+        <location filename="../src/mainwindow.cpp" line="4181"/>
         <source>All installed</source>
-        <translation type="unfinished"/>
+        <translation>ყველა დაყენებული</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1233"/>
         <source>Total items </source>
-        <translation type="unfinished"/>
+        <translation>სულ ელემენტები </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1247"/>
         <source>Installed apps:</source>
-        <translation type="unfinished"/>
+        <translation>დაყენებული აპები:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1299"/>
@@ -296,12 +296,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1328"/>
         <source>Total installed size:</source>
-        <translation type="unfinished"/>
+        <translation>სულ დაყენებული ზომა:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1342"/>
         <source>Remove unused runtimes</source>
-        <translation type="unfinished"/>
+        <translation>გამოუყენებელი გაშვების გარემოების წაშლა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="277"/>
@@ -312,10 +312,10 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1500"/>
-        <location filename="../src/mainwindow.cpp" line="3504"/>
-        <location filename="../src/mainwindow.cpp" line="3810"/>
+        <location filename="../src/mainwindow.cpp" line="3508"/>
+        <location filename="../src/mainwindow.cpp" line="3816"/>
         <source>Console Output</source>
-        <translation type="unfinished"/>
+        <translation>კონსოლში გამოტანა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1506"/>
@@ -325,17 +325,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1516"/>
         <source>Respond here, or just press Enter</source>
-        <translation type="unfinished"/>
+        <translation>უპასუხეთ აქ, ან, უბრალოდ, დააჭირეთ ღილაკს Enter</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1575"/>
         <location filename="../src/mainwindow.cpp" line="1849"/>
-        <location filename="../src/mainwindow.cpp" line="3960"/>
-        <location filename="../src/mainwindow.cpp" line="3971"/>
-        <location filename="../src/mainwindow.cpp" line="4085"/>
-        <location filename="../src/mainwindow.cpp" line="4125"/>
-        <location filename="../src/mainwindow.cpp" line="4145"/>
-        <location filename="../src/mainwindow.cpp" line="4172"/>
+        <location filename="../src/mainwindow.cpp" line="3966"/>
+        <location filename="../src/mainwindow.cpp" line="3977"/>
+        <location filename="../src/mainwindow.cpp" line="4091"/>
+        <location filename="../src/mainwindow.cpp" line="4131"/>
+        <location filename="../src/mainwindow.cpp" line="4151"/>
+        <location filename="../src/mainwindow.cpp" line="4178"/>
         <source>Install</source>
         <translation>დაყენება</translation>
     </message>
@@ -347,7 +347,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1600"/>
         <source>Quit application</source>
-        <translation type="unfinished"/>
+        <translation>აპლიკაციიდან გასვლა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1603"/>
@@ -362,7 +362,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1641"/>
         <source>About this application</source>
-        <translation type="unfinished"/>
+        <translation>ამ აპლიკაციის შესახებ</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1644"/>
@@ -377,7 +377,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1688"/>
         <source>Display help </source>
-        <translation type="unfinished"/>
+        <translation>დახმარების ჩვენება </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1691"/>
@@ -402,22 +402,22 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="380"/>
         <source>Uninstalling packages...</source>
-        <translation type="unfinished"/>
+        <translation>პაკეტების წაშლა...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="385"/>
         <source>Running pre-uninstall operations...</source>
-        <translation type="unfinished"/>
+        <translation>გაშვებულია წაშლისწინა ოპერაციები...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="405"/>
         <source>Running post-uninstall operations...</source>
-        <translation type="unfinished"/>
+        <translation>გაშვებულია წაშლისშემდგომი ოპერაციები...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="422"/>
         <source>Refreshing sources...</source>
-        <translation type="unfinished"/>
+        <translation>წყაროების განახლება...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="435"/>
@@ -425,26 +425,26 @@
         <location filename="../src/mainwindow.cpp" line="2032"/>
         <location filename="../src/mainwindow.cpp" line="2208"/>
         <location filename="../src/mainwindow.cpp" line="2285"/>
-        <location filename="../src/mainwindow.cpp" line="2639"/>
-        <location filename="../src/mainwindow.cpp" line="2883"/>
-        <location filename="../src/mainwindow.cpp" line="3323"/>
-        <location filename="../src/mainwindow.cpp" line="3340"/>
-        <location filename="../src/mainwindow.cpp" line="3482"/>
-        <location filename="../src/mainwindow.cpp" line="3496"/>
-        <location filename="../src/mainwindow.cpp" line="3646"/>
-        <location filename="../src/mainwindow.cpp" line="3697"/>
-        <location filename="../src/mainwindow.cpp" line="4269"/>
-        <location filename="../src/mainwindow.cpp" line="4357"/>
-        <location filename="../src/mainwindow.cpp" line="4389"/>
-        <location filename="../src/mainwindow.cpp" line="4465"/>
-        <location filename="../src/mainwindow.cpp" line="4503"/>
+        <location filename="../src/mainwindow.cpp" line="2642"/>
+        <location filename="../src/mainwindow.cpp" line="2886"/>
+        <location filename="../src/mainwindow.cpp" line="3327"/>
+        <location filename="../src/mainwindow.cpp" line="3344"/>
+        <location filename="../src/mainwindow.cpp" line="3486"/>
+        <location filename="../src/mainwindow.cpp" line="3500"/>
+        <location filename="../src/mainwindow.cpp" line="3652"/>
+        <location filename="../src/mainwindow.cpp" line="3703"/>
+        <location filename="../src/mainwindow.cpp" line="4275"/>
+        <location filename="../src/mainwindow.cpp" line="4363"/>
+        <location filename="../src/mainwindow.cpp" line="4395"/>
+        <location filename="../src/mainwindow.cpp" line="4487"/>
+        <location filename="../src/mainwindow.cpp" line="4525"/>
         <source>Error</source>
         <translation>შეცდომა</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="436"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
-        <translation type="unfinished"/>
+        <translation>წყაროების განახლებისას აღმოჩენილია პრობლემა. ზოგიერთმა წყარომ, შეიძლება, წყაროები არ მოგვაწოდა. მეტი ინფორმაციისთვის იხილეთ: </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="553"/>
@@ -465,33 +465,33 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1117"/>
         <source>Please wait...</source>
-        <translation type="unfinished"/>
+        <translation>გთხოვთ, მოითმინეთ...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1656"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation type="unfinished"/>
+        <translation>აპირებთ, გამოიყენოთ MX-ის სატესტო რეპოზიტორია, რომლის პაკეტებიც, მხოლოდ, სატესტოდაა განკუთვნილი. მათ, შეიძლება, სისტემა გააფუჭონ კიდეც, ასე რომ, გირჩევთ, მოახდინოთ თქვენი სისტემის მარქაფი და დააყენოთ, ან განაახლოთ ერთდროულად, მხოლოდ, ერთი პაკეტის განახლება. მოგვწერეთ თქვენი შთაბეჭდილება ფორუმზე, რომ მოხდეს პაკეტების შეფასება მანამდე, სანამ მათი მთავარ რეპოზიტორიაში გადატანა მოხდება.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1665"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
-        <translation type="unfinished"/>
+        <translation>აპირებთ, გამოიყენოთ Debian Backports, რომელიც შეიცავს პაკეტებს, რომლებიც აღებულია შემდეგი Debian-ის ვერსიიდან (სახელად &apos;testing&apos;), რომლებიც მორგებული და გადაკომპილებულია Debian stable-ზე გამოსაყენებლად. მათი დატესტვა შეუძლებელია, როგორც ეს Debian-ის და MX Linux-ის სტაბილურ გამოცემებში ხდება და გადმოგეცემათ, როგორც არის, ანუ რისკით, არათავსებადი იყოს სხვა Debian stable-ის სხვა კომპონენტებთან. ფრთხილად გამოიყენეთ!</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1673"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation type="unfinished"/>
+        <translation>MX Linux ამ flatpak-ების რეპოზიტორიას, მხოლოდ, მომხმარებლის მოხერხებულობისთვის შეიცავს და ის პასუხისმგებელი არაა ინდივიდუალური flatpak-ების ფუნქციონირებაზე. მეტი ინფორმაციისთვის იხილეთ flatpak-ები ვიკიზე.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1681"/>
-        <location filename="../src/mainwindow.cpp" line="4493"/>
+        <location filename="../src/mainwindow.cpp" line="4515"/>
         <source>Warning</source>
         <translation>გაფრთხილება</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1685"/>
         <source>Do not show this message again</source>
-        <translation type="unfinished"/>
+        <translation>აღარ მაჩვენო ეს შეტყობინება</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1846"/>
@@ -501,19 +501,19 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1862"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
-        <translation type="unfinished"/>
+        <translation>მონიშნულია შემდეგი პაკეტები. ცვლილებების სიის სანახავად დააწკაპუნეთ ღილაკზე &apos;ცვლილებების ჩვენება&apos;.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1898"/>
         <location filename="../src/mainwindow.cpp" line="2033"/>
         <location filename="../src/mainwindow.cpp" line="2286"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
-        <translation type="unfinished"/>
+        <translation>ინტერნეტი ხელმისაწვდომი არაა. თქვენ ვერ შეძლებთ, პაკეტების სია გადმოწეროთ</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1901"/>
         <source>Installing packages...</source>
-        <translation type="unfinished"/>
+        <translation>პაკეტების დაყენება...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1959"/>
@@ -523,7 +523,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1991"/>
         <source>Pre-processing for </source>
-        <translation type="unfinished"/>
+        <translation>პრეპროცესინგი პაკეტისთვის </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2005"/>
@@ -533,7 +533,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2012"/>
         <source>Post-processing for </source>
-        <translation type="unfinished"/>
+        <translation>პოსტპროცესინგი პაკეტისთვის </translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2209"/>
@@ -543,202 +543,206 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2294"/>
         <source>Downloading package info...</source>
-        <translation type="unfinished"/>
+        <translation>პაკეტის ინფორმაციის გადმოწერა...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2640"/>
+        <location filename="../src/mainwindow.cpp" line="2643"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation type="unfinished"/>
+        <translation>ბრძანებამ dpkg-query შეცდომა დააბრუნა. გაუშვით ტერმინალში &apos;dpkg-query -W&apos; და შეამოწმეთ გამოტანილი ინფორმაცია.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2884"/>
+        <location filename="../src/mainwindow.cpp" line="2887"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3019"/>
-        <location filename="../src/mainwindow.cpp" line="3138"/>
-        <location filename="../src/mainwindow.cpp" line="3167"/>
+        <location filename="../src/mainwindow.cpp" line="3022"/>
+        <location filename="../src/mainwindow.cpp" line="3141"/>
+        <location filename="../src/mainwindow.cpp" line="3170"/>
         <source>Package info</source>
-        <translation type="unfinished"/>
+        <translation>ინფორმაცია პაკეტზე</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3047"/>
-        <location filename="../src/mainwindow.cpp" line="4424"/>
+        <location filename="../src/mainwindow.cpp" line="3050"/>
+        <location filename="../src/mainwindow.cpp" line="4430"/>
         <source>More &amp;info...</source>
-        <translation type="unfinished"/>
+        <translation>მეტი &amp;ინფორმაცია...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3081"/>
+        <location filename="../src/mainwindow.cpp" line="3084"/>
         <source>Packages to be installed: </source>
-        <translation type="unfinished"/>
+        <translation>დასაყენებელი პაკეტები: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3307"/>
-        <location filename="../src/mainwindow.cpp" line="3319"/>
-        <location filename="../src/mainwindow.cpp" line="3337"/>
-        <location filename="../src/mainwindow.cpp" line="3457"/>
-        <location filename="../src/mainwindow.cpp" line="3479"/>
-        <location filename="../src/mainwindow.cpp" line="4266"/>
-        <location filename="../src/mainwindow.cpp" line="4353"/>
-        <location filename="../src/mainwindow.cpp" line="4383"/>
-        <location filename="../src/mainwindow.cpp" line="4461"/>
+        <location filename="../src/mainwindow.cpp" line="3311"/>
+        <location filename="../src/mainwindow.cpp" line="3323"/>
+        <location filename="../src/mainwindow.cpp" line="3341"/>
+        <location filename="../src/mainwindow.cpp" line="3461"/>
+        <location filename="../src/mainwindow.cpp" line="3483"/>
+        <location filename="../src/mainwindow.cpp" line="4272"/>
+        <location filename="../src/mainwindow.cpp" line="4359"/>
+        <location filename="../src/mainwindow.cpp" line="4389"/>
+        <location filename="../src/mainwindow.cpp" line="4483"/>
         <source>Done</source>
         <translation>მზადაა</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3307"/>
-        <location filename="../src/mainwindow.cpp" line="3319"/>
-        <location filename="../src/mainwindow.cpp" line="3337"/>
-        <location filename="../src/mainwindow.cpp" line="3457"/>
-        <location filename="../src/mainwindow.cpp" line="3479"/>
-        <location filename="../src/mainwindow.cpp" line="3493"/>
-        <location filename="../src/mainwindow.cpp" line="4266"/>
-        <location filename="../src/mainwindow.cpp" line="4353"/>
-        <location filename="../src/mainwindow.cpp" line="4383"/>
-        <location filename="../src/mainwindow.cpp" line="4461"/>
-        <location filename="../src/mainwindow.cpp" line="4500"/>
-        <source>Processing finished successfully.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="3324"/>
+        <location filename="../src/mainwindow.cpp" line="3311"/>
+        <location filename="../src/mainwindow.cpp" line="3323"/>
         <location filename="../src/mainwindow.cpp" line="3341"/>
-        <location filename="../src/mainwindow.cpp" line="4270"/>
-        <location filename="../src/mainwindow.cpp" line="4358"/>
-        <location filename="../src/mainwindow.cpp" line="4390"/>
+        <location filename="../src/mainwindow.cpp" line="3461"/>
+        <location filename="../src/mainwindow.cpp" line="3483"/>
+        <location filename="../src/mainwindow.cpp" line="3497"/>
+        <location filename="../src/mainwindow.cpp" line="4272"/>
+        <location filename="../src/mainwindow.cpp" line="4359"/>
+        <location filename="../src/mainwindow.cpp" line="4389"/>
+        <location filename="../src/mainwindow.cpp" line="4483"/>
+        <location filename="../src/mainwindow.cpp" line="4522"/>
+        <source>Processing finished successfully.</source>
+        <translation>დამუშავება წარმატებით დასრულდა.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3328"/>
+        <location filename="../src/mainwindow.cpp" line="3345"/>
+        <location filename="../src/mainwindow.cpp" line="4276"/>
+        <location filename="../src/mainwindow.cpp" line="4364"/>
+        <location filename="../src/mainwindow.cpp" line="4396"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation type="unfinished"/>
+        <translation>დაყენებისას აღმოჩენილია პრობლემა. შეამოწმეთ კონსოლში გამოტანილი ინფორმაცია.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3351"/>
+        <location filename="../src/mainwindow.cpp" line="3355"/>
         <source>About %1</source>
-        <translation type="unfinished"/>
+        <translation>%1-ის შესახებ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3352"/>
+        <location filename="../src/mainwindow.cpp" line="3356"/>
         <source>Version: </source>
         <translation>ვერსია:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3354"/>
+        <location filename="../src/mainwindow.cpp" line="3358"/>
         <source>Package Installer for MX Linux</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3356"/>
+        <location filename="../src/mainwindow.cpp" line="3360"/>
         <source>Copyright (c) MX Linux</source>
-        <translation type="unfinished"/>
+        <translation>(c) MX Linux საავტორო ფულებები დაცულია</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3357"/>
+        <location filename="../src/mainwindow.cpp" line="3361"/>
         <source>%1 License</source>
-        <translation type="unfinished"/>
+        <translation>ლიცენზია %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3369"/>
+        <location filename="../src/mainwindow.cpp" line="3373"/>
         <source>%1 Help</source>
-        <translation type="unfinished"/>
+        <translation>%1-ის დახმარება</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3482"/>
+        <location filename="../src/mainwindow.cpp" line="3486"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation type="unfinished"/>
+        <translation>წაშლისას აღმოჩენილია შეცდომა. შეამოწმეთ გამოტანილი ინფორმაცია</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3493"/>
-        <location filename="../src/mainwindow.cpp" line="4500"/>
+        <location filename="../src/mainwindow.cpp" line="3497"/>
+        <location filename="../src/mainwindow.cpp" line="4522"/>
         <source>Success</source>
         <translation>წარმატება</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3496"/>
-        <location filename="../src/mainwindow.cpp" line="4503"/>
+        <location filename="../src/mainwindow.cpp" line="3500"/>
+        <location filename="../src/mainwindow.cpp" line="4525"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation type="unfinished"/>
+        <translation>პროგრამის წაშლისას აღმოჩენილია შეცდომა</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3647"/>
-        <location filename="../src/mainwindow.cpp" line="3698"/>
+        <location filename="../src/mainwindow.cpp" line="3653"/>
+        <location filename="../src/mainwindow.cpp" line="3704"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
-        <translation type="unfinished"/>
+        <translation>პაკეტების სიის გადმოწერა შეუძლებელია. შეამოწმეთ თქვენი APT-ის წყაროები.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3746"/>
-        <location filename="../src/mainwindow.cpp" line="3792"/>
+        <location filename="../src/mainwindow.cpp" line="3752"/>
+        <location filename="../src/mainwindow.cpp" line="3798"/>
         <source>Flatpak not installed</source>
-        <translation type="unfinished"/>
+        <translation>Flatpak დაყენებული არაა</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3747"/>
+        <location filename="../src/mainwindow.cpp" line="3753"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation type="unfinished"/>
+        <translation>ამჟამად Flatpak დაყენებული არაა.
+გნებავთ მისი დაყენება?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3792"/>
+        <location filename="../src/mainwindow.cpp" line="3798"/>
         <source>Flatpak was not installed</source>
-        <translation type="unfinished"/>
+        <translation>Flatpak დაყენებული არ იყო</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3814"/>
+        <location filename="../src/mainwindow.cpp" line="3820"/>
         <source>Needs re-login</source>
-        <translation type="unfinished"/>
+        <translation>სჭირდება სესიაში თავიდან შესვლა</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3815"/>
+        <location filename="../src/mainwindow.cpp" line="3821"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation type="unfinished"/>
+        <translation>მენიუში ელემენტების სანახავად საჭიროა, გახვიდეთ სესიიდან და თავიდან შემოხვიდეთ</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3960"/>
-        <location filename="../src/mainwindow.cpp" line="3971"/>
-        <location filename="../src/mainwindow.cpp" line="4083"/>
-        <location filename="../src/mainwindow.cpp" line="4147"/>
+        <location filename="../src/mainwindow.cpp" line="3966"/>
+        <location filename="../src/mainwindow.cpp" line="3977"/>
+        <location filename="../src/mainwindow.cpp" line="4089"/>
+        <location filename="../src/mainwindow.cpp" line="4153"/>
         <source>Mark keep</source>
-        <translation type="unfinished"/>
+        <translation>შესანარჩუნებლად მონიშვნა</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3988"/>
+        <location filename="../src/mainwindow.cpp" line="3994"/>
         <source>Select/deselect all upgradable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3989"/>
+        <location filename="../src/mainwindow.cpp" line="3995"/>
         <source>Select/deselect all autoremovable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4085"/>
-        <location filename="../src/mainwindow.cpp" line="4145"/>
+        <location filename="../src/mainwindow.cpp" line="4091"/>
+        <location filename="../src/mainwindow.cpp" line="4151"/>
         <source>Upgrade</source>
         <translation>გაუმჯობესება</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4298"/>
+        <location filename="../src/mainwindow.cpp" line="4304"/>
+        <location filename="../src/mainwindow.cpp" line="4441"/>
         <source>Quit?</source>
         <translation>გავიდე?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4299"/>
+        <location filename="../src/mainwindow.cpp" line="4305"/>
+        <location filename="../src/mainwindow.cpp" line="4442"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation type="unfinished"/>
+        <translation>პროცესი ჯერ კიდევ გაშვებულია. გასვლამ, შეიძლება, სისტემა არასტაბილურ მდგომარეობაში დატოვოს.&lt;p&gt;&lt;b&gt;მართლა გნებავთ MX-ის პაკეტების დაყენების პროგრამიდან გასვლა?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4125"/>
+        <location filename="../src/mainwindow.cpp" line="4131"/>
         <source>Reinstall</source>
         <translation>თავიდან დაყენება</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4466"/>
+        <location filename="../src/mainwindow.cpp" line="4488"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
-        <translation type="unfinished"/>
+        <translation>ბოლო ოპერაციის მიმდინარეობისას აღმოჩენილია პრობლემა. შეამოწმეთ კონსოლში გამოტანილი ინფორმაცია.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4494"/>
+        <location filename="../src/mainwindow.cpp" line="4516"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation type="unfinished"/>
+        <translation>პოტენციურად საშიში ოპერაცია.
+დარწმუნდით, რომ წასაშლელი პაკეტების სია ფრთხილად გადაამოწმეთ.</translation>
     </message>
 </context>
 <context>
@@ -746,47 +750,47 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="16"/>
         <source>Manage Flatpak Remotes</source>
-        <translation type="unfinished"/>
+        <translation>Flatpak-ის დაშორებულების მართვა</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="23"/>
         <source>For all users</source>
-        <translation type="unfinished"/>
+        <translation>ყველა მომხმარებლისთვის</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="24"/>
         <source>For current user</source>
-        <translation type="unfinished"/>
+        <translation>მიმდინარე მომხმარებლისთვის</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="35"/>
         <source>enter Flatpak remote URL</source>
-        <translation type="unfinished"/>
+        <translation>შეიყვანეთ Flatpak-ის დაშორებულის URL</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="38"/>
         <source>enter Flatpakref location to install app</source>
-        <translation type="unfinished"/>
+        <translation>აპის დასაყენებლად შეიყვანეთ Flatpakref-ის მდებარეობა</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="40"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation type="unfinished"/>
+        <translation>დაამატეთ, ან წაშალეთ flatpak-ის დაშორებულები (რეპოზიტორიები), ან დააყენეთ აპები flatpakref ბმულებით, ან ბილიკით</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="49"/>
         <source>Remove remote</source>
-        <translation type="unfinished"/>
+        <translation>დაშორებულის წაშლა</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="54"/>
         <source>Add remote</source>
-        <translation type="unfinished"/>
+        <translation>დაშორებულის დამატება</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="59"/>
         <source>Install app</source>
-        <translation type="unfinished"/>
+        <translation>აპის დაყენება</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="64"/>
@@ -796,22 +800,22 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="81"/>
         <source>Not removable</source>
-        <translation type="unfinished"/>
+        <translation>წაშლადი არაა</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="82"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation type="unfinished"/>
+        <translation>Flathub წარმოადგენს მთავარ Flatpak-ის დაშორებულს და ის არ წაიშლება</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="101"/>
         <source>Error adding remote</source>
-        <translation type="unfinished"/>
+        <translation>დაშორებულის დამატების შეცდომა</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="102"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation type="unfinished"/>
+        <translation>დაშორებულის დამატება შეუძლებელია - ბრძანებამ შეცდომა დააბრუნა. გადაამოწმეთ დაშორებულის მისამართი და თავიდან სცადეთ</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="107"/>
@@ -821,7 +825,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="107"/>
         <source>Remote added successfully</source>
-        <translation type="unfinished"/>
+        <translation>დაშორებული წარმატებით დაემატა</translation>
     </message>
 </context>
 <context>
@@ -834,7 +838,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/models/packagemodel.cpp" line="145"/>
         <source>Repo Version</source>
-        <translation type="unfinished"/>
+        <translation>რეპოს ვერსია</translation>
     </message>
     <message>
         <location filename="../src/models/packagemodel.cpp" line="147"/>
@@ -902,7 +906,8 @@ Please make sure you check carefully the list of packages to be removed.</source
         <location filename="../src/lockfile.cpp" line="51"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Dpkg/apt-ის მონაცემთა ბაზა დაბლოკილია სხვა პროგრამის მიერ: %1
+დახურეთ პროგრამა, ან დაელოდეთ, სანამ ის მუშაობას არ დაამთავრებს და თავიდან სცადეთ.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="90"/>
@@ -916,7 +921,7 @@ Close the program, or wait until it is done processing and try again.</source>
     <message>
         <location filename="../src/main.cpp" line="98"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
-        <translation type="unfinished"/>
+        <translation>ინტერნეტში შემოწმების გამოტოვება, თუ ის ცრუდ გადმოგვცემს ინტერნეტთან წვდომის არარსებობას.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="108"/>
@@ -927,12 +932,12 @@ Close the program, or wait until it is done processing and try again.</source>
     <message>
         <location filename="../src/main.cpp" line="109"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation type="unfinished"/>
+        <translation>როგორც ჩანს, root-ით ბრძანდებით შესული. ამ პროგრამის გამოსაყენებლად გადით, და შემოდით ჩვეულებრივი მომხმარებლით.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="117"/>
         <source>You must run this program with admin access.</source>
-        <translation type="unfinished"/>
+        <translation>ეს პროგრამა ადმინისტრატორის წვდომით უნდა გაუშვათ</translation>
     </message>
 </context>
 </TS>

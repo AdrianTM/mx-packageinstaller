@@ -1,3 +1,12 @@
+mx-packageinstaller (26.03) mx; urgency=medium
+
+  * Show Help and License pages inside the application
+  * Improve elevation handling to avoid incorrect authentication prompts
+  * Improve Flatpak install/uninstall output, completion messages, and
+    uninstall progress display
+
+ -- Adrian <adrian@mxlinux.org>  Fri, 13 Mar 2026 12:00:00 -0400
+
 mx-packageinstaller (26.02) mx; urgency=medium
 
   * Warn before closing while process is running
