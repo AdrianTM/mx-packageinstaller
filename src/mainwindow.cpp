@@ -122,6 +122,25 @@ QString flatpakPtyCommand(const QString &command)
     return QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(command));
 }
 
+void appendFlatpakStatusMessage(QPlainTextEdit *outputBox, const QString &message)
+{
+    if (!outputBox) {
+        return;
+    }
+
+    QTextCursor cursor = outputBox->textCursor();
+    cursor.movePosition(QTextCursor::End);
+    if (outputBox->document()->characterCount() > 1) {
+        const QString lastLine = outputBox->document()->lastBlock().text();
+        if (!lastLine.isEmpty()) {
+            cursor.insertText("\n");
+        }
+    }
+    cursor.insertText(message + "\n");
+    outputBox->setTextCursor(cursor);
+    outputBox->verticalScrollBar()->setValue(outputBox->verticalScrollBar()->maximum());
+}
+
 bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
 {
     const QString mxpiLibPath = QString::fromLatin1(MxpiLibPath);
@@ -830,7 +849,8 @@ void MainWindow::outputAvailable(const QString &output)
     auto insertLine = [&](const QString &line, bool addNewline, bool overwriteCurrentLine) {
         QTextCursor cursor = ui->outputBox->textCursor();
         cursor.movePosition(QTextCursor::End);
-        if (overwriteCurrentLine) {
+        const bool shouldOverwrite = overwriteCurrentLine && !line.isEmpty();
+        if (shouldOverwrite) {
             cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
             cursor.removeSelectedText();
         }
@@ -839,7 +859,7 @@ void MainWindow::outputAvailable(const QString &output)
             cursor.insertText("\n");
         }
         ui->outputBox->setTextCursor(cursor);
-        if (addNewline || !overwriteCurrentLine) {
+        if (addNewline || !shouldOverwrite) {
             shouldScrollToBottom = true;
         }
     };
@@ -1511,6 +1531,16 @@ void MainWindow::displayFlatpaks(bool force_update)
     loadFlatpakData();
     populateFlatpakTree();
     finalizeFlatpakDisplay();
+}
+
+void MainWindow::showFlatpakProgress(const QString &label)
+{
+    progress->setLabelText(label);
+    pushCancel->setEnabled(false);
+    progress->show();
+    if (!timer.isActive()) {
+        timer.start(100ms);
+    }
 }
 
 void MainWindow::setupFlatpakDisplay()
@@ -3419,6 +3449,7 @@ void MainWindow::pushInstall_clicked()
         enableOutput();
         if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak install -y ") + fpUser
                                       + ui->comboRemote->currentText() + ' ' + changeList.join(' ')))) {
+            appendFlatpakStatusMessage(ui->outputBox, tr("Install complete."));
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
@@ -3562,17 +3593,21 @@ void MainWindow::pushUninstall_clicked()
 
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
+        showFlatpakProgress(tr("Uninstalling flatpaks..."));
         if (!cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall ") + fpUser + QStringLiteral("-y ")
                                        + changeList.join(' ')))) {
             success = false;
         }
         if (success) { // Success if all processed successfuly, failure if one failed
+            appendFlatpakStatusMessage(ui->outputBox, tr("Uninstall complete."));
+            showFlatpakProgress(tr("Refreshing flatpaks..."));
             displayFlatpaks(true);
             indexFilterFP.clear();
             listFlatpakRemotes();
             ui->comboRemote->setCurrentIndex(0);
             comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
+            progress->hide();
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
         } else {
@@ -4460,6 +4495,7 @@ void MainWindow::pushUpgradeFP_clicked()
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
     if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak update ") + fpUser))) {
+        appendFlatpakStatusMessage(ui->outputBox, tr("Update complete."));
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
@@ -4488,6 +4524,7 @@ void MainWindow::pushRemotes_clicked()
         enableOutput();
         if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak install -y ") + dialog->getUser()
                                       + QStringLiteral("--from ") + dialog->getInstallRef()))) {
+            appendFlatpakStatusMessage(ui->outputBox, tr("Install complete."));
             invalidateFlatpakRemoteCache();
             listFlatpakRemotes();
             displayFlatpaks(true);
@@ -4584,8 +4621,12 @@ void MainWindow::pushRemoveUnused_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
+    showFlatpakProgress(tr("Uninstalling flatpaks..."));
     if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall --unused -y")))) {
+        appendFlatpakStatusMessage(ui->outputBox, tr("Uninstall complete."));
+        showFlatpakProgress(tr("Refreshing flatpaks..."));
         displayFlatpaks(true);
+        progress->hide();
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(ui->tabFlatpak);

@@ -18,7 +18,6 @@ Architecture: any
 Depends: aptitude,
          mx-packageinstaller-pkglist (>= 17.4),
          sudo | pkexec | gksu,
-         socat,
          ${misc:Depends},
          ${shlibs:Depends}
 Recommends: flatpak (<< 1.0) | xdg-desktop-portal-gtk,

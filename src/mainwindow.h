@@ -323,6 +323,7 @@ private:
     void setSearchFocus() const;
     void setup();
     void setupFlatpakDisplay();
+    void showFlatpakProgress(const QString &label);
     void setupModels();
     void updateFlatpakCounts(uint totalCount);
     void updateInterface();
