@@ -153,13 +153,19 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     connect(&cmd, &Cmd::done, this, &MainWindow::cmdDone);
     connect(&cmd, &Cmd::outputAvailable, this, [this](const QString &out) {
         if (!suppressCmdOutput) {
-            qDebug() << sanitizeOutputForDisplay(out).trimmed();
+            const QString clean = sanitizeOutputForDisplay(out).trimmed();
+            if (!clean.isEmpty()) {
+                qDebug() << clean;
+            }
         }
     });
     connect(&cmd, &Cmd::errorAvailable, this,
             [this](const QString &out) {
                 if (!suppressCmdOutput) {
-                    qWarning() << sanitizeOutputForDisplay(out).trimmed();
+                    const QString clean = sanitizeOutputForDisplay(out).trimmed();
+                    if (!clean.isEmpty()) {
+                        qWarning() << clean;
+                    }
                 }
             });
     setWindowFlags(Qt::Window); // For the close, min and max buttons
@@ -792,7 +798,8 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
-    static const QRegularExpression statusKey {R"(^\s*(Installing|Uninstalling)\s+\d+/\d+)"};
+    static const QRegularExpression statusKey {
+        R"(^\s*(Installing|Uninstalling|Updating)(?:\s+\d+/\d+(?:…|\.\.\.)?|(?:…|\.\.\.)))"};
 
     // Remove ANSI escape sequences
     QString cleanOutput = sanitizeOutputForDisplay(output);
@@ -818,6 +825,8 @@ void MainWindow::outputAvailable(const QString &output)
         return false;
     };
 
+    bool shouldScrollToBottom = false;
+
     auto insertLine = [&](const QString &line, bool addNewline, bool overwriteCurrentLine) {
         QTextCursor cursor = ui->outputBox->textCursor();
         cursor.movePosition(QTextCursor::End);
@@ -830,6 +839,9 @@ void MainWindow::outputAvailable(const QString &output)
             cursor.insertText("\n");
         }
         ui->outputBox->setTextCursor(cursor);
+        if (addNewline || !overwriteCurrentLine) {
+            shouldScrollToBottom = true;
+        }
     };
 
     bool overwriteCurrentLine = false;
@@ -851,6 +863,12 @@ void MainWindow::outputAvailable(const QString &output)
 
     for (const QChar ch : cleanOutput) {
         if (ch == QLatin1Char('\r')) {
+            if (buffer.isEmpty()) {
+                overwriteCurrentLine = true;
+                skipNextLineFeed = false;
+                continue;
+            }
+
             const bool isProgressLine = statusKey.match(buffer).hasMatch();
             flushBuffer(!isProgressLine);
             overwriteCurrentLine = isProgressLine;
@@ -870,7 +888,9 @@ void MainWindow::outputAvailable(const QString &output)
     }
     flushBuffer(false);
 
-    ui->outputBox->verticalScrollBar()->setValue(ui->outputBox->verticalScrollBar()->maximum());
+    if (shouldScrollToBottom) {
+        ui->outputBox->verticalScrollBar()->setValue(ui->outputBox->verticalScrollBar()->maximum());
+    }
 }
 
 void MainWindow::loadPmFiles()
@@ -3541,13 +3561,10 @@ void MainWindow::pushUninstall_clicked()
         }
 
         setCursor(QCursor(Qt::BusyCursor));
-        for (const QString &app : std::as_const(changeList)) {
-            enableOutput();
-            if (!cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall ") + fpUser + QStringLiteral("-y ")
-                                           + app))) { // success if all processed successfuly,
-                                                // failure if one failed
-                success = false;
-            }
+        enableOutput();
+        if (!cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall ") + fpUser + QStringLiteral("-y ")
+                                       + changeList.join(' ')))) {
+            success = false;
         }
         if (success) { // Success if all processed successfuly, failure if one failed
             displayFlatpaks(true);
