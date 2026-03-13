@@ -111,6 +111,17 @@ bool runHooksAsRoot(Cmd &cmd, const QStringList &hooks, Cmd::QuietMode quiet = C
     return true;
 }
 
+QString shellSingleQuote(QString text)
+{
+    text.replace(QLatin1Char('\''), QStringLiteral("'\"'\"'"));
+    return QStringLiteral("'") + text + QStringLiteral("'");
+}
+
+QString flatpakPtyCommand(const QString &command)
+{
+    return QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(command));
+}
+
 bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
 {
     const QString mxpiLibPath = QString::fromLatin1(MxpiLibPath);
@@ -795,7 +806,7 @@ void MainWindow::outputAvailable(const QString &output)
                 continue;
             }
             const QRegularExpressionMatch match = statusKey.match(text);
-            if (match.hasMatch() && match.captured(0) == key) {
+            if (match.hasMatch() && match.captured(1) == key) {
                 QTextCursor cursor(block);
                 cursor.select(QTextCursor::LineUnderCursor);
                 cursor.removeSelectedText();
@@ -822,6 +833,7 @@ void MainWindow::outputAvailable(const QString &output)
     };
 
     bool overwriteCurrentLine = false;
+    bool skipNextLineFeed = false;
     QString buffer;
     auto flushBuffer = [&](bool addNewline) {
         if (buffer.isEmpty() && !addNewline) {
@@ -830,7 +842,7 @@ void MainWindow::outputAvailable(const QString &output)
         const QString line = buffer;
         buffer.clear();
         const QRegularExpressionMatch match = statusKey.match(line);
-        const QString key = match.hasMatch() ? match.captured(0) : QString();
+        const QString key = match.hasMatch() ? match.captured(1) : QString();
         const bool replaced = !key.isEmpty() && !overwriteCurrentLine && replaceLastStatusLine(key, line);
         if (!replaced) {
             insertLine(line, addNewline, overwriteCurrentLine);
@@ -839,12 +851,20 @@ void MainWindow::outputAvailable(const QString &output)
 
     for (const QChar ch : cleanOutput) {
         if (ch == QLatin1Char('\r')) {
-            flushBuffer(false);
-            overwriteCurrentLine = true;
+            const bool isProgressLine = statusKey.match(buffer).hasMatch();
+            flushBuffer(!isProgressLine);
+            overwriteCurrentLine = isProgressLine;
+            skipNextLineFeed = !isProgressLine;
         } else if (ch == QLatin1Char('\n')) {
+            if (skipNextLineFeed) {
+                skipNextLineFeed = false;
+                overwriteCurrentLine = false;
+                continue;
+            }
             flushBuffer(true);
             overwriteCurrentLine = false;
         } else {
+            skipNextLineFeed = false;
             buffer.append(ch);
         }
     }
@@ -1282,7 +1302,8 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
         refSet.insert(canonicalFlatpakRef(ref));
     }
 
-    // Set the filter on the proxy model
+    // Reset status filtering when showing explicit ref subsets.
+    flatpakProxy->setStatusFilter(0);
     flatpakProxy->setAllowedRefs(refSet);
 
     // Update buttons based on current selection
@@ -3376,8 +3397,8 @@ void MainWindow::pushInstall_clicked()
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("socat SYSTEM:'flatpak install -y " + fpUser + ui->comboRemote->currentText() + ' '
-                    + changeList.join(' ') + "',stderr STDIO")) {
+        if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak install -y ") + fpUser
+                                      + ui->comboRemote->currentText() + ' ' + changeList.join(' ')))) {
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
@@ -3522,8 +3543,8 @@ void MainWindow::pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         for (const QString &app : std::as_const(changeList)) {
             enableOutput();
-            if (!cmd.run("socat SYSTEM:'flatpak uninstall " + fpUser + "-y " + app
-                         + "',stderr STDIO")) { // success if all processed successfuly,
+            if (!cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall ") + fpUser + QStringLiteral("-y ")
+                                           + app))) { // success if all processed successfuly,
                                                 // failure if one failed
                 success = false;
             }
@@ -3907,14 +3928,25 @@ void MainWindow::filterChanged(const QString &arg1)
     auto resetTree = [this]() {
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
-        auto *model = getCurrentModel();
-        auto *proxy = getCurrentProxy();
-        if (model) {
-            model->uncheckAll();
-        }
-        if (proxy) {
-            proxy->setSearchText(QString());
-            proxy->setStatusFilter(0); // Reset status filter to show all packages
+        if (currentTree == ui->treeFlatpak) {
+            if (flatpakModel) {
+                flatpakModel->setAllChecked(false);
+            }
+            if (flatpakProxy) {
+                flatpakProxy->setSearchText(QString());
+                flatpakProxy->setStatusFilter(0);
+                flatpakProxy->clearAllowedRefs();
+            }
+        } else {
+            auto *model = getCurrentModel();
+            auto *proxy = getCurrentProxy();
+            if (model) {
+                model->uncheckAll();
+            }
+            if (proxy) {
+                proxy->setSearchText(QString());
+                proxy->setStatusFilter(0); // Reset status filter to show all packages
+            }
         }
         currentTree->setUpdatesEnabled(true);
 
@@ -3927,9 +3959,15 @@ void MainWindow::filterChanged(const QString &arg1)
     auto uncheckAllItems = [this]() {
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
-        auto *model = getCurrentModel();
-        if (model) {
-            model->uncheckAll();
+        if (currentTree == ui->treeFlatpak) {
+            if (flatpakModel) {
+                flatpakModel->setAllChecked(false);
+            }
+        } else {
+            auto *model = getCurrentModel();
+            if (model) {
+                model->uncheckAll();
+            }
         }
         currentTree->setUpdatesEnabled(true);
     };
@@ -4001,6 +4039,7 @@ void MainWindow::filterChanged(const QString &arg1)
         } else if (arg1 == tr("All installed")) {
             displayFilteredFP(installedAppsFP + installedRuntimesFP);
         } else if (arg1 == tr("Not installed")) {
+            flatpakProxy->clearAllowedRefs();
             flatpakProxy->setStatusFilter(Status::NotInstalled);
             ui->pushUninstall->setEnabled(false);
         }
@@ -4233,15 +4272,9 @@ void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState 
 
     ui->pushInstall->setText(tr("Install"));
     if (status == Status::Installed) {
-        if (state == Qt::Checked && ui->comboFilterFlatpak->currentText() != tr("All installed")) {
-            ui->comboFilterFlatpak->setCurrentText(tr("All installed"));
-        }
         ui->pushUninstall->setEnabled(true);
         ui->pushInstall->setEnabled(false);
     } else {
-        if (state == Qt::Checked && ui->comboFilterFlatpak->currentText() != tr("Not installed")) {
-            ui->comboFilterFlatpak->setCurrentText(tr("Not installed"));
-        }
         ui->pushUninstall->setEnabled(false);
         ui->pushInstall->setEnabled(true);
     }
@@ -4409,7 +4442,7 @@ void MainWindow::pushUpgradeFP_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    if (cmd.run("socat SYSTEM:'flatpak update " + fpUser + "',pty STDIO")) {
+    if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak update ") + fpUser))) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
@@ -4436,8 +4469,8 @@ void MainWindow::pushRemotes_clicked()
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run("socat SYSTEM:'flatpak install -y " + dialog->getUser() + "--from "
-                    + dialog->getInstallRef().replace(':', "\\:") + "',stderr STDIO\"")) {
+        if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak install -y ") + dialog->getUser()
+                                      + QStringLiteral("--from ") + dialog->getInstallRef()))) {
             invalidateFlatpakRemoteCache();
             listFlatpakRemotes();
             displayFlatpaks(true);
@@ -4534,7 +4567,7 @@ void MainWindow::pushRemoveUnused_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    if (cmd.run("socat SYSTEM:'flatpak uninstall --unused -y',pty STDIO")) {
+    if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall --unused -y")))) {
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));

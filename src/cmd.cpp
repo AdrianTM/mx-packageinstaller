@@ -144,10 +144,12 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
         emit done();
         return false;
     }
-    if (input && !input->isEmpty()) {
-        write(*input);
+    if (input) {
+        if (!input->isEmpty()) {
+            write(*input);
+        }
+        closeWriteChannel();
     }
-    closeWriteChannel();
     loop.exec();
 
     if (elevated) {
