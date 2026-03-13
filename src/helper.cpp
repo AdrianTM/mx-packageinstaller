@@ -106,18 +106,30 @@ void printError(const QString &message)
 
     result.started = true;
     process.closeWriteChannel();
-    process.waitForFinished(-1);
+
+    while (process.state() != QProcess::NotRunning) {
+        process.waitForFinished(50);
+
+        const QByteArray stdoutChunk = process.readAllStandardOutput();
+        if (!stdoutChunk.isEmpty()) {
+            result.standardOutput += stdoutChunk;
+            writeAndFlush(stdout, stdoutChunk);
+        }
+
+        const QByteArray stderrChunk = process.readAllStandardError();
+        if (!stderrChunk.isEmpty()) {
+            result.standardError += stderrChunk;
+            writeAndFlush(stderr, stderrChunk);
+        }
+    }
+
     result.exitStatus = process.exitStatus();
     result.exitCode = process.exitCode();
-    result.standardOutput = process.readAllStandardOutput();
-    result.standardError = process.readAllStandardError();
     return result;
 }
 
 [[nodiscard]] int relayResult(const ProcessResult &result)
 {
-    writeAndFlush(stdout, result.standardOutput);
-    writeAndFlush(stderr, result.standardError);
     if (!result.started) {
         return result.exitCode;
     }
