@@ -28,6 +28,7 @@ public:
     [[nodiscard]] QString readAllOutput() const;
     bool run(const QString &cmd, QuietMode quiet = QuietMode::No);
     bool runHookAsRoot(const QString &script, QuietMode quiet = QuietMode::No);
+    [[nodiscard]] QString lockingProcessAsRoot(const QString &path, QuietMode quiet = QuietMode::No);
     bool writeFileAsRoot(const QString &path, const QString &content, QuietMode quiet = QuietMode::No);
     [[nodiscard]] bool terminateAndKill();
 

@@ -61,7 +61,6 @@ bool Cmd::helperProc(const QStringList &helperArgs, QString *output, const QByte
     if (getuid() != 0) {
         programArgs.prepend(helper);
     }
-
     return startAndWait(program, programArgs, output, input, quiet, getuid() != 0);
 }
 
@@ -89,6 +88,13 @@ bool Cmd::run(const QString &cmd, QuietMode quiet)
 bool Cmd::runHookAsRoot(const QString &script, QuietMode quiet)
 {
     return helperProc({"run-hook", script}, nullptr, nullptr, quiet);
+}
+
+QString Cmd::lockingProcessAsRoot(const QString &path, QuietMode quiet)
+{
+    QString output;
+    helperProc({"locking-process", path}, &output, nullptr, quiet);
+    return output.trimmed();
 }
 
 bool Cmd::writeFileAsRoot(const QString &path, const QString &content, QuietMode quiet)

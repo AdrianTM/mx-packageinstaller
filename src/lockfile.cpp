@@ -85,7 +85,5 @@ QString LockFile::fileName() const
 
 QString LockFile::getLockingProcess() const
 {
-    QString process;
-    Cmd().procAsRoot("locking-process", {fileName()}, &process, nullptr, Cmd::QuietMode::Yes);
-    return process.trimmed();
+    return Cmd().lockingProcessAsRoot(fileName(), Cmd::QuietMode::Yes);
 }

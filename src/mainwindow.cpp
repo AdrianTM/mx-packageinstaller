@@ -51,6 +51,7 @@
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
+#include <unistd.h>
 
 using namespace std::chrono_literals;
 
@@ -112,7 +113,11 @@ bool runHooksAsRoot(Cmd &cmd, const QStringList &hooks, Cmd::QuietMode quiet = C
 
 bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
 {
-    return cmd.procAsRoot(QStringLiteral("mxpi-lib"), {action}, nullptr, nullptr, quiet);
+    const QString mxpiLibPath = QString::fromLatin1(MxpiLibPath);
+    if (getuid() == 0) {
+        return cmd.proc(mxpiLibPath, {action}, nullptr, nullptr, quiet);
+    }
+    return cmd.proc(Cmd::elevationTool(), {mxpiLibPath, action}, nullptr, nullptr, quiet);
 }
 
 bool runMxpiLib(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
