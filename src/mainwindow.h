@@ -123,6 +123,8 @@ private slots:
     void checkHideLibsBP_clicked(bool checked);
     void checkHideLibsMX_clicked(bool checked);
     void checkHideLibs_toggled(bool checked);
+    void checkRepoOnlyMX_clicked(bool checked);
+    void checkRepoOnlyBP_clicked(bool checked);
     void selectAllUpgradable_toggled(bool checked);
     void comboRemote_activated(int index = 0);
     void comboUser_currentIndexChanged(int index);

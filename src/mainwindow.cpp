@@ -305,6 +305,11 @@ void MainWindow::setup()
     ui->checkHideLibsMX->setChecked(savedHideLibs);
     ui->checkHideLibsBP->setChecked(savedHideLibs);
 
+    // Load persisted setting for repo-only filter
+    const bool savedRepoOnly = settings.value("RepoOnly", false).toBool();
+    ui->checkRepoOnlyMX->setChecked(savedRepoOnly);
+    ui->checkRepoOnlyBP->setChecked(savedRepoOnly);
+
     // Ensure "Select all" checkboxes start hidden/unchecked
     // (Deprecated UI checkboxes remain hidden in UI; header checkboxes are used instead.)
     if (auto *w = ui->checkSelectAllEnabled) {
@@ -409,10 +414,12 @@ void MainWindow::setupModels()
     mxtestProxy = new PackageFilterProxy(this);
     mxtestProxy->setSourceModel(mxtestModel);
     mxtestProxy->setHideLibraries(hideLibsChecked);
+    mxtestProxy->setRepoOnly(settings.value("RepoOnly", false).toBool());
 
     backportsProxy = new PackageFilterProxy(this);
     backportsProxy->setSourceModel(backportsModel);
     backportsProxy->setHideLibraries(hideLibsChecked);
+    backportsProxy->setRepoOnly(settings.value("RepoOnly", false).toBool());
 
     // Set models on tree views
     ui->treeEnabled->setModel(enabledProxy);
@@ -612,9 +619,10 @@ void MainWindow::updateInterface()
         return;
     }
 
+    auto *proxy = getCurrentProxy();
     int upgradeCount = model->countByStatus(Status::Upgradable);
     int installCount = model->countByStatus(Status::Installed);
-    int totalCount = model->rowCount();
+    int totalCount = (proxy && proxy->repoOnly()) ? proxy->rowCount() : model->rowCount();
 
     auto updateLabelsAndFocus = [&](QLabel *labelNumApps, QLabel *labelNumUpgrade, QLabel *labelNumInstall,
                                     QPushButton *pushForceUpdate, QLineEdit *searchBox) {
@@ -1184,6 +1192,8 @@ void MainWindow::setConnections()
     connect(ui->checkHideLibs, &QCheckBox::toggled, this, &MainWindow::checkHideLibs_toggled);
     connect(ui->checkHideLibsBP, &QCheckBox::clicked, this, &MainWindow::checkHideLibsBP_clicked);
     connect(ui->checkHideLibsMX, &QCheckBox::clicked, this, &MainWindow::checkHideLibsMX_clicked);
+    connect(ui->checkRepoOnlyMX, &QCheckBox::clicked, this, &MainWindow::checkRepoOnlyMX_clicked);
+    connect(ui->checkRepoOnlyBP, &QCheckBox::clicked, this, &MainWindow::checkRepoOnlyBP_clicked);
     connect(ui->comboRemote, QOverload<int>::of(&QComboBox::activated), this, &MainWindow::comboRemote_activated);
     connect(ui->comboUser, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
             &MainWindow::comboUser_currentIndexChanged);
@@ -1480,7 +1490,9 @@ QVector<PackageData> MainWindow::createPackageDataList(QHash<QString, PackageInf
     packages.reserve(list->size() + installedPackages.size());
 
     for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
-        packages.append(createPackageData(it.key(), it.value().version, it.value().description));
+        PackageData pkg = createPackageData(it.key(), it.value().version, it.value().description);
+        pkg.fromRepo = true;
+        packages.append(pkg);
     }
 
     for (auto it = installedPackages.constBegin(); it != installedPackages.constEnd(); ++it) {
@@ -4477,6 +4489,30 @@ void MainWindow::checkHideLibsBP_clicked(bool checked)
 
     backportsProxy->setHideLibraries(checked);
     filterChanged(ui->comboFilterBP->currentText());
+    ui->treeBackports->setUpdatesEnabled(true);
+}
+
+void MainWindow::checkRepoOnlyMX_clicked(bool checked)
+{
+    ui->treeMXtest->setUpdatesEnabled(false);
+    settings.setValue("RepoOnly", checked);
+    ui->checkRepoOnlyBP->setChecked(checked);
+    mxtestProxy->setRepoOnly(checked);
+    backportsProxy->setRepoOnly(checked);
+    filterChanged(ui->comboFilterMX->currentText());
+    ui->labelNumApps_2->setText(QString::number(mxtestProxy->rowCount()));
+    ui->treeMXtest->setUpdatesEnabled(true);
+}
+
+void MainWindow::checkRepoOnlyBP_clicked(bool checked)
+{
+    ui->treeBackports->setUpdatesEnabled(false);
+    settings.setValue("RepoOnly", checked);
+    ui->checkRepoOnlyMX->setChecked(checked);
+    mxtestProxy->setRepoOnly(checked);
+    backportsProxy->setRepoOnly(checked);
+    filterChanged(ui->comboFilterBP->currentText());
+    ui->labelNumApps_3->setText(QString::number(backportsProxy->rowCount()));
     ui->treeBackports->setUpdatesEnabled(true);
 }
 
