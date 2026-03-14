@@ -2,12 +2,12 @@
 <context>
     <name>Cmd</name>
     <message>
-        <location filename="../src/cmd.cpp" line="124"/>
+        <location filename="../src/cmd.cpp" line="206"/>
         <source>Administrator Access Required</source>
         <translation>Rendszergazdai jogosultság szükséges</translation>
     </message>
     <message>
-        <location filename="../src/cmd.cpp" line="125"/>
+        <location filename="../src/cmd.cpp" line="207"/>
         <source>This operation requires administrator privileges. Please restart the application and enter your password when prompted.</source>
         <translation>Ehhez a művelethez rendszergazdai jogosultságok kellenek. Kérjük, indítsa újra az alkalmazást, és adja meg a jelszavát, amikor kéri.</translation>
     </message>
@@ -44,7 +44,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="192"/>
+        <location filename="../src/mainwindow.cpp" line="289"/>
         <source>MX Package Installer</source>
         <translation>MX csomagtelepítő</translation>
     </message>
@@ -155,7 +155,7 @@
         <location filename="../src/mainwindow.ui" line="767"/>
         <location filename="../src/mainwindow.ui" line="1090"/>
         <location filename="../src/mainwindow.ui" line="1094"/>
-        <location filename="../src/mainwindow.cpp" line="3953"/>
+        <location filename="../src/mainwindow.cpp" line="4100"/>
         <source>All packages</source>
         <translation>Minden csomag</translation>
     </message>
@@ -163,7 +163,7 @@
         <location filename="../src/mainwindow.ui" line="470"/>
         <location filename="../src/mainwindow.ui" line="772"/>
         <location filename="../src/mainwindow.ui" line="1099"/>
-        <location filename="../src/mainwindow.cpp" line="3979"/>
+        <location filename="../src/mainwindow.cpp" line="4126"/>
         <source>Installed</source>
         <translation>Telepítve</translation>
     </message>
@@ -171,7 +171,7 @@
         <location filename="../src/mainwindow.ui" line="475"/>
         <location filename="../src/mainwindow.ui" line="777"/>
         <location filename="../src/mainwindow.ui" line="1104"/>
-        <location filename="../src/mainwindow.cpp" line="3980"/>
+        <location filename="../src/mainwindow.cpp" line="4127"/>
         <source>Upgradable</source>
         <translation>Frissíthető</translation>
     </message>
@@ -180,10 +180,8 @@
         <location filename="../src/mainwindow.ui" line="782"/>
         <location filename="../src/mainwindow.ui" line="1109"/>
         <location filename="../src/mainwindow.ui" line="1458"/>
-        <location filename="../src/mainwindow.cpp" line="3947"/>
-        <location filename="../src/mainwindow.cpp" line="3981"/>
-        <location filename="../src/mainwindow.cpp" line="4186"/>
-        <location filename="../src/mainwindow.cpp" line="4187"/>
+        <location filename="../src/mainwindow.cpp" line="4093"/>
+        <location filename="../src/mainwindow.cpp" line="4128"/>
         <source>Not installed</source>
         <translation>Nincs telepítve</translation>
     </message>
@@ -191,11 +189,11 @@
         <location filename="../src/mainwindow.ui" line="485"/>
         <location filename="../src/mainwindow.ui" line="787"/>
         <location filename="../src/mainwindow.ui" line="1114"/>
-        <location filename="../src/mainwindow.cpp" line="3334"/>
-        <location filename="../src/mainwindow.cpp" line="3918"/>
-        <location filename="../src/mainwindow.cpp" line="3982"/>
-        <location filename="../src/mainwindow.cpp" line="4061"/>
-        <location filename="../src/mainwindow.cpp" line="4152"/>
+        <location filename="../src/mainwindow.cpp" line="3467"/>
+        <location filename="../src/mainwindow.cpp" line="4064"/>
+        <location filename="../src/mainwindow.cpp" line="4129"/>
+        <location filename="../src/mainwindow.cpp" line="4208"/>
+        <location filename="../src/mainwindow.cpp" line="4299"/>
         <source>Autoremovable</source>
         <translation>Automatikusan eltávolítható</translation>
     </message>
@@ -224,8 +222,8 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1389"/>
         <location filename="../src/mainwindow.ui" line="1393"/>
-        <location filename="../src/mainwindow.cpp" line="175"/>
-        <location filename="../src/mainwindow.cpp" line="176"/>
+        <location filename="../src/mainwindow.cpp" line="272"/>
+        <location filename="../src/mainwindow.cpp" line="273"/>
         <source>For all users</source>
         <translation>Minden felhasználónak</translation>
     </message>
@@ -242,39 +240,37 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1424"/>
         <location filename="../src/mainwindow.ui" line="1428"/>
-        <location filename="../src/mainwindow.cpp" line="3929"/>
+        <location filename="../src/mainwindow.cpp" line="4075"/>
         <source>All apps</source>
         <translation>Minden alkalmazás</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1433"/>
-        <location filename="../src/mainwindow.cpp" line="3935"/>
+        <location filename="../src/mainwindow.cpp" line="4081"/>
         <source>All runtimes</source>
         <translation>Minden futtatási környezet</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1438"/>
-        <location filename="../src/mainwindow.cpp" line="3941"/>
+        <location filename="../src/mainwindow.cpp" line="4087"/>
         <source>All available</source>
         <translation>Minden elérhető</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1443"/>
-        <location filename="../src/mainwindow.cpp" line="3926"/>
+        <location filename="../src/mainwindow.cpp" line="4072"/>
         <source>Installed apps</source>
         <translation>Telepített alkalmazások</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1448"/>
-        <location filename="../src/mainwindow.cpp" line="3923"/>
+        <location filename="../src/mainwindow.cpp" line="4069"/>
         <source>Installed runtimes</source>
         <translation>Telepített futtatási környezetek</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1453"/>
-        <location filename="../src/mainwindow.cpp" line="3945"/>
-        <location filename="../src/mainwindow.cpp" line="4180"/>
-        <location filename="../src/mainwindow.cpp" line="4181"/>
+        <location filename="../src/mainwindow.cpp" line="4091"/>
         <source>All installed</source>
         <translation>Minden telepített</translation>
     </message>
@@ -312,8 +308,8 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1500"/>
-        <location filename="../src/mainwindow.cpp" line="3508"/>
-        <location filename="../src/mainwindow.cpp" line="3816"/>
+        <location filename="../src/mainwindow.cpp" line="3636"/>
+        <location filename="../src/mainwindow.cpp" line="3945"/>
         <source>Console Output</source>
         <translation>Konzol kimenet</translation>
     </message>
@@ -329,13 +325,13 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1575"/>
-        <location filename="../src/mainwindow.cpp" line="1849"/>
-        <location filename="../src/mainwindow.cpp" line="3966"/>
-        <location filename="../src/mainwindow.cpp" line="3977"/>
-        <location filename="../src/mainwindow.cpp" line="4091"/>
-        <location filename="../src/mainwindow.cpp" line="4131"/>
-        <location filename="../src/mainwindow.cpp" line="4151"/>
-        <location filename="../src/mainwindow.cpp" line="4178"/>
+        <location filename="../src/mainwindow.cpp" line="1979"/>
+        <location filename="../src/mainwindow.cpp" line="4113"/>
+        <location filename="../src/mainwindow.cpp" line="4124"/>
+        <location filename="../src/mainwindow.cpp" line="4238"/>
+        <location filename="../src/mainwindow.cpp" line="4278"/>
+        <location filename="../src/mainwindow.cpp" line="4298"/>
+        <location filename="../src/mainwindow.cpp" line="4325"/>
         <source>Install</source>
         <translation>Telepítés</translation>
     </message>
@@ -400,345 +396,374 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="380"/>
+        <location filename="../src/mainwindow.cpp" line="477"/>
         <source>Uninstalling packages...</source>
         <translation>Csomagok eltávolítása...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="385"/>
+        <location filename="../src/mainwindow.cpp" line="482"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Eltávolítás előtti műveletek futtatása...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="405"/>
+        <location filename="../src/mainwindow.cpp" line="502"/>
         <source>Running post-uninstall operations...</source>
         <translation>Eltávolítás utáni műveletek futtatása...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="422"/>
+        <location filename="../src/mainwindow.cpp" line="519"/>
         <source>Refreshing sources...</source>
         <translation>Források frissítése...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="435"/>
-        <location filename="../src/mainwindow.cpp" line="1897"/>
-        <location filename="../src/mainwindow.cpp" line="2032"/>
-        <location filename="../src/mainwindow.cpp" line="2208"/>
-        <location filename="../src/mainwindow.cpp" line="2285"/>
-        <location filename="../src/mainwindow.cpp" line="2642"/>
-        <location filename="../src/mainwindow.cpp" line="2886"/>
-        <location filename="../src/mainwindow.cpp" line="3327"/>
-        <location filename="../src/mainwindow.cpp" line="3344"/>
-        <location filename="../src/mainwindow.cpp" line="3486"/>
-        <location filename="../src/mainwindow.cpp" line="3500"/>
-        <location filename="../src/mainwindow.cpp" line="3652"/>
-        <location filename="../src/mainwindow.cpp" line="3703"/>
-        <location filename="../src/mainwindow.cpp" line="4275"/>
-        <location filename="../src/mainwindow.cpp" line="4363"/>
-        <location filename="../src/mainwindow.cpp" line="4395"/>
-        <location filename="../src/mainwindow.cpp" line="4487"/>
-        <location filename="../src/mainwindow.cpp" line="4525"/>
+        <location filename="../src/mainwindow.cpp" line="532"/>
+        <location filename="../src/mainwindow.cpp" line="2027"/>
+        <location filename="../src/mainwindow.cpp" line="2169"/>
+        <location filename="../src/mainwindow.cpp" line="2338"/>
+        <location filename="../src/mainwindow.cpp" line="2415"/>
+        <location filename="../src/mainwindow.cpp" line="2774"/>
+        <location filename="../src/mainwindow.cpp" line="3018"/>
+        <location filename="../src/mainwindow.cpp" line="3460"/>
+        <location filename="../src/mainwindow.cpp" line="3477"/>
+        <location filename="../src/mainwindow.cpp" line="3614"/>
+        <location filename="../src/mainwindow.cpp" line="3628"/>
+        <location filename="../src/mainwindow.cpp" line="3780"/>
+        <location filename="../src/mainwindow.cpp" line="3831"/>
+        <location filename="../src/mainwindow.cpp" line="4416"/>
+        <location filename="../src/mainwindow.cpp" line="4505"/>
+        <location filename="../src/mainwindow.cpp" line="4538"/>
+        <location filename="../src/mainwindow.cpp" line="4635"/>
+        <location filename="../src/mainwindow.cpp" line="4673"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="436"/>
+        <location filename="../src/mainwindow.cpp" line="533"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Probléma merült fel a források frissítésekor. Előfordulhat, hogy egyes források nem szolgáltattak frissítéseket. További információk:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="553"/>
-        <location filename="../src/mainwindow.cpp" line="580"/>
+        <location filename="../src/mainwindow.cpp" line="650"/>
+        <location filename="../src/mainwindow.cpp" line="677"/>
         <source>Could not determine Debian version. Please select your version:</source>
         <translation>A Debian verzió megállapítása nem sikerült. Válassza ki a megfelelőt:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="586"/>
+        <location filename="../src/mainwindow.cpp" line="683"/>
         <source>Debian Version</source>
         <translation>Debian verzió</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1111"/>
+        <location filename="../src/mainwindow.cpp" line="1232"/>
         <source>Cancel</source>
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1117"/>
+        <location filename="../src/mainwindow.cpp" line="1238"/>
         <source>Please wait...</source>
         <translation>Kérem várjon...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1656"/>
+        <location filename="../src/mainwindow.cpp" line="1788"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>Ön az MX Teszt csomagforrást fogja használni, amelynek csomagjai csak tesztelési célokra szolgálnak. Lehetséges, hogy ezek tönkretehetik a rendszerét, ezért javasoljuk, hogy készítsen biztonsági mentést, és egyszerre csak egy csomagot telepítsen vagy frissítsen. Kérjük, küldjön visszajelzést a Fórumban, hogy a csomagot kiértékelhessük, mielőtt a fő csomagforrásba kerülne.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1665"/>
+        <location filename="../src/mainwindow.cpp" line="1797"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Ön most a Debian visszaportolt csomagforrást fogja használni, amely a következő Debian kiadásból (úgynevezett &quot;testing&quot;) származó csomagokat tartalmaz, amelyeket a Debian stabil használatához igazítottak és fordítottak újra. Ezeket nincsenek olyan alaposan tesztelve, mint a Debian és az MX Linux stabil kiadásai. A Debian stabil kiadás más összetevőivel való inkompatibilitás kockázata miatt, a csomagokat &quot;úgy, ahogy van&quot; alapon bocsátják rendelkezésre. Használja óvatosan!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1673"/>
+        <location filename="../src/mainwindow.cpp" line="1805"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>Az MX Linux csak a felhasználók kényelmét szolgálja a flatpakek elérhetőségének biztosításával, és nem vállal felelősséget az egyes flatpakek működéséért. További információért nézze meg a flatpaks oldalt a Wikiben.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1681"/>
-        <location filename="../src/mainwindow.cpp" line="4515"/>
+        <location filename="../src/mainwindow.cpp" line="1813"/>
+        <location filename="../src/mainwindow.cpp" line="4663"/>
         <source>Warning</source>
         <translation>Figyelmeztetés</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1685"/>
+        <location filename="../src/mainwindow.cpp" line="1817"/>
         <source>Do not show this message again</source>
         <translation>Ne jelen meg újra ez az üzenet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1846"/>
+        <location filename="../src/mainwindow.cpp" line="1976"/>
         <source>Remove</source>
         <translation>Eltávolítás</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1862"/>
+        <location filename="../src/mainwindow.cpp" line="1992"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>A következő csomagokat választotta ki. Kattintson a Részletek megjelenítése gombra a változások listájához.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1898"/>
-        <location filename="../src/mainwindow.cpp" line="2033"/>
-        <location filename="../src/mainwindow.cpp" line="2286"/>
+        <location filename="../src/mainwindow.cpp" line="2028"/>
+        <location filename="../src/mainwindow.cpp" line="2170"/>
+        <location filename="../src/mainwindow.cpp" line="2416"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>Az internet nem érhető el, nem lesz lehetséges a csomaglista letöltése</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1901"/>
+        <location filename="../src/mainwindow.cpp" line="2031"/>
         <source>Installing packages...</source>
         <translation>Csomagok telepítése...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1959"/>
+        <location filename="../src/mainwindow.cpp" line="2094"/>
         <source>Post-processing...</source>
         <translation>Utófeldolgozás...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1991"/>
+        <location filename="../src/mainwindow.cpp" line="2126"/>
         <source>Pre-processing for </source>
         <translation>Előfeldolgozás ehhez:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2005"/>
+        <location filename="../src/mainwindow.cpp" line="2141"/>
         <source>Installing </source>
         <translation>Telepítés</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2012"/>
+        <location filename="../src/mainwindow.cpp" line="2148"/>
         <source>Post-processing for </source>
         <translation>Utófeldolgozás ehhez:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2209"/>
+        <location filename="../src/mainwindow.cpp" line="2339"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
         <translation>Hiba történt a fájl letöltése vagy írása során: %1. Ellenőrizze az internetkapcsolatot és hogy van-e elég szabad hely a meghajtón.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2294"/>
+        <location filename="../src/mainwindow.cpp" line="2424"/>
         <source>Downloading package info...</source>
         <translation>Csomaginformációk letöltése...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2643"/>
+        <location filename="../src/mainwindow.cpp" line="2775"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>A dpkg-query parancs hibával tért vissza, futtassa a &apos;dpkg-query -W&apos; parancsot a terminálban és vizsgálja meg a kimenetét.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2887"/>
+        <location filename="../src/mainwindow.cpp" line="3019"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>A dpkg-query parancs hibával tért vissza, futtassa a &apos;dpkg-query -W&apos; parancsot a terminálban és vizsgálja meg a kimenetét.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3022"/>
-        <location filename="../src/mainwindow.cpp" line="3141"/>
-        <location filename="../src/mainwindow.cpp" line="3170"/>
+        <location filename="../src/mainwindow.cpp" line="3154"/>
+        <location filename="../src/mainwindow.cpp" line="3273"/>
+        <location filename="../src/mainwindow.cpp" line="3302"/>
         <source>Package info</source>
         <translation>Csomaginformációk</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3050"/>
-        <location filename="../src/mainwindow.cpp" line="4430"/>
+        <location filename="../src/mainwindow.cpp" line="3182"/>
+        <location filename="../src/mainwindow.cpp" line="4574"/>
         <source>More &amp;info...</source>
         <translation>További &amp;infó...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3084"/>
+        <location filename="../src/mainwindow.cpp" line="3216"/>
         <source>Packages to be installed: </source>
         <translation>Telepítendő csomagok:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3311"/>
-        <location filename="../src/mainwindow.cpp" line="3323"/>
-        <location filename="../src/mainwindow.cpp" line="3341"/>
-        <location filename="../src/mainwindow.cpp" line="3461"/>
-        <location filename="../src/mainwindow.cpp" line="3483"/>
-        <location filename="../src/mainwindow.cpp" line="4272"/>
-        <location filename="../src/mainwindow.cpp" line="4359"/>
-        <location filename="../src/mainwindow.cpp" line="4389"/>
-        <location filename="../src/mainwindow.cpp" line="4483"/>
+        <location filename="../src/mainwindow.cpp" line="3443"/>
+        <location filename="../src/mainwindow.cpp" line="3456"/>
+        <location filename="../src/mainwindow.cpp" line="3474"/>
+        <location filename="../src/mainwindow.cpp" line="3588"/>
+        <location filename="../src/mainwindow.cpp" line="3611"/>
+        <location filename="../src/mainwindow.cpp" line="4413"/>
+        <location filename="../src/mainwindow.cpp" line="4501"/>
+        <location filename="../src/mainwindow.cpp" line="4532"/>
+        <location filename="../src/mainwindow.cpp" line="4631"/>
         <source>Done</source>
         <translation>Kész</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3311"/>
-        <location filename="../src/mainwindow.cpp" line="3323"/>
-        <location filename="../src/mainwindow.cpp" line="3341"/>
-        <location filename="../src/mainwindow.cpp" line="3461"/>
-        <location filename="../src/mainwindow.cpp" line="3483"/>
-        <location filename="../src/mainwindow.cpp" line="3497"/>
-        <location filename="../src/mainwindow.cpp" line="4272"/>
-        <location filename="../src/mainwindow.cpp" line="4359"/>
-        <location filename="../src/mainwindow.cpp" line="4389"/>
-        <location filename="../src/mainwindow.cpp" line="4483"/>
-        <location filename="../src/mainwindow.cpp" line="4522"/>
+        <location filename="../src/mainwindow.cpp" line="3443"/>
+        <location filename="../src/mainwindow.cpp" line="3456"/>
+        <location filename="../src/mainwindow.cpp" line="3474"/>
+        <location filename="../src/mainwindow.cpp" line="3588"/>
+        <location filename="../src/mainwindow.cpp" line="3611"/>
+        <location filename="../src/mainwindow.cpp" line="3625"/>
+        <location filename="../src/mainwindow.cpp" line="4413"/>
+        <location filename="../src/mainwindow.cpp" line="4501"/>
+        <location filename="../src/mainwindow.cpp" line="4532"/>
+        <location filename="../src/mainwindow.cpp" line="4631"/>
+        <location filename="../src/mainwindow.cpp" line="4670"/>
         <source>Processing finished successfully.</source>
         <translation>A feldolgozás sikeresen befejeződött.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3328"/>
-        <location filename="../src/mainwindow.cpp" line="3345"/>
-        <location filename="../src/mainwindow.cpp" line="4276"/>
-        <location filename="../src/mainwindow.cpp" line="4364"/>
-        <location filename="../src/mainwindow.cpp" line="4396"/>
+        <location filename="../src/mainwindow.cpp" line="3452"/>
+        <location filename="../src/mainwindow.cpp" line="4527"/>
+        <source>Install complete.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3461"/>
+        <location filename="../src/mainwindow.cpp" line="3478"/>
+        <location filename="../src/mainwindow.cpp" line="4417"/>
+        <location filename="../src/mainwindow.cpp" line="4506"/>
+        <location filename="../src/mainwindow.cpp" line="4539"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Probléma merült fel a telepítés során. Vizsgálja meg a konzol kimenetet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3355"/>
+        <location filename="../src/mainwindow.cpp" line="3488"/>
         <source>About %1</source>
         <translation>%1 névjegye</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3356"/>
+        <location filename="../src/mainwindow.cpp" line="3489"/>
         <source>Version: </source>
         <translation>Verzió:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3358"/>
+        <location filename="../src/mainwindow.cpp" line="3491"/>
         <source>Package Installer for MX Linux</source>
         <translation>Csomagtelepítő MX Linuxhoz</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3360"/>
+        <location filename="../src/mainwindow.cpp" line="3493"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3361"/>
+        <location filename="../src/mainwindow.cpp" line="3494"/>
         <source>%1 License</source>
         <translation>%1 licenc</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3373"/>
+        <location filename="../src/mainwindow.cpp" line="3500"/>
         <source>%1 Help</source>
         <translation>%1 Súgó</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3486"/>
+        <location filename="../src/mainwindow.cpp" line="3596"/>
+        <location filename="../src/mainwindow.cpp" line="4624"/>
+        <source>Uninstalling flatpaks...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3602"/>
+        <location filename="../src/mainwindow.cpp" line="4626"/>
+        <source>Uninstall complete.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3603"/>
+        <location filename="../src/mainwindow.cpp" line="4627"/>
+        <source>Refreshing flatpaks...</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3614"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Hiba történt az eltávolítás során. Vizsgálja meg a kimenetet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3497"/>
-        <location filename="../src/mainwindow.cpp" line="4522"/>
+        <location filename="../src/mainwindow.cpp" line="3625"/>
+        <location filename="../src/mainwindow.cpp" line="4670"/>
         <source>Success</source>
         <translation>Sikeres</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3500"/>
-        <location filename="../src/mainwindow.cpp" line="4525"/>
+        <location filename="../src/mainwindow.cpp" line="3628"/>
+        <location filename="../src/mainwindow.cpp" line="4673"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Hiba történt a program eltávolítása során</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3653"/>
-        <location filename="../src/mainwindow.cpp" line="3704"/>
+        <location filename="../src/mainwindow.cpp" line="3781"/>
+        <location filename="../src/mainwindow.cpp" line="3832"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>Nem sikerült a csomagok listájának betöltése. Ellenőrizze az APT csomagforrásokat.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3752"/>
-        <location filename="../src/mainwindow.cpp" line="3798"/>
+        <location filename="../src/mainwindow.cpp" line="3880"/>
+        <location filename="../src/mainwindow.cpp" line="3926"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak nincs telepítve</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3753"/>
+        <location filename="../src/mainwindow.cpp" line="3881"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>A Flatpak jelenleg nincs telepítve.
 Indulhat a telepítése?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3798"/>
+        <location filename="../src/mainwindow.cpp" line="3926"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak nem került telepítésre</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3820"/>
+        <location filename="../src/mainwindow.cpp" line="3949"/>
         <source>Needs re-login</source>
         <translation>Újra bejelentkezés szükséges</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3821"/>
+        <location filename="../src/mainwindow.cpp" line="3950"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Lehet, hogy ki kell jelentkeznie, majd ismét be, hogy láthassa a telepített elemeket a menüben</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3966"/>
-        <location filename="../src/mainwindow.cpp" line="3977"/>
-        <location filename="../src/mainwindow.cpp" line="4089"/>
-        <location filename="../src/mainwindow.cpp" line="4153"/>
+        <location filename="../src/mainwindow.cpp" line="4113"/>
+        <location filename="../src/mainwindow.cpp" line="4124"/>
+        <location filename="../src/mainwindow.cpp" line="4236"/>
+        <location filename="../src/mainwindow.cpp" line="4300"/>
         <source>Mark keep</source>
         <translation>Megtartás</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3994"/>
+        <location filename="../src/mainwindow.cpp" line="4141"/>
         <source>Select/deselect all upgradable</source>
         <translation>Frissíthetők kijelölése</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3995"/>
+        <location filename="../src/mainwindow.cpp" line="4142"/>
         <source>Select/deselect all autoremovable</source>
         <translation>Automatikusan eltávolíthatók kijelölése</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4091"/>
-        <location filename="../src/mainwindow.cpp" line="4151"/>
+        <location filename="../src/mainwindow.cpp" line="4238"/>
+        <location filename="../src/mainwindow.cpp" line="4298"/>
         <source>Upgrade</source>
         <translation>Frissítés</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4304"/>
-        <location filename="../src/mainwindow.cpp" line="4441"/>
+        <location filename="../src/mainwindow.cpp" line="4445"/>
+        <location filename="../src/mainwindow.cpp" line="4585"/>
         <source>Quit?</source>
         <translation>Kilépés?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4305"/>
-        <location filename="../src/mainwindow.cpp" line="4442"/>
+        <location filename="../src/mainwindow.cpp" line="4446"/>
+        <location filename="../src/mainwindow.cpp" line="4586"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>A feldolgozás még folyamatban van. A kilépés instabil állapotba hozhatja a rendszert.&lt;p&gt;&lt;b&gt;Biztos, hogy ki szeretne lépni az MX csomagtelepítőből?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4131"/>
+        <location filename="../src/mainwindow.cpp" line="4278"/>
         <source>Reinstall</source>
         <translation>Újratelepítés</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4488"/>
+        <location filename="../src/mainwindow.cpp" line="4498"/>
+        <source>Update complete.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="4636"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Probléma merült fel a legutóbbi műveletnél. Vizsgálja meg a konzol kimenetet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4516"/>
+        <location filename="../src/mainwindow.cpp" line="4664"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Potenciálisan veszélyes művelet.
@@ -878,22 +903,33 @@ Ellenőrizze alaposan az eltávolítandó csomagok listáját.</translation>
     <name>QObject</name>
     <message>
         <location filename="../src/about.cpp" line="71"/>
+        <source>Could not load %1</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="94"/>
         <source>License</source>
         <translation>Licenc</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="72"/>
-        <location filename="../src/about.cpp" line="82"/>
+        <location filename="../src/about.cpp" line="95"/>
+        <location filename="../src/about.cpp" line="105"/>
         <source>Changelog</source>
         <translation>Változások listája</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="73"/>
+        <location filename="../src/about.cpp" line="96"/>
         <source>Cancel</source>
         <translation>Mégsem</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="95"/>
+        <location filename="../src/about.cpp" line="117"/>
+        <source>Could not load changelog.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/about.cpp" line="51"/>
+        <location filename="../src/about.cpp" line="120"/>
         <source>&amp;Close</source>
         <translation>&amp;Bezárás</translation>
     </message>
@@ -910,7 +946,7 @@ Close the program, or wait until it is done processing and try again.</source>
 Zárja be a programot vagy várja meg amíg befejezi a műveletet, majd próbálja meg újra.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="90"/>
+        <location filename="../src/main.cpp" line="86"/>
         <source>MX Package Installer is a tool used for managing packages on MX Linux
     - installs popular programs from different sources
     - installs programs from the MX Test repo
@@ -923,23 +959,23 @@ Zárja be a programot vagy várja meg amíg befejezi a műveletet, majd próbál
    - flatpak csomagokat telepít</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="98"/>
+        <location filename="../src/main.cpp" line="94"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
         <translation>Az online ellenőrzés kihagyása, ha hibásan az internetelérés hiányát jelzi.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="108"/>
-        <location filename="../src/main.cpp" line="116"/>
+        <location filename="../src/main.cpp" line="104"/>
+        <location filename="../src/main.cpp" line="112"/>
         <source>Error</source>
         <translation>Hiba</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="109"/>
+        <location filename="../src/main.cpp" line="105"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>Úgy tűnik, hogy root felhasználóként van bejelentkezve. Jelentkezzen ki és jelentkezzen be normál felhasználóként a program használatához.</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="117"/>
+        <location filename="../src/main.cpp" line="113"/>
         <source>You must run this program with admin access.</source>
         <translation>Ezt a programot adminisztrátorként kell futtatnia.</translation>
     </message>
