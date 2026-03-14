@@ -42,8 +42,6 @@
     #define VERSION "?.?.?.?"
 #endif
 
-inline const QString starting_home = qEnvironmentVariable("HOME");
-
 int main(int argc, char *argv[])
 {
     if (getuid() == 0) {
