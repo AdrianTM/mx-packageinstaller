@@ -118,6 +118,10 @@ set(SOURCES
     src/models/packagefilterproxy.cpp
 )
 
+set(HELPER_SOURCES
+    src/helper.cpp
+)
+
 set(HEADERS
     src/log.h
     src/mainwindow.h
@@ -150,12 +154,20 @@ add_executable(mx-packageinstaller
     ${RESOURCE_FILES}
 )
 
+add_executable(helper
+    ${HELPER_SOURCES}
+)
+
 # Link Qt6 libraries
 target_link_libraries(mx-packageinstaller
     Qt6::Core
     Qt6::Gui
     Qt6::Widgets
     Qt6::Network
+)
+
+target_link_libraries(helper
+    Qt6::Core
 )
 
 # Set compiler flags
@@ -168,13 +180,27 @@ target_compile_options(mx-packageinstaller PRIVATE
     -Werror
 )
 
+target_compile_options(helper PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+    -Werror
+)
+
 # Add compiler-specific flags
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
     target_compile_options(mx-packageinstaller PRIVATE -Werror=return-stack-address)
+    target_compile_options(helper PRIVATE -Werror=return-stack-address)
 else()
     target_compile_options(mx-packageinstaller PRIVATE
         -Werror=return-local-addr
         # Suppress false positive LTO warnings with Qt6 QHash (GCC only)
+        -Wno-alloc-size-larger-than
+    )
+    target_compile_options(helper PRIVATE
+        -Werror=return-local-addr
         -Wno-alloc-size-larger-than
     )
 endif()
@@ -186,20 +212,34 @@ target_compile_definitions(mx-packageinstaller PRIVATE
     VERSION="${PROJECT_VERSION}"
 )
 
+target_compile_definitions(helper PRIVATE
+    QT_DEPRECATED_WARNINGS
+    QT_DISABLE_DEPRECATED_BEFORE=0x060000
+)
+
 # Release-specific optimizations
 if(CMAKE_BUILD_TYPE STREQUAL "Release")
     target_compile_definitions(mx-packageinstaller PRIVATE NDEBUG)
     target_compile_options(mx-packageinstaller PRIVATE -O3)
+    target_compile_definitions(helper PRIVATE NDEBUG)
+    target_compile_options(helper PRIVATE -O3)
 
     # Add LTO - different flags for different compilers
     if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
         target_compile_options(mx-packageinstaller PRIVATE -flto=thin)
         target_link_options(mx-packageinstaller PRIVATE -flto=thin)
+        target_compile_options(helper PRIVATE -flto=thin)
+        target_link_options(helper PRIVATE -flto=thin)
     else()
         target_compile_options(mx-packageinstaller PRIVATE -flto=auto)
         target_link_options(mx-packageinstaller PRIVATE
             -flto=auto
             # Suppress false positive LTO warnings with Qt6 QHash at link time (GCC only)
+            -Wno-alloc-size-larger-than
+        )
+        target_compile_options(helper PRIVATE -flto=auto)
+        target_link_options(helper PRIVATE
+            -flto=auto
             -Wno-alloc-size-larger-than
         )
     endif()
@@ -218,8 +258,17 @@ set_target_properties(mx-packageinstaller PROPERTIES
     RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
 )
 
+set_target_properties(helper PROPERTIES
+    OUTPUT_NAME "helper"
+    RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}
+)
+
 install(TARGETS mx-packageinstaller
     RUNTIME DESTINATION bin
+)
+
+install(TARGETS helper
+    RUNTIME DESTINATION lib/mx-packageinstaller
 )
 
 # Install desktop file

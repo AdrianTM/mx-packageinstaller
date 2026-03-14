@@ -201,7 +201,6 @@ private:
     QAction *lineEditClearAction {};
     bool lineEditMasked {false};
     const QCommandLineParser &args;
-    const QString elevate {"/usr/bin/pkexec "};
 
     QNetworkAccessManager manager;
     QNetworkReply *reply {};
@@ -226,8 +225,8 @@ private:
     bool install(const QString &names, int sourceTab = -1);
     bool installSelected(int sourceTab = -1);
     bool markKeep();
-    bool uninstall(const QString &names, const QString &preUninstall = QLatin1String(""),
-                   const QString &postUninstall = QLatin1String(""));
+    bool uninstall(const QString &names, const QStringList &preUninstall = {},
+                   const QStringList &postUninstall = {});
     bool updateRepos();
     QStringList getAutoremovablePackages();
     [[nodiscard]] static QString convert(quint64 bytes);

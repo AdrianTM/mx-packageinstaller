@@ -33,7 +33,7 @@ package() {
     install -Dm644 build/*.qm "${pkgdir}/usr/share/mx-packageinstaller/locale/" 2>/dev/null || true
 
     install -dm755 "${pkgdir}/usr/lib/mx-packageinstaller"
-    install -Dm755 scripts/helper "${pkgdir}/usr/lib/mx-packageinstaller/helper"
+    install -Dm755 build/helper "${pkgdir}/usr/lib/mx-packageinstaller/helper"
     install -Dm755 scripts/mxpi-lib "${pkgdir}/usr/lib/mx-packageinstaller/mxpi-lib"
 
     install -Dm644 scripts/org.mxlinux.pkexec.mxpi-helper.policy \

@@ -11,19 +11,18 @@ public:
     explicit Cmd(QObject *parent = nullptr);
 
     enum class QuietMode { No, Yes };
-    enum class Elevation { No, Yes };
 
     static QString elevationTool();
 
-    [[nodiscard]] QString getOut(const QString &cmd, QuietMode quiet = QuietMode::No, Elevation elevation = Elevation::No);
-    [[nodiscard]] QString getOutAsRoot(const QString &cmd, QuietMode quiet = QuietMode::No);
+    bool proc(const QString &cmd, const QStringList &args = {}, QString *output = nullptr,
+              const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No);
+    bool procAsRoot(const QString &cmd, const QStringList &args = {}, QString *output = nullptr,
+                    const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No);
+    [[nodiscard]] QString getOut(const QString &cmd, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString readAllOutput() const;
-    bool run(const QString &cmd, QuietMode quiet = QuietMode::No, Elevation elevation = Elevation::No);
-    bool runWithInput(const QString &cmd,
-                      const QByteArray &input,
-                      QuietMode quiet = QuietMode::No,
-                      Elevation elevation = Elevation::No);
-    bool runAsRoot(const QString &cmd, QuietMode quiet = QuietMode::No);
+    bool run(const QString &cmd, QuietMode quiet = QuietMode::No);
+    bool runHookAsRoot(const QString &script, QuietMode quiet = QuietMode::No);
+    [[nodiscard]] QString lockingProcessAsRoot(const QString &path, QuietMode quiet = QuietMode::No);
     [[nodiscard]] bool terminateAndKill();
 
 signals:
@@ -34,5 +33,15 @@ signals:
 private:
     QString elevate;
     QString helper;
-    QString out_buffer;
+    QString outBuffer;
+    QString helperMarkerPath;
+
+    [[nodiscard]] QStringList helperExecArgs(const QString &cmd, const QStringList &args) const;
+    bool helperProc(const QStringList &helperArgs, QString *output = nullptr, const QByteArray *input = nullptr,
+                    QuietMode quiet = QuietMode::No);
+    bool startAndWait(const QString &program, const QStringList &arguments, QString *output = nullptr,
+                      const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No, bool elevated = false,
+                      const QString &shellCommand = {});
+    [[nodiscard]] bool isAuthenticationDismissed() const;
+    void handleElevationError();
 };

@@ -57,10 +57,13 @@
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
+#include <unistd.h>
 
 using namespace std::chrono_literals;
 
 namespace {
+constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
+
 QString sanitizeOutputForDisplay(const QString &output)
 {
     static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
@@ -95,6 +98,25 @@ public:
         return QTreeWidgetItem::operator<(other);
     }
 };
+
+bool runHooksAsRoot(Cmd &cmd, const QStringList &hooks, Cmd::QuietMode quiet = Cmd::QuietMode::No)
+{
+    for (const QString &hook : hooks) {
+        if (!hook.trimmed().isEmpty() && !cmd.runHookAsRoot(hook, quiet)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
+{
+    const QString mxpiLibPath = QString::fromLatin1(MxpiLibPath);
+    if (getuid() == 0) {
+        return cmd.proc(mxpiLibPath, {action}, nullptr, nullptr, quiet);
+    }
+    return cmd.proc(Cmd::elevationTool(), {mxpiLibPath, action}, nullptr, nullptr, quiet);
+}
 } // namespace
 
 MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
@@ -179,7 +201,8 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // Run flatpak setup and display in a separate thread
     if (arch != "i686" && checkInstalled("flatpak")) {
         auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
-            Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
+            Cmd helperCmd;
+            runMxpiLibAsRoot(helperCmd, QStringLiteral("flatpak_add_repos"));
             QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
         });
     }
@@ -430,7 +453,7 @@ void MainWindow::setup()
     // Repo and AUR trees now use QTreeView - no item-based connections needed
 }
 
-bool MainWindow::uninstall(const QString &names, const QString &preuninstall, const QString &postuninstall)
+bool MainWindow::uninstall(const QString &names, const QStringList &preuninstall, const QStringList &postuninstall)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
@@ -452,8 +475,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        qDebug() << "Elevating preuninstall command:" << preuninstall;
-        success = cmd.runAsRoot(preuninstall);
+        success = runHooksAsRoot(cmd, preuninstall);
     }
 
     if (success) {
@@ -462,9 +484,9 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
             return false;
         }
         const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
-        const QString quotedNames = shellQuotePackageList(nameList);
-        qDebug() << "Elevating remove command:" << "pacman -Rns " + quotedNames;
-        success = cmd.runAsRoot("pacman -Rns " + quotedNames);
+        QStringList args {"-Rns"};
+        args += nameList;
+        success = cmd.procAsRoot("pacman", args);
     }
 
     if (success && !postuninstall.isEmpty()) {
@@ -474,8 +496,7 @@ bool MainWindow::uninstall(const QString &names, const QString &preuninstall, co
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        qDebug() << "Elevating postuninstall command:" << postuninstall;
-        success = cmd.runAsRoot(postuninstall);
+        success = runHooksAsRoot(cmd, postuninstall);
     }
     return success;
 }
@@ -494,8 +515,7 @@ bool MainWindow::updateRepos()
     }
 
     enableOutput();
-    qDebug() << "Elevating repo_sync command:" << "/usr/lib/mx-packageinstaller/mxpi-lib repo_sync";
-    if (cmd.runAsRoot("/usr/lib/mx-packageinstaller/mxpi-lib repo_sync", Cmd::QuietMode::Yes)) {
+    if (runMxpiLibAsRoot(cmd, QStringLiteral("repo_sync"))) {
         qDebug() << "repositories updated OK";
         updatedOnce = true;
         return true;
@@ -1869,8 +1889,9 @@ bool MainWindow::install(const QString &names, int sourceTab)
         return cmd.run(command);
     } else {
         const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
-        const QString quotedNames = shellQuotePackageList(nameList);
-        return cmd.runAsRoot("pacman -S --needed " + quotedNames);
+        QStringList args {"-S", "--needed"};
+        args += nameList;
+        return cmd.procAsRoot("pacman", args);
     }
 }
 
@@ -1890,10 +1911,10 @@ bool MainWindow::markKeep()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->setTabEnabled(Tab::Output, true);
-    const QString quotedNames = shellQuotePackageList(changeList);
     enableOutput();
-    qDebug() << "Elevating markKeep command:" << "pacman -D --asexplicit " + quotedNames;
-    return cmd.runAsRoot("pacman -D --asexplicit " + quotedNames);
+    QStringList args {"-D", "--asexplicit"};
+    args += changeList;
+    return cmd.procAsRoot("pacman", args);
 }
 
 bool MainWindow::isOnline()
@@ -2041,7 +2062,8 @@ void MainWindow::cleanup()
     if (cmd.state() != QProcess::NotRunning) {
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }
-    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib copy_log", Cmd::QuietMode::Yes);
+    Cmd helperCmd;
+    runMxpiLibAsRoot(helperCmd, QStringLiteral("copy_log"));
     settings.setValue("geometry", saveGeometry());
     settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
     settings.setValue("FlatpakUser", ui->comboUser->currentText());
@@ -2802,8 +2824,8 @@ void MainWindow::pushUninstall_clicked()
     showOutput();
 
     QString names;
-    QString preuninstall;
-    QString postuninstall;
+    QStringList preuninstall;
+    QStringList postuninstall;
     if (currentTab == Tab::Flatpak) {
         bool success = true;
 
@@ -3527,7 +3549,10 @@ void MainWindow::installFlatpak()
         currentTree->blockSignals(false);
         return;
     }
-    Cmd().run(elevate + "/usr/lib/mx-packageinstaller/mxpi-lib flatpak_add_repos", Cmd::QuietMode::Yes);
+    {
+        Cmd helperCmd;
+        runMxpiLibAsRoot(helperCmd, QStringLiteral("flatpak_add_repos"));
+    }
     enableOutput();
     invalidateFlatpakRemoteCache();
     listFlatpakRemotes();
