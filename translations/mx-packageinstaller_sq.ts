@@ -61,18 +61,18 @@
     <message>
         <location filename="../src/mainwindow.ui" line="95"/>
         <location filename="../src/mainwindow.ui" line="177"/>
-        <location filename="../src/mainwindow.ui" line="673"/>
-        <location filename="../src/mainwindow.ui" line="1057"/>
-        <location filename="../src/mainwindow.ui" line="1178"/>
+        <location filename="../src/mainwindow.ui" line="680"/>
+        <location filename="../src/mainwindow.ui" line="1071"/>
+        <location filename="../src/mainwindow.ui" line="1192"/>
         <source>search</source>
         <translation>kërko</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
         <location filename="../src/mainwindow.ui" line="202"/>
-        <location filename="../src/mainwindow.ui" line="698"/>
-        <location filename="../src/mainwindow.ui" line="1137"/>
-        <location filename="../src/mainwindow.ui" line="1373"/>
+        <location filename="../src/mainwindow.ui" line="705"/>
+        <location filename="../src/mainwindow.ui" line="1151"/>
+        <location filename="../src/mainwindow.ui" line="1387"/>
         <source>= Installed packages</source>
         <translation>= Paketa të instaluara</translation>
     </message>
@@ -93,114 +93,114 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="350"/>
-        <location filename="../src/mainwindow.ui" line="1254"/>
+        <location filename="../src/mainwindow.ui" line="1268"/>
         <source>Upgrade All</source>
         <translation>Përmirësoji Krejt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="293"/>
         <location filename="../src/mainwindow.ui" line="524"/>
-        <location filename="../src/mainwindow.ui" line="901"/>
+        <location filename="../src/mainwindow.ui" line="908"/>
         <source>Installed:</source>
         <translation>Të instaluara:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="377"/>
         <location filename="../src/mainwindow.ui" line="517"/>
-        <location filename="../src/mainwindow.ui" line="922"/>
+        <location filename="../src/mainwindow.ui" line="929"/>
         <source>Total packages:</source>
         <translation>Paketa gjithsej:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="363"/>
-        <location filename="../src/mainwindow.ui" line="649"/>
-        <location filename="../src/mainwindow.ui" line="962"/>
+        <location filename="../src/mainwindow.ui" line="656"/>
+        <location filename="../src/mainwindow.ui" line="976"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
         <translation>Instalo gjithashtu paketa “Të rekomanduara”</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="323"/>
         <location filename="../src/mainwindow.ui" line="554"/>
-        <location filename="../src/mainwindow.ui" line="894"/>
+        <location filename="../src/mainwindow.ui" line="901"/>
         <source>Upgradable:</source>
         <translation>Të përmirësueshme:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="242"/>
         <location filename="../src/mainwindow.ui" line="561"/>
-        <location filename="../src/mainwindow.ui" line="929"/>
+        <location filename="../src/mainwindow.ui" line="936"/>
         <source>Hide library and developer packages</source>
         <translation>Fshih paketa bibliotekë dhe zhvilluesish</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="264"/>
-        <location filename="../src/mainwindow.ui" line="610"/>
-        <location filename="../src/mainwindow.ui" line="981"/>
-        <location filename="../src/mainwindow.ui" line="1466"/>
+        <location filename="../src/mainwindow.ui" line="617"/>
+        <location filename="../src/mainwindow.ui" line="995"/>
+        <location filename="../src/mainwindow.ui" line="1480"/>
         <source>Refresh list</source>
         <translation>Rifresko listën</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="458"/>
-        <location filename="../src/mainwindow.ui" line="760"/>
-        <location filename="../src/mainwindow.ui" line="1087"/>
-        <location filename="../src/mainwindow.ui" line="1421"/>
+        <location filename="../src/mainwindow.ui" line="767"/>
+        <location filename="../src/mainwindow.ui" line="1101"/>
+        <location filename="../src/mainwindow.ui" line="1435"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filtrojini paketat sipas gjendjes së tyre.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="461"/>
         <location filename="../src/mainwindow.ui" line="465"/>
-        <location filename="../src/mainwindow.ui" line="763"/>
-        <location filename="../src/mainwindow.ui" line="767"/>
-        <location filename="../src/mainwindow.ui" line="1090"/>
-        <location filename="../src/mainwindow.ui" line="1094"/>
-        <location filename="../src/mainwindow.cpp" line="4100"/>
+        <location filename="../src/mainwindow.ui" line="770"/>
+        <location filename="../src/mainwindow.ui" line="774"/>
+        <location filename="../src/mainwindow.ui" line="1104"/>
+        <location filename="../src/mainwindow.ui" line="1108"/>
+        <location filename="../src/mainwindow.cpp" line="4112"/>
         <source>All packages</source>
         <translation>Krejt paketat</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="470"/>
-        <location filename="../src/mainwindow.ui" line="772"/>
-        <location filename="../src/mainwindow.ui" line="1099"/>
-        <location filename="../src/mainwindow.cpp" line="4126"/>
+        <location filename="../src/mainwindow.ui" line="779"/>
+        <location filename="../src/mainwindow.ui" line="1113"/>
+        <location filename="../src/mainwindow.cpp" line="4138"/>
         <source>Installed</source>
         <translation>Të instaluara</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="475"/>
-        <location filename="../src/mainwindow.ui" line="777"/>
-        <location filename="../src/mainwindow.ui" line="1104"/>
-        <location filename="../src/mainwindow.cpp" line="4127"/>
+        <location filename="../src/mainwindow.ui" line="784"/>
+        <location filename="../src/mainwindow.ui" line="1118"/>
+        <location filename="../src/mainwindow.cpp" line="4139"/>
         <source>Upgradable</source>
         <translation>Të përmirësueshme</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="480"/>
-        <location filename="../src/mainwindow.ui" line="782"/>
-        <location filename="../src/mainwindow.ui" line="1109"/>
-        <location filename="../src/mainwindow.ui" line="1458"/>
-        <location filename="../src/mainwindow.cpp" line="4093"/>
-        <location filename="../src/mainwindow.cpp" line="4128"/>
+        <location filename="../src/mainwindow.ui" line="789"/>
+        <location filename="../src/mainwindow.ui" line="1123"/>
+        <location filename="../src/mainwindow.ui" line="1472"/>
+        <location filename="../src/mainwindow.cpp" line="4105"/>
+        <location filename="../src/mainwindow.cpp" line="4140"/>
         <source>Not installed</source>
         <translation>Jo të instaluara</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="485"/>
-        <location filename="../src/mainwindow.ui" line="787"/>
-        <location filename="../src/mainwindow.ui" line="1114"/>
-        <location filename="../src/mainwindow.cpp" line="3467"/>
-        <location filename="../src/mainwindow.cpp" line="4064"/>
-        <location filename="../src/mainwindow.cpp" line="4129"/>
-        <location filename="../src/mainwindow.cpp" line="4208"/>
-        <location filename="../src/mainwindow.cpp" line="4299"/>
+        <location filename="../src/mainwindow.ui" line="794"/>
+        <location filename="../src/mainwindow.ui" line="1128"/>
+        <location filename="../src/mainwindow.cpp" line="3479"/>
+        <location filename="../src/mainwindow.cpp" line="4076"/>
+        <location filename="../src/mainwindow.cpp" line="4141"/>
+        <location filename="../src/mainwindow.cpp" line="4220"/>
+        <location filename="../src/mainwindow.cpp" line="4311"/>
         <source>Autoremovable</source>
         <translation>Të heqshme automatikisht</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="427"/>
-        <location filename="../src/mainwindow.ui" line="729"/>
-        <location filename="../src/mainwindow.ui" line="830"/>
+        <location filename="../src/mainwindow.ui" line="736"/>
+        <location filename="../src/mainwindow.ui" line="837"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
         <translation>= Paketa që mund të përmirësohen. Version i ri i gatshëm te depo e përzgjedhur.</translation>
     </message>
@@ -210,560 +210,566 @@
         <translation>Depo MX Test</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="809"/>
+        <location filename="../src/mainwindow.ui" line="816"/>
         <source>Debian Backports</source>
         <translation>Backport-a Debian</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1160"/>
+        <location filename="../src/mainwindow.ui" line="1174"/>
         <source>Flatpaks</source>
         <translation>Paketime Flatpak</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1389"/>
-        <location filename="../src/mainwindow.ui" line="1393"/>
+        <location filename="../src/mainwindow.ui" line="1403"/>
+        <location filename="../src/mainwindow.ui" line="1407"/>
         <location filename="../src/mainwindow.cpp" line="272"/>
         <location filename="../src/mainwindow.cpp" line="273"/>
         <source>For all users</source>
         <translation>Për krejt përdoruesit</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1398"/>
+        <location filename="../src/mainwindow.ui" line="1412"/>
         <source>For current user</source>
         <translation>Për përdoruesin e tanishëm</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1483"/>
+        <location filename="../src/mainwindow.ui" line="1497"/>
         <source>Remote (repo):</source>
         <translation>E largët (depo):</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1424"/>
-        <location filename="../src/mainwindow.ui" line="1428"/>
-        <location filename="../src/mainwindow.cpp" line="4075"/>
+        <location filename="../src/mainwindow.ui" line="1438"/>
+        <location filename="../src/mainwindow.ui" line="1442"/>
+        <location filename="../src/mainwindow.cpp" line="4087"/>
         <source>All apps</source>
         <translation>Krejt aplikacionet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1433"/>
-        <location filename="../src/mainwindow.cpp" line="4081"/>
+        <location filename="../src/mainwindow.ui" line="1447"/>
+        <location filename="../src/mainwindow.cpp" line="4093"/>
         <source>All runtimes</source>
         <translation>Krejt runtime-et</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1438"/>
-        <location filename="../src/mainwindow.cpp" line="4087"/>
+        <location filename="../src/mainwindow.ui" line="1452"/>
+        <location filename="../src/mainwindow.cpp" line="4099"/>
         <source>All available</source>
         <translation>Krejt të gatshmet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1443"/>
-        <location filename="../src/mainwindow.cpp" line="4072"/>
+        <location filename="../src/mainwindow.ui" line="1457"/>
+        <location filename="../src/mainwindow.cpp" line="4084"/>
         <source>Installed apps</source>
         <translation>Aplikacione të instaluara</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1448"/>
-        <location filename="../src/mainwindow.cpp" line="4069"/>
+        <location filename="../src/mainwindow.ui" line="1462"/>
+        <location filename="../src/mainwindow.cpp" line="4081"/>
         <source>Installed runtimes</source>
         <translation>Runtime-e të instaluar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1453"/>
-        <location filename="../src/mainwindow.cpp" line="4091"/>
+        <location filename="../src/mainwindow.ui" line="1467"/>
+        <location filename="../src/mainwindow.cpp" line="4103"/>
         <source>All installed</source>
         <translation>Krejt të instaluarat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1233"/>
+        <location filename="../src/mainwindow.ui" line="1247"/>
         <source>Total items </source>
         <translation>Objekte gjithsej </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1247"/>
+        <location filename="../src/mainwindow.ui" line="1261"/>
         <source>Installed apps:</source>
         <translation>Aplikacione të instaluara:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1299"/>
+        <location filename="../src/mainwindow.ui" line="1313"/>
         <source>Advanced</source>
         <translation>Të mëtejshme</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1328"/>
+        <location filename="../src/mainwindow.ui" line="1342"/>
         <source>Total installed size:</source>
         <translation>Madhësi të instaluarash gjithsej:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1342"/>
+        <location filename="../src/mainwindow.ui" line="1356"/>
         <source>Remove unused runtimes</source>
         <translation>Hiqi runtime-et e papërdorur</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="277"/>
-        <location filename="../src/mainwindow.ui" line="623"/>
-        <location filename="../src/mainwindow.ui" line="994"/>
+        <location filename="../src/mainwindow.ui" line="630"/>
+        <location filename="../src/mainwindow.ui" line="1008"/>
         <source>Select all</source>
         <translation>Përzgjidhi krejt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1500"/>
-        <location filename="../src/mainwindow.cpp" line="3636"/>
-        <location filename="../src/mainwindow.cpp" line="3945"/>
+        <location filename="../src/mainwindow.ui" line="571"/>
+        <location filename="../src/mainwindow.ui" line="946"/>
+        <source>Only repo packages</source>
+        <translation>Vetëm paketa depoje</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="1514"/>
+        <location filename="../src/mainwindow.cpp" line="3648"/>
+        <location filename="../src/mainwindow.cpp" line="3957"/>
         <source>Console Output</source>
         <translation>Ç’jep Konsola</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1506"/>
+        <location filename="../src/mainwindow.ui" line="1520"/>
         <source>Enter</source>
         <translation>Tasti Enter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1516"/>
+        <location filename="../src/mainwindow.ui" line="1530"/>
         <source>Respond here, or just press Enter</source>
         <translation>Përgjigjuni këtu, ose thjesht shtypni tastin Enter</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1575"/>
-        <location filename="../src/mainwindow.cpp" line="1979"/>
-        <location filename="../src/mainwindow.cpp" line="4113"/>
-        <location filename="../src/mainwindow.cpp" line="4124"/>
-        <location filename="../src/mainwindow.cpp" line="4238"/>
-        <location filename="../src/mainwindow.cpp" line="4278"/>
-        <location filename="../src/mainwindow.cpp" line="4298"/>
-        <location filename="../src/mainwindow.cpp" line="4325"/>
+        <location filename="../src/mainwindow.ui" line="1589"/>
+        <location filename="../src/mainwindow.cpp" line="1991"/>
+        <location filename="../src/mainwindow.cpp" line="4125"/>
+        <location filename="../src/mainwindow.cpp" line="4136"/>
+        <location filename="../src/mainwindow.cpp" line="4250"/>
+        <location filename="../src/mainwindow.cpp" line="4290"/>
+        <location filename="../src/mainwindow.cpp" line="4310"/>
+        <location filename="../src/mainwindow.cpp" line="4337"/>
         <source>Install</source>
         <translation>Instaloje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1581"/>
+        <location filename="../src/mainwindow.ui" line="1595"/>
         <source>Alt+I</source>
         <translation>Alt+I</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1600"/>
+        <location filename="../src/mainwindow.ui" line="1614"/>
         <source>Quit application</source>
         <translation>Mbylle aplikacionin</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1603"/>
+        <location filename="../src/mainwindow.ui" line="1617"/>
         <source>Close</source>
         <translation>Mbylle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1609"/>
+        <location filename="../src/mainwindow.ui" line="1623"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1641"/>
+        <location filename="../src/mainwindow.ui" line="1655"/>
         <source>About this application</source>
         <translation>Mbi këtë aplikacion</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1644"/>
+        <location filename="../src/mainwindow.ui" line="1658"/>
         <source>About...</source>
         <translation>Mbi…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1650"/>
+        <location filename="../src/mainwindow.ui" line="1664"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1688"/>
+        <location filename="../src/mainwindow.ui" line="1702"/>
         <source>Display help </source>
         <translation>Shfaq ndihmën </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1691"/>
+        <location filename="../src/mainwindow.ui" line="1705"/>
         <source>Help</source>
         <translation>Ndihmë</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1697"/>
+        <location filename="../src/mainwindow.ui" line="1711"/>
         <source>Alt+H</source>
         <translation>Alt+H</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1713"/>
+        <location filename="../src/mainwindow.ui" line="1727"/>
         <source>Uninstall</source>
         <translation>Çinstaloje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1719"/>
+        <location filename="../src/mainwindow.ui" line="1733"/>
         <source>Alt+U</source>
         <translation>Alt+Ç</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="477"/>
+        <location filename="../src/mainwindow.cpp" line="484"/>
         <source>Uninstalling packages...</source>
         <translation>Po çinstalohen paketa…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="482"/>
+        <location filename="../src/mainwindow.cpp" line="489"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Po kryhen veprime para-çinstalimi…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="502"/>
+        <location filename="../src/mainwindow.cpp" line="509"/>
         <source>Running post-uninstall operations...</source>
         <translation>Po kryhen veprime pas-çinstalimi…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="519"/>
+        <location filename="../src/mainwindow.cpp" line="526"/>
         <source>Refreshing sources...</source>
         <translation>Po rifreskohen burime…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="532"/>
-        <location filename="../src/mainwindow.cpp" line="2027"/>
-        <location filename="../src/mainwindow.cpp" line="2169"/>
-        <location filename="../src/mainwindow.cpp" line="2338"/>
-        <location filename="../src/mainwindow.cpp" line="2415"/>
-        <location filename="../src/mainwindow.cpp" line="2774"/>
-        <location filename="../src/mainwindow.cpp" line="3018"/>
-        <location filename="../src/mainwindow.cpp" line="3460"/>
-        <location filename="../src/mainwindow.cpp" line="3477"/>
-        <location filename="../src/mainwindow.cpp" line="3614"/>
-        <location filename="../src/mainwindow.cpp" line="3628"/>
-        <location filename="../src/mainwindow.cpp" line="3780"/>
-        <location filename="../src/mainwindow.cpp" line="3831"/>
-        <location filename="../src/mainwindow.cpp" line="4416"/>
-        <location filename="../src/mainwindow.cpp" line="4505"/>
-        <location filename="../src/mainwindow.cpp" line="4538"/>
-        <location filename="../src/mainwindow.cpp" line="4635"/>
-        <location filename="../src/mainwindow.cpp" line="4673"/>
+        <location filename="../src/mainwindow.cpp" line="539"/>
+        <location filename="../src/mainwindow.cpp" line="2039"/>
+        <location filename="../src/mainwindow.cpp" line="2181"/>
+        <location filename="../src/mainwindow.cpp" line="2350"/>
+        <location filename="../src/mainwindow.cpp" line="2427"/>
+        <location filename="../src/mainwindow.cpp" line="2786"/>
+        <location filename="../src/mainwindow.cpp" line="3030"/>
+        <location filename="../src/mainwindow.cpp" line="3472"/>
+        <location filename="../src/mainwindow.cpp" line="3489"/>
+        <location filename="../src/mainwindow.cpp" line="3626"/>
+        <location filename="../src/mainwindow.cpp" line="3640"/>
+        <location filename="../src/mainwindow.cpp" line="3792"/>
+        <location filename="../src/mainwindow.cpp" line="3843"/>
+        <location filename="../src/mainwindow.cpp" line="4428"/>
+        <location filename="../src/mainwindow.cpp" line="4541"/>
+        <location filename="../src/mainwindow.cpp" line="4574"/>
+        <location filename="../src/mainwindow.cpp" line="4671"/>
+        <location filename="../src/mainwindow.cpp" line="4709"/>
         <source>Error</source>
         <translation>Gabim</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="533"/>
+        <location filename="../src/mainwindow.cpp" line="540"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Pati një problem me përditësimin e burimeve. Disa burime mund të mos kenë dhënë përditësime. Për më tepër hollësi, shihni: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="650"/>
-        <location filename="../src/mainwindow.cpp" line="677"/>
+        <location filename="../src/mainwindow.cpp" line="658"/>
+        <location filename="../src/mainwindow.cpp" line="685"/>
         <source>Could not determine Debian version. Please select your version:</source>
         <translation>S’u përcaktua dot version Debian-i. Ju lutemi, përzgjidhni versionin tuaj:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="683"/>
+        <location filename="../src/mainwindow.cpp" line="691"/>
         <source>Debian Version</source>
         <translation>Version Debian</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1232"/>
+        <location filename="../src/mainwindow.cpp" line="1242"/>
         <source>Cancel</source>
         <translation>Anuloje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1238"/>
+        <location filename="../src/mainwindow.cpp" line="1248"/>
         <source>Please wait...</source>
         <translation>Ju lutemi, pritni…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1788"/>
+        <location filename="../src/mainwindow.cpp" line="1800"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>Ju ndan një hap nga përdorimi i depos MX Test, paketat e së cilës jepen vetëm për qëllime testimi. Është e mundur që të dëmtojnë sistemin, ndaj sugjerohet që të kopjeruani sistemin dhe të instaloni apo përditësoni vetëm një paketë në herë. Ju lutemi, jepni përshtypjet te Forumi, që kështu paketa të mund të vlerësohet, përpara se të kalojë te Kryesori.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1797"/>
+        <location filename="../src/mainwindow.cpp" line="1809"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Ju ndan një hap nga përdorimi i depos Debian Backports, që përmban paketa të marra nga hedhja e ardhshme në qarkullim e Debian-it (e quajtur “testim”), përshtatur dhe ripërpiluar për përdorim në versionin e qëndrueshëm të Debian-it. S’mund të testohen aq gjerë sa te hedhjet në qarkullim të versioneve të qëndrueshëm të Debian-it dhe të MX Linux-it dhe jepen ashtu siç janë, me rrezikun e mospërputhjes me përbërës të tjerë te versioni i qëndrueshëm i Debian-it. Përdorini me kujdes!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1805"/>
+        <location filename="../src/mainwindow.cpp" line="1817"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux e përfshin këtë depo paketash Flatpak vetëm për leverdinë e përdoruesve dhe nuk është përgjegjës për punimin e vetë paketave Flatpak. Për më tepër, shihni rreth paketimesh Flatpak te Wiki.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1813"/>
-        <location filename="../src/mainwindow.cpp" line="4663"/>
+        <location filename="../src/mainwindow.cpp" line="1825"/>
+        <location filename="../src/mainwindow.cpp" line="4699"/>
         <source>Warning</source>
         <translation>Kujdes</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1817"/>
+        <location filename="../src/mainwindow.cpp" line="1829"/>
         <source>Do not show this message again</source>
         <translation>Mos e shfaq sërish këtë mesazh</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1976"/>
+        <location filename="../src/mainwindow.cpp" line="1988"/>
         <source>Remove</source>
         <translation>Hiqe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1992"/>
+        <location filename="../src/mainwindow.cpp" line="2004"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>Janë përzgjedhur paketat vijuese. Për një listë të ndryshimeve, klikoni mbi “Shfaq Hollësi”.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2028"/>
-        <location filename="../src/mainwindow.cpp" line="2170"/>
-        <location filename="../src/mainwindow.cpp" line="2416"/>
+        <location filename="../src/mainwindow.cpp" line="2040"/>
+        <location filename="../src/mainwindow.cpp" line="2182"/>
+        <location filename="../src/mainwindow.cpp" line="2428"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>S’ka Internet, s’do të jetë në gjendje të shkarkojë listën e paketave</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2031"/>
+        <location filename="../src/mainwindow.cpp" line="2043"/>
         <source>Installing packages...</source>
         <translation>Po instalohen paketa…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2094"/>
+        <location filename="../src/mainwindow.cpp" line="2106"/>
         <source>Post-processing...</source>
         <translation>Pas-përpunim…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2126"/>
+        <location filename="../src/mainwindow.cpp" line="2138"/>
         <source>Pre-processing for </source>
         <translation>Para-përpunim për </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2141"/>
+        <location filename="../src/mainwindow.cpp" line="2153"/>
         <source>Installing </source>
         <translation>Po instalohet </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2148"/>
+        <location filename="../src/mainwindow.cpp" line="2160"/>
         <source>Post-processing for </source>
         <translation>Pas-përpunim për </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2339"/>
+        <location filename="../src/mainwindow.cpp" line="2351"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
         <translation>Pati një gabim në shkarkim apo shkrim kartele: %1. Ju lutemi, kontrolloni lidhjen tuaj internet dhe nëse keni hapësirë të lirë të mjaftueshme në diskun tuaj</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2424"/>
+        <location filename="../src/mainwindow.cpp" line="2436"/>
         <source>Downloading package info...</source>
         <translation>Po shkarkohen hollësi pakete…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2775"/>
+        <location filename="../src/mainwindow.cpp" line="2787"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>Urdhri dpkg-query u përgjigj me një gabim. Ju lutemi, xhironi &apos;dpkg-query -W&apos; në terminal dhe shihni ç’jep.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3019"/>
+        <location filename="../src/mainwindow.cpp" line="3031"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>Urdhri dpkg-query u përgjigj me një gabim, ju lutemi, xhironi &apos;dpkg-query -W&apos; në terminal dhe shihni ç’jep.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3154"/>
-        <location filename="../src/mainwindow.cpp" line="3273"/>
-        <location filename="../src/mainwindow.cpp" line="3302"/>
+        <location filename="../src/mainwindow.cpp" line="3166"/>
+        <location filename="../src/mainwindow.cpp" line="3285"/>
+        <location filename="../src/mainwindow.cpp" line="3314"/>
         <source>Package info</source>
         <translation>Hollësi pakete</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3182"/>
-        <location filename="../src/mainwindow.cpp" line="4574"/>
+        <location filename="../src/mainwindow.cpp" line="3194"/>
+        <location filename="../src/mainwindow.cpp" line="4610"/>
         <source>More &amp;info...</source>
         <translation>Më tepër &amp;hollësi…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3216"/>
+        <location filename="../src/mainwindow.cpp" line="3228"/>
         <source>Packages to be installed: </source>
         <translation>Paketa për t’u instaluar: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3443"/>
-        <location filename="../src/mainwindow.cpp" line="3456"/>
-        <location filename="../src/mainwindow.cpp" line="3474"/>
-        <location filename="../src/mainwindow.cpp" line="3588"/>
-        <location filename="../src/mainwindow.cpp" line="3611"/>
-        <location filename="../src/mainwindow.cpp" line="4413"/>
-        <location filename="../src/mainwindow.cpp" line="4501"/>
-        <location filename="../src/mainwindow.cpp" line="4532"/>
-        <location filename="../src/mainwindow.cpp" line="4631"/>
+        <location filename="../src/mainwindow.cpp" line="3455"/>
+        <location filename="../src/mainwindow.cpp" line="3468"/>
+        <location filename="../src/mainwindow.cpp" line="3486"/>
+        <location filename="../src/mainwindow.cpp" line="3600"/>
+        <location filename="../src/mainwindow.cpp" line="3623"/>
+        <location filename="../src/mainwindow.cpp" line="4425"/>
+        <location filename="../src/mainwindow.cpp" line="4537"/>
+        <location filename="../src/mainwindow.cpp" line="4568"/>
+        <location filename="../src/mainwindow.cpp" line="4667"/>
         <source>Done</source>
         <translation>U bë</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3443"/>
-        <location filename="../src/mainwindow.cpp" line="3456"/>
-        <location filename="../src/mainwindow.cpp" line="3474"/>
-        <location filename="../src/mainwindow.cpp" line="3588"/>
-        <location filename="../src/mainwindow.cpp" line="3611"/>
-        <location filename="../src/mainwindow.cpp" line="3625"/>
-        <location filename="../src/mainwindow.cpp" line="4413"/>
-        <location filename="../src/mainwindow.cpp" line="4501"/>
-        <location filename="../src/mainwindow.cpp" line="4532"/>
-        <location filename="../src/mainwindow.cpp" line="4631"/>
-        <location filename="../src/mainwindow.cpp" line="4670"/>
+        <location filename="../src/mainwindow.cpp" line="3455"/>
+        <location filename="../src/mainwindow.cpp" line="3468"/>
+        <location filename="../src/mainwindow.cpp" line="3486"/>
+        <location filename="../src/mainwindow.cpp" line="3600"/>
+        <location filename="../src/mainwindow.cpp" line="3623"/>
+        <location filename="../src/mainwindow.cpp" line="3637"/>
+        <location filename="../src/mainwindow.cpp" line="4425"/>
+        <location filename="../src/mainwindow.cpp" line="4537"/>
+        <location filename="../src/mainwindow.cpp" line="4568"/>
+        <location filename="../src/mainwindow.cpp" line="4667"/>
+        <location filename="../src/mainwindow.cpp" line="4706"/>
         <source>Processing finished successfully.</source>
         <translation>Përpunimi përfundoi me sukses.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3452"/>
-        <location filename="../src/mainwindow.cpp" line="4527"/>
+        <location filename="../src/mainwindow.cpp" line="3464"/>
+        <location filename="../src/mainwindow.cpp" line="4563"/>
         <source>Install complete.</source>
-        <translation type="unfinished"/>
+        <translation>Instalim i plotësuar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3461"/>
-        <location filename="../src/mainwindow.cpp" line="3478"/>
-        <location filename="../src/mainwindow.cpp" line="4417"/>
-        <location filename="../src/mainwindow.cpp" line="4506"/>
-        <location filename="../src/mainwindow.cpp" line="4539"/>
+        <location filename="../src/mainwindow.cpp" line="3473"/>
+        <location filename="../src/mainwindow.cpp" line="3490"/>
+        <location filename="../src/mainwindow.cpp" line="4429"/>
+        <location filename="../src/mainwindow.cpp" line="4542"/>
+        <location filename="../src/mainwindow.cpp" line="4575"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>U pikas problem teksa instalohej, ju lutemi, vëzhgoni ç’jepet te konsola.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3488"/>
+        <location filename="../src/mainwindow.cpp" line="3500"/>
         <source>About %1</source>
         <translation>Mbi %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3489"/>
+        <location filename="../src/mainwindow.cpp" line="3501"/>
         <source>Version: </source>
         <translation>Version: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3491"/>
+        <location filename="../src/mainwindow.cpp" line="3503"/>
         <source>Package Installer for MX Linux</source>
         <translation>Instalues Paketash për MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3493"/>
+        <location filename="../src/mainwindow.cpp" line="3505"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Të drejta kopjimi (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3494"/>
+        <location filename="../src/mainwindow.cpp" line="3506"/>
         <source>%1 License</source>
         <translation>Licencë %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3500"/>
+        <location filename="../src/mainwindow.cpp" line="3512"/>
         <source>%1 Help</source>
         <translation>Ndihmë për %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3596"/>
-        <location filename="../src/mainwindow.cpp" line="4624"/>
+        <location filename="../src/mainwindow.cpp" line="3608"/>
+        <location filename="../src/mainwindow.cpp" line="4660"/>
         <source>Uninstalling flatpaks...</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="3602"/>
-        <location filename="../src/mainwindow.cpp" line="4626"/>
-        <source>Uninstall complete.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="3603"/>
-        <location filename="../src/mainwindow.cpp" line="4627"/>
-        <source>Refreshing flatpaks...</source>
-        <translation type="unfinished"/>
+        <translation>Po çinstalohen flatpak-e…</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3614"/>
+        <location filename="../src/mainwindow.cpp" line="4662"/>
+        <source>Uninstall complete.</source>
+        <translation>Çinstalim i plotësuar.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3615"/>
+        <location filename="../src/mainwindow.cpp" line="4663"/>
+        <source>Refreshing flatpaks...</source>
+        <translation>Po rifreskohen flatpak-e…</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3626"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Hasëm një problem me çinstalimin, ju lutemi, shihni ç’jepet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3625"/>
-        <location filename="../src/mainwindow.cpp" line="4670"/>
+        <location filename="../src/mainwindow.cpp" line="3637"/>
+        <location filename="../src/mainwindow.cpp" line="4706"/>
         <source>Success</source>
         <translation>Sukses</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3628"/>
-        <location filename="../src/mainwindow.cpp" line="4673"/>
+        <location filename="../src/mainwindow.cpp" line="3640"/>
+        <location filename="../src/mainwindow.cpp" line="4709"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Hasëm një problem me çinstalimin e programit</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3781"/>
-        <location filename="../src/mainwindow.cpp" line="3832"/>
+        <location filename="../src/mainwindow.cpp" line="3793"/>
+        <location filename="../src/mainwindow.cpp" line="3844"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>S’u shkarkua dot lista e paketave. Ju lutemi, kontrolloni burimet tuaja për APT-in.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3880"/>
-        <location filename="../src/mainwindow.cpp" line="3926"/>
+        <location filename="../src/mainwindow.cpp" line="3892"/>
+        <location filename="../src/mainwindow.cpp" line="3938"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak-u s’është i instaluar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3881"/>
+        <location filename="../src/mainwindow.cpp" line="3893"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak-u aktualisht s’është i instaluar.
 OK të ecet më tej dhe të instalohet?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3926"/>
+        <location filename="../src/mainwindow.cpp" line="3938"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak-u s’qe i instaluar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3949"/>
+        <location filename="../src/mainwindow.cpp" line="3961"/>
         <source>Needs re-login</source>
         <translation>Lyp rihyrje në llogari</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3950"/>
+        <location filename="../src/mainwindow.cpp" line="3962"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Mund t’ju duhet të dilni/hyni në llogari, që të shihni te menuja zërat e instaluar</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4113"/>
-        <location filename="../src/mainwindow.cpp" line="4124"/>
-        <location filename="../src/mainwindow.cpp" line="4236"/>
-        <location filename="../src/mainwindow.cpp" line="4300"/>
+        <location filename="../src/mainwindow.cpp" line="4125"/>
+        <location filename="../src/mainwindow.cpp" line="4136"/>
+        <location filename="../src/mainwindow.cpp" line="4248"/>
+        <location filename="../src/mainwindow.cpp" line="4312"/>
         <source>Mark keep</source>
         <translation>Vëri shenjë për mbajtje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4141"/>
+        <location filename="../src/mainwindow.cpp" line="4153"/>
         <source>Select/deselect all upgradable</source>
         <translation>Përzgjidh/shpërzgjidh krejt të përmirësueshmet</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4142"/>
+        <location filename="../src/mainwindow.cpp" line="4154"/>
         <source>Select/deselect all autoremovable</source>
         <translation>Përzgjidh/shpërzgjidh krejt ato që mund të hiqen vetvetiu</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4238"/>
-        <location filename="../src/mainwindow.cpp" line="4298"/>
+        <location filename="../src/mainwindow.cpp" line="4250"/>
+        <location filename="../src/mainwindow.cpp" line="4310"/>
         <source>Upgrade</source>
         <translation>Përmirësojeni</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4445"/>
-        <location filename="../src/mainwindow.cpp" line="4585"/>
+        <location filename="../src/mainwindow.cpp" line="4457"/>
+        <location filename="../src/mainwindow.cpp" line="4621"/>
         <source>Quit?</source>
         <translation>Të dilet?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4446"/>
-        <location filename="../src/mainwindow.cpp" line="4586"/>
+        <location filename="../src/mainwindow.cpp" line="4458"/>
+        <location filename="../src/mainwindow.cpp" line="4622"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Proces ende në xhirim, dalja mund ta lërë sistemin në një gjendje të paqëndrueshme.&lt;p&gt;&lt;b&gt;Jeni i sigurt se doni të dilet nga Instaluesi MX i Paketave?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4278"/>
+        <location filename="../src/mainwindow.cpp" line="4290"/>
         <source>Reinstall</source>
         <translation>Riinstaloje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4498"/>
+        <location filename="../src/mainwindow.cpp" line="4534"/>
         <source>Update complete.</source>
-        <translation type="unfinished"/>
+        <translation>Përditësim i plotësuar.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4636"/>
+        <location filename="../src/mainwindow.cpp" line="4672"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>U pikas problem gjatë veprimit të fundit, ju lutemi, vëzhgoni ç’jepet te konsola.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4664"/>
+        <location filename="../src/mainwindow.cpp" line="4700"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Veprim potencialisht i rrezikshëm.
