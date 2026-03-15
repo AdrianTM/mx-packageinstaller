@@ -70,7 +70,7 @@ QString sanitizeOutputForDisplay(const QString &output)
 
 QString debconfFrontend()
 {
-    return QFile::exists("/usr/bin/debconf-kde-helper") ? QStringLiteral("kde") : QStringLiteral("gnome");
+    return QFile::exists("/usr/share/doc/debconf-kde-helper") ? QStringLiteral("kde") : QStringLiteral("gnome");
 }
 
 QHash<QString, QString> debconfEnvironment()
