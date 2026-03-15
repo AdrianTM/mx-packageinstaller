@@ -310,7 +310,7 @@
         <location filename="../src/mainwindow.ui" line="571"/>
         <location filename="../src/mainwindow.ui" line="946"/>
         <source>Only repo packages</source>
-        <translation type="unfinished"/>
+        <translation>Apenas os pacotes dos repositórios do MX ou do Debian</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1514"/>
@@ -608,7 +608,7 @@ Por favor, selecione a sua versão:</translation>
         <location filename="../src/mainwindow.cpp" line="3464"/>
         <location filename="../src/mainwindow.cpp" line="4563"/>
         <source>Install complete.</source>
-        <translation type="unfinished"/>
+        <translation>A instalação foi concluída.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3473"/>
@@ -653,19 +653,19 @@ Por favor, selecione a sua versão:</translation>
         <location filename="../src/mainwindow.cpp" line="3608"/>
         <location filename="../src/mainwindow.cpp" line="4660"/>
         <source>Uninstalling flatpaks...</source>
-        <translation type="unfinished"/>
+        <translation>Desinstalando os pacotes flatpak...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3614"/>
         <location filename="../src/mainwindow.cpp" line="4662"/>
         <source>Uninstall complete.</source>
-        <translation type="unfinished"/>
+        <translation>A remoção foi concluída.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3615"/>
         <location filename="../src/mainwindow.cpp" line="4663"/>
         <source>Refreshing flatpaks...</source>
-        <translation type="unfinished"/>
+        <translation>Atualizando os flatpaks...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3626"/>
@@ -762,7 +762,7 @@ Você gostaria de instalá-lo agora?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="4534"/>
         <source>Update complete.</source>
-        <translation type="unfinished"/>
+        <translation>A atualização foi concluída.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4672"/>
