@@ -28,6 +28,7 @@
 #include <QHash>
 #include <QProcess>
 #include <QProcessEnvironment>
+#include <QSocketNotifier>
 #include <QRegularExpression>
 #include <QSet>
 #include <QtXml/QDomDocument>
@@ -105,10 +106,24 @@ void printError(const QString &message)
     }
 
     result.started = true;
-    process.closeWriteChannel();
+
+    QFile stdinFile;
+    stdinFile.open(stdin, QIODevice::ReadOnly | QIODevice::Unbuffered);
+
+    QSocketNotifier stdinNotifier(stdinFile.handle(), QSocketNotifier::Read);
+    QObject::connect(&stdinNotifier, &QSocketNotifier::activated, [&](QSocketDescriptor) {
+        const QByteArray data = stdinFile.read(4096);
+        if (data.isEmpty()) {
+            stdinNotifier.setEnabled(false);
+            process.closeWriteChannel();
+        } else {
+            process.write(data);
+        }
+    });
 
     while (process.state() != QProcess::NotRunning) {
         process.waitForFinished(50);
+        QCoreApplication::processEvents();
 
         const QByteArray stdoutChunk = process.readAllStandardOutput();
         if (!stdoutChunk.isEmpty()) {
