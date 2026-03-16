@@ -3679,6 +3679,7 @@ void MainWindow::tabWidget_currentChanged(int index)
         switch (index) {
         case Tab::Popular:
             handleTab(search_str, ui->searchPopular, "", false);
+            findPopular(); // ensure proxy filter matches search box (setText may not fire textChanged if text unchanged)
             break;
         case Tab::EnabledRepos:
             handleEnabledReposTab(search_str);
