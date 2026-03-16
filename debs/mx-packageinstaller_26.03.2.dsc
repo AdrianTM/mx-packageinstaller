@@ -14,20 +14,20 @@ Build-Depends: debhelper-compat (= 13), cmake (>= 3.16), ninja-build, qt6-base-d
 Package-List:
  mx-packageinstaller deb admin optional arch=any
 Checksums-Sha1:
- 8c9f498d0e1d4ed062f6134b9496be2636b2f00e 416544 mx-packageinstaller_26.03.2.tar.xz
+ 62b3e52494650c2d064b02277e5d2aa365af3e1d 404004 mx-packageinstaller_26.03.2.tar.xz
 Checksums-Sha256:
- b5764b1f6000f7eb1ddfc8867aca37ad0187004a428199f5e71b3f2c18667e82 416544 mx-packageinstaller_26.03.2.tar.xz
+ a124b6c58765876edaba51b1fa9fc5a0f1e340767d47e06c9a4ee0f8739d6d8a 404004 mx-packageinstaller_26.03.2.tar.xz
 Files:
- 2af96fc32a7f4f5d95dc86efe87afd7a 416544 mx-packageinstaller_26.03.2.tar.xz
+ 0952686b44bdfc8cccfa83e4b7d360e5 404004 mx-packageinstaller_26.03.2.tar.xz
 
 -----BEGIN PGP SIGNATURE-----
 
-iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmm4Ge4THGFkcmlhbkBt
-eGxpbnV4Lm9yZwAKCRBwk4x4BnnumJo3B/97qNheD75M+qD4FNx/ZyN7mlUpIrF1
-6xKMDNV4MemJ/BDgMPARwhqDcciGd8oRAsjt2VszXXwenjWqgzAfTbSjVjYLzYKh
-7feqT3Q1GX3pJs3YvPY+uU7ge02k4CLC0YMwE4r/4Z++LrzPQg7U01cfnP6g4Tkt
-d27qC5lhCqkWWWWvn+uaekwPXqdwyUgpVmV/FV9z9e2FPQMmZWz+zET6rC1Pb1dp
-9J0rVxdg4kMZD+5g2KHagteWlSR4NuUg0R4Tgpj8D0PruyfKUDfeyOGEXBCOos//
-uLiEuDfO++DeAw9fpCUyqdOgwCnUJngfBeLa7as3X0FSrE8yoBL1e412
-=S446
+iQFHBAEBCgAxFiEE8ndToY6S45N+YzXncJOMeAZ57pgFAmm4HpkTHGFkcmlhbkBt
+eGxpbnV4Lm9yZwAKCRBwk4x4BnnumNLhCACTJeUpcC89wCJJx+1HnMBSBhIEnYYP
+Mjm/0pCRwAsYvR2oXnvw/sJjmrVQMJPLy8cC3ykipSY/wfWphQwWp9kg0rgURLVS
+0L5opEDbKJJoaOtAotSJVYEPFkPTSQeJ9yEpGi+S+jYxv62gPDvYMcih25DEfCAO
+U3Zh6JB+dEO4G33K8P51g0cYRD7iX4Tl7McsEKUxkFr8gZbKR5xPsjfujlJ8NpUL
+BrWnJ4zjafElbZItH+ECPj55EFv/mJ4goZ/E7rm/azOt+9phi1qqL7YZtRdaqcHX
+XEM4ReFP5jKCnR7F/Y9kGYH9sO+KoAFgJcinlMqhkUvvZY52JgNyIq2t
+=Kv3O
 -----END PGP SIGNATURE-----
