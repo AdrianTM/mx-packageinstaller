@@ -70,7 +70,13 @@ QString sanitizeOutputForDisplay(const QString &output)
 
 QString debconfFrontend()
 {
-    return QFile::exists("/usr/share/doc/debconf-kde-helper") ? QStringLiteral("kde") : QStringLiteral("gnome");
+    if (QFile::exists("/usr/share/doc/debconf-kde-helper")) {
+        return QStringLiteral("kde");
+    }
+    if (QFile::exists("/usr/share/doc/debconf-gnome")) {
+        return QStringLiteral("gnome");
+    }
+    return QStringLiteral("noninteractive");
 }
 
 QHash<QString, QString> debconfEnvironment()
@@ -3296,8 +3302,9 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
 
     QString msg = cmd.getOut("aptitude show " + packageName);
     // Remove first 5 lines from aptitude output "Reading package..."
-    QString details = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null "
-                                 "| grep -sq ^i && echo kde || echo gnome) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
+    QString details = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
+                                 "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
+                                 "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
                                  + packageName + " |tail -5");
 
     auto detail_list = details.split('\n');
