@@ -103,6 +103,27 @@ void printError(const QString &message)
     return result;
 }
 
+// Run with stdin/stdout/stderr forwarded directly to the parent process,
+// allowing real-time interactive I/O (e.g. pacman prompts).
+[[nodiscard]] int runProcessInteractive(const QString &program, const QStringList &args)
+{
+    QProcess process;
+    process.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    process.setInputChannelMode(QProcess::ForwardedInputChannel);
+    process.setProcessChannelMode(QProcess::ForwardedChannels);
+    process.start(program, args);
+    if (!process.waitForStarted()) {
+        printError(QString("Failed to start %1").arg(program));
+        return 127;
+    }
+
+    process.waitForFinished(-1);
+    if (process.exitStatus() != QProcess::NormalExit) {
+        return 1;
+    }
+    return process.exitCode();
+}
+
 [[nodiscard]] int relayResult(const ProcessResult &result)
 {
     writeAndFlush(stdout, result.standardOutput);
@@ -113,7 +134,8 @@ void printError(const QString &message)
     return result.exitStatus == QProcess::NormalExit ? result.exitCode : 1;
 }
 
-[[nodiscard]] int runAllowedCommand(const QString &command, const QStringList &commandArgs)
+[[nodiscard]] int runAllowedCommand(const QString &command, const QStringList &commandArgs,
+                                    bool interactive = false)
 {
     const auto commandIt = allowedCommands().constFind(command);
     if (commandIt == allowedCommands().constEnd()) {
@@ -127,6 +149,9 @@ void printError(const QString &message)
         return 127;
     }
 
+    if (interactive) {
+        return runProcessInteractive(resolvedCommand, commandArgs);
+    }
     return relayResult(runProcess(resolvedCommand, commandArgs));
 }
 
@@ -137,7 +162,7 @@ void printError(const QString &message)
         return 1;
     }
 
-    return runAllowedCommand(args.constFirst(), args.mid(1));
+    return runAllowedCommand(args.constFirst(), args.mid(1), true);
 }
 
 [[nodiscard]] int handleLockingProcess(const QStringList &args)
