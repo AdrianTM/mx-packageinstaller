@@ -4151,9 +4151,6 @@ void MainWindow::lineEdit_returnPressed()
         return;
     }
     cmd.write(input.toUtf8() + '\n');
-    if (!wasMasked) {
-        ui->outputBox->appendPlainText(input + '\n');
-    }
     ui->lineEdit->clear();
     ui->lineEdit->setFocus();
 }
