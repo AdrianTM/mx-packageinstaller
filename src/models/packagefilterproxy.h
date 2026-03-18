@@ -33,11 +33,9 @@ public:
 
     void setSearchText(const QString &text);
     void setStatusFilter(int status);
-    void setHideLibraries(bool hide);
     void setCustomSortOrder(bool custom);  // Disable proxy sorting to preserve custom order
 
     [[nodiscard]] int statusFilter() const { return m_statusFilter; }
-    [[nodiscard]] bool hideLibraries() const { return m_hideLibraries; }
     [[nodiscard]] QString searchText() const { return m_searchText; }
 
     [[nodiscard]] QVector<int> visibleSourceRows() const;
@@ -49,10 +47,8 @@ protected:
 private:
     [[nodiscard]] bool matchesSearch(const QString &name, const QString &description) const;
     [[nodiscard]] bool matchesStatus(int status) const;
-    [[nodiscard]] static bool isLibraryPackage(const QString &name);
 
     QString m_searchText;
     int m_statusFilter = 0;
-    bool m_hideLibraries = true;
     bool m_customSortOrder = false;  // When true, preserve source model order
 };

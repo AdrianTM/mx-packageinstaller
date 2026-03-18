@@ -45,15 +45,6 @@ void PackageFilterProxy::setStatusFilter(int status)
     }
 }
 
-void PackageFilterProxy::setHideLibraries(bool hide)
-{
-    if (m_hideLibraries != hide) {
-        m_hideLibraries = hide;
-        beginResetModel();
-        endResetModel();
-    }
-}
-
 QVector<int> PackageFilterProxy::visibleSourceRows() const
 {
     QVector<int> rows;
@@ -75,10 +66,6 @@ bool PackageFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
     const PackageData *pkg = model->packageAt(sourceRow);
     if (!pkg) {
-        return false;
-    }
-
-    if (m_hideLibraries && isLibraryPackage(pkg->name)) {
         return false;
     }
 
@@ -146,8 +133,3 @@ bool PackageFilterProxy::matchesStatus(int status) const
     return status == m_statusFilter;
 }
 
-bool PackageFilterProxy::isLibraryPackage(const QString &name)
-{
-    return name.startsWith(QLatin1String("lib")) || name.endsWith(QLatin1String("-dev"))
-           || name.endsWith(QLatin1String("-dbg")) || name.endsWith(QLatin1String("-dbgsym"));
-}
