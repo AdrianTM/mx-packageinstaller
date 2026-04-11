@@ -278,7 +278,7 @@ private:
     bool updateApt();
     [[nodiscard]] static QString convert(quint64 bytes);
     [[nodiscard]] static quint64 convert(const QString &size);
-    void blockInterfaceFP(bool block);
+    void blockInterfaceFP();
     void buildChangeList(const QString &packageName, Qt::CheckState state);
     void buildFlatpakChangeList(const QString &fullName, Qt::CheckState state, int status);
     void cancelDownload();
@@ -291,6 +291,9 @@ private:
     void displayPopularApps();
     void displayWarning(const QString &repo);
     void enableTabs(bool enable);
+    void forceUpdateAptTab(QLineEdit *searchBox, QComboBox *filterCombo);
+    void applyHideLibs(bool checked, QTreeView *tree, PackageFilterProxy *proxy, QComboBox *filterCombo,
+                       const QList<QCheckBox *> &peerCheckboxes);
     void finalizeFlatpakDisplay();
     void formatFlatpakTree();
     void removeDuplicatesFP();

@@ -3,6 +3,7 @@
 | Iter | Correctness | Quality | Robustness | Composite | Key Change |
 |------|-------------|---------|------------|-----------|------------|
 | 0    | 6           | 5       | 7          | 6.0       | seed       |
+| 1    | 8           | 5       | 8          | 7.0       | fix data race, reply leaks, null derefs, bounds checks |
 
 ## Iteration 0 — Seed Judgment
 

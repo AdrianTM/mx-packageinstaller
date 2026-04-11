@@ -599,7 +599,7 @@ void MainWindow::listSizeInstalledFP()
 }
 
 // Keep Flatpak UI enabled; rely on modal progress dialog to block interaction
-void MainWindow::blockInterfaceFP(bool)
+void MainWindow::blockInterfaceFP()
 {
     // Maintain cursor feedback without toggling widget enabled state
     const bool isBusy = displayFlatpaksIsRunning;
@@ -1374,7 +1374,7 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
     }
 
     ui->labelNumAppFP->setText(QString::number(flatpakProxy->rowCount()));
-    blockInterfaceFP(false);
+    blockInterfaceFP();
 
     // Auto-adjust column widths after filter changes for Flatpak tab
     for (int i = 0; i < flatpakModel->columnCount(); ++i) {
@@ -1586,7 +1586,7 @@ void MainWindow::setupFlatpakDisplay()
         flatpakModel->clear();
     }
     changeList.clear();
-    blockInterfaceFP(true);
+    blockInterfaceFP();
 }
 
 void MainWindow::loadFlatpakData()
@@ -1779,7 +1779,7 @@ void MainWindow::finalizeFlatpakDisplay()
 
     displayFlatpaksIsRunning = false;
     firstRunFP = false;
-    blockInterfaceFP(false);
+    blockInterfaceFP();
     if (holdProgressForFlatpakRefresh) {
         holdProgressForFlatpakRefresh = false;
         progress->hide();
@@ -1939,35 +1939,28 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     const QString aptitude {QStringLiteral("aptitude -sy -V -o=Dpkg::Use-Pty=0 ")};
     if (currentTree == ui->treeFlatpak && names != QLatin1String("flatpak")) {
         detailed_installed_names = changeList;
-    } else if (currentTree == ui->treeBackports) {
-        recommends
-            = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        recommends_aptitude
-            = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--with-recommends " : "--without-recommends ";
-        detailed_names = cmd.getOut(
-            frontend + aptget + action + ' ' + recommends + "-t " + verName + "-backports --reinstall " + names
-            + R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
-        aptitude_info = cmd.getOut(frontend + aptitude + action + ' ' + recommends_aptitude + "-t " + verName
-                                   + "-backports " + names + " |tail -2 |head -1");
-    } else if (currentTree == ui->treeMXtest) {
-        recommends
-            = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        recommends_aptitude
-            = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--with-recommends " : "--without-recommends ";
-        detailed_names = cmd.getOut(
-            frontend + aptget + action + " -t mx " + recommends + "--reinstall " + names
-            + R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
-        aptitude_info = cmd.getOut(frontend + aptitude + action + " -t mx " + recommends_aptitude + names
-                                   + " |tail -2 |head -1");
     } else {
-        recommends
-            = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        recommends_aptitude
-            = (ui->checkBoxInstallRecommends->isChecked()) ? "--with-recommends " : "--without-recommends ";
+        // Determine recommends flags and target based on current tab
+        QCheckBox *recommendsCheck = ui->checkBoxInstallRecommends;
+        QString target;
+        QString reinstall = QStringLiteral("--reinstall ");
+        if (currentTree == ui->treeBackports) {
+            recommendsCheck = ui->checkBoxInstallRecommendsBP;
+            target = "-t " + verName + "-backports ";
+        } else if (currentTree == ui->treeMXtest) {
+            recommendsCheck = ui->checkBoxInstallRecommendsMX;
+            target = QStringLiteral("-t mx ");
+            reinstall.clear();
+        }
+        recommends = recommendsCheck->isChecked() ? "--install-recommends " : "--no-install-recommends ";
+        recommends_aptitude = recommendsCheck->isChecked() ? "--with-recommends " : "--without-recommends ";
+
+        const QString awkFilter =
+            R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit";
         detailed_names = cmd.getOut(
-            frontend + aptget + action + ' ' + recommends + "--reinstall " + names
-            + R"lit(|grep 'Inst\|Remv'| awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit");
-        aptitude_info = cmd.getOut(frontend + aptitude + action + ' ' + recommends_aptitude + names + " |tail -2 |head -1");
+            frontend + aptget + action + ' ' + recommends + target + reinstall + names + awkFilter);
+        aptitude_info = cmd.getOut(
+            frontend + aptitude + action + ' ' + recommends_aptitude + target + names + " |tail -2 |head -1");
     }
 
     if (currentTree != ui->treeFlatpak) {
@@ -2061,29 +2054,25 @@ bool MainWindow::install(const QString &names)
     if (lockFile.isLockedGUI()) {
         return false;
     }
-    QString recommends;
-    bool success = false;
+
+    // Determine recommends flag and target based on current tab
+    QCheckBox *recommendsCheck = ui->checkBoxInstallRecommends;
+    QStringList extraArgs;
     if (currentTree == ui->treeBackports) {
-        recommends
-            = (ui->checkBoxInstallRecommendsBP->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends.trimmed(), "-t", verName + "-backports",
-                          "--reinstall"};
-        args += packageArgs(names);
-        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
+        recommendsCheck = ui->checkBoxInstallRecommendsBP;
+        extraArgs = {"-t", verName + "-backports", "--reinstall"};
     } else if (currentTree == ui->treeMXtest) {
-        recommends
-            = (ui->checkBoxInstallRecommendsMX->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends.trimmed(), "-t", "mx"};
-        args += packageArgs(names);
-        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
+        recommendsCheck = ui->checkBoxInstallRecommendsMX;
+        extraArgs = {"-t", "mx"};
     } else {
-        recommends
-            = (ui->checkBoxInstallRecommends->isChecked()) ? "--install-recommends " : "--no-install-recommends ";
-        QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends.trimmed(), "--reinstall"};
-        args += packageArgs(names);
-        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
+        extraArgs = {"--reinstall"};
     }
-    return success;
+
+    const QString recommends = recommendsCheck->isChecked() ? "--install-recommends" : "--no-install-recommends";
+    QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends};
+    args += extraArgs;
+    args += packageArgs(names);
+    return cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
 }
 
 // Install a list of application and run postprocess for each of them.
@@ -3905,7 +3894,7 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
         return;
     }
     firstRunFP = false;
-    blockInterfaceFP(true);
+    blockInterfaceFP();
     if (!checkInstalled("flatpak")) {
         int ans = QMessageBox::question(this, tr("Flatpak not installed"),
                                         tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
@@ -4370,21 +4359,23 @@ void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState 
     ui->treeFlatpak->setFocus();
 }
 
-// Force repo upgrade
-void MainWindow::pushForceUpdateEnabled_clicked()
+// Force repo upgrade — shared implementation for APT tabs
+void MainWindow::forceUpdateAptTab(QLineEdit *searchBox, QComboBox *filterCombo)
 {
-    ui->searchBoxEnabled->clear();
-    ui->comboFilterEnabled->setCurrentIndex(0);
+    searchBox->clear();
+    filterCombo->setCurrentIndex(0);
     buildPackageLists(true);
     updateInterface();
 }
 
+void MainWindow::pushForceUpdateEnabled_clicked()
+{
+    forceUpdateAptTab(ui->searchBoxEnabled, ui->comboFilterEnabled);
+}
+
 void MainWindow::pushForceUpdateMX_clicked()
 {
-    ui->searchBoxMX->clear();
-    ui->comboFilterMX->setCurrentIndex(0);
-    buildPackageLists(true);
-    updateInterface();
+    forceUpdateAptTab(ui->searchBoxMX, ui->comboFilterMX);
 }
 
 void MainWindow::pushForceUpdateFP_clicked()
@@ -4404,25 +4395,28 @@ void MainWindow::pushForceUpdateFP_clicked()
 
 void MainWindow::pushForceUpdateBP_clicked()
 {
-    ui->searchBoxBP->clear();
-    ui->comboFilterBP->setCurrentIndex(0);
-    buildPackageLists(true);
-    updateInterface();
+    forceUpdateAptTab(ui->searchBoxBP, ui->comboFilterBP);
 }
 
-// Hide/unhide lib/-dev packages
+// Hide/unhide lib/-dev packages — shared implementation
+void MainWindow::applyHideLibs(bool checked, QTreeView *tree, PackageFilterProxy *proxy, QComboBox *filterCombo,
+                                const QList<QCheckBox *> &peerCheckboxes)
+{
+    tree->setUpdatesEnabled(false);
+    hideLibsChecked = checked;
+    settings.setValue("HideLibs", checked);
+    for (auto *cb : peerCheckboxes) {
+        cb->setChecked(checked);
+    }
+    proxy->setHideLibraries(checked);
+    filterChanged(filterCombo->currentText());
+    tree->setUpdatesEnabled(true);
+}
+
 void MainWindow::checkHideLibs_toggled(bool checked)
 {
-    ui->treeEnabled->setUpdatesEnabled(false);
-    hideLibsChecked = checked;
-    // Persist user preference
-    settings.setValue("HideLibs", checked);
-    ui->checkHideLibsMX->setChecked(checked);
-    ui->checkHideLibsBP->setChecked(checked);
-
-    enabledProxy->setHideLibraries(checked);
-    filterChanged(ui->comboFilterEnabled->currentText());
-    ui->treeEnabled->setUpdatesEnabled(true);
+    applyHideLibs(checked, ui->treeEnabled, enabledProxy, ui->comboFilterEnabled,
+                  {ui->checkHideLibsMX, ui->checkHideLibsBP});
 }
 
 void MainWindow::pushUpgradeAll_clicked()
@@ -4486,28 +4480,14 @@ void MainWindow::pushCancel_clicked()
 
 void MainWindow::checkHideLibsMX_clicked(bool checked)
 {
-    ui->treeMXtest->setUpdatesEnabled(false);
-    hideLibsChecked = checked;
-    settings.setValue("HideLibs", checked);
-    ui->checkHideLibs->setChecked(checked);
-    ui->checkHideLibsBP->setChecked(checked);
-
-    mxtestProxy->setHideLibraries(checked);
-    filterChanged(ui->comboFilterMX->currentText());
-    ui->treeMXtest->setUpdatesEnabled(true);
+    applyHideLibs(checked, ui->treeMXtest, mxtestProxy, ui->comboFilterMX,
+                  {ui->checkHideLibs, ui->checkHideLibsBP});
 }
 
 void MainWindow::checkHideLibsBP_clicked(bool checked)
 {
-    ui->treeBackports->setUpdatesEnabled(false);
-    hideLibsChecked = checked;
-    settings.setValue("HideLibs", checked);
-    ui->checkHideLibs->setChecked(checked);
-    ui->checkHideLibsMX->setChecked(checked);
-
-    backportsProxy->setHideLibraries(checked);
-    filterChanged(ui->comboFilterBP->currentText());
-    ui->treeBackports->setUpdatesEnabled(true);
+    applyHideLibs(checked, ui->treeBackports, backportsProxy, ui->comboFilterBP,
+                  {ui->checkHideLibs, ui->checkHideLibsMX});
 }
 
 void MainWindow::checkRepoOnlyMX_clicked(bool checked)
