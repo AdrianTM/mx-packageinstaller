@@ -114,7 +114,7 @@ private slots:
     void enableOutput();
     void filterChanged(const QString &arg1);
     void findPackage();
-    void findPopular() const;
+    void findPopular();
     void outputAvailable(const QString &output);
     void showOutput();
     void updateBar();
@@ -254,6 +254,14 @@ private:
     [[nodiscard]] static uchar getDebianVerNum();
     [[nodiscard]] static uchar showVersionDialog(const QString &message);
     [[nodiscard]] QVector<PackageData> createPackageDataList(QHash<QString, PackageInfo> *list) const;
+
+    // Per-APT-tab context to replace repetitive tree-identity switches
+    struct AptTabContext {
+        PackageModel *model = nullptr;
+        PackageFilterProxy *proxy = nullptr;
+        QHash<QString, PackageInfo> *list = nullptr;
+    };
+    [[nodiscard]] AptTabContext currentAptTab();
     [[nodiscard]] QHash<QString, PackageInfo> *getCurrentList();
     [[nodiscard]] PackageModel *getCurrentModel();
     [[nodiscard]] PackageFilterProxy *getCurrentProxy();

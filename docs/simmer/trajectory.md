@@ -4,6 +4,7 @@
 |------|-------------|---------|------------|-----------|------------|
 | 0    | 6           | 5       | 7          | 6.0       | seed       |
 | 1    | 8           | 5       | 8          | 7.0       | fix data race, reply leaks, null derefs, bounds checks |
+| 2    | 8           | 6       | 8          | 7.3       | unify Status enum, consolidate install/confirmActions/hideLibs/forceUpdate |
 
 ## Iteration 0 — Seed Judgment
 

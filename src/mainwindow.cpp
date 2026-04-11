@@ -1447,47 +1447,34 @@ void MainWindow::displayAutoremovable()
     }
 }
 
+MainWindow::AptTabContext MainWindow::currentAptTab()
+{
+    if (currentTree == ui->treeMXtest) {
+        return {mxtestModel, mxtestProxy, &mxList};
+    }
+    if (currentTree == ui->treeBackports) {
+        return {backportsModel, backportsProxy, &backportsList};
+    }
+    if (currentTree == ui->treeEnabled) {
+        return {enabledModel, enabledProxy, &enabledList};
+    }
+    return {};
+}
+
 PackageModel *MainWindow::getCurrentModel()
 {
-    if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
-        return nullptr; // These tabs don't use PackageModel
-    }
-
-    if (currentTree == ui->treeMXtest) {
-        return mxtestModel;
-    } else if (currentTree == ui->treeBackports) {
-        return backportsModel;
-    } else if (currentTree == ui->treeEnabled) {
-        return enabledModel;
-    }
-    return nullptr;
+    return currentAptTab().model;
 }
 
 PackageFilterProxy *MainWindow::getCurrentProxy()
 {
-    if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
-        return nullptr; // These tabs don't use PackageFilterProxy
-    }
-
-    if (currentTree == ui->treeMXtest) {
-        return mxtestProxy;
-    } else if (currentTree == ui->treeBackports) {
-        return backportsProxy;
-    } else if (currentTree == ui->treeEnabled) {
-        return enabledProxy;
-    }
-    return nullptr;
+    return currentAptTab().proxy;
 }
 
 QHash<QString, PackageInfo> *MainWindow::getCurrentList()
 {
-    if (currentTree == ui->treeMXtest) {
-        return &mxList;
-    } else if (currentTree == ui->treeBackports) {
-        return &backportsList;
-    } else {
-        return &enabledList;
-    }
+    auto ctx = currentAptTab();
+    return ctx.list ? ctx.list : &enabledList;
 }
 
 QVector<PackageData> MainWindow::createPackageDataList(QHash<QString, PackageInfo> *list) const
@@ -3327,7 +3314,7 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
     info.exec();
 }
 
-void MainWindow::findPopular() const
+void MainWindow::findPopular()
 {
     const QString word = ui->searchPopular->text();
     if (word.length() == 1) {
@@ -3346,7 +3333,7 @@ void MainWindow::findPopular() const
     }
 
     // Reapply category spanning AFTER collapse/expand
-    const_cast<MainWindow*>(this)->applyPopularCategorySpanning();
+    applyPopularCategorySpanning();
 
     // Resize columns except the first one
     if (popularModel) {
