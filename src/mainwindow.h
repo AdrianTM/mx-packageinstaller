@@ -32,7 +32,6 @@
 #include <QMessageBox>
 #include <QModelIndex>
 #include <QNetworkAccessManager>
-#include <QNetworkReply>
 #include <QProcess>
 #include <QProgressDialog>
 #include <QSettings>
@@ -233,7 +232,6 @@ private:
     PopularFilterProxy *popularProxy {nullptr};
 
     QNetworkAccessManager manager;
-    QNetworkReply *reply;
 
     [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString categoryTranslation(const QString &item);

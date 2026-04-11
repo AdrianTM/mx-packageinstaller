@@ -166,8 +166,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
       dictionary("/usr/share/mx-packageinstaller-pkglist/category.dict", QSettings::IniFormat),
-      args {argParser},
-      reply(nullptr)
+      args {argParser}
 {
     qDebug().noquote() << QCoreApplication::applicationName() << "version:" << QCoreApplication::applicationVersion();
     ui->setupUi(this);
@@ -201,12 +200,13 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // Run package preload in background
     [[maybe_unused]] auto future = QtConcurrent::run([this] {
         AptCache cache;
-        enabledList = cache.getCandidates();
+        auto loadedList = cache.getCandidates();
 
-        // Set the model on main thread after preload
+        // Set the model on main thread after preload — all member access happens on the GUI thread
         QMetaObject::invokeMethod(
             this,
-            [this] {
+            [this, loadedList = std::move(loadedList)]() mutable {
+                enabledList = std::move(loadedList);
                 if (enabledModel && !enabledList.isEmpty()) {
                     QVector<PackageData> packages;
                     packages.reserve(enabledList.size() + installedPackages.size());
@@ -2023,9 +2023,11 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     constexpr int MinDetailHeight = 100;
     constexpr int MaxDetailHeight = 400;
     auto *const detailedInfo = msgBox.findChild<QTextEdit *>();
-    const auto recommended = qMax(msgBox.detailedText().length() / 2, MinDetailHeight);
-    const auto height = qMin(recommended, MaxDetailHeight);
-    detailedInfo->setFixedHeight(height);
+    if (detailedInfo) {
+        const auto recommended = qMax(msgBox.detailedText().length() / 2, MinDetailHeight);
+        const auto height = qMin(recommended, MaxDetailHeight);
+        detailedInfo->setFixedHeight(height);
+    }
 
     msgBox.addButton(QMessageBox::Ok);
     msgBox.addButton(QMessageBox::Cancel);
@@ -2033,7 +2035,9 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     constexpr int DialogMinWidth = 600;
     auto *horizontalSpacer = new QSpacerItem(DialogMinWidth, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(msgBox.layout());
-    layout->addItem(horizontalSpacer, 0, 1);
+    if (layout) {
+        layout->addItem(horizontalSpacer, 0, 1);
+    }
     return msgBox.exec() == QMessageBox::Ok;
 }
 
@@ -2304,21 +2308,20 @@ bool MainWindow::isOnline()
             manager.setProxy(proxies.first());
         }
         request.setUrl(QUrl(address));
-        reply = manager.head(request);
+        QNetworkReply *onlineReply = manager.head(request);
         QEventLoop loop;
-        connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-        connect(reply, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
+        connect(onlineReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+        connect(onlineReply, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
         auto timeout = settings.value("timeout", 7000).toUInt();
         manager.setTransferTimeout(timeout);
         loop.exec();
-        reply->disconnect();
-        if (reply->error() == QNetworkReply::NoError) {
-            reply->deleteLater();
+        onlineReply->disconnect();
+        if (onlineReply->error() == QNetworkReply::NoError) {
+            onlineReply->deleteLater();
             return true;
         }
         // Clean up failed reply before next iteration
-        reply->deleteLater();
-        reply = nullptr;
+        onlineReply->deleteLater();
     }
     qDebug() << "No network detected:" << error;
     return false;
@@ -2337,32 +2340,32 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     request.setRawHeader("User-Agent", QApplication::applicationName().toUtf8() + '/'
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
-    reply = manager.get(request);
+    QNetworkReply *dlReply = manager.get(request);
     QEventLoop loop;
 
-    connect(reply, &QNetworkReply::readyRead, this, [&file, this]() {
-        if (file.write(reply->readAll()) == -1) {
+    connect(dlReply, &QNetworkReply::readyRead, this, [&file, dlReply]() {
+        if (file.write(dlReply->readAll()) == -1) {
             qDebug() << "Failed to write data to file:" << file.fileName();
-            reply->abort();
+            dlReply->abort();
             file.close();
             file.remove();
         }
     });
-    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    connect(dlReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     loop.exec();
     file.close();
 
-    if (reply->error() != QNetworkReply::NoError) {
+    if (dlReply->error() != QNetworkReply::NoError) {
         QMessageBox::warning(this, tr("Error"),
                              tr("There was an error downloading or writing the file: %1. Please check your internet "
                                 "connection and free space on your drive")
                                  .arg(file.fileName()));
-        qDebug() << "There was an error downloading the file:" << url << "Error:" << reply->errorString();
+        qDebug() << "There was an error downloading the file:" << url << "Error:" << dlReply->errorString();
         file.remove();
-        reply->deleteLater();
+        dlReply->deleteLater();
         return false;
     }
-    reply->deleteLater();
+    dlReply->deleteLater();
     return true;
 }
 
@@ -2704,7 +2707,7 @@ void MainWindow::cleanup()
 
 QString MainWindow::getVersion(const QString &name) const
 {
-    return Cmd().getOut("LANG=Cdpkg-query -f '${Version}' -W " + name);
+    return Cmd().getOut("LANG=C dpkg-query -f '${Version}' -W " + name);
 }
 
 // Return true if all the packages listed are installed
@@ -3059,19 +3062,21 @@ QUrl MainWindow::getScreenshotUrl(const QString &name)
         manager.setProxy(proxies.first());
     }
 
-    reply = manager.get(QNetworkRequest(url));
+    QNetworkReply *screenshotReply = manager.get(QNetworkRequest(url));
 
     QEventLoop loop;
-    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    connect(screenshotReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
     QTimer::singleShot(5s, &loop, &QEventLoop::quit);
     loop.exec();
 
-    if (reply->error() != QNetworkReply::NoError) {
-        reply->deleteLater();
+    if (screenshotReply->error() != QNetworkReply::NoError) {
+        screenshotReply->deleteLater();
         return {};
     }
 
-    QByteArray response = reply->readAll();
+    QByteArray response = screenshotReply->readAll();
+    screenshotReply->deleteLater();
+
     QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
     if (jsonDoc.isObject()) {
         QJsonObject jsonObj = jsonDoc.object();
@@ -3080,14 +3085,11 @@ QUrl MainWindow::getScreenshotUrl(const QString &name)
             if (!screenshotsArray.isEmpty()) {
                 QJsonObject firstScreenshot = screenshotsArray.first().toObject();
                 if (firstScreenshot.contains(QStringLiteral("small_image_url"))) {
-                    QUrl result = QUrl(firstScreenshot[QStringLiteral("small_image_url")].toString());
-                    reply->deleteLater();
-                    return result;
+                    return QUrl(firstScreenshot[QStringLiteral("small_image_url")].toString());
                 }
             }
         }
     }
-    reply->deleteLater();
     return {};
 }
 
@@ -3174,7 +3176,9 @@ void MainWindow::displayInfoTestOrBackport(QTreeView *tree, const QModelIndex &i
     // Make it wider
     auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(info.layout());
-    layout->addItem(horizontalSpacer, 0, 1);
+    if (layout) {
+        layout->addItem(horizontalSpacer, 0, 1);
+    }
     info.exec();
 }
 
@@ -3248,21 +3252,23 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
         if (!proxies.isEmpty()) {
             manager.setProxy(proxies.first());
         }
-        reply = manager.get(QNetworkRequest(url));
+        QNetworkReply *imgReply = manager.get(QNetworkRequest(url));
 
         QEventLoop loop;
-        connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+        connect(imgReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
         QTimer::singleShot(5s, &loop, &QEventLoop::quit);
         ui->treePopularApps->blockSignals(true);
         loop.exec();
         ui->treePopularApps->blockSignals(false);
 
-        if (reply->error() != QNetworkReply::NoError) {
-            qDebug() << "Download of " << url.url() << " failed: " << qPrintable(reply->errorString());
+        if (imgReply->error() != QNetworkReply::NoError) {
+            qDebug() << "Download of " << url.url() << " failed: " << qPrintable(imgReply->errorString());
+            imgReply->deleteLater();
+            imgReply = nullptr;
             url = getScreenshotUrl(install_names.split(' ').first());
             if (url.isValid() && !url.isEmpty() && url.url() != QLatin1String("none")) {
-                reply = manager.get(QNetworkRequest(url));
-                connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+                imgReply = manager.get(QNetworkRequest(url));
+                connect(imgReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
                 QTimer::singleShot(5s, &loop, &QEventLoop::quit);
                 ui->treePopularApps->blockSignals(true);
                 loop.exec();
@@ -3270,11 +3276,11 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
             }
         }
 
-        if (reply->error() == QNetworkReply::NoError) {
+        if (imgReply && imgReply->error() == QNetworkReply::NoError) {
             QImage image;
             QByteArray data;
             QBuffer buffer(&data);
-            QImageReader imageReader(reply);
+            QImageReader imageReader(imgReply);
             image = imageReader.read();
             if (imageReader.error() != 0) {
                 qDebug() << "loading screenshot: " << imageReader.errorString();
@@ -3284,9 +3290,9 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
                 msg += QString("<p><img src='data:image/png;base64, %0'>").arg(QString(data.toBase64()));
             }
         }
-    }
-    if (reply) {
-        reply->deleteLater();
+        if (imgReply) {
+            imgReply->deleteLater();
+        }
     }
     QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg, QMessageBox::Close);
     info.exec();
@@ -3316,7 +3322,9 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
         detail_list = msg_list.mid(max_no_lines, msg_list.length()) + QStringList {} + detail_list;
         details = detail_list.join('\n');
     }
-    msg += "\n\n" + detail_list.at(detail_list.size() - 2); // Add info about space needed/freed
+    if (detail_list.size() >= 2) {
+        msg += "\n\n" + detail_list.at(detail_list.size() - 2); // Add info about space needed/freed
+    }
 
     QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg.trimmed(), QMessageBox::Close);
     info.setDetailedText(details.trimmed());
@@ -3324,7 +3332,9 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
     // Make it wider
     auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
     auto *layout = qobject_cast<QGridLayout *>(info.layout());
-    layout->addItem(horizontalSpacer, 0, 1);
+    if (layout) {
+        layout->addItem(horizontalSpacer, 0, 1);
+    }
     info.exec();
 }
 
