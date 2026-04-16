@@ -1432,8 +1432,16 @@ void MainWindow::displayPackages()
 
 void MainWindow::displayAutoremovable()
 {
-    QStringList names
-        = cmd.getOut("LANG=C apt-get --dry-run autoremove | grep -Po '^Remv \\K[^ ]+'").split('\n', Qt::SkipEmptyParts);
+    const QString aptOut = cmd.getOut("LANG=C apt-get --dry-run autoremove");
+    QStringList names;
+    for (const QString &line : aptOut.split('\n', Qt::SkipEmptyParts)) {
+        if (line.startsWith("Remv ")) {
+            const QString pkg = line.section(' ', 1, 1, QString::SectionSkipEmpty);
+            if (!pkg.isEmpty()) {
+                names << pkg;
+            }
+        }
+    }
 
     ui->pushRemoveAutoremovable->setVisible(!names.isEmpty());
     if (names.isEmpty()) {
@@ -1949,8 +1957,18 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
             R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit";
         detailed_names = cmd.getOut(
             frontend + aptget + action + ' ' + recommends + target + reinstall + names + awkFilter);
-        aptitude_info = cmd.getOut(
-            frontend + aptitude + action + ' ' + recommends_aptitude + target + names + " |tail -2 |head -1");
+        {
+            const QStringList aptLines
+                = cmd.getOut(frontend + aptitude + action + ' ' + recommends_aptitude + target + names)
+                      .split('\n', Qt::KeepEmptyParts);
+            if (aptLines.isEmpty()) {
+                aptitude_info.clear();
+            } else if (aptLines.size() >= 2) {
+                aptitude_info = aptLines.at(aptLines.size() - 2);
+            } else {
+                aptitude_info = aptLines.constFirst();
+            }
+        }
     }
 
     if (currentTree != ui->treeFlatpak) {
@@ -3286,11 +3304,13 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
     }
 
     QString msg = cmd.getOut("aptitude show " + packageName);
-    // Remove first 5 lines from aptitude output "Reading package..."
-    QString details = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
-                                 "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
-                                 "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
-                                 + packageName + " |tail -5");
+    // Keep last 5 lines from aptitude output
+    const QString rawDetails = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
+                                          "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
+                                          "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
+                                          + packageName);
+    const QStringList rawLines = rawDetails.split('\n');
+    QString details = rawLines.mid(qMax(0, rawLines.size() - 5)).join('\n');
 
     auto detail_list = details.split('\n');
     auto msg_list = msg.split('\n');
