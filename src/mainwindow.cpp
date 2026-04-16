@@ -1860,8 +1860,11 @@ void MainWindow::listFlatpakRemotes() const
 
     auto fetchRemotes = [this](QStringList &outList) {
         Cmd shell;
-        outList
-            = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
+        outList = shell.getOut("flatpak remote-list --columns=name " + fpUser).split('\n', Qt::SkipEmptyParts);
+        for (QString &name : outList) {
+            name = name.trimmed();
+        }
+        outList.removeAll(QString());
         return shell.exitCode() == 0;
     };
 
