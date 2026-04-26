@@ -11,6 +11,7 @@ NC='\033[0m' # No Color
 # Configuration
 AUR_DIR="aur"
 MAIN_BRANCH="arch"
+TAG_REMOTE="mxlinux"
 ANNOTATION=""
 FORCE_UPDATE=0
 FORCE_VERSION=0
@@ -61,24 +62,46 @@ check_tag_exists() {
     local version=$1
 
     # Check local tags
-    if git tag -l | grep -q "^${version}$"; then
+    if git show-ref --verify --quiet "refs/tags/${version}"; then
         print_error "Tag '$version' already exists locally"
         return 1
     fi
 
     # Check remote tags
-    if git ls-remote --tags origin 2>/dev/null | grep -q "refs/tags/${version}$"; then
+    local remote_output
+    if remote_output=$(GIT_SSH_COMMAND="ssh -o BatchMode=yes -o ConnectTimeout=10" \
+        git ls-remote --exit-code --tags --refs "$TAG_REMOTE" "refs/tags/${version}" 2>&1); then
         print_error "Tag '$version' already exists on remote"
         return 1
+    else
+        local remote_status=$?
+        if [ "$remote_status" -ne 2 ]; then
+            print_error "Could not check remote '$TAG_REMOTE' for tag '$version'"
+            echo "$remote_output"
+            return 1
+        fi
     fi
 
     return 0
 }
 
-# Get latest tag version for comparison
+# Get latest comparable tag version for comparison
 get_latest_tag() {
-    # Filter to only version-like tags (starting with optional 'v' then digits)
-    local latest_tag=$(git tag -l | grep -E '^v?[0-9]+\.[0-9]+' | sort -V | tail -n1)
+    local version=${1#v}
+    local major=${version%%.*}
+    local suffix=""
+    local latest_tag
+
+    if [[ $version =~ ([a-zA-Z][a-zA-Z0-9]*)$ ]]; then
+        suffix=${BASH_REMATCH[1]}
+    fi
+
+    if [ -n "$suffix" ]; then
+        latest_tag=$(git tag -l | grep -E "^v?${major}\.[0-9]+(\.[0-9]+)?${suffix}$" | sort -V | tail -n1)
+    else
+        latest_tag=$(git tag -l | grep -E "^v?${major}\.[0-9]+(\.[0-9]+)?$" | sort -V | tail -n1)
+    fi
+
     if [ -z "$latest_tag" ]; then
         echo "0.0.0"  # No tags exist yet
     else
@@ -225,7 +248,7 @@ update_aur_package() {
             fi
         fi
 
-        if [ $i -lt $retries ]; then
+        if [ "$i" -lt "$retries" ]; then
             print_warning "Failed to download tarball, waiting 5 seconds before retry..."
             sleep 5
         fi
@@ -346,7 +369,8 @@ main() {
     fi
 
     # Check if on main branch
-    local current_branch=$(git branch --show-current)
+    local current_branch
+    current_branch=$(git branch --show-current)
     if [ "$current_branch" != "$MAIN_BRANCH" ]; then
         print_warning "Not on $MAIN_BRANCH branch (currently on: $current_branch)"
         echo "Continue anyway? (y/N)"
@@ -366,8 +390,9 @@ main() {
 
     # Compare with latest tag
     print_step "Checking version progression..."
-    local latest_tag=$(get_latest_tag)
+    local latest_tag
     local clean_version=${version#v}
+    latest_tag=$(get_latest_tag "$clean_version")
 
     if ! compare_versions "$clean_version" "$latest_tag"; then
         if [ "$FORCE_VERSION" -eq 1 ]; then
@@ -400,7 +425,7 @@ main() {
 
     # Push the tag immediately (needed for checksum calculation)
     print_step "Pushing tag to GitHub..."
-    git push mxlinux "$version"
+    git push "$TAG_REMOTE" "$version"
     print_success "Tag pushed to GitHub"
 
     # Update AUR package (now with real checksum)
