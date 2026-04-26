@@ -105,6 +105,16 @@ QString shellSingleQuote(QString text)
     return QStringLiteral("'") + text + QStringLiteral("'");
 }
 
+QString shellCommandFromArgs(const QStringList &args)
+{
+    QStringList quoted;
+    quoted.reserve(args.size());
+    for (const QString &arg : args) {
+        quoted.append(shellSingleQuote(arg));
+    }
+    return quoted.join(QLatin1Char(' '));
+}
+
 QString flatpakPtyCommand(const QString &command)
 {
     return QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(command));
@@ -2760,8 +2770,11 @@ void MainWindow::pushInstall_clicked()
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak install -y ") + fpUser
-                                      + ui->comboRemote->currentText() + ' ' + changeList.join(' ')))) {
+        QStringList args {"flatpak", "install", "-y"};
+        args << fpUser.trimmed();
+        args << ui->comboRemote->currentText();
+        args += changeList;
+        if (cmd.run(flatpakPtyCommand(shellCommandFromArgs(args)))) {
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
@@ -2847,9 +2860,11 @@ void MainWindow::pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         for (const QString &app : std::as_const(changeList)) {
             enableOutput();
-            if (!cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall ") + fpUser + QStringLiteral("-y ")
-                                           + app))) { // success if all processed successfuly,
-                                                       // failure if one failed
+            QStringList args {"flatpak", "uninstall"};
+            args << fpUser.trimmed();
+            args << "-y" << app;
+            if (!cmd.run(flatpakPtyCommand(shellCommandFromArgs(args)))) { // success if all processed successfuly,
+                                                                           // failure if one failed
                 success = false;
             }
         }
@@ -4215,8 +4230,10 @@ void MainWindow::pushRemotes_clicked()
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak install -y ") + dialog->getUser()
-                                      + QStringLiteral("--from ") + dialog->getInstallRef()))) {
+        QStringList args {"flatpak", "install", "-y"};
+        args << dialog->getUser().trimmed();
+        args << "--from" << dialog->getInstallRef();
+        if (cmd.run(flatpakPtyCommand(shellCommandFromArgs(args)))) {
             invalidateFlatpakRemoteCache();
             listFlatpakRemotes();
             displayFlatpaks(true);
