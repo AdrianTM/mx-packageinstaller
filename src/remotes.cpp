@@ -6,6 +6,7 @@
 #include <QLineEdit>
 #include <QMessageBox>
 #include <QPushButton>
+#include <QStringList>
 
 #include "cmd.h"
 
@@ -86,7 +87,12 @@ void ManageRemotes::removeItem()
     changed = true;
     QString user = comboRemote->currentText().section(" -- ", 1, 1);
     user = user.isEmpty() ? "" : user.prepend("--");
-    Cmd().run("flatpak remote-delete " + remote + ' ' + user);
+    QStringList args {"remote-delete"};
+    if (!user.isEmpty()) {
+        args << user;
+    }
+    args << remote;
+    Cmd().proc("flatpak", args);
     comboRemote->removeItem(comboRemote->currentIndex());
 }
 
@@ -96,7 +102,14 @@ void ManageRemotes::addItem()
     QString location = editAddRemote->text();
     QString name = editAddRemote->text().section('/', -1).section('.', 0, 0); // obtain the name before .flatpakremo
 
-    if (!Cmd().run("flatpak remote-add " + user + "--if-not-exists " + name + ' ' + location)) {
+    QStringList args {"remote-add"};
+    const QString scope = user.trimmed();
+    if (!scope.isEmpty()) {
+        args << scope;
+    }
+    args << "--if-not-exists" << name << location;
+
+    if (!Cmd().proc("flatpak", args)) {
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::critical(this, tr("Error adding remote"),
                               tr("Could not add remote - command returned an error. Please double-check the remote "
