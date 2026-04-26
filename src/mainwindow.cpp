@@ -2765,6 +2765,7 @@ void MainWindow::pushInstall_clicked()
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
+            setCursor(QCursor(Qt::ArrowCursor));
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
         } else {
@@ -2859,9 +2860,11 @@ void MainWindow::pushUninstall_clicked()
             ui->comboRemote->setCurrentIndex(0);
             comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
+            setCursor(QCursor(Qt::ArrowCursor));
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
         } else {
+            setCursor(QCursor(Qt::ArrowCursor));
             QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling, please check output"));
         }
         enableTabs(true);
