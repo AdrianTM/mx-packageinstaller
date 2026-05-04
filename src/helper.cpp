@@ -231,7 +231,7 @@ void printError(const QString &message)
     }
 
     const ProcessResult fuserResult = runProcess(fuserBinary, {path}, {}, false, false);
-    const QString fuserOutput = QString::fromUtf8(fuserResult.standardOutput + fuserResult.standardError);
+    const QString fuserOutput = QString::fromUtf8(fuserResult.standardOutput);
     const QRegularExpression pidRegex(QStringLiteral(R"((\d+))"));
     const QRegularExpressionMatch match = pidRegex.match(fuserOutput);
     if (!match.hasMatch()) {
