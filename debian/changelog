@@ -1,3 +1,9 @@
+mx-packageinstaller (26.05) mx; urgency=medium
+
+  * Ignore fuser stderr when parsing lock owner
+
+ -- Adrian <adrian@mxlinux.org>  Mon, 04 May 2026 11:32:55 -0400
+
 mx-packageinstaller (26.04) mx; urgency=medium
 
   * Fix corrupted error message
