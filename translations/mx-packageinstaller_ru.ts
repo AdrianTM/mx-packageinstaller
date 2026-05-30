@@ -910,7 +910,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/about.cpp" line="71"/>
         <source>Could not load %1</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось загрузить %1</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="94"/>
@@ -931,7 +931,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/about.cpp" line="117"/>
         <source>Could not load changelog.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось загрузить список изменений.</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="51"/>

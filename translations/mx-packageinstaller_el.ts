@@ -482,7 +482,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1828"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>Το MX Linux περιλαμβάνει αυτό το αποθετήριο με τα flatpaks μόνο για την ευκολία των χρηστών του και δεν είναι υπεύθυνο για τη λειτουργικότητα των επιμέρους flatpaks. Αναζητήστε περισσότερες συμβουλές για τα flatpaks στο Wiki.</translation>
+        <translation>Το MX Linux περιλαμβάνει το αποθετήριο με τα flatpaks μόνο για την ευκολία των χρηστών του, και δεν είναι υπεύθυνο για τη λειτουργικότητα τους. Αναζητήστε περισσότερες συμβουλές για τα flatpaks στο Wiki.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1836"/>
@@ -693,19 +693,19 @@
         <location filename="../src/mainwindow.cpp" line="3928"/>
         <location filename="../src/mainwindow.cpp" line="3974"/>
         <source>Flatpak not installed</source>
-        <translation>Το Flatpak δεν είναι εγκατεστημένο</translation>
+        <translation>Το flatpak δεν είναι εγκατεστημένο</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3929"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>Το Flatpak δεν είναι εγκατεστημένο.
+        <translation>Το flatpak δεν είναι εγκατεστημένο.
 Θέλετε να το εγκαταστήσετε;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3974"/>
         <source>Flatpak was not installed</source>
-        <translation>Το Flatpak δεν εγκαταστάθηκε</translation>
+        <translation>Το flatpak δεν εγκαταστάθηκε</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3997"/>
@@ -846,7 +846,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="106"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation>Δεν ήταν δυνατή η προσθήκη - η εντολή επέστρεψε σφάλμα. Ελέγξτε ξανά τη διεύθυνση της σύνδεσης και δοκιμάστε ξανά</translation>
+        <translation>Δεν ήταν δυνατή η προσθήκη - η εντολή επέστρεψε σφάλμα. Ελέγξτε ξανά τη διεύθυνση σύνδεσης και δοκιμάστε ξανά</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="111"/>
@@ -958,7 +958,7 @@ Close the program, or wait until it is done processing and try again.</source>
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation>Το MX Εγκατάσταση πακέτων, είναι εργαλείο που χρησιμοποιείται για τη διαχείριση πακέτων στο MX Linux 
+        <translation>Το MX Εγκατάσταση πακέτων, είναι εργαλείο για τη διαχείριση πακέτων στο MX Linux 
 - εγκαθιστά δημοφιλή προγράμματα από διαφορετικές πηγές 
 - εγκαθιστά προγράμματα από το αποθετήριο MX Test 
 - εγκαθιστά προγράμματα από το αποθετήριο Debian Backports 

@@ -310,7 +310,7 @@
         <location filename="../src/mainwindow.ui" line="571"/>
         <location filename="../src/mainwindow.ui" line="946"/>
         <source>Only repo packages</source>
-        <translation type="unfinished"/>
+        <translation>Solo paquetes de repositorio</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1514"/>
@@ -607,7 +607,7 @@
         <location filename="../src/mainwindow.cpp" line="3493"/>
         <location filename="../src/mainwindow.cpp" line="4592"/>
         <source>Install complete.</source>
-        <translation type="unfinished"/>
+        <translation>Instalación completada</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3503"/>
@@ -652,19 +652,19 @@
         <location filename="../src/mainwindow.cpp" line="3638"/>
         <location filename="../src/mainwindow.cpp" line="4689"/>
         <source>Uninstalling flatpaks...</source>
-        <translation type="unfinished"/>
+        <translation>Desinstalando paquetes flatpaks...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3647"/>
         <location filename="../src/mainwindow.cpp" line="4691"/>
         <source>Uninstall complete.</source>
-        <translation type="unfinished"/>
+        <translation>Desinstalación completada.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3648"/>
         <location filename="../src/mainwindow.cpp" line="4692"/>
         <source>Refreshing flatpaks...</source>
-        <translation type="unfinished"/>
+        <translation>Recargando flatpaks...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3661"/>
@@ -761,7 +761,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="4561"/>
         <source>Update complete.</source>
-        <translation type="unfinished"/>
+        <translation>Actualización completada.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4701"/>

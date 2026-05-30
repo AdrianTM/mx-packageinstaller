@@ -1,3 +1,11 @@
+mx-packageinstaller (26.05.1) mx; urgency=medium
+
+  * Improve how the app handles its temporary log files for better
+    reliability and safety
+  * Minor under-the-hood improvements
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 30 May 2026 11:20:57 -0400
+
 mx-packageinstaller (26.05) mx; urgency=medium
 
   * Ignore fuser stderr when parsing lock owner
