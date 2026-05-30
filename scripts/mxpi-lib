@@ -38,6 +38,12 @@ copy_log() {
             printf -- '-----------------------------------------------------------\nMXPI SESSION\n-----------------------------------------------------------\n\n' >> "$old"
             cat -- "$dest" >> "$old"
         fi
+        # Drop any pre-existing destination (a regular file, or a symlink an
+        # earlier race may have planted here) so the copy below always creates
+        # a fresh regular file: cp -P guards the source but still follows a
+        # symlink at the destination, which would let it write through to an
+        # arbitrary root-owned target.
+        rm -f -- "$dest"
         # Copy the content into a fresh regular file (-P: if the source is
         # swapped for a symlink in a race, copy the link itself rather than its
         # target), then remove the source.
