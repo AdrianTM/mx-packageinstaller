@@ -115,7 +115,7 @@ int main(int argc, char *argv[])
             exit(EXIT_FAILURE);
         }
     }
-    Log startLog;
+    Log startLog(Log::defaultLogPath());
     MainWindow w(parser);
     w.show();
     return QApplication::exec();

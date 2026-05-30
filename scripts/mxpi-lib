@@ -8,9 +8,39 @@ repo_sync() {
 
 
 copy_log() {
-    echo -e "-----------------------------------------------------------\nMXPI SESSION\n-----------------------------------------------------------\n" >> /var/log/mxpi.log.old
-    cat /var/log/mxpi.log >> /var/log/mxpi.log.old
-    mv /tmp/mxpi.log /var/log
+    local src dest="/var/log/mxpi.log" old="/var/log/mxpi.log.old" uid dir
+    local -a logdirs=()
+    # Where the app wrote its log (see Log::defaultLogPath): a GUI run logs to
+    # the caller's private runtime dir (/run/user/<uid>); a root run logs to
+    # /run. Both are non-world-writable, unlike the legacy /tmp fallback.
+    # The caller's uid may come from pkexec, sudo/gksu, or the login session.
+    if [[ "$PKEXEC_UID" =~ ^[0-9]+$ ]]; then
+        uid="$PKEXEC_UID"
+    elif [[ "$SUDO_UID" =~ ^[0-9]+$ ]]; then
+        uid="$SUDO_UID"
+    else
+        uid=$(id -u "$(logname)" 2>/dev/null)
+    fi
+    [[ "$uid" =~ ^[0-9]+$ && "$uid" -ne 0 ]] && logdirs+=("/run/user/${uid}")
+    logdirs+=("/run" "/tmp")
+    for dir in "${logdirs[@]}"; do
+        [[ -d "$dir" ]] || continue
+        src="${dir}/mxpi.log"
+        # Only act on a real regular file, never a symlink, so an attacker
+        # cannot redirect this helper at a root-owned file.
+        [[ -f "$src" && ! -L "$src" ]] || continue
+        # Archive the previous session's log, but never follow a symlink that
+        # an earlier run might have left at the destination.
+        if [[ -f "$dest" && ! -L "$dest" ]]; then
+            printf -- '-----------------------------------------------------------\nMXPI SESSION\n-----------------------------------------------------------\n\n' >> "$old"
+            cat -- "$dest" >> "$old"
+        fi
+        # Copy the content into a fresh regular file (-P: if the source is
+        # swapped for a symlink in a race, copy the link itself rather than its
+        # target), then remove the source.
+        cp -Pf -- "$src" "$dest" && rm -f -- "$src"
+        return 0
+    done
 }
 
 flatpak_add_repos() {
