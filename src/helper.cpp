@@ -65,6 +65,7 @@ void printError(const QString &message)
         {"mxpi-lib", {MxpiLibPath}},
         {"pacman", {"/usr/bin/pacman"}},
         {"ps", {"/usr/bin/ps", "/bin/ps"}},
+        {"snap", {"/usr/bin/snap", "/snap/bin/snap"}},
     };
     return commands;
 }

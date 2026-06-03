@@ -2882,6 +2882,8 @@ void MainWindow::pushInstall_clicked()
                 snapArgs << "--classic";
             }
             snapArgs << name;
+            // procAsRoot reuses the cached MXPI elevation (auth_admin_keep), so a
+            // multi-snap install only prompts for the password once.
             if (!cmd.procAsRoot(QStringLiteral("snap"), snapArgs)) {
                 success = false;
                 errorDetails = cmd.readAllOutput();
@@ -4047,6 +4049,8 @@ void MainWindow::setupSnapd()
         // it needs no elevation. A stale helper skips this, hence doing it here too.
         Cmd waitCmd;
         waitCmd.run(QStringLiteral("timeout 120 snap wait system seed.loaded"), Cmd::QuietMode::Yes);
+        // Route through the MXPI helper (auth_admin_keep) so the password cached by the
+        // snapd apt install is reused instead of prompting again.
         cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("install"), QStringLiteral("core")});
         const QString coreOutput = cmd.readAllOutput().trimmed();
         if (!coreOutput.isEmpty()) {
