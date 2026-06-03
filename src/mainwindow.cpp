@@ -138,6 +138,18 @@ QString flatpakPtyCommand(const QString &command)
     return QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(command));
 }
 
+// Build a command line that runs a privileged "snap ..." subcommand inside a PTY so its
+// progress output streams back to the console, elevating through the MXPI elevation tool.
+QString snapPtyCommand(const QString &snapSubcommand)
+{
+    const QString inner = QStringLiteral("snap ") + snapSubcommand;
+    const QString pty = QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(inner));
+    if (getuid() == 0) {
+        return pty;
+    }
+    return Cmd::elevationTool() + QStringLiteral(" /bin/bash -c ") + shellSingleQuote(pty);
+}
+
 void appendFlatpakStatusMessage(QPlainTextEdit *outputBox, const QString &message)
 {
     if (!outputBox) {
@@ -296,6 +308,8 @@ void MainWindow::setup()
     verName = getDebianVerName(debianVersion);
 
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != QLatin1String("i386"));
+    // Snap is only meaningful on systemd systems (snapd requires systemd)
+    ui->tabWidget->setTabVisible(Tab::Snap, isSystemdInit());
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
 
@@ -402,9 +416,9 @@ void MainWindow::setup()
 
     // Connect tree views for double-click toggle
     QList<QTreeView *> listTree {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports,
-                                  ui->treeFlatpak};
+                                  ui->treeFlatpak, ui->treeSnap};
     for (auto *tree : listTree) {
-        if (tree != ui->treeFlatpak) {
+        if (tree != ui->treeFlatpak && tree != ui->treeSnap) {
             tree->setContextMenuPolicy(Qt::CustomContextMenu);
         }
         connect(tree, &QTreeView::doubleClicked, this, &MainWindow::checkUncheckItem);
@@ -462,6 +476,13 @@ void MainWindow::setupModels()
     ui->treeFlatpak->setModel(flatpakProxy);
     ui->treeFlatpak->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
+    // Create Snap model and proxy
+    snapModel = new SnapModel(this);
+    snapProxy = new SnapFilterProxy(this);
+    snapProxy->setSourceModel(snapModel);
+    ui->treeSnap->setModel(snapProxy);
+    ui->treeSnap->setEditTriggers(QAbstractItemView::NoEditTriggers);
+
     // Create Popular model and proxy
     popularModel = new PopularModel(this);
     popularProxy = new PopularFilterProxy(this);
@@ -474,6 +495,7 @@ void MainWindow::setupModels()
     mxtestModel->setIcons(qiconInstalled, qiconUpgradable);
     backportsModel->setIcons(qiconInstalled, qiconUpgradable);
     flatpakModel->setIcons(qiconInstalled);
+    snapModel->setIcons(qiconInstalled);
     popularModel->setIcons(qiconInstalled, QIcon::fromTheme("folder"), QIcon::fromTheme("dialog-information"));
 
     // Connect model signals to slots
@@ -481,6 +503,7 @@ void MainWindow::setupModels()
     connect(mxtestModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
     connect(backportsModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
     connect(flatpakModel, &FlatpakModel::checkStateChanged, this, &MainWindow::onFlatpakCheckStateChanged);
+    connect(snapModel, &SnapModel::checkStateChanged, this, &MainWindow::onSnapCheckStateChanged);
     // Use QStandardItemModel's built-in itemChanged signal for PopularModel
     connect(popularModel, &PopularModel::checkStateChanged, this, &MainWindow::onPopularItemChanged);
 }
@@ -620,7 +643,7 @@ void MainWindow::blockInterfaceFP()
 void MainWindow::updateInterface()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
+    if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak || currentTree == ui->treeSnap) {
         return;
     }
     if (displayPackagesIsRunning) {
@@ -1198,11 +1221,14 @@ void MainWindow::setConnections()
     connect(ui->searchBoxMX, &QLineEdit::textChanged, this, &MainWindow::findPackage);
     connect(ui->searchBoxBP, &QLineEdit::textChanged, this, &MainWindow::findPackage);
     connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackage);
+    connect(ui->searchBoxSnap, &QLineEdit::textChanged, this, &MainWindow::findPackage);
+    connect(ui->searchBoxSnap, &QLineEdit::returnPressed, this, &MainWindow::searchSnapStore);
     // Connect combo filters
     connect(ui->comboFilterEnabled, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterMX, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterBP, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterFlatpak, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
+    connect(ui->comboFilterSnap, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
 
     // Connect other UI elements to their respective slots
     connect(ui->checkHideLibs, &QCheckBox::toggled, this, &MainWindow::checkHideLibs_toggled);
@@ -1229,6 +1255,9 @@ void MainWindow::setConnections()
     connect(ui->pushUninstall, &QPushButton::clicked, this, &MainWindow::pushUninstall_clicked);
     connect(ui->pushUpgradeAll, &QPushButton::clicked, this, &MainWindow::pushUpgradeAll_clicked);
     connect(ui->pushUpgradeFP, &QPushButton::clicked, this, &MainWindow::pushUpgradeFP_clicked);
+    connect(ui->pushRefreshSnap, &QPushButton::clicked, this, &MainWindow::pushRefreshSnap_clicked);
+    connect(ui->pushUpgradeSnap, &QPushButton::clicked, this, &MainWindow::pushUpgradeSnap_clicked);
+    connect(ui->pushSetupSnapd, &QPushButton::clicked, this, &MainWindow::pushSetupSnapd_clicked);
     connect(ui->tabWidget, QOverload<int>::of(&QTabWidget::currentChanged), this,
             &MainWindow::tabWidget_currentChanged);
     // Header checkbox (Upgradable): select all
@@ -1274,6 +1303,7 @@ void MainWindow::setSearchFocus() const
                                                       {Tab::Test, ui->searchBoxMX},
                                                       {Tab::Backports, ui->searchBoxBP},
                                                       {Tab::Flatpak, ui->searchBoxFlatpak},
+                                                      {Tab::Snap, ui->searchBoxSnap},
                                                       {Tab::Popular, ui->searchPopular}};
     const auto index = ui->tabWidget->currentIndex();
     if (auto *searchBox = searchBoxMap.value(index)) {
@@ -2561,6 +2591,7 @@ void MainWindow::enableTabs(bool enable)
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != QLatin1String("i386"));
+    ui->tabWidget->setTabVisible(Tab::Snap, isSystemdInit());
     setCursor(QCursor(Qt::ArrowCursor));
 }
 
@@ -2576,6 +2607,8 @@ void MainWindow::hideColumns()
     ui->treeFlatpak->hideColumn(FlatCol::Status);
     ui->treeFlatpak->hideColumn(FlatCol::Duplicate);
     ui->treeFlatpak->hideColumn(FlatCol::FullName);
+    ui->treeSnap->hideColumn(SnapCol::Status);
+    ui->treeSnap->hideColumn(SnapCol::Classic);
 }
 
 // Process downloaded *Packages.gz files
@@ -2964,7 +2997,7 @@ void MainWindow::setCurrentTree()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     const QList<QTreeView *> trees
-        = {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak};
+        = {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak, ui->treeSnap};
 
     auto it = std::find_if(trees.cbegin(), trees.cend(), [](const QTreeView *tree) { return tree->isVisible(); });
 
@@ -3406,6 +3439,8 @@ void MainWindow::findPackage()
         word = ui->searchBoxBP->text();
     } else if (currentTree == ui->treeFlatpak) {
         word = ui->searchBoxFlatpak->text();
+    } else if (currentTree == ui->treeSnap) {
+        word = ui->searchBoxSnap->text();
     }
 
     // Skip single character searches
@@ -3414,7 +3449,19 @@ void MainWindow::findPackage()
     }
 
     // Set search text on appropriate proxy
-    if (currentTree == ui->treeFlatpak) {
+    if (currentTree == ui->treeSnap) {
+        // In store mode the search box drives `snap find` (on Enter); don't also filter locally.
+        if (snapProxy && !snapStoreMode) {
+            snapProxy->setSearchText(word);
+        }
+        if (snapModel) {
+            for (int i = 0; i < snapModel->columnCount(); ++i) {
+                if (!ui->treeSnap->isColumnHidden(i)) {
+                    ui->treeSnap->resizeColumnToContents(i);
+                }
+            }
+        }
+    } else if (currentTree == ui->treeFlatpak) {
         if (flatpakProxy) {
             flatpakProxy->setSearchText(word);
         }
@@ -3447,7 +3494,7 @@ void MainWindow::findPackage()
     }
 
     // Resize columns after search filter is applied (for package tabs)
-    if (currentTree != ui->treePopularApps && currentTree != ui->treeFlatpak) {
+    if (currentTree != ui->treePopularApps && currentTree != ui->treeFlatpak && currentTree != ui->treeSnap) {
         auto *model = getCurrentModel();
         if (model && currentTree) {
             for (int i = 0; i < model->columnCount(); ++i) {
@@ -3502,6 +3549,48 @@ void MainWindow::pushInstall_clicked()
             QMessageBox::critical(this, tr("Error"),
                                   tr("Problem detected while installing, please inspect the console output."));
         }
+    } else if (currentTree == ui->treeSnap) {
+        const QStringList selected = snapModel ? snapModel->checkedPackages() : QStringList();
+        if (selected.isEmpty()) {
+            enableTabs(true);
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            return;
+        }
+        if (QMessageBox::question(this, tr("Install snaps"),
+                                  tr("OK to install the following snap packages?\n\n%1").arg(selected.join('\n')))
+            != QMessageBox::Yes) {
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            enableTabs(true);
+            return;
+        }
+        setCursor(QCursor(Qt::BusyCursor));
+        enableOutput();
+        bool success = true;
+        QString errorDetails;
+        for (const QString &name : selected) {
+            QStringList snapArgs {"install"};
+            if (snapModel->isClassic(name)) {
+                snapArgs << "--classic";
+            }
+            snapArgs << name;
+            if (!cmd.run(snapPtyCommand(snapArgs.join(' ')))) {
+                success = false;
+                errorDetails = cmd.readAllOutput();
+                break;
+            }
+        }
+        setCursor(QCursor(Qt::ArrowCursor));
+        if (success) {
+            appendFlatpakStatusMessage(ui->outputBox, tr("Install complete."));
+            displaySnaps(true);
+            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+        } else {
+            showError(tr("Problem detected while installing a snap. Click \"Show Details\" for more information."),
+                      errorDetails);
+        }
+        enableTabs(true);
+        return;
     } else {
         bool success = false;
         if (currentTree == ui->treePopularApps) {
@@ -3662,6 +3751,43 @@ void MainWindow::pushUninstall_clicked()
         }
         enableTabs(true);
         return;
+    } else if (currentTree == ui->treeSnap) {
+        const QStringList selected = snapModel ? snapModel->checkedPackages() : QStringList();
+        if (selected.isEmpty()) {
+            enableTabs(true);
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            return;
+        }
+        if (QMessageBox::question(this, tr("Remove snaps"),
+                                  tr("OK to remove the following snap packages?\n\n%1").arg(selected.join('\n')))
+            != QMessageBox::Yes) {
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            enableTabs(true);
+            return;
+        }
+        setCursor(QCursor(Qt::BusyCursor));
+        enableOutput();
+        bool success = true;
+        QString errorDetails;
+        for (const QString &name : selected) {
+            if (!cmd.run(snapPtyCommand(QStringLiteral("remove ") + name))) {
+                success = false;
+                errorDetails = cmd.readAllOutput();
+                break;
+            }
+        }
+        setCursor(QCursor(Qt::ArrowCursor));
+        if (success) {
+            appendFlatpakStatusMessage(ui->outputBox, tr("Uninstall complete."));
+            displaySnaps(true);
+            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+        } else {
+            showError(tr("We encountered a problem removing a snap. Click \"Show Details\" for more information."),
+                      errorDetails);
+        }
+        enableTabs(true);
+        return;
     } else {
         names = changeList.join(' ');
     }
@@ -3704,7 +3830,7 @@ void MainWindow::tabWidget_currentChanged(int index)
         }
 
         auto setTabsEnabled = [this](bool enable) {
-            for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak}) {
+            for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak, Tab::Snap}) {
                 if (tab != ui->tabWidget->currentIndex()) {
                     ui->tabWidget->setTabEnabled(tab, enable);
                 }
@@ -3727,6 +3853,9 @@ void MainWindow::tabWidget_currentChanged(int index)
             break;
         case Tab::Flatpak:
             handleFlatpakTab(search_str);
+            break;
+        case Tab::Snap:
+            handleSnapTab(search_str);
             break;
         case Tab::Output:
             handleOutputTab();
@@ -3756,6 +3885,13 @@ void MainWindow::resetCheckboxes()
                 flatpakModel->setAllChecked(false);
             }
         }
+    } else if (currentTree == ui->treeSnap) {
+        currentTree->clearSelection();
+        if (snapModel) {
+            if (!snapModel->checkedPackages().isEmpty()) {
+                snapModel->setAllChecked(false);
+            }
+        }
     } else {
         // Package-based tabs (Enabled, Test, Backports)
         currentTree->clearSelection();
@@ -3783,13 +3919,16 @@ void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
         filter_idx = ui->comboFilterBP->currentIndex();
     } else if (currentTree == ui->treeFlatpak) {
         search_str = ui->searchBoxFlatpak->text();
+    } else if (currentTree == ui->treeSnap) {
+        search_str = ui->searchBoxSnap->text();
     }
 }
 
 void MainWindow::resizeCurrentColumns()
 {
     auto *model = getCurrentModel();
-    if (!model || !currentTree || currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak) {
+    if (!model || !currentTree || currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak
+        || currentTree == ui->treeSnap) {
         return;
     }
     for (int i = 0; i < model->columnCount(); ++i) {
@@ -4000,11 +4139,370 @@ void MainWindow::installFlatpak()
     enableTabs(true);
 }
 
+// ---------------------------------------------------------------------------
+// Snap support
+// ---------------------------------------------------------------------------
+
+// Show a critical error dialog with a short, fixed message. Any long/raw output
+// (command logs, backend errors) goes into the collapsible "Show Details" box so
+// it never bloats the title or the message body.
+void MainWindow::showError(const QString &message, const QString &details)
+{
+    QMessageBox box(QMessageBox::Critical, tr("Error"), message, QMessageBox::Ok, this);
+    const QString trimmed = details.trimmed();
+    if (!trimmed.isEmpty()) {
+        box.setDetailedText(trimmed);
+    }
+    box.exec();
+}
+
+// snapd is a systemd-only service; the Snap tab is hidden on non-systemd systems.
+bool MainWindow::isSystemdInit()
+{
+    QFile comm {"/proc/1/comm"};
+    if (comm.open(QIODevice::ReadOnly | QIODevice::Text)) {
+        const QString init = QString::fromLatin1(comm.readLine()).trimmed();
+        if (!init.isEmpty()) {
+            return init == QLatin1String("systemd");
+        }
+    }
+    // Fallback: systemd populates this directory only when it is the init system
+    return QFileInfo::exists(QStringLiteral("/run/systemd/system"));
+}
+
+// snapd is usable once the package is installed and its socket unit is active.
+bool MainWindow::isSnapdReady() const
+{
+    return checkInstalled(QStringLiteral("snapd")) && QFile::exists(QStringLiteral("/run/snapd.socket"));
+}
+
+QStringList MainWindow::listInstalledSnaps() const
+{
+    Cmd shell;
+    const QString out = shell.getOut(QStringLiteral("LANG=C snap list 2>/dev/null"), Cmd::QuietMode::Yes);
+    QStringList names;
+    static const QRegularExpression ws {QStringLiteral("\\s+")};
+    const QStringList lines = out.split('\n', Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const QStringList parts = line.split(ws, Qt::SkipEmptyParts);
+        if (parts.isEmpty() || parts.at(0) == QLatin1String("Name")) {
+            continue;
+        }
+        names << parts.at(0);
+    }
+    return names;
+}
+
+// Parse the tabular output of `snap list` (installed=true) or `snap find` (installed=false).
+QVector<SnapData> MainWindow::parseSnapList(const QString &output, bool installed) const
+{
+    QVector<SnapData> result;
+    static const QRegularExpression ws {QStringLiteral("\\s+")};
+    const QStringList lines = output.split('\n', Qt::SkipEmptyParts);
+    for (const QString &line : lines) {
+        const QStringList parts = line.split(ws, Qt::SkipEmptyParts);
+        if (parts.isEmpty() || parts.at(0) == QLatin1String("Name")) {
+            continue; // header row
+        }
+        SnapData data;
+        if (installed) {
+            // Columns: Name Version Rev Tracking Publisher Notes
+            if (parts.size() < 2) {
+                continue;
+            }
+            data.name = parts.at(0);
+            data.version = parts.value(1);
+            data.publisher = parts.value(4);
+            data.notes = parts.value(5);
+        } else {
+            // Columns: Name Version Publisher Notes Summary...
+            if (parts.size() < 4) {
+                continue;
+            }
+            data.name = parts.at(0);
+            data.version = parts.value(1);
+            data.publisher = parts.value(2);
+            data.notes = parts.value(3);
+            data.description = parts.size() > 4 ? parts.mid(4).join(' ') : QString();
+        }
+        // Strip the verification markers snap appends to trusted publishers (✓, *, **)
+        data.publisher.remove(QChar(0x2713));
+        while (data.publisher.endsWith(QLatin1Char('*'))) {
+            data.publisher.chop(1);
+        }
+        data.isClassic = data.notes.contains(QLatin1String("classic"));
+        result.append(data);
+    }
+    return result;
+}
+
+void MainWindow::handleSnapTab(const QString &search_str)
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    ui->searchBoxSnap->setText(search_str);
+    setCurrentTree();
+    ui->searchBoxSnap->setFocus();
+
+    const bool ready = isSnapdReady();
+    ui->frameSnapSetup->setVisible(!ready);
+    ui->comboFilterSnap->setEnabled(ready);
+    ui->searchBoxSnap->setEnabled(ready);
+    ui->pushRefreshSnap->setEnabled(ready);
+    ui->pushUpgradeSnap->setEnabled(ready);
+    ui->pushInstall->setEnabled(false);
+    ui->pushUninstall->setEnabled(false);
+
+    if (!ready) {
+        if (snapModel) {
+            snapModel->clear();
+        }
+        updateSnapCounts();
+        currentTree->blockSignals(false);
+        return;
+    }
+
+    snapStoreMode = (ui->comboFilterSnap->currentText() == tr("Search store"));
+    if (firstRunSnap || (snapModel && snapModel->rowCount() == 0 && !snapStoreMode)) {
+        firstRunSnap = false;
+        setCursor(QCursor(Qt::BusyCursor));
+        displaySnaps(true);
+        setCursor(QCursor(Qt::ArrowCursor));
+    }
+    if (!search_str.isEmpty()) {
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
+    }
+    currentTree->blockSignals(false);
+}
+
+void MainWindow::displaySnaps(bool /*force_update*/)
+{
+    if (!snapModel) {
+        return;
+    }
+    if (!isSnapdReady()) {
+        snapModel->clear();
+        updateSnapCounts();
+        return;
+    }
+    snapStoreMode = false;
+    loadSnapData();
+    populateSnapTree();
+    updateSnapCounts();
+}
+
+void MainWindow::loadSnapData()
+{
+    Cmd shell;
+    const QString out = shell.getOut(QStringLiteral("LANG=C snap list 2>/dev/null"), Cmd::QuietMode::Yes);
+    const QVector<SnapData> data = parseSnapList(out, true);
+    snapModel->setSnapData(data);
+    snapModel->updateInstalledStatus(listInstalledSnaps());
+    if (snapProxy) {
+        snapProxy->setStatusFilter(0);
+    }
+}
+
+void MainWindow::populateSnapTree()
+{
+    ui->treeSnap->sortByColumn(SnapCol::Name, Qt::AscendingOrder);
+    if (snapModel) {
+        for (int i = 0; i < snapModel->columnCount(); ++i) {
+            if (!ui->treeSnap->isColumnHidden(i)) {
+                ui->treeSnap->resizeColumnToContents(i);
+            }
+        }
+    }
+}
+
+void MainWindow::updateSnapCounts()
+{
+    const int total = snapProxy ? snapProxy->rowCount() : 0;
+    int installed = 0;
+    if (snapModel) {
+        for (int i = 0; i < snapModel->rowCount(); ++i) {
+            const SnapData *snap = snapModel->snapAt(i);
+            if (snap && snap->status == Status::Installed) {
+                ++installed;
+            }
+        }
+    }
+    ui->labelNumAppSnap->setText(QString::number(total));
+    ui->labelNumInstSnap->setText(QString::number(installed));
+}
+
+// Triggered by pressing Enter in the snap search box: query the snap store.
+void MainWindow::searchSnapStore()
+{
+    if (currentTree != ui->treeSnap || !snapModel || !isSnapdReady()) {
+        return;
+    }
+    const QString query = ui->searchBoxSnap->text().trimmed();
+    if (query.isEmpty()) {
+        ui->comboFilterSnap->setCurrentText(tr("Installed snaps"));
+        return;
+    }
+    if (ui->comboFilterSnap->currentText() != tr("Search store")) {
+        ui->comboFilterSnap->blockSignals(true);
+        ui->comboFilterSnap->setCurrentText(tr("Search store"));
+        ui->comboFilterSnap->blockSignals(false);
+    }
+    snapStoreMode = true;
+    setCursor(QCursor(Qt::BusyCursor));
+    Cmd shell;
+    const QString out
+        = shell.getOut(QStringLiteral("LANG=C snap find ") + shellSingleQuote(query) + QStringLiteral(" 2>/dev/null"),
+                       Cmd::QuietMode::Yes);
+    QVector<SnapData> data = parseSnapList(out, false);
+    snapModel->setSnapData(data);
+    snapModel->updateInstalledStatus(listInstalledSnaps());
+    if (snapProxy) {
+        snapProxy->setStatusFilter(0);
+        snapProxy->setSearchText(QString()); // store results already match; don't filter them locally
+    }
+    populateSnapTree();
+    updateSnapCounts();
+    changeList.clear();
+    ui->pushInstall->setEnabled(false);
+    ui->pushUninstall->setEnabled(false);
+    setCursor(QCursor(Qt::ArrowCursor));
+    if (data.isEmpty()) {
+        QMessageBox::information(this, tr("No results"), tr("No snaps found matching \"%1\".").arg(query));
+    }
+}
+
+// Install snapd and bring the service up, elevating through the MXPI helper.
+void MainWindow::setupSnapd()
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    ui->tabWidget->setTabEnabled(Tab::Output, true);
+    ui->tabWidget->setCurrentWidget(ui->tabOutput);
+    showOutput();
+    setCursor(QCursor(Qt::BusyCursor));
+    enableOutput();
+
+    if (!checkInstalled(QStringLiteral("snapd"))) {
+        // Reuse the standard APT install path (uses default repo flags).
+        QTreeView *savedTree = currentTree;
+        currentTree = ui->treeEnabled;
+        const bool ok = install(QStringLiteral("snapd"));
+        currentTree = savedTree;
+        if (!ok || !checkInstalled(QStringLiteral("snapd"))) {
+            const QString errorDetails = cmd.readAllOutput();
+            setCursor(QCursor(Qt::ArrowCursor));
+            showError(tr("snapd was not installed. Click \"Show Details\" for more information."), errorDetails);
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            enableTabs(true);
+            return;
+        }
+        installedPackages = listInstalled();
+        setDirty();
+    }
+
+    // Enable the snapd service and install the core snap (runs as root).
+    runMxpiLibAsRoot(cmd, QStringLiteral("snapd_setup"), Cmd::QuietMode::No);
+    setCursor(QCursor(Qt::ArrowCursor));
+
+    if (!isSnapdReady()) {
+        QMessageBox::warning(this, tr("Snap setup"),
+                             tr("snapd was installed but the service is not active yet. You may need to reboot or log "
+                                "out and back in, then reopen the Snap tab."));
+    } else {
+        QMessageBox::warning(this, tr("Needs re-login"),
+                             tr("You might need to logout/login to see installed items in the menu"));
+    }
+    firstRunSnap = false;
+    displaySnaps(true);
+    ui->frameSnapSetup->setVisible(!isSnapdReady());
+    const bool ready = isSnapdReady();
+    ui->comboFilterSnap->setEnabled(ready);
+    ui->searchBoxSnap->setEnabled(ready);
+    ui->pushRefreshSnap->setEnabled(ready);
+    ui->pushUpgradeSnap->setEnabled(ready);
+    ui->tabWidget->setCurrentWidget(ui->tabSnap);
+    enableTabs(true);
+}
+
+void MainWindow::onSnapCheckStateChanged(const QString &name, Qt::CheckState state, int status)
+{
+    buildSnapChangeList(name, state, status);
+}
+
+void MainWindow::buildSnapChangeList(const QString &name, Qt::CheckState state, int status)
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    if (state == Qt::Checked) {
+        changeList.append(name);
+    } else {
+        changeList.removeOne(name);
+    }
+
+    ui->pushInstall->setText(tr("Install"));
+    if (status == Status::Installed) {
+        ui->pushUninstall->setEnabled(true);
+        ui->pushInstall->setEnabled(false);
+    } else {
+        ui->pushUninstall->setEnabled(false);
+        ui->pushInstall->setEnabled(true);
+    }
+
+    if (changeList.isEmpty()) {
+        ui->pushInstall->setEnabled(false);
+        ui->pushUninstall->setEnabled(false);
+    }
+    ui->treeSnap->setFocus();
+}
+
+void MainWindow::pushRefreshSnap_clicked()
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    if (!isSnapdReady()) {
+        handleSnapTab(QString());
+        return;
+    }
+    ui->searchBoxSnap->clear();
+    ui->comboFilterSnap->blockSignals(true);
+    ui->comboFilterSnap->setCurrentText(tr("Installed snaps"));
+    ui->comboFilterSnap->blockSignals(false);
+    setCursor(QCursor(Qt::BusyCursor));
+    displaySnaps(true);
+    setCursor(QCursor(Qt::ArrowCursor));
+}
+
+void MainWindow::pushUpgradeSnap_clicked()
+{
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    if (!isSnapdReady()) {
+        return;
+    }
+    showOutput();
+    setCursor(QCursor(Qt::BusyCursor));
+    enableOutput();
+    if (cmd.run(snapPtyCommand(QStringLiteral("refresh")))) {
+        appendFlatpakStatusMessage(ui->outputBox, tr("Update complete."));
+        displaySnaps(true);
+        setCursor(QCursor(Qt::ArrowCursor));
+        QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
+        ui->tabWidget->setCurrentWidget(ui->tabSnap);
+    } else {
+        const QString errorDetails = cmd.readAllOutput();
+        setCursor(QCursor(Qt::ArrowCursor));
+        showError(tr("Problem detected while updating snaps. Click \"Show Details\" for more information."),
+                  errorDetails);
+    }
+    enableTabs(true);
+}
+
+void MainWindow::pushSetupSnapd_clicked()
+{
+    setupSnapd();
+}
+
 void MainWindow::handleOutputTab()
 {
     // Block signals and clear all search boxes
     const QList<QLineEdit *> searchBoxes
-        = {ui->searchPopular, ui->searchBoxEnabled, ui->searchBoxMX, ui->searchBoxBP, ui->searchBoxFlatpak};
+        = {ui->searchPopular,  ui->searchBoxEnabled, ui->searchBoxMX,
+           ui->searchBoxBP,    ui->searchBoxFlatpak, ui->searchBoxSnap};
 
     for (auto searchBox : searchBoxes) {
         searchBox->blockSignals(true);
@@ -4023,6 +4521,37 @@ void MainWindow::filterChanged(const QString &arg1)
     currentTree->blockSignals(true);
     currentTree->setUpdatesEnabled(false);
     updateInterface();
+
+    // Snap tab has its own simple filtering model; handle it up front and return.
+    if (currentTree == ui->treeSnap) {
+        if (snapModel) {
+            snapModel->setAllChecked(false);
+        }
+        if (arg1 == tr("Search store")) {
+            snapStoreMode = true;
+            if (!ui->searchBoxSnap->text().isEmpty()) {
+                searchSnapStore();
+            }
+        } else { // Installed snaps
+            snapStoreMode = false;
+            ui->searchBoxSnap->blockSignals(true);
+            ui->searchBoxSnap->clear();
+            ui->searchBoxSnap->blockSignals(false);
+            if (snapProxy) {
+                snapProxy->setStatusFilter(0);
+                snapProxy->setSearchText(QString());
+            }
+            displaySnaps(true);
+        }
+        changeList.clear();
+        ui->pushInstall->setEnabled(false);
+        ui->pushUninstall->setEnabled(false);
+        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
+        setSearchFocus();
+        currentTree->setUpdatesEnabled(true);
+        currentTree->blockSignals(false);
+        return;
+    }
 
     // Helper functions
     auto resetTree = [this]() {
@@ -4676,6 +5205,8 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             ui->searchBoxBP->setFocus();
         } else if (ui->tabWidget->currentWidget() == ui->tabFlatpak) {
             ui->searchBoxFlatpak->setFocus();
+        } else if (ui->tabWidget->currentWidget() == ui->tabSnap) {
+            ui->searchBoxSnap->setFocus();
         }
     }
 }

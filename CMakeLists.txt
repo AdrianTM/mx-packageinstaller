@@ -111,6 +111,8 @@ set(SOURCES
     src/models/packagefilterproxy.cpp
     src/models/flatpakmodel.cpp
     src/models/flatpakfilterproxy.cpp
+    src/models/snapmodel.cpp
+    src/models/snapfilterproxy.cpp
     src/models/popularmodel.cpp
     src/models/popularfilterproxy.cpp
 )
@@ -134,6 +136,8 @@ set(HEADERS
     src/models/packagefilterproxy.h
     src/models/flatpakmodel.h
     src/models/flatpakfilterproxy.h
+    src/models/snapmodel.h
+    src/models/snapfilterproxy.h
     src/models/popularmodel.h
     src/models/popularfilterproxy.h
 )
