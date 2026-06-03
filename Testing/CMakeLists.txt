@@ -189,6 +189,63 @@ endif()
 
 add_test(NAME FlatpakFilterProxyTest COMMAND test_flatpakfilterproxy)
 
+# Test for SnapModel class
+add_executable(test_snapmodel
+    test_snapmodel.cpp
+    ../src/models/snapmodel.cpp
+)
+
+target_link_libraries(test_snapmodel
+    Qt6::Core
+    Qt6::Test
+    Qt6::Widgets
+)
+
+target_compile_options(test_snapmodel PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_snapmodel PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_snapmodel PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME SnapModelTest COMMAND test_snapmodel)
+
+# Test for SnapFilterProxy class
+add_executable(test_snapfilterproxy
+    test_snapfilterproxy.cpp
+    ../src/models/snapmodel.cpp
+    ../src/models/snapfilterproxy.cpp
+)
+
+target_link_libraries(test_snapfilterproxy
+    Qt6::Core
+    Qt6::Test
+    Qt6::Widgets
+)
+
+target_compile_options(test_snapfilterproxy PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_snapfilterproxy PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_snapfilterproxy PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME SnapFilterProxyTest COMMAND test_snapfilterproxy)
+
 # Test for PopularModel class
 add_executable(test_popularmodel
     test_popularmodel.cpp
@@ -250,7 +307,8 @@ add_test(NAME PopularFilterProxyTest COMMAND test_popularfilterproxy)
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
     DEPENDS test_versionnumber test_aptcache test_packagemodel test_flatpakmodel
-            test_packagefilterproxy test_flatpakfilterproxy test_popularmodel test_popularfilterproxy
+            test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
+            test_popularmodel test_popularfilterproxy
     COMMENT "Running all tests"
 )
 

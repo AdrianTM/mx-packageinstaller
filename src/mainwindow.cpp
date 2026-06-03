@@ -3550,14 +3550,24 @@ void MainWindow::pushInstall_clicked()
                                   tr("Problem detected while installing, please inspect the console output."));
         }
     } else if (currentTree == ui->treeSnap) {
-        const QStringList selected = snapModel ? snapModel->checkedPackages() : QStringList();
-        if (selected.isEmpty()) {
+        // Read changeList, not the model check state: showOutput() above switched to the
+        // Output tab, which clears the visible checkboxes via resetCheckboxes(). Only
+        // install snaps that are not already installed (the selection may be mixed).
+        QStringList toInstall;
+        for (const QString &name : std::as_const(changeList)) {
+            const int row = snapModel ? snapModel->findSnapRow(name) : -1;
+            const SnapData *snap = (row >= 0) ? snapModel->snapAt(row) : nullptr;
+            if (!snap || snap->status != Status::Installed) {
+                toInstall.append(name);
+            }
+        }
+        if (toInstall.isEmpty()) {
             enableTabs(true);
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             return;
         }
         if (QMessageBox::question(this, tr("Install snaps"),
-                                  tr("OK to install the following snap packages?\n\n%1").arg(selected.join('\n')))
+                                  tr("OK to install the following snap packages?\n\n%1").arg(toInstall.join('\n')))
             != QMessageBox::Yes) {
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             enableTabs(true);
@@ -3567,9 +3577,9 @@ void MainWindow::pushInstall_clicked()
         enableOutput();
         bool success = true;
         QString errorDetails;
-        for (const QString &name : selected) {
+        for (const QString &name : std::as_const(toInstall)) {
             QStringList snapArgs {"install"};
-            if (snapModel->isClassic(name)) {
+            if (snapModel && snapModel->isClassic(name)) {
                 snapArgs << "--classic";
             }
             snapArgs << name;
@@ -3589,6 +3599,7 @@ void MainWindow::pushInstall_clicked()
             showError(tr("Problem detected while installing a snap. Click \"Show Details\" for more information."),
                       errorDetails);
         }
+        changeList.clear();
         enableTabs(true);
         return;
     } else {
@@ -3752,14 +3763,23 @@ void MainWindow::pushUninstall_clicked()
         enableTabs(true);
         return;
     } else if (currentTree == ui->treeSnap) {
-        const QStringList selected = snapModel ? snapModel->checkedPackages() : QStringList();
-        if (selected.isEmpty()) {
+        // Read changeList (showOutput() cleared the visible checkboxes). Only remove
+        // snaps that are actually installed (the selection may be mixed).
+        QStringList toRemove;
+        for (const QString &name : std::as_const(changeList)) {
+            const int row = snapModel ? snapModel->findSnapRow(name) : -1;
+            const SnapData *snap = (row >= 0) ? snapModel->snapAt(row) : nullptr;
+            if (snap && snap->status == Status::Installed) {
+                toRemove.append(name);
+            }
+        }
+        if (toRemove.isEmpty()) {
             enableTabs(true);
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             return;
         }
         if (QMessageBox::question(this, tr("Remove snaps"),
-                                  tr("OK to remove the following snap packages?\n\n%1").arg(selected.join('\n')))
+                                  tr("OK to remove the following snap packages?\n\n%1").arg(toRemove.join('\n')))
             != QMessageBox::Yes) {
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             enableTabs(true);
@@ -3769,7 +3789,7 @@ void MainWindow::pushUninstall_clicked()
         enableOutput();
         bool success = true;
         QString errorDetails;
-        for (const QString &name : selected) {
+        for (const QString &name : std::as_const(toRemove)) {
             if (!cmd.run(snapPtyCommand(QStringLiteral("remove ") + name))) {
                 success = false;
                 errorDetails = cmd.readAllOutput();
@@ -3786,6 +3806,7 @@ void MainWindow::pushUninstall_clicked()
             showError(tr("We encountered a problem removing a snap. Click \"Show Details\" for more information."),
                       errorDetails);
         }
+        changeList.clear();
         enableTabs(true);
         return;
     } else {
@@ -4242,6 +4263,9 @@ void MainWindow::handleSnapTab(const QString &search_str)
     ui->searchBoxSnap->setText(search_str);
     setCurrentTree();
     ui->searchBoxSnap->setFocus();
+    // changeList is shared across tabs; start the Snap tab with a clean slate so
+    // install/remove only ever act on snaps selected here.
+    changeList.clear();
 
     const bool ready = isSnapdReady();
     ui->frameSnapSetup->setVisible(!ready);
@@ -4440,7 +4464,7 @@ void MainWindow::onSnapCheckStateChanged(const QString &name, Qt::CheckState sta
     buildSnapChangeList(name, state, status);
 }
 
-void MainWindow::buildSnapChangeList(const QString &name, Qt::CheckState state, int status)
+void MainWindow::buildSnapChangeList(const QString &name, Qt::CheckState state, int /*status*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (state == Qt::Checked) {
@@ -4449,19 +4473,24 @@ void MainWindow::buildSnapChangeList(const QString &name, Qt::CheckState state, 
         changeList.removeOne(name);
     }
 
-    ui->pushInstall->setText(tr("Install"));
-    if (status == Status::Installed) {
-        ui->pushUninstall->setEnabled(true);
-        ui->pushInstall->setEnabled(false);
-    } else {
-        ui->pushUninstall->setEnabled(false);
-        ui->pushInstall->setEnabled(true);
+    // Enable each action based on the whole selection, not just the last toggle:
+    // Install if any selected snap is not installed, Remove if any is installed.
+    // The install/remove handlers split the selection by status accordingly.
+    bool anyInstalled = false;
+    bool anyNotInstalled = false;
+    for (const QString &selectedName : std::as_const(changeList)) {
+        const int row = snapModel ? snapModel->findSnapRow(selectedName) : -1;
+        const SnapData *snap = (row >= 0) ? snapModel->snapAt(row) : nullptr;
+        if (snap && snap->status == Status::Installed) {
+            anyInstalled = true;
+        } else {
+            anyNotInstalled = true;
+        }
     }
 
-    if (changeList.isEmpty()) {
-        ui->pushInstall->setEnabled(false);
-        ui->pushUninstall->setEnabled(false);
-    }
+    ui->pushInstall->setText(tr("Install"));
+    ui->pushInstall->setEnabled(!changeList.isEmpty() && anyNotInstalled);
+    ui->pushUninstall->setEnabled(!changeList.isEmpty() && anyInstalled);
     ui->treeSnap->setFocus();
 }
 
