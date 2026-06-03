@@ -4425,17 +4425,34 @@ void MainWindow::setupSnapd()
         }
     }
 
-    // Enable the snapd service and install the core snap (runs as root).
-    // Capture the helper output so any failure (seeding, kernel/compression, an
-    // outdated helper, ...) can be surfaced instead of failing silently.
+    // Enable the snapd service (runs as root through the MXPI helper). Capture its
+    // output, but don't depend on it: on Debian, installing the snapd package already
+    // enables snapd.socket, and an outdated helper would produce nothing here.
     runMxpiLibAsRoot(cmd, QStringLiteral("snapd_setup"), Cmd::QuietMode::No);
-    const QString setupOutput = cmd.readAllOutput();
+    QString setupOutput = cmd.readAllOutput();
     setCursor(QCursor(Qt::ArrowCursor));
 
     firstRunSnap = false;
     displaySnaps(true);
-    const bool ready = isSnapdReady();
-    const bool coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
+    bool ready = isSnapdReady();
+    bool coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
+
+    // Install the base "core" snap directly from here (not via the helper) so the real
+    // outcome is always captured for the user, regardless of which helper is deployed.
+    if (ready && !coreInstalled) {
+        setCursor(QCursor(Qt::BusyCursor));
+        enableOutput();
+        cmd.run(snapPtyCommand(QStringLiteral("install core")));
+        const QString coreOutput = cmd.readAllOutput().trimmed();
+        if (!coreOutput.isEmpty()) {
+            setupOutput = coreOutput;
+        }
+        setCursor(QCursor(Qt::ArrowCursor));
+        displaySnaps(true);
+        coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
+    }
+
+    ready = isSnapdReady();
     ui->frameSnapSetup->setVisible(!ready);
     ui->comboFilterSnap->setEnabled(ready);
     ui->searchBoxSnap->setEnabled(ready);
@@ -4443,15 +4460,20 @@ void MainWindow::setupSnapd()
     ui->pushUpgradeSnap->setEnabled(ready);
     ui->tabWidget->setCurrentWidget(ui->tabSnap);
 
+    // Make sure the details box always has content so the "Show Details" button appears.
+    const QString details = setupOutput.trimmed().isEmpty()
+                                ? tr("No output was captured. Run 'sudo snap install core' in a terminal to see "
+                                     "the underlying error.")
+                                : setupOutput;
+
     if (!ready) {
         showError(tr("snapd was installed but its service could not be started. You may need to reboot or log out "
                      "and back in, then reopen the Snap tab. Click \"Show Details\" for more information."),
-                  setupOutput);
+                  details);
     } else if (!coreInstalled) {
         showError(tr("Snap support was enabled, but the base \"core\" snap could not be installed, so most snaps will "
-                     "not work yet. This is often caused by a kernel that lacks the squashfs compression snaps use. "
-                     "Click \"Show Details\" for more information."),
-                  setupOutput);
+                     "not work yet. Click \"Show Details\" for the underlying error."),
+                  details);
     } else {
         QMessageBox::warning(this, tr("Needs re-login"),
                              tr("You might need to logout/login to see installed items in the menu"));
