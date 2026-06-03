@@ -1,12 +1,7 @@
 #include <QtTest>
 #include <QSignalSpy>
+#include "../src/packagestatus.h"
 #include "../src/models/snapmodel.h"
-
-// Use the same Status values as packagestatus.h
-namespace SnapStatus
-{
-enum { Installed = 1, Upgradable, NotInstalled, Autoremovable };
-}
 
 class TestSnapModel : public QObject
 {
@@ -25,21 +20,27 @@ private slots:
     void testDataDisplayRole();
     void testDataCheckStateRole();
     void testDataUserRole();
+    void testInvalidDataRequests();
 
     // Check state tests
     void testCheckStateChange();
     void testCheckStateSignal();
+    void testRejectedSetDataDoesNotEmit();
     void testSetAllChecked();
+    void testSetAllCheckedSignal();
     void testCheckedPackages();
 
     // Lookup tests
     void testFindSnapRow();
+    void testSetSnapDataRebuildsNameLookup();
     void testSnapAt();
     void testSnapAtInvalidRow();
     void testIsClassic();
 
     // Status tests
     void testUpdateInstalledStatus();
+    void testUpdateInstalledStatusSignal();
+    void testDecorationRole();
 
     // Model reset tests
     void testClear();
@@ -74,7 +75,7 @@ QVector<SnapData> TestSnapModel::createTestSnaps()
     s1.publisher = "canonical";
     s1.notes = "core";
     s1.description = "snapd runtime environment";
-    s1.status = SnapStatus::Installed;
+    s1.status = Status::Installed;
     snaps.append(s1);
 
     SnapData s2;
@@ -84,7 +85,7 @@ QVector<SnapData> TestSnapModel::createTestSnaps()
     s2.notes = "classic";
     s2.description = "Code editing. Redefined.";
     s2.isClassic = true;
-    s2.status = SnapStatus::NotInstalled;
+    s2.status = Status::NotInstalled;
     snaps.append(s2);
 
     SnapData s3;
@@ -93,7 +94,7 @@ QVector<SnapData> TestSnapModel::createTestSnaps()
     s3.publisher = "videolan";
     s3.notes = "-";
     s3.description = "The ultimate media player";
-    s3.status = SnapStatus::NotInstalled;
+    s3.status = Status::NotInstalled;
     snaps.append(s3);
 
     return snaps;
@@ -160,7 +161,7 @@ void TestSnapModel::testDataUserRole()
     model.setSnapData(createTestSnaps());
 
     // Status column
-    QCOMPARE(model.data(model.index(0, SnapCol::Status), Qt::UserRole).toInt(), SnapStatus::Installed);
+    QCOMPARE(model.data(model.index(0, SnapCol::Status), Qt::UserRole).toInt(), Status::Installed);
 
     // Classic column
     QCOMPARE(model.data(model.index(1, SnapCol::Classic), Qt::UserRole).toBool(), true);
@@ -168,6 +169,18 @@ void TestSnapModel::testDataUserRole()
 
     // Name via UserRole
     QCOMPARE(model.data(model.index(2, SnapCol::Name), Qt::UserRole).toString(), QString("vlc"));
+}
+
+void TestSnapModel::testInvalidDataRequests()
+{
+    SnapModel model;
+    model.setSnapData(createTestSnaps());
+
+    QVERIFY(!model.data(QModelIndex(), Qt::DisplayRole).isValid());
+    QVERIFY(!model.data(model.index(model.rowCount(), SnapCol::Name), Qt::DisplayRole).isValid());
+    QVERIFY(!model.data(model.index(0, SnapCol::Check), Qt::DisplayRole).isValid());
+    QVERIFY(!model.data(model.index(0, SnapCol::Status), Qt::DisplayRole).isValid());
+    QVERIFY(!model.data(model.index(0, SnapCol::Publisher), Qt::UserRole).isValid());
 }
 
 void TestSnapModel::testCheckStateChange()
@@ -199,7 +212,33 @@ void TestSnapModel::testCheckStateSignal()
     QList<QVariant> args = spy.takeFirst();
     QCOMPARE(args.at(0).toString(), QString("vlc"));
     QCOMPARE(args.at(1).value<Qt::CheckState>(), Qt::Checked);
-    QCOMPARE(args.at(2).toInt(), SnapStatus::NotInstalled);
+    QCOMPARE(args.at(2).toInt(), Status::NotInstalled);
+}
+
+void TestSnapModel::testRejectedSetDataDoesNotEmit()
+{
+    SnapModel model;
+    model.setSnapData(createTestSnaps());
+
+    QSignalSpy checkSpy(&model, &SnapModel::checkStateChanged);
+    QSignalSpy dataSpy(&model, &QAbstractItemModel::dataChanged);
+    QVERIFY(checkSpy.isValid());
+    QVERIFY(dataSpy.isValid());
+
+    const QModelIndex checkIndex = model.index(1, SnapCol::Check);
+    QVERIFY(!model.setData(model.index(1, SnapCol::Name), Qt::Checked, Qt::CheckStateRole));
+    QVERIFY(!model.setData(checkIndex, Qt::Checked, Qt::DisplayRole));
+    QVERIFY(!model.setData(QModelIndex(), Qt::Checked, Qt::CheckStateRole));
+    QCOMPARE(checkSpy.count(), 0);
+    QCOMPARE(dataSpy.count(), 0);
+
+    QVERIFY(model.setData(checkIndex, Qt::Checked, Qt::CheckStateRole));
+    QCOMPARE(checkSpy.count(), 1);
+    QCOMPARE(dataSpy.count(), 1);
+
+    QVERIFY(!model.setData(checkIndex, Qt::Checked, Qt::CheckStateRole));
+    QCOMPARE(checkSpy.count(), 1);
+    QCOMPARE(dataSpy.count(), 1);
 }
 
 void TestSnapModel::testSetAllChecked()
@@ -218,6 +257,26 @@ void TestSnapModel::testSetAllChecked()
         QCOMPARE(model.data(model.index(i, SnapCol::Check), Qt::CheckStateRole).toInt(),
                  static_cast<int>(Qt::Unchecked));
     }
+}
+
+void TestSnapModel::testSetAllCheckedSignal()
+{
+    SnapModel model;
+    model.setSnapData(createTestSnaps());
+
+    QSignalSpy checkSpy(&model, &SnapModel::checkStateChanged);
+    QSignalSpy dataSpy(&model, &QAbstractItemModel::dataChanged);
+    QVERIFY(checkSpy.isValid());
+    QVERIFY(dataSpy.isValid());
+
+    model.setAllChecked(true);
+
+    QCOMPARE(checkSpy.count(), 0);
+    QCOMPARE(dataSpy.count(), 1);
+    const QList<QVariant> args = dataSpy.takeFirst();
+    QCOMPARE(args.at(0).toModelIndex(), model.index(0, SnapCol::Check));
+    QCOMPARE(args.at(1).toModelIndex(), model.index(model.rowCount() - 1, SnapCol::Check));
+    QCOMPARE(args.at(2).value<QList<int>>(), QList<int>({Qt::CheckStateRole}));
 }
 
 void TestSnapModel::testCheckedPackages()
@@ -246,6 +305,26 @@ void TestSnapModel::testFindSnapRow()
     QCOMPARE(model.findSnapRow("code"), 1);
     QCOMPARE(model.findSnapRow("vlc"), 2);
     QCOMPARE(model.findSnapRow("nonexistent"), -1);
+}
+
+void TestSnapModel::testSetSnapDataRebuildsNameLookup()
+{
+    SnapModel model;
+    model.setSnapData(createTestSnaps());
+    QCOMPARE(model.findSnapRow("core"), 0);
+    QVERIFY(model.isClassic("code"));
+
+    SnapData replacement;
+    replacement.name = "only-one";
+    replacement.version = "1";
+    replacement.status = Status::NotInstalled;
+    model.setSnapData({replacement});
+
+    QCOMPARE(model.rowCount(), 1);
+    QCOMPARE(model.findSnapRow("core"), -1);
+    QCOMPARE(model.findSnapRow("code"), -1);
+    QCOMPARE(model.findSnapRow("only-one"), 0);
+    QVERIFY(!model.isClassic("code"));
 }
 
 void TestSnapModel::testSnapAt()
@@ -288,16 +367,53 @@ void TestSnapModel::testUpdateInstalledStatus()
     model.setSnapData(createTestSnaps());
 
     // Initially: core installed, code/vlc not installed
-    QCOMPARE(model.snapAt(0)->status, SnapStatus::Installed);
-    QCOMPARE(model.snapAt(1)->status, SnapStatus::NotInstalled);
-    QCOMPARE(model.snapAt(2)->status, SnapStatus::NotInstalled);
+    QCOMPARE(model.snapAt(0)->status, Status::Installed);
+    QCOMPARE(model.snapAt(1)->status, Status::NotInstalled);
+    QCOMPARE(model.snapAt(2)->status, Status::NotInstalled);
 
     // After update: vlc installed, core no longer installed
     model.updateInstalledStatus({"vlc"});
 
-    QCOMPARE(model.snapAt(0)->status, SnapStatus::NotInstalled);
-    QCOMPARE(model.snapAt(1)->status, SnapStatus::NotInstalled);
-    QCOMPARE(model.snapAt(2)->status, SnapStatus::Installed);
+    QCOMPARE(model.snapAt(0)->status, Status::NotInstalled);
+    QCOMPARE(model.snapAt(1)->status, Status::NotInstalled);
+    QCOMPARE(model.snapAt(2)->status, Status::Installed);
+}
+
+void TestSnapModel::testUpdateInstalledStatusSignal()
+{
+    SnapModel model;
+    model.setSnapData(createTestSnaps());
+
+    QSignalSpy dataSpy(&model, &QAbstractItemModel::dataChanged);
+    QVERIFY(dataSpy.isValid());
+
+    model.updateInstalledStatus({"core", "vlc"});
+    QCOMPARE(dataSpy.count(), 1);
+    QList<QVariant> args = dataSpy.takeFirst();
+    QCOMPARE(args.at(0).toModelIndex(), model.index(2, SnapCol::Check));
+    QCOMPARE(args.at(1).toModelIndex(), model.index(2, SnapCol::Status));
+
+    model.updateInstalledStatus({"core", "vlc"});
+    QCOMPARE(dataSpy.count(), 0);
+
+    model.updateInstalledStatus({});
+    QCOMPARE(dataSpy.count(), 2);
+}
+
+void TestSnapModel::testDecorationRole()
+{
+    SnapModel model;
+    model.setSnapData(createTestSnaps());
+
+    QVERIFY(model.data(model.index(0, SnapCol::Check), Qt::DecorationRole).value<QIcon>().isNull());
+
+    QPixmap pixmap(8, 8);
+    pixmap.fill(Qt::green);
+    model.setIcons(QIcon(pixmap));
+
+    QVERIFY(!model.data(model.index(0, SnapCol::Check), Qt::DecorationRole).value<QIcon>().isNull());
+    QVERIFY(!model.data(model.index(1, SnapCol::Check), Qt::DecorationRole).isValid());
+    QVERIFY(!model.data(model.index(0, SnapCol::Name), Qt::DecorationRole).isValid());
 }
 
 void TestSnapModel::testClear()
