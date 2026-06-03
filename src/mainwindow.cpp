@@ -4402,26 +4402,36 @@ void MainWindow::setupSnapd()
     }
 
     // Enable the snapd service and install the core snap (runs as root).
+    // Capture the helper output so any failure (seeding, kernel/compression, an
+    // outdated helper, ...) can be surfaced instead of failing silently.
     runMxpiLibAsRoot(cmd, QStringLiteral("snapd_setup"), Cmd::QuietMode::No);
+    const QString setupOutput = cmd.readAllOutput();
     setCursor(QCursor(Qt::ArrowCursor));
 
-    if (!isSnapdReady()) {
-        QMessageBox::warning(this, tr("Snap setup"),
-                             tr("snapd was installed but the service is not active yet. You may need to reboot or log "
-                                "out and back in, then reopen the Snap tab."));
-    } else {
-        QMessageBox::warning(this, tr("Needs re-login"),
-                             tr("You might need to logout/login to see installed items in the menu"));
-    }
     firstRunSnap = false;
     displaySnaps(true);
-    ui->frameSnapSetup->setVisible(!isSnapdReady());
     const bool ready = isSnapdReady();
+    const bool coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
+    ui->frameSnapSetup->setVisible(!ready);
     ui->comboFilterSnap->setEnabled(ready);
     ui->searchBoxSnap->setEnabled(ready);
     ui->pushRefreshSnap->setEnabled(ready);
     ui->pushUpgradeSnap->setEnabled(ready);
     ui->tabWidget->setCurrentWidget(ui->tabSnap);
+
+    if (!ready) {
+        showError(tr("snapd was installed but its service could not be started. You may need to reboot or log out "
+                     "and back in, then reopen the Snap tab. Click \"Show Details\" for more information."),
+                  setupOutput);
+    } else if (!coreInstalled) {
+        showError(tr("Snap support was enabled, but the base \"core\" snap could not be installed, so most snaps will "
+                     "not work yet. This is often caused by a kernel that lacks the squashfs compression snaps use. "
+                     "Click \"Show Details\" for more information."),
+                  setupOutput);
+    } else {
+        QMessageBox::warning(this, tr("Needs re-login"),
+                             tr("You might need to logout/login to see installed items in the menu"));
+    }
     enableTabs(true);
 }
 
