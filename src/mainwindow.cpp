@@ -4037,6 +4037,8 @@ void MainWindow::setupSnapd()
     bool ready = isSnapdReady();
     bool coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
 
+    // Install the base "core" snap directly from here (not via the helper) so the real
+    // outcome is always captured for the user, regardless of which helper is deployed.
     if (ready && !coreInstalled) {
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
@@ -4060,6 +4062,7 @@ void MainWindow::setupSnapd()
     ui->pushUpgradeSnap->setEnabled(ready);
     ui->tabWidget->setCurrentWidget(ui->tabSnap);
 
+    // Make sure the details box always has content so the "Show Details" button appears.
     const QString details = setupOutput.trimmed().isEmpty()
                                 ? tr("No output was captured. Run 'sudo snap install core' in a terminal to see "
                                      "the underlying error.")

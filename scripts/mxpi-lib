@@ -67,14 +67,14 @@ snapd_setup() {
     systemctl enable --now snapd || echo "warning: could not enable snapd.service"
     # Classic snap support relies on /snap pointing at snapd's mount root
     [ -e /snap ] || ln -s /var/lib/snapd/snap /snap 2>/dev/null
-    # Wait for snapd to finish its initial seeding before fetching the core snap.
+    # Wait for snapd to finish its initial seeding so the caller can install snaps.
     # Bound the wait: a broken seed state must not hang the GUI that blocks on us.
+    # (The "core" snap itself is installed by the application, not here, so its output
+    # is captured and shown to the user.)
     echo "Waiting for snapd to be ready..."
     if ! timeout 120 snap wait system seed.loaded 2>/dev/null; then
         echo "warning: timed out or failed waiting for snapd to seed"
     fi
-    echo "Installing core snap..."
-    snap install core
 }
 
 main() {
