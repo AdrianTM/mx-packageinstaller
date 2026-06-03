@@ -1,12 +1,7 @@
 #include <QtTest>
 #include <QSignalSpy>
+#include "../src/packagestatus.h"
 #include "../src/models/flatpakmodel.h"
-
-// Use the same Status values as flatpakmodel.cpp
-namespace FPStatus
-{
-enum { Installed = 1, Upgradable, NotInstalled, Autoremovable };
-}
 
 class TestFlatpakModel : public QObject
 {
@@ -82,7 +77,7 @@ QVector<FlatpakData> TestFlatpakModel::createTestFlatpaks()
     fp1.size = "100 MB";
     fp1.fullName = "org.gimp.GIMP/x86_64/stable";
     fp1.canonicalRef = "app/org.gimp.GIMP/x86_64/stable";
-    fp1.status = FPStatus::NotInstalled;
+    fp1.status = Status::NotInstalled;
     flatpaks.append(fp1);
 
     FlatpakData fp2;
@@ -93,7 +88,7 @@ QVector<FlatpakData> TestFlatpakModel::createTestFlatpaks()
     fp2.size = "200 MB";
     fp2.fullName = "org.mozilla.firefox/x86_64/stable";
     fp2.canonicalRef = "app/org.mozilla.firefox/x86_64/stable";
-    fp2.status = FPStatus::Installed;
+    fp2.status = Status::Installed;
     flatpaks.append(fp2);
 
     FlatpakData fp3;
@@ -104,7 +99,7 @@ QVector<FlatpakData> TestFlatpakModel::createTestFlatpaks()
     fp3.size = "150 MB";
     fp3.fullName = "org.videolan.VLC/x86_64/stable";
     fp3.canonicalRef = "app/org.videolan.VLC/x86_64/stable";
-    fp3.status = FPStatus::NotInstalled;
+    fp3.status = Status::NotInstalled;
     flatpaks.append(fp3);
 
     return flatpaks;
@@ -206,7 +201,7 @@ void TestFlatpakModel::testDataUserRole()
 
     // Status column
     QModelIndex statusIndex = model.index(1, FlatCol::Status);
-    QCOMPARE(model.data(statusIndex, Qt::UserRole).toInt(), FPStatus::Installed);
+    QCOMPARE(model.data(statusIndex, Qt::UserRole).toInt(), Status::Installed);
 
     // Duplicate column
     QModelIndex dupIndex = model.index(0, FlatCol::Duplicate);
@@ -258,7 +253,7 @@ void TestFlatpakModel::testCheckStateSignal()
     QList<QVariant> args = spy.takeFirst();
     QCOMPARE(args.at(0).toString(), QString("org.gimp.GIMP/x86_64/stable"));
     QCOMPARE(args.at(1).value<Qt::CheckState>(), Qt::Checked);
-    QCOMPARE(args.at(2).toInt(), FPStatus::NotInstalled);
+    QCOMPARE(args.at(2).toInt(), Status::NotInstalled);
 }
 
 void TestFlatpakModel::testSetAllChecked()
@@ -408,17 +403,17 @@ void TestFlatpakModel::testUpdateInstalledStatus()
     model.setFlatpakData(createTestFlatpaks());
 
     // Initially: GIMP not installed, Firefox installed, VLC not installed
-    QCOMPARE(model.flatpakAt(0)->status, FPStatus::NotInstalled);
-    QCOMPARE(model.flatpakAt(1)->status, FPStatus::Installed);
-    QCOMPARE(model.flatpakAt(2)->status, FPStatus::NotInstalled);
+    QCOMPARE(model.flatpakAt(0)->status, Status::NotInstalled);
+    QCOMPARE(model.flatpakAt(1)->status, Status::Installed);
+    QCOMPARE(model.flatpakAt(2)->status, Status::NotInstalled);
 
     // Update: GIMP now installed, Firefox uninstalled
     QStringList installedRefs = {"app/org.gimp.GIMP/x86_64/stable", "app/org.videolan.VLC/x86_64/stable"};
     model.updateInstalledStatus(installedRefs);
 
-    QCOMPARE(model.flatpakAt(0)->status, FPStatus::Installed);  // Now installed
-    QCOMPARE(model.flatpakAt(1)->status, FPStatus::NotInstalled);  // Now not installed
-    QCOMPARE(model.flatpakAt(2)->status, FPStatus::Installed);  // Now installed
+    QCOMPARE(model.flatpakAt(0)->status, Status::Installed);  // Now installed
+    QCOMPARE(model.flatpakAt(1)->status, Status::NotInstalled);  // Now not installed
+    QCOMPARE(model.flatpakAt(2)->status, Status::Installed);  // Now installed
 }
 
 void TestFlatpakModel::testSetInstalledSizes()

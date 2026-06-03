@@ -1,11 +1,7 @@
 #include <QtTest>
+#include "../src/packagestatus.h"
 #include "../src/models/flatpakmodel.h"
 #include "../src/models/flatpakfilterproxy.h"
-
-namespace FPStatus
-{
-enum { Installed = 1, Upgradable, NotInstalled, Autoremovable };
-}
 
 class TestFlatpakFilterProxy : public QObject
 {
@@ -30,7 +26,7 @@ QVector<FlatpakData> TestFlatpakFilterProxy::createFlatpaks() const
     fp1.longName = "org.gimp.GIMP";
     fp1.canonicalRef = "app/org.gimp.GIMP/x86_64/stable";
     fp1.fullName = "org.gimp.GIMP/x86_64/stable";
-    fp1.status = FPStatus::Installed;
+    fp1.status = Status::Installed;
     flatpaks.append(fp1);
 
     FlatpakData fp2;
@@ -38,7 +34,7 @@ QVector<FlatpakData> TestFlatpakFilterProxy::createFlatpaks() const
     fp2.longName = "org.gimp.GIMP";
     fp2.canonicalRef = "app/org.gimp.GIMP/x86_64/stable";
     fp2.fullName = "org.gimp.GIMP/x86_64/stable";
-    fp2.status = FPStatus::Installed;
+    fp2.status = Status::Installed;
     flatpaks.append(fp2);
 
     FlatpakData fp3;
@@ -46,7 +42,7 @@ QVector<FlatpakData> TestFlatpakFilterProxy::createFlatpaks() const
     fp3.longName = "org.mozilla.firefox";
     fp3.canonicalRef = "app/org.mozilla.firefox/x86_64/stable";
     fp3.fullName = "org.mozilla.firefox/x86_64/stable";
-    fp3.status = FPStatus::NotInstalled;
+    fp3.status = Status::NotInstalled;
     flatpaks.append(fp3);
 
     return flatpaks;
@@ -88,7 +84,7 @@ void TestFlatpakFilterProxy::testStatusFilter()
 
     FlatpakFilterProxy proxy;
     proxy.setSourceModel(&model);
-    proxy.setStatusFilter(FPStatus::Installed);
+    proxy.setStatusFilter(Status::Installed);
 
     QCOMPARE(proxy.rowCount(), 2);
 }
