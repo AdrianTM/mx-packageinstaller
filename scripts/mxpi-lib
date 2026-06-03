@@ -61,13 +61,16 @@ flatpak_add_repos_user() {
 
 snapd_setup() {
     # Enable and start the snapd service (and its socket/apparmor units when present)
-    systemctl enable --now snapd.socket
+    echo "Enabling snapd service..."
+    systemctl enable --now snapd.socket || echo "warning: could not enable snapd.socket"
     systemctl enable --now snapd.apparmor 2>/dev/null
-    systemctl enable --now snapd
+    systemctl enable --now snapd || echo "warning: could not enable snapd.service"
     # Classic snap support relies on /snap pointing at snapd's mount root
     [ -e /snap ] || ln -s /var/lib/snapd/snap /snap 2>/dev/null
     # Wait for snapd to finish its initial seeding before fetching the core snap
+    echo "Waiting for snapd to be ready..."
     snap wait system seed.loaded 2>/dev/null
+    echo "Installing core snap..."
     snap install core
 }
 
@@ -83,6 +86,9 @@ case "$1" in
         flatpak_add_repos_user;;
     snapd_setup)
         snapd_setup;;
+    *)
+        echo "mxpi-lib: unknown action '$1'" >&2
+        exit 1;;
 esac
 }
 
