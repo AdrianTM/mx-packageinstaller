@@ -50,6 +50,8 @@ class QTreeWidgetItem;
 #include "versionnumber.h"
 #include "models/packagemodel.h"
 #include "models/packagefilterproxy.h"
+#include "models/snapfilterproxy.h"
+#include "models/snapmodel.h"
 
 namespace Ui
 {
@@ -60,7 +62,7 @@ class MainWindow;
 
 namespace Tab
 {
-enum { Repos, AUR, Flatpak, Output };
+enum { Repos, AUR, Flatpak, Snap, Output };
 }
 
 namespace FlatCol
@@ -122,8 +124,13 @@ private slots:
     void pushRemoveUnused_clicked();
     void pushUninstall_clicked();
     void pushUpgradeFP_clicked();
+    void pushRefreshSnap_clicked();
+    void pushUpgradeSnap_clicked();
+    void pushSetupSnapd_clicked();
+    void searchSnapStore();
     void tabWidget_currentChanged(int index);
     void treeFlatpak_itemChanged(QTreeWidgetItem *item);
+    void onSnapCheckStateChanged(const QString &name, Qt::CheckState state, int status);
 private:
     Ui::MainWindow *ui;
 
@@ -133,6 +140,8 @@ private:
     bool displayFlatpaksIsRunning {false};
     bool displayPackagesIsRunning {false};
     bool firstRunFP {true};
+    bool firstRunSnap {true};
+    bool snapStoreMode {false};
     bool updatedOnce {false};
     bool warningAur {false};
     bool warningFlatpaks {false};
@@ -248,9 +257,21 @@ private:
     void handleRepoTab(const QString &searchStr);
     void handleAurTab(const QString &searchStr);
     void handleFlatpakTab(const QString &searchStr);
+    void handleSnapTab(const QString &searchStr);
     void handleOutputTab();
     void hideColumns() const;
     void installFlatpak();
+    void showError(const QString &message, const QString &details = {});
+    void displaySnaps(bool forceUpdate = false);
+    void loadSnapData();
+    void populateSnapTree();
+    void updateSnapCounts();
+    void setupSnapd();
+    void buildSnapChangeList(const QString &name, Qt::CheckState state, int status);
+    [[nodiscard]] QStringList listInstalledSnaps() const;
+    [[nodiscard]] QVector<SnapData> parseSnapList(const QString &output, bool installed) const;
+    [[nodiscard]] static bool isSystemdInit();
+    [[nodiscard]] bool isSnapdReady() const;
     void invalidateFlatpakRemoteCache();
     void listFlatpakRemotes() const;
     void listSizeInstalledFP();
@@ -292,4 +313,6 @@ private:
     PackageFilterProxy *repoProxy {nullptr};
     PackageModel *aurModel {nullptr};
     PackageFilterProxy *aurProxy {nullptr};
+    SnapModel *snapModel {nullptr};
+    SnapFilterProxy *snapProxy {nullptr};
 };

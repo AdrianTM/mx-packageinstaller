@@ -116,6 +116,8 @@ set(SOURCES
     src/cmd.cpp
     src/models/packagemodel.cpp
     src/models/packagefilterproxy.cpp
+    src/models/snapmodel.cpp
+    src/models/snapfilterproxy.cpp
 )
 
 set(HELPER_SOURCES
@@ -133,6 +135,8 @@ set(HEADERS
     src/cmd.h
     src/models/packagemodel.h
     src/models/packagefilterproxy.h
+    src/models/snapmodel.h
+    src/models/snapfilterproxy.h
 )
 
 set(UI_FILES

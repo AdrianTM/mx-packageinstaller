@@ -59,6 +59,18 @@ flatpak_add_repos_user() {
     flatpak --user remote-add --if-not-exists --subset=verified flathub-verified https://flathub.org/repo/flathub.flatpakrepo
 }
 
+snapd_setup() {
+    # Enable and start the snapd service (and its socket/apparmor units when present)
+    systemctl enable --now snapd.socket
+    systemctl enable --now snapd.apparmor 2>/dev/null
+    systemctl enable --now snapd
+    # Classic snap support relies on /snap pointing at snapd's mount root
+    [ -e /snap ] || ln -s /var/lib/snapd/snap /snap 2>/dev/null
+    # Wait for snapd to finish its initial seeding before fetching the core snap
+    snap wait system seed.loaded 2>/dev/null
+    snap install core
+}
+
 main() {
 case "$1" in
     repo_sync)
@@ -69,6 +81,8 @@ case "$1" in
         flatpak_add_repos;;
     flatpak_add_repos_user)
         flatpak_add_repos_user;;
+    snapd_setup)
+        snapd_setup;;
 esac
 }
 
