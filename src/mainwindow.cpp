@@ -138,18 +138,6 @@ QString flatpakPtyCommand(const QString &command)
     return QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(command));
 }
 
-// Build a command line that runs a privileged "snap ..." subcommand inside a PTY so its
-// progress output streams back to the console, elevating through the MXPI elevation tool.
-QString snapPtyCommand(const QString &snapSubcommand)
-{
-    const QString inner = QStringLiteral("snap ") + snapSubcommand;
-    const QString pty = QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(inner));
-    if (getuid() == 0) {
-        return pty;
-    }
-    return Cmd::elevationTool() + QStringLiteral(" /bin/bash -c ") + shellSingleQuote(pty);
-}
-
 void appendFlatpakStatusMessage(QPlainTextEdit *outputBox, const QString &message)
 {
     if (!outputBox) {
@@ -3583,7 +3571,9 @@ void MainWindow::pushInstall_clicked()
                 snapArgs << "--classic";
             }
             snapArgs << name;
-            if (!cmd.run(snapPtyCommand(snapArgs.join(' ')))) {
+            // procAsRoot reuses the cached MXPI elevation (auth_admin_keep), so a
+            // multi-snap install only prompts for the password once.
+            if (!cmd.procAsRoot(QStringLiteral("snap"), snapArgs)) {
                 success = false;
                 errorDetails = cmd.readAllOutput();
                 break;
@@ -3790,7 +3780,7 @@ void MainWindow::pushUninstall_clicked()
         bool success = true;
         QString errorDetails;
         for (const QString &name : std::as_const(toRemove)) {
-            if (!cmd.run(snapPtyCommand(QStringLiteral("remove ") + name))) {
+            if (!cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("remove"), name})) {
                 success = false;
                 errorDetails = cmd.readAllOutput();
                 break;
@@ -4447,7 +4437,9 @@ void MainWindow::setupSnapd()
         // it needs no elevation. A stale helper skips this, hence doing it here too.
         Cmd waitCmd;
         waitCmd.run(QStringLiteral("timeout 120 snap wait system seed.loaded"), Cmd::QuietMode::Yes);
-        cmd.run(snapPtyCommand(QStringLiteral("install core")));
+        // Route through the MXPI helper (auth_admin_keep) so the password cached by the
+        // snapd apt install is reused instead of prompting again.
+        cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("install"), QStringLiteral("core")});
         const QString coreOutput = cmd.readAllOutput().trimmed();
         if (!coreOutput.isEmpty()) {
             setupOutput = coreOutput;
@@ -4546,7 +4538,7 @@ void MainWindow::pushUpgradeSnap_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    if (cmd.run(snapPtyCommand(QStringLiteral("refresh")))) {
+    if (cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("refresh")})) {
         appendFlatpakStatusMessage(ui->outputBox, tr("Update complete."));
         displaySnaps(true);
         setCursor(QCursor(Qt::ArrowCursor));

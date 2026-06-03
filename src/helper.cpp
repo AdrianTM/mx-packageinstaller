@@ -72,6 +72,7 @@ void printError(const QString &message)
         {"fuser", {"/usr/bin/fuser", "/bin/fuser"}},
         {"mxpi-lib", {"/usr/lib/mx-packageinstaller/mxpi-lib"}},
         {"ps", {"/usr/bin/ps", "/bin/ps"}},
+        {"snap", {"/usr/bin/snap", "/snap/bin/snap"}},
     };
     return commands;
 }
