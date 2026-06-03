@@ -4442,6 +4442,11 @@ void MainWindow::setupSnapd()
     if (ready && !coreInstalled) {
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
+        // Wait (bounded) for snapd to finish seeding first; installing before that
+        // fails with "too early for operation, device not yet seeded". Read-only, so
+        // it needs no elevation. A stale helper skips this, hence doing it here too.
+        Cmd waitCmd;
+        waitCmd.run(QStringLiteral("timeout 120 snap wait system seed.loaded"), Cmd::QuietMode::Yes);
         cmd.run(snapPtyCommand(QStringLiteral("install core")));
         const QString coreOutput = cmd.readAllOutput().trimmed();
         if (!coreOutput.isEmpty()) {
