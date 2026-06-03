@@ -4385,17 +4385,20 @@ void MainWindow::setupSnapd()
         QTreeView *savedTree = currentTree;
         currentTree = ui->treeEnabled;
         const bool ok = install(QStringLiteral("snapd"));
+        const QString installOutput = cmd.readAllOutput();
         currentTree = savedTree;
+        // Refresh the in-memory installed-package list BEFORE verifying, otherwise
+        // checkInstalled() still consults the pre-install snapshot and reports a
+        // false "not installed" even though dpkg has just configured snapd.
+        installedPackages = listInstalled();
+        setDirty();
         if (!ok || !checkInstalled(QStringLiteral("snapd"))) {
-            const QString errorDetails = cmd.readAllOutput();
             setCursor(QCursor(Qt::ArrowCursor));
-            showError(tr("snapd was not installed. Click \"Show Details\" for more information."), errorDetails);
+            showError(tr("snapd was not installed. Click \"Show Details\" for more information."), installOutput);
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             enableTabs(true);
             return;
         }
-        installedPackages = listInstalled();
-        setDirty();
     }
 
     // Enable the snapd service and install the core snap (runs as root).
