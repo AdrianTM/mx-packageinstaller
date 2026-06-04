@@ -148,7 +148,7 @@ if [ "$USE_CLANG" = true ]; then
 fi
 
 if [ "$BUILD_TESTS" = true ]; then
-    CMAKE_ARGS+=(-DBUILD_TESTING=ON)
+    CMAKE_ARGS+=(-DBUILD_TESTS=ON)
 fi
 
 # Configure CMake with Ninja (always run - cmake is fast and handles incremental updates)
