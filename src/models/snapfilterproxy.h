@@ -41,6 +41,9 @@ protected:
     [[nodiscard]] bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
 
 private:
+    // Re-run the row filter. Wraps the Qt-version-specific invalidation API.
+    void invalidateRowFilter();
+
     [[nodiscard]] bool matchesSearch(const SnapData &snap) const;
     [[nodiscard]] bool matchesStatus(int status) const;
 
