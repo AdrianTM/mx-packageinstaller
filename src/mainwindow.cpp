@@ -4473,7 +4473,8 @@ void MainWindow::setupSnapd()
                   details);
     } else {
         QMessageBox::warning(this, tr("Needs re-login"),
-                             tr("You might need to logout/login to see installed items in the menu"));
+                             tr("You might need to logout/login to see installed items in the menu and use snap "
+                                "commands from /snap/bin."));
     }
     enableTabs(true);
 }

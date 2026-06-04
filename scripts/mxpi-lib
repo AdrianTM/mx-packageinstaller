@@ -62,6 +62,42 @@ flatpak_add_repos_user() {
     flatpak --user remote-add --if-not-exists --subset=verified flathub-verified https://flathub.org/repo/flathub.flatpakrepo
 }
 
+snapd_add_session_paths() {
+    local profile="/etc/profile.d/mx-packageinstaller-snap.sh"
+
+    echo "Configuring snap session paths..."
+    if ! install -d -m 755 /etc/profile.d; then
+        echo "warning: could not create /etc/profile.d"
+        return 0
+    fi
+
+    cat > "$profile" <<'EOF'
+# shellcheck shell=sh
+
+# Add Snap application commands and desktop launchers for future login sessions.
+snap_bin_path="/snap/bin"
+if [ -z "${PATH:-}" ]; then
+    export PATH="${snap_bin_path}"
+else
+    case ":${PATH}:" in
+        *:"${snap_bin_path}":*) ;;
+        *) export PATH="${PATH}:${snap_bin_path}" ;;
+    esac
+fi
+
+if [ -z "${XDG_DATA_DIRS:-}" ]; then
+    export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+fi
+
+snap_xdg_path="/var/lib/snapd/desktop"
+case ":${XDG_DATA_DIRS}:" in
+    *:"${snap_xdg_path}":*) ;;
+    *) export XDG_DATA_DIRS="${XDG_DATA_DIRS}:${snap_xdg_path}" ;;
+esac
+EOF
+    chmod 644 "$profile" || echo "warning: could not set permissions on $profile"
+}
+
 snapd_setup() {
     # Enable and start the snapd service (and its socket/apparmor units when present)
     echo "Enabling snapd service..."
@@ -70,14 +106,9 @@ snapd_setup() {
     systemctl enable --now snapd || echo "warning: could not enable snapd.service"
     # Classic snap support relies on /snap pointing at snapd's mount root
     [ -e /snap ] || ln -s /var/lib/snapd/snap /snap 2>/dev/null
-    # Wait for snapd to finish its initial seeding so the caller can install snaps.
-    # Bound the wait: a broken seed state must not hang the GUI that blocks on us.
-    # (The "core" snap itself is installed by the application, not here, so its output
-    # is captured and shown to the user.)
-    echo "Waiting for snapd to be ready..."
-    if ! timeout 120 snap wait system seed.loaded 2>/dev/null; then
-        echo "warning: timed out or failed waiting for snapd to seed"
-    fi
+    # The application waits for snapd to finish seeding (snap wait system seed.loaded)
+    # before it installs the core snap, so there is no need to also wait here.
+    snapd_add_session_paths
 }
 
 main() {
