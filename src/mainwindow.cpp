@@ -2876,7 +2876,11 @@ void MainWindow::pushInstall_clicked()
         enableOutput();
         bool success = true;
         QString errorDetails;
+        if (toInstall.size() > 1) {
+            appendFlatpakStatusMessage(ui->outputBox, tr("Installing packages: %1...").arg(toInstall.join(' ')));
+        }
         for (const QString &name : std::as_const(toInstall)) {
+            appendFlatpakStatusMessage(ui->outputBox, tr("Installing package: %1...").arg(name));
             QStringList snapArgs {"install"};
             if (snapModel && snapModel->isClassic(name)) {
                 snapArgs << "--classic";
