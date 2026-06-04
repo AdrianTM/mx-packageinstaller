@@ -269,7 +269,6 @@ private:
     void setupSnapd();
     void buildSnapChangeList(const QString &name, Qt::CheckState state, int status);
     [[nodiscard]] QStringList listInstalledSnaps() const;
-    [[nodiscard]] QVector<SnapData> parseSnapList(const QString &output, bool installed) const;
     [[nodiscard]] static bool isSystemdInit();
     [[nodiscard]] bool isSnapdReady() const;
     void invalidateFlatpakRemoteCache();

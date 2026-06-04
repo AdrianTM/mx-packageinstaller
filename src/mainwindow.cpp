@@ -3829,49 +3829,6 @@ QStringList MainWindow::listInstalledSnaps() const
     return names;
 }
 
-// Parse the tabular output of `snap list` (installed=true) or `snap find` (installed=false).
-QVector<SnapData> MainWindow::parseSnapList(const QString &output, bool installed) const
-{
-    QVector<SnapData> result;
-    static const QRegularExpression ws {QStringLiteral("\\s+")};
-    const QStringList lines = output.split('\n', Qt::SkipEmptyParts);
-    for (const QString &line : lines) {
-        const QStringList parts = line.split(ws, Qt::SkipEmptyParts);
-        if (parts.isEmpty() || parts.at(0) == QLatin1String("Name")) {
-            continue; // header row
-        }
-        SnapData data;
-        if (installed) {
-            // Columns: Name Version Rev Tracking Publisher Notes
-            if (parts.size() < 2) {
-                continue;
-            }
-            data.name = parts.at(0);
-            data.version = parts.value(1);
-            data.publisher = parts.value(4);
-            data.notes = parts.value(5);
-        } else {
-            // Columns: Name Version Publisher Notes Summary...
-            if (parts.size() < 4) {
-                continue;
-            }
-            data.name = parts.at(0);
-            data.version = parts.value(1);
-            data.publisher = parts.value(2);
-            data.notes = parts.value(3);
-            data.description = parts.size() > 4 ? parts.mid(4).join(' ') : QString();
-        }
-        // Strip the verification markers snap appends to trusted publishers (✓, *, **)
-        data.publisher.remove(QChar(0x2713));
-        while (data.publisher.endsWith(QLatin1Char('*'))) {
-            data.publisher.chop(1);
-        }
-        data.isClassic = data.notes.contains(QLatin1String("classic"));
-        result.append(data);
-    }
-    return result;
-}
-
 void MainWindow::handleSnapTab(const QString &search_str)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";

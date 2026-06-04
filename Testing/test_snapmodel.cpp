@@ -51,6 +51,16 @@ private slots:
     // Header tests
     void testHeaderData();
 
+    // parseSnapList() tests
+    void testParseInstalledList();
+    void testParseFindList();
+    void testParseSkipsHeaderAndBlankLines();
+    void testParseSkipsMalformedRows();
+    void testParseStripsPublisherMarkers();
+    void testParseDetectsClassic();
+    void testParseInstalledMissingOptionalColumns();
+    void testParseEmptyOutput();
+
 private:
     QVector<SnapData> createTestSnaps();
 };
@@ -467,6 +477,134 @@ void TestSnapModel::testHeaderData()
 
     // Vertical orientation should return empty
     QVERIFY(!model.headerData(0, Qt::Vertical, Qt::DisplayRole).isValid());
+}
+
+void TestSnapModel::testParseInstalledList()
+{
+    // Columns: Name Version Rev Tracking Publisher Notes
+    const QString output = QStringLiteral(
+        "Name   Version    Rev    Tracking       Publisher   Notes\n"
+        "core   16-2.61.4  16928  latest/stable  canonical   core\n"
+        "hello  2.10       42     latest/stable  canonical   -\n");
+
+    const QVector<SnapData> snaps = parseSnapList(output, true);
+    QCOMPARE(snaps.size(), 2);
+
+    QCOMPARE(snaps.at(0).name, QString("core"));
+    QCOMPARE(snaps.at(0).version, QString("16-2.61.4"));
+    QCOMPARE(snaps.at(0).publisher, QString("canonical"));
+    QCOMPARE(snaps.at(0).notes, QString("core"));
+    // Installed parsing does not populate a description.
+    QVERIFY(snaps.at(0).description.isEmpty());
+
+    QCOMPARE(snaps.at(1).name, QString("hello"));
+    QCOMPARE(snaps.at(1).notes, QString("-"));
+}
+
+void TestSnapModel::testParseFindList()
+{
+    // Columns: Name Version Publisher Notes Summary...
+    const QString output = QStringLiteral(
+        "Name   Version  Publisher  Notes  Summary\n"
+        "hello  2.10     canonical  -      GNU Hello, the hello world snap\n"
+        "vlc    3.0.18   videolan   -      The ultimate media player\n");
+
+    const QVector<SnapData> snaps = parseSnapList(output, false);
+    QCOMPARE(snaps.size(), 2);
+
+    QCOMPARE(snaps.at(0).name, QString("hello"));
+    QCOMPARE(snaps.at(0).version, QString("2.10"));
+    QCOMPARE(snaps.at(0).publisher, QString("canonical"));
+    QCOMPARE(snaps.at(0).notes, QString("-"));
+    // The summary (column 5+) is collapsed into the description.
+    QCOMPARE(snaps.at(0).description, QString("GNU Hello, the hello world snap"));
+
+    QCOMPARE(snaps.at(1).name, QString("vlc"));
+    QCOMPARE(snaps.at(1).description, QString("The ultimate media player"));
+}
+
+void TestSnapModel::testParseSkipsHeaderAndBlankLines()
+{
+    // Header row (starts with "Name") and blank lines must be skipped.
+    const QString output = QStringLiteral(
+        "Name   Version  Publisher  Notes  Summary\n"
+        "\n"
+        "hello  2.10     canonical  -      A snap\n"
+        "\n");
+
+    const QVector<SnapData> snaps = parseSnapList(output, false);
+    QCOMPARE(snaps.size(), 1);
+    QCOMPARE(snaps.at(0).name, QString("hello"));
+}
+
+void TestSnapModel::testParseSkipsMalformedRows()
+{
+    // find rows need at least 4 columns; installed rows at least 2.
+    const QString findOutput = QStringLiteral(
+        "hello  2.10  canonical\n"          // only 3 columns -> skipped
+        "vlc    3.0.18  videolan  -  Media\n");
+    const QVector<SnapData> found = parseSnapList(findOutput, false);
+    QCOMPARE(found.size(), 1);
+    QCOMPARE(found.at(0).name, QString("vlc"));
+
+    const QString installedOutput = QStringLiteral(
+        "lonely\n"                          // only 1 column -> skipped
+        "core  16-2.61  16928  latest/stable  canonical  core\n");
+    const QVector<SnapData> installed = parseSnapList(installedOutput, true);
+    QCOMPARE(installed.size(), 1);
+    QCOMPARE(installed.at(0).name, QString("core"));
+}
+
+void TestSnapModel::testParseStripsPublisherMarkers()
+{
+    // snap appends a checkmark (U+2713) to verified publishers and trailing
+    // asterisks to starred ones; both must be stripped from the publisher field.
+    const QString output = QStringLiteral(
+        "Name   Version  Publisher        Notes  Summary\n"
+        "a      1.0      canonical✓   -      verified publisher\n"
+        "b      1.0      acme**           -      starred publisher\n"
+        "c      1.0      both✓**      -      verified and starred\n");
+
+    const QVector<SnapData> snaps = parseSnapList(output, false);
+    QCOMPARE(snaps.size(), 3);
+    QCOMPARE(snaps.at(0).publisher, QString("canonical"));
+    QCOMPARE(snaps.at(1).publisher, QString("acme"));
+    QCOMPARE(snaps.at(2).publisher, QString("both"));
+}
+
+void TestSnapModel::testParseDetectsClassic()
+{
+    // isClassic is derived from the Notes column containing "classic".
+    const QString output = QStringLiteral(
+        "Name   Version  Publisher  Notes    Summary\n"
+        "code   1.2.3    vscode     classic  Code editor\n"
+        "hello  2.10     canonical  -        Hello\n");
+
+    const QVector<SnapData> snaps = parseSnapList(output, false);
+    QCOMPARE(snaps.size(), 2);
+    QVERIFY(snaps.at(0).isClassic);
+    QVERIFY(!snaps.at(1).isClassic);
+}
+
+void TestSnapModel::testParseInstalledMissingOptionalColumns()
+{
+    // A row with only Name and Version (e.g. odd snapd output) must still parse,
+    // leaving the optional publisher/notes fields empty rather than crashing.
+    const QString output = QStringLiteral("minimal  1.0\n");
+    const QVector<SnapData> snaps = parseSnapList(output, true);
+    QCOMPARE(snaps.size(), 1);
+    QCOMPARE(snaps.at(0).name, QString("minimal"));
+    QCOMPARE(snaps.at(0).version, QString("1.0"));
+    QVERIFY(snaps.at(0).publisher.isEmpty());
+    QVERIFY(snaps.at(0).notes.isEmpty());
+}
+
+void TestSnapModel::testParseEmptyOutput()
+{
+    QVERIFY(parseSnapList(QString(), true).isEmpty());
+    QVERIFY(parseSnapList(QString(), false).isEmpty());
+    // Header-only output yields no rows.
+    QVERIFY(parseSnapList(QStringLiteral("Name  Version  Publisher  Notes  Summary\n"), false).isEmpty());
 }
 
 QTEST_MAIN(TestSnapModel)

@@ -42,6 +42,10 @@ struct SnapData {
     bool isClassic = false;
 };
 
+// Parse the tabular output of `snap list` (installed=true) or `snap find` (installed=false)
+// into SnapData rows. Header rows and malformed lines are skipped.
+[[nodiscard]] QVector<SnapData> parseSnapList(const QString &output, bool installed);
+
 class SnapModel : public QAbstractTableModel
 {
     Q_OBJECT
