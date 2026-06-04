@@ -855,11 +855,6 @@ OK to go ahead and install it?</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4496"/>
-        <source>You might need to logout/login to see installed items in the menu and use snap commands from /snap/bin.</source>
-        <translation type="unfinished"></translation>
-    </message>
-    <message>
         <location filename="../src/mainwindow.cpp" line="4571"/>
         <source>Problem detected while updating snaps. Click &quot;Show Details&quot; for more information.</source>
         <translation type="unfinished"></translation>
@@ -903,6 +898,11 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="4940"/>
         <source>Reinstall</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="4496"/>
+        <source>Log out and back in to see installed items in the menu and use snap commands from /snap/bin. These changes do not apply to your current session.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
