@@ -81,12 +81,13 @@ void printError(const QString &message)
     return {};
 }
 
-[[nodiscard]] ProcessResult runProcess(const QString &program, const QStringList &args)
+[[nodiscard]] ProcessResult runProcess(const QString &program, const QStringList &args,
+                                       const QProcessEnvironment &environment = QProcessEnvironment::systemEnvironment())
 {
     ProcessResult result;
 
     QProcess process;
-    process.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    process.setProcessEnvironment(environment);
     process.start(program, args, QIODevice::ReadWrite);
     if (!process.waitForStarted()) {
         result.standardError = QString("Failed to start %1").arg(program).toUtf8();
@@ -106,10 +107,11 @@ void printError(const QString &message)
 
 // Run with stdin/stdout/stderr forwarded directly to the parent process,
 // allowing real-time interactive I/O (e.g. pacman prompts).
-[[nodiscard]] int runProcessInteractive(const QString &program, const QStringList &args)
+[[nodiscard]] int runProcessInteractive(const QString &program, const QStringList &args,
+                                        const QProcessEnvironment &environment = QProcessEnvironment::systemEnvironment())
 {
     QProcess process;
-    process.setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    process.setProcessEnvironment(environment);
     process.setInputChannelMode(QProcess::ForwardedInputChannel);
     process.setProcessChannelMode(QProcess::ForwardedChannels);
     process.start(program, args);
@@ -150,10 +152,24 @@ void printError(const QString &message)
         return 127;
     }
 
-    if (interactive) {
-        return runProcessInteractive(resolvedCommand, commandArgs);
+    QProcessEnvironment environment = QProcessEnvironment::systemEnvironment();
+    // The snap client warns "/snap/bin is not in your $PATH" based on the PATH of
+    // the process that invokes it. Running through this elevated helper, that PATH
+    // is root's sanitized one, which never contains /snap/bin, so the warning shows
+    // on every install regardless of the user's session (and a reboot won't help).
+    // Ensure the snap process sees /snap/bin so the spurious warning is suppressed.
+    if (command == QLatin1String("snap")) {
+        QString path = environment.value(QStringLiteral("PATH"));
+        if (!path.split(QLatin1Char(':')).contains(QLatin1String("/snap/bin"))) {
+            path = path.isEmpty() ? QStringLiteral("/snap/bin") : path + QStringLiteral(":/snap/bin");
+            environment.insert(QStringLiteral("PATH"), path);
+        }
     }
-    return relayResult(runProcess(resolvedCommand, commandArgs));
+
+    if (interactive) {
+        return runProcessInteractive(resolvedCommand, commandArgs, environment);
+    }
+    return relayResult(runProcess(resolvedCommand, commandArgs, environment));
 }
 
 [[nodiscard]] int handleExec(const QStringList &args)

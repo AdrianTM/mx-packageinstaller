@@ -4028,6 +4028,14 @@ void MainWindow::setupSnapd()
     enableOutput();
 
     if (!checkInstalled(QStringLiteral("snapd"))) {
+        // Refresh the package databases first so the install pulls the current snapd
+        // candidate; a stale cache can make the install fail or fetch nothing.
+        if (!updateRepos()) {
+            setCursor(QCursor(Qt::ArrowCursor));
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            enableTabs(true);
+            return;
+        }
         const bool ok = install(QStringLiteral("snapd"), Tab::Repos);
         const QString installOutput = cmd.readAllOutput();
         installedPackages = listInstalled();
