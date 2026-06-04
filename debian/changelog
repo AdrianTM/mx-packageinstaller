@@ -1,3 +1,15 @@
+mx-packageinstaller (26.06) mx; urgency=medium
+
+  * Add a new Snaps tab on systems that support Snap packages
+  * Search the Snap store and install, remove, or update Snap packages from
+    inside MX Package Installer
+  * Add guided Snap setup for systems that do not have Snap support ready yet
+  * Show clearer messages when Snap setup needs more attention
+  * Help newly installed Snap apps appear in menus and terminal commands after
+    logging out and back in
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 04 Jun 2026 00:00:00 -0400
+
 mx-packageinstaller (26.05.1) mx; urgency=medium
 
   * Improve how the app handles its temporary log files for better
