@@ -4276,14 +4276,22 @@ void MainWindow::handleSnapTab(const QString &search_str)
     }
 
     snapStoreMode = (ui->comboFilterSnap->currentText() == tr("Search store"));
+
+    // Arriving from another tab with a pending search term: default to searching the
+    // store for it (searchSnapStore() flips the combo to "Search store" itself).
+    if (!search_str.isEmpty()) {
+        firstRunSnap = false;
+        ui->searchBoxSnap->setFocus();
+        QMetaObject::invokeMethod(this, [this] { searchSnapStore(); }, Qt::QueuedConnection);
+        currentTree->blockSignals(false);
+        return;
+    }
+
     if (firstRunSnap || (snapModel && snapModel->rowCount() == 0 && !snapStoreMode)) {
         firstRunSnap = false;
         setCursor(QCursor(Qt::BusyCursor));
         displaySnaps(true);
         setCursor(QCursor(Qt::ArrowCursor));
-    }
-    if (!search_str.isEmpty()) {
-        QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
     }
     currentTree->blockSignals(false);
 }
@@ -4594,6 +4602,9 @@ void MainWindow::filterChanged(const QString &arg1)
             if (!ui->searchBoxSnap->text().isEmpty()) {
                 searchSnapStore();
             }
+            // Put the cursor in the search box so the user can type a query right away
+            // (queued so it survives the combo popup closing and regaining focus).
+            QMetaObject::invokeMethod(this, [this] { ui->searchBoxSnap->setFocus(); }, Qt::QueuedConnection);
         } else { // Installed snaps
             snapStoreMode = false;
             ui->searchBoxSnap->blockSignals(true);
