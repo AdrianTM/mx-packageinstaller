@@ -1,4 +1,4 @@
-mx-packageinstaller (26.06) mx; urgency=medium
+mx-packageinstaller (26.06.1) mx; urgency=medium
 
   * Add a new Snaps tab on systems that support Snap packages
   * Search the Snap store and install, remove, or update Snap packages from

@@ -4407,6 +4407,14 @@ void MainWindow::setupSnapd()
     enableOutput();
 
     if (!checkInstalled(QStringLiteral("snapd"))) {
+        // Refresh the package lists first so the install pulls the current snapd
+        // candidate; a stale cache can make the install fail or fetch nothing.
+        if (!updateApt()) {
+            setCursor(QCursor(Qt::ArrowCursor));
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
+            enableTabs(true);
+            return;
+        }
         // Reuse the standard APT install path (uses default repo flags).
         QTreeView *savedTree = currentTree;
         currentTree = ui->treeEnabled;
