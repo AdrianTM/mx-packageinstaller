@@ -178,7 +178,21 @@ void printError(const QString &message)
         return 127;
     }
 
-    return relayResult(runProcess(resolvedCommand, commandArgs, environment));
+    QHash<QString, QString> commandEnvironment = environment;
+    // The snap client warns "/snap/bin is not in your $PATH" based on the PATH of
+    // the process that invokes it. Running through this elevated helper, that PATH
+    // is root's sanitized one, which never contains /snap/bin, so the warning shows
+    // on every install regardless of the user's session (and a reboot won't help).
+    // Ensure the snap process sees /snap/bin so the spurious warning is suppressed.
+    if (command == QLatin1String("snap") && !commandEnvironment.contains(QStringLiteral("PATH"))) {
+        QString path = qEnvironmentVariable("PATH");
+        if (!path.split(QLatin1Char(':')).contains(QLatin1String("/snap/bin"))) {
+            path = path.isEmpty() ? QStringLiteral("/snap/bin") : path + QStringLiteral(":/snap/bin");
+        }
+        commandEnvironment.insert(QStringLiteral("PATH"), path);
+    }
+
+    return relayResult(runProcess(resolvedCommand, commandArgs, commandEnvironment));
 }
 
 [[nodiscard]] int handleExec(const QStringList &args)
