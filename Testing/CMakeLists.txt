@@ -4,6 +4,7 @@ cmake_minimum_required(VERSION 3.16)
 find_package(Qt6 REQUIRED COMPONENTS Core Test Widgets)
 
 set(CMAKE_AUTOMOC ON)
+enable_testing()
 
 function(configure_mxpi_test target)
     target_link_libraries(${target}
@@ -31,6 +32,7 @@ add_executable(test_snapmodel
 )
 configure_mxpi_test(test_snapmodel)
 add_test(NAME SnapModelTest COMMAND test_snapmodel)
+set_tests_properties(SnapModelTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscreen)
 
 add_executable(test_snapfilterproxy
     test_snapfilterproxy.cpp
@@ -39,6 +41,7 @@ add_executable(test_snapfilterproxy
 )
 configure_mxpi_test(test_snapfilterproxy)
 add_test(NAME SnapFilterProxyTest COMMAND test_snapfilterproxy)
+set_tests_properties(SnapFilterProxyTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscreen)
 
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose

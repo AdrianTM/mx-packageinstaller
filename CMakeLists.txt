@@ -291,5 +291,6 @@ install(DIRECTORY help/ DESTINATION share/doc/mx-packageinstaller)
 # Add tests if requested
 if(BUILD_TESTS)
     message(STATUS "Building with tests enabled")
+    enable_testing()
     add_subdirectory(Testing)
 endif()

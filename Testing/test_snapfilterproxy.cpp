@@ -1,5 +1,5 @@
 #include <QtTest>
-#include "../src/packagestatus.h"
+#include "../src/models/packagemodel.h"
 #include "../src/models/snapmodel.h"
 #include "../src/models/snapfilterproxy.h"
 

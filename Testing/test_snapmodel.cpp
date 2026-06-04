@@ -1,6 +1,6 @@
 #include <QtTest>
 #include <QSignalSpy>
-#include "../src/packagestatus.h"
+#include "../src/models/packagemodel.h"
 #include "../src/models/snapmodel.h"
 
 class TestSnapModel : public QObject

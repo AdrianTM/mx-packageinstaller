@@ -2426,12 +2426,10 @@ void MainWindow::setCurrentTree()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     const int currentTab = ui->tabWidget->currentIndex();
 
-    // Only set currentTree for tabs that still use item/tree-specific paths.
-    // Repo and AUR use their models directly in most handlers.
+    // Only set currentTree for Flatpak, which still uses QTreeWidget-specific paths.
+    // Repo/AUR/Snap use their models directly in most handlers.
     if (currentTab == Tab::Flatpak) {
         currentTree = ui->treeFlatpak;
-    } else if (currentTab == Tab::Snap) {
-        currentTree = ui->treeSnap;
     }
 }
 
@@ -3086,7 +3084,9 @@ void MainWindow::tabWidget_currentChanged(int index)
     if (index != Tab::Output) {
         setCurrentTree();
     }
-    if (index != Tab::Output && currentTree) {
+    if (index == Tab::Snap) {
+        ui->treeSnap->blockSignals(true);
+    } else if (index != Tab::Output && currentTree) {
         currentTree->blockSignals(true);
     }
     auto setTabsEnabled = [this](bool enable) {
@@ -3131,15 +3131,15 @@ void MainWindow::resetCheckboxes()
             (*it)->setCheckState(TreeCol::Check, Qt::Unchecked);
         }
         currentTree->blockSignals(false);
-    } else if (currentTab == Tab::Snap && currentTree == ui->treeSnap) {
-        currentTree->blockSignals(true);
+    } else if (currentTab == Tab::Snap) {
+        ui->treeSnap->blockSignals(true);
         ui->treeSnap->clearSelection();
         if (snapModel) {
             if (!snapModel->checkedPackages().isEmpty()) {
                 snapModel->setAllChecked(false);
             }
         }
-        currentTree->blockSignals(false);
+        ui->treeSnap->blockSignals(false);
     }
     // For Repo/AUR tabs: checkbox state is in the model, should be cleared differently
 }
@@ -3896,7 +3896,7 @@ void MainWindow::handleSnapTab(const QString &search_str)
             snapModel->clear();
         }
         updateSnapCounts();
-        currentTree->blockSignals(false);
+        ui->treeSnap->blockSignals(false);
         return;
     }
 
@@ -3908,7 +3908,7 @@ void MainWindow::handleSnapTab(const QString &search_str)
         firstRunSnap = false;
         ui->searchBoxSnap->setFocus();
         QMetaObject::invokeMethod(this, [this] { searchSnapStore(); }, Qt::QueuedConnection);
-        currentTree->blockSignals(false);
+        ui->treeSnap->blockSignals(false);
         return;
     }
 
@@ -3918,7 +3918,7 @@ void MainWindow::handleSnapTab(const QString &search_str)
         displaySnaps(true);
         setCursor(QCursor(Qt::ArrowCursor));
     }
-    currentTree->blockSignals(false);
+    ui->treeSnap->blockSignals(false);
 }
 
 void MainWindow::displaySnaps(bool /*force_update*/)
@@ -3980,7 +3980,7 @@ void MainWindow::updateSnapCounts()
 // Triggered by pressing Enter in the snap search box: query the snap store.
 void MainWindow::searchSnapStore()
 {
-    if (currentTree != ui->treeSnap || !snapModel || !isSnapdReady()) {
+    if (ui->tabWidget->currentIndex() != Tab::Snap || !snapModel || !isSnapdReady()) {
         return;
     }
     const QString query = ui->searchBoxSnap->text().trimmed();
@@ -4220,7 +4220,7 @@ void MainWindow::filterChanged(const QString &arg1)
 
     const int currentTab = ui->tabWidget->currentIndex();
 
-    if (currentTab == Tab::Snap && currentTree == ui->treeSnap) {
+    if (currentTab == Tab::Snap) {
         if (snapModel) {
             snapModel->setAllChecked(false);
         }
