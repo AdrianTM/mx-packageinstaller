@@ -71,26 +71,32 @@ snapd_add_session_paths() {
     cat > "$profile" <<'EOF'
 # shellcheck shell=sh
 
-# Add Snap application commands and desktop launchers for future login sessions.
-snap_bin_path="/snap/bin"
-if [ -z "${PATH:-}" ]; then
-    export PATH="${snap_bin_path}"
-else
-    case ":${PATH}:" in
-        *:"${snap_bin_path}":*) ;;
-        *) export PATH="${PATH}:${snap_bin_path}" ;;
+# Snap requires systemd (snapd runs as a systemd service). This file is sourced at
+# every login regardless of init, so only add the Snap paths when systemd is the
+# running init -- otherwise we would just pollute PATH with a dead /snap/bin and add a
+# non-existent XDG data dir.
+if [ -d /run/systemd/system ]; then
+    # Add Snap application commands and desktop launchers for future login sessions.
+    snap_bin_path="/snap/bin"
+    if [ -z "${PATH:-}" ]; then
+        export PATH="${snap_bin_path}"
+    else
+        case ":${PATH}:" in
+            *:"${snap_bin_path}":*) ;;
+            *) export PATH="${PATH}:${snap_bin_path}" ;;
+        esac
+    fi
+
+    if [ -z "${XDG_DATA_DIRS:-}" ]; then
+        export XDG_DATA_DIRS="/usr/local/share:/usr/share"
+    fi
+
+    snap_xdg_path="/var/lib/snapd/desktop"
+    case ":${XDG_DATA_DIRS}:" in
+        *:"${snap_xdg_path}":*) ;;
+        *) export XDG_DATA_DIRS="${XDG_DATA_DIRS}:${snap_xdg_path}" ;;
     esac
 fi
-
-if [ -z "${XDG_DATA_DIRS:-}" ]; then
-    export XDG_DATA_DIRS="/usr/local/share:/usr/share"
-fi
-
-snap_xdg_path="/var/lib/snapd/desktop"
-case ":${XDG_DATA_DIRS}:" in
-    *:"${snap_xdg_path}":*) ;;
-    *) export XDG_DATA_DIRS="${XDG_DATA_DIRS}:${snap_xdg_path}" ;;
-esac
 EOF
     chmod 644 "$profile" || echo "warning: could not set permissions on $profile"
 }
