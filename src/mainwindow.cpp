@@ -59,12 +59,93 @@
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
+#include <pwd.h>
 #include <unistd.h>
 
 using namespace std::chrono_literals;
 
 namespace {
 constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
+
+[[nodiscard]] QString userNameForUid(uid_t uid)
+{
+    if (const struct passwd *pw = getpwuid(uid)) {
+        return QString::fromLocal8Bit(pw->pw_name);
+    }
+    return {};
+}
+
+[[nodiscard]] QString homeDirForUser(const QString &name)
+{
+    const QByteArray n = name.toLocal8Bit();
+    if (const struct passwd *pw = getpwnam(n.constData())) {
+        return QString::fromLocal8Bit(pw->pw_dir);
+    }
+    return {};
+}
+
+// When the app itself runs as root (e.g. WSL2 without a working pkexec), AUR helpers
+// refuse to build, so we need a normal user to build as. No single source is reliable
+// everywhere -- logname and SUDO_USER are often empty under WSL -- so try several in
+// order of confidence and fall back to scanning the user database.
+[[nodiscard]] QString loginUserForRoot()
+{
+    // 1. The user who elevated us, if recorded.
+    const QString sudoUser = qEnvironmentVariable("SUDO_USER");
+    if (!sudoUser.isEmpty() && sudoUser != QLatin1String("root")) {
+        return sudoUser;
+    }
+    bool ok = false;
+    const uint pkexecUid = qEnvironmentVariable("PKEXEC_UID").toUInt(&ok);
+    if (ok && pkexecUid != 0) {
+        const QString name = userNameForUid(static_cast<uid_t>(pkexecUid));
+        if (!name.isEmpty()) {
+            return name;
+        }
+    }
+
+    auto isRegularUid = [](uint uid) { return uid >= 1000 && uid < 65534; };
+
+    // 2. The owner of an active login session (systemd-logind runtime dir). Prefer the
+    //    lowest regular uid (conventionally 1000) when several sessions exist.
+    uid_t sessionUid = 0;
+    const QDir runUser(QStringLiteral("/run/user"));
+    const QStringList sessions = runUser.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for (const QString &entry : sessions) {
+        bool entryOk = false;
+        const uint uid = entry.toUInt(&entryOk);
+        if (entryOk && isRegularUid(uid) && (sessionUid == 0 || uid < sessionUid)) {
+            sessionUid = static_cast<uid_t>(uid);
+        }
+    }
+    if (sessionUid != 0) {
+        const QString name = userNameForUid(sessionUid);
+        if (!name.isEmpty()) {
+            return name;
+        }
+    }
+
+    // 3. Fall back to the lowest regular account in the user database that has a real
+    //    login shell (so daemon accounts that happen to sit at uid >= 1000 are skipped).
+    auto hasLoginShell = [](const char *shell) {
+        if (shell == nullptr || *shell == '\0') {
+            return false;
+        }
+        const QString s = QString::fromLocal8Bit(shell);
+        return !s.endsWith(QLatin1String("/nologin")) && !s.endsWith(QLatin1String("/false"));
+    };
+    QString best;
+    uid_t bestUid = 0;
+    setpwent();
+    while (const struct passwd *pw = getpwent()) {
+        if (isRegularUid(pw->pw_uid) && hasLoginShell(pw->pw_shell) && (best.isEmpty() || pw->pw_uid < bestUid)) {
+            best = QString::fromLocal8Bit(pw->pw_name);
+            bestUid = pw->pw_uid;
+        }
+    }
+    endpwent();
+    return best;
+}
 
 QString sanitizeOutputForDisplay(const QString &output)
 {
@@ -1873,9 +1954,40 @@ bool MainWindow::install(const QString &names, int sourceTab)
 
         const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
         const QString quotedNames = shellQuotePackageList(nameList);
-        QString command = "LANG=C PAGER=cat PARU_PAGER=cat " + paruPath + " -S --needed " + quotedNames;
-        if (QFile::exists("/usr/bin/script")) {
-            command = "/usr/bin/script -qefc " + shellQuote(command) + " /dev/null";
+        const QString paruInvocation = paruPath + " -S --needed " + quotedNames;
+        const bool hasScript = QFile::exists("/usr/bin/script");
+
+        QString command;
+        if (getuid() == 0) {
+            // paru (makepkg) refuses to build as root. If the app itself runs as root
+            // (e.g. WSL2 without a working pkexec), drop to a normal user for the build.
+            // Use `runuser -u` (no login shell) plus env so it never depends on that
+            // user's login shell -- which may be fish/csh and not understand inline
+            // VAR=val syntax -- and force a POSIX shell and the user's HOME. paru still
+            // elevates its own pacman step via sudo, prompting in the output box.
+            const QString buildUser = loginUserForRoot();
+            if (buildUser.isEmpty()) {
+                QMessageBox::critical(this, tr("Error"),
+                                      tr("AUR packages cannot be built as root, and no regular user could be "
+                                         "found to build as.\n\n"
+                                         "Install the package as your normal user instead."));
+                return false;
+            }
+            const QString home = homeDirForUser(buildUser);
+            QString env = "env ";
+            if (!home.isEmpty()) {
+                env += "HOME=" + shellQuote(home) + ' ';
+            }
+            env += "SHELL=/bin/sh LANG=C PAGER=cat PARU_PAGER=cat ";
+            const QString payload = hasScript
+                                        ? "/usr/bin/script -qefc " + shellQuote(paruInvocation) + " /dev/null"
+                                        : paruInvocation;
+            command = "runuser -u " + shellQuote(buildUser) + " -- " + env + payload;
+        } else {
+            command = "LANG=C PAGER=cat PARU_PAGER=cat " + paruInvocation;
+            if (hasScript) {
+                command = "/usr/bin/script -qefc " + shellQuote(command) + " /dev/null";
+            }
         }
         return cmd.run(command);
     } else {
