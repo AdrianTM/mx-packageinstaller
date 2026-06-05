@@ -1,3 +1,14 @@
+mx-packageinstaller (26.06.2) mx; urgency=medium
+
+  * Show live Snap progress in the Output tab while Snaps download and install,
+    instead of leaving it blank until the operation finishes
+  * Make first-time Snap setup more reliable by automatically retrying the
+    initial core component install when it is not ready on the first try
+  * No longer add Snap program locations to your PATH when the system is booted
+    without systemd (such as with SysVinit), where Snap is not available
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 04 Jun 2026 22:04:00 -0400
+
 mx-packageinstaller (26.06.1) mx; urgency=medium
 
   * Add a new Snaps tab on systems that support Snap packages
