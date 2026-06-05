@@ -1,6 +1,6 @@
 # Maintainer: Adrian <adrian@mxlinux.org>
 pkgname=mx-packageinstaller
-pkgver=${PKGVER:-26.01}
+pkgver=${PKGVER:-26.06.2}
 pkgrel=1
 pkgdesc="MX Package Installer - a tool for managing packages and Flatpaks"
 arch=('x86_64' 'i686')
