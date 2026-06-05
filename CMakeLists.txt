@@ -133,6 +133,7 @@ set(HEADERS
     src/remotes.h
     src/about.h
     src/cmd.h
+    src/outputrender.h
     src/models/packagemodel.h
     src/models/packagefilterproxy.h
     src/models/snapmodel.h
@@ -172,6 +173,7 @@ target_link_libraries(mx-packageinstaller
 
 target_link_libraries(helper
     Qt6::Core
+    util
 )
 
 # Set compiler flags

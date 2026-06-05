@@ -29,7 +29,17 @@
 #include <QRegularExpression>
 #include <QSet>
 
+#include <algorithm>
+#include <cerrno>
 #include <cstdio>
+#include <vector>
+
+#include <pty.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/wait.h>
+#include <termios.h>
+#include <unistd.h>
 
 namespace
 {
@@ -127,6 +137,123 @@ void printError(const QString &message)
     return process.exitCode();
 }
 
+// Run a command attached to a pseudo-terminal so tools that gate their progress output
+// on isatty() (notably `snap`) emit their live progress instead of staying silent until
+// completion. Output is relayed to our stdout in real time; stdin is forwarded so the
+// child can still read input. Returns the child's exit code.
+[[nodiscard]] int runProcessOnPty(const QString &program, const QStringList &args,
+                                  const QProcessEnvironment &environment)
+{
+    // Materialize argv and envp before forking; the child must avoid heap allocation
+    // (and Qt calls) between fork() and exec().
+    const QByteArray programBytes = program.toLocal8Bit();
+    QList<QByteArray> argStorage;
+    argStorage.reserve(args.size());
+    for (const QString &arg : args) {
+        argStorage.append(arg.toLocal8Bit());
+    }
+    std::vector<char *> argv;
+    argv.reserve(static_cast<size_t>(args.size()) + 2);
+    argv.push_back(const_cast<char *>(programBytes.constData()));
+    for (QByteArray &arg : argStorage) {
+        argv.push_back(arg.data());
+    }
+    argv.push_back(nullptr);
+
+    QList<QByteArray> envStorage;
+    const QStringList envKeys = environment.keys();
+    envStorage.reserve(envKeys.size());
+    for (const QString &key : envKeys) {
+        envStorage.append((key + '=' + environment.value(key)).toLocal8Bit());
+    }
+    std::vector<char *> envp;
+    envp.reserve(static_cast<size_t>(envStorage.size()) + 1);
+    for (QByteArray &entry : envStorage) {
+        envp.push_back(entry.data());
+    }
+    envp.push_back(nullptr);
+
+    // Hand the child a roomy terminal so progress bars are not truncated.
+    struct winsize ws {};
+    ws.ws_row = 24;
+    ws.ws_col = 120;
+
+    int masterFd = -1;
+    const pid_t pid = forkpty(&masterFd, nullptr, nullptr, &ws);
+    if (pid < 0) {
+        printError(QStringLiteral("Failed to allocate pseudo-terminal"));
+        return 127;
+    }
+
+    if (pid == 0) {
+        // forkpty leaves the pty master open in the child; close it (and any other
+        // inherited descriptors above stdio) so the privileged child only keeps the
+        // terminal it needs. Best effort: ignored on kernels without close_range.
+        close_range(STDERR_FILENO + 1, ~0U, 0);
+        execve(programBytes.constData(), argv.data(), envp.data());
+        _exit(127); // exec failed
+    }
+
+    const int stdinFd = fileno(stdin);
+    bool stdinOpen = stdinFd >= 0;
+    char buffer[4096];
+
+    for (;;) {
+        fd_set readFds;
+        FD_ZERO(&readFds);
+        FD_SET(masterFd, &readFds);
+        int maxFd = masterFd;
+        if (stdinOpen) {
+            FD_SET(stdinFd, &readFds);
+            maxFd = std::max(maxFd, stdinFd);
+        }
+
+        if (select(maxFd + 1, &readFds, nullptr, nullptr, nullptr) < 0) {
+            if (errno == EINTR) {
+                continue;
+            }
+            break;
+        }
+
+        if (FD_ISSET(masterFd, &readFds)) {
+            const ssize_t count = read(masterFd, buffer, sizeof(buffer));
+            if (count > 0) {
+                writeAndFlush(stdout, QByteArray::fromRawData(buffer, static_cast<int>(count)));
+            } else if (count == 0) {
+                break;
+            } else if (errno != EINTR && errno != EAGAIN) {
+                break; // EIO on Linux once the child has closed the slave side
+            }
+        }
+
+        if (stdinOpen && FD_ISSET(stdinFd, &readFds)) {
+            const ssize_t count = read(stdinFd, buffer, sizeof(buffer));
+            if (count > 0) {
+                ssize_t written = 0;
+                while (written < count) {
+                    const ssize_t bytes = write(masterFd, buffer + written, static_cast<size_t>(count - written));
+                    if (bytes <= 0) {
+                        break;
+                    }
+                    written += bytes;
+                }
+            } else if (count == 0 || (errno != EINTR && errno != EAGAIN)) {
+                stdinOpen = false; // our stdin closed; stop forwarding
+            }
+        }
+    }
+
+    int status = 0;
+    while (waitpid(pid, &status, 0) < 0 && errno == EINTR) {
+    }
+    close(masterFd);
+
+    if (WIFEXITED(status)) {
+        return WEXITSTATUS(status);
+    }
+    return 1;
+}
+
 [[nodiscard]] int relayResult(const ProcessResult &result)
 {
     writeAndFlush(stdout, result.standardOutput);
@@ -164,6 +291,9 @@ void printError(const QString &message)
             path = path.isEmpty() ? QStringLiteral("/snap/bin") : path + QStringLiteral(":/snap/bin");
             environment.insert(QStringLiteral("PATH"), path);
         }
+        // snap stays silent unless it believes it is writing to a terminal, so run it
+        // under a pseudo-terminal to surface its live progress in the Output tab.
+        return runProcessOnPty(resolvedCommand, commandArgs, environment);
     }
 
     if (interactive) {

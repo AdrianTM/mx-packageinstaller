@@ -43,8 +43,15 @@ configure_mxpi_test(test_snapfilterproxy)
 add_test(NAME SnapFilterProxyTest COMMAND test_snapfilterproxy)
 set_tests_properties(SnapFilterProxyTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscreen)
 
+add_executable(test_outputrender
+    test_outputrender.cpp
+)
+configure_mxpi_test(test_outputrender)
+add_test(NAME OutputRenderTest COMMAND test_outputrender)
+set_tests_properties(OutputRenderTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscreen)
+
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
-    DEPENDS test_snapmodel test_snapfilterproxy
+    DEPENDS test_snapmodel test_snapfilterproxy test_outputrender
     COMMENT "Running Snap tests"
 )

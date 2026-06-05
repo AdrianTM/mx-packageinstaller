@@ -47,6 +47,7 @@ class QTreeWidgetItem;
 #include "checkableheaderview.h"
 #include "lockfile.h"
 #include "remotes.h"
+#include "outputrender.h"
 #include "versionnumber.h"
 #include "models/packagemodel.h"
 #include "models/packagefilterproxy.h"
@@ -133,6 +134,7 @@ private slots:
     void onSnapCheckStateChanged(const QString &name, Qt::CheckState state, int status);
 private:
     Ui::MainWindow *ui;
+    OutputRender::OutputRenderer outputRenderer;
 
     QString indexFilterFP;
     bool dirtyAur {true};
