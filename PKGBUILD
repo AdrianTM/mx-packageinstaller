@@ -8,7 +8,7 @@ url="https://mxlinux.org"
 license=('GPL3')
 depends=('qt6-base' 'polkit' 'flatpak')
 makedepends=('cmake' 'ninja' 'qt6-tools')
-optdepends=('paru: AUR helper for AUR tab operations')
+optdepends=('paru: AUR helper for AUR tab operations and Snap setup (snapd is built from the AUR)')
 source=()
 sha256sums=()
 

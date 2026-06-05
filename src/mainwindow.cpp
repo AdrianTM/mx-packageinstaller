@@ -3911,15 +3911,22 @@ void MainWindow::setupSnapd()
     enableOutput();
 
     if (!checkInstalled(QStringLiteral("snapd"))) {
-        // Refresh the package databases first so the install pulls the current snapd
-        // candidate; a stale cache can make the install fail or fetch nothing.
-        if (!updateRepos()) {
+        // snapd is not in the official Arch repositories; it is built from the AUR, which
+        // needs an AUR helper (paru). Bail out early with a clear message if it is missing
+        // rather than letting the install fail with a generic error.
+        if (getParuPath().isEmpty()) {
             setCursor(QCursor(Qt::ArrowCursor));
+            QMessageBox::warning(this, tr("paru is required"),
+                                 tr("snapd is only available from the AUR, which requires the paru helper.\n\n"
+                                    "Install paru first, then reopen the Snap tab to set up Snap support."));
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             enableTabs(true);
             return;
         }
-        const bool ok = install(QStringLiteral("snapd"), Tab::Repos);
+        // Build and install snapd from the AUR via paru. paru refreshes its databases and
+        // resolves dependencies itself, so a separate pacman -Sy (which on Arch would risk
+        // a partial upgrade) is not needed here.
+        const bool ok = install(QStringLiteral("snapd"), Tab::AUR);
         const QString installOutput = cmd.readAllOutput();
         installedPackages = listInstalled();
         setDirty();
