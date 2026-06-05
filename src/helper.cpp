@@ -209,6 +209,10 @@ void printError(const QString &message)
         for (const auto &envVar : envOverrides) {
             setenv(envVar.first.constData(), envVar.second.constData(), 1);
         }
+        // forkpty leaves the pty master open in the child; close it (and any other
+        // inherited descriptors above stdio) so the privileged child only keeps the
+        // terminal it needs. Best effort: ignore failure on kernels without close_range.
+        close_range(STDERR_FILENO + 1, ~0U, 0);
         execv(programBytes.constData(), argv.data());
         _exit(127); // exec failed
     }
