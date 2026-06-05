@@ -173,13 +173,22 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
 {
     qDebug().noquote() << QCoreApplication::applicationName() << "version:" << QCoreApplication::applicationVersion();
     ui->setupUi(this);
+    outputRenderer.setOutputBox(ui->outputBox);
     setProgressDialog();
 
+    // A bare carriage return (not part of a "\r\n" line ending) marks a tool redrawing
+    // its progress line in place. Those redraws are shown live in the Output tab; keep
+    // them out of the debug log, where each one would otherwise be a separate line.
+    const auto isProgressRedraw = [](const QString &out) {
+        QString stripped = out;
+        stripped.remove(QStringLiteral("\r\n"));
+        return stripped.contains(QLatin1Char('\r'));
+    };
     connect(&timer, &QTimer::timeout, this, &MainWindow::updateBar);
     connect(&cmd, &Cmd::started, this, &MainWindow::cmdStart);
     connect(&cmd, &Cmd::done, this, &MainWindow::cmdDone);
-    connect(&cmd, &Cmd::outputAvailable, this, [this](const QString &out) {
-        if (!suppressCmdOutput) {
+    connect(&cmd, &Cmd::outputAvailable, this, [this, isProgressRedraw](const QString &out) {
+        if (!suppressCmdOutput && !isProgressRedraw(out)) {
             const QString clean = sanitizeOutputForDisplay(out).trimmed();
             if (!clean.isEmpty()) {
                 qDebug() << clean;
@@ -187,8 +196,8 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
         }
     });
     connect(&cmd, &Cmd::errorAvailable, this,
-            [this](const QString &out) {
-                if (!suppressCmdOutput) {
+            [this, isProgressRedraw](const QString &out) {
+                if (!suppressCmdOutput && !isProgressRedraw(out)) {
                     const QString clean = sanitizeOutputForDisplay(out).trimmed();
                     if (!clean.isEmpty()) {
                         qWarning() << clean;
@@ -845,7 +854,7 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
-    OutputRender::appendProcessOutput(ui->outputBox, output);
+    outputRenderer.append(output);
 }
 
 void MainWindow::loadPmFiles()
@@ -3398,6 +3407,7 @@ void MainWindow::showOutput()
 {
     operationInProgress = true;
     ui->outputBox->clear();
+    outputRenderer.reset();
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
     enableTabs(false);
@@ -4389,6 +4399,7 @@ void MainWindow::setupSnapd()
                 cursor.setPosition(outputAnchor);
                 cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
                 cursor.removeSelectedText();
+                outputRenderer.reset();
             }
         }
         if (!coreOutput.isEmpty()) {

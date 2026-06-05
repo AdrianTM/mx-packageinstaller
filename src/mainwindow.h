@@ -52,6 +52,7 @@
 #include "models/popularmodel.h"
 #include "models/snapfilterproxy.h"
 #include "models/snapmodel.h"
+#include "outputrender.h"
 #include "remotes.h"
 #include "versionnumber.h"
 
@@ -161,6 +162,7 @@ private slots:
 
 private:
     Ui::MainWindow *ui;
+    OutputRender::OutputRenderer outputRenderer;
 
     QString indexFilterFP;
     bool dirtyBackports {true};

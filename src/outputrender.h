@@ -26,12 +26,13 @@
 #include <QRegularExpression>
 #include <QScrollBar>
 #include <QString>
+#include <QStringList>
 #include <QTextBlock>
 #include <QTextCursor>
 
 // Rendering helpers for the Output tab. Kept header-only so the carriage-return /
-// progress-line handling can be exercised directly by unit tests without pulling in
-// the whole MainWindow.
+// progress handling can be exercised directly by unit tests without pulling in the
+// whole MainWindow.
 namespace OutputRender
 {
 
@@ -47,124 +48,136 @@ inline QString sanitizeOutputForDisplay(const QString &output)
     return cleanOutput;
 }
 
-// Append a chunk of process output to outputBox, interpreting carriage returns the way
-// a terminal would so in-place progress redraws don't pile up as separate lines:
-//  * "\r\n" is a normal line ending.
-//  * flatpak's progress lines start with Installing/Uninstalling/Updating and are
-//    collapsed onto the previous matching line.
-//  * a bare "\r" on any other line (e.g. snap's download/progress bar) overwrites the
-//    current line in place.
-inline void appendProcessOutput(QPlainTextEdit *outputBox, const QString &output)
+// Minimal terminal-style renderer for a QPlainTextEdit. Tools like snap and flatpak
+// redraw a progress line in place with a bare carriage return (no newline), once per
+// poll. That output arrives split across many readyRead chunks, so the cursor state
+// (which column the next character overwrites) has to persist across calls -- otherwise
+// every redraw is appended as a new line and the box fills with hundreds of copies of
+// the same line.
+//
+//   '\n'  finalizes the current line and starts a new one
+//   '\r'  moves the cursor back to column 0 of the current line (overwrite in place)
+//   else  writes at the cursor, overwriting existing characters or extending the line
+class OutputRenderer
 {
-    if (!outputBox) {
-        return;
+public:
+    OutputRenderer() = default;
+    explicit OutputRenderer(QPlainTextEdit *box)
+        : outputBox(box)
+    {
     }
 
-    static const QRegularExpression statusKey {
-        R"(^\s*(Installing|Uninstalling|Updating)(?:\s+\d+/\d+(?:…|\.\.\.)?|(?:…|\.\.\.)))"};
+    void setOutputBox(QPlainTextEdit *box)
+    {
+        outputBox = box;
+        reset();
+    }
 
-    const QString cleanOutput = sanitizeOutputForDisplay(output);
+    // Forget the in-progress line. Call after clearing the box or editing it directly
+    // (the next append() also re-syncs from the document, so this is belt-and-braces).
+    void reset()
+    {
+        currentLine.clear();
+        cursorColumn = 0;
+    }
 
-    auto replaceLastStatusLine = [&](const QString &key, const QString &line) {
-        QTextBlock block = outputBox->document()->lastBlock();
-        while (block.isValid()) {
-            const QString text = block.text();
-            if (text.trimmed().isEmpty()) {
-                block = block.previous();
-                continue;
-            }
-            const QRegularExpressionMatch match = statusKey.match(text);
-            if (match.hasMatch() && match.captured(1) == key) {
-                QTextCursor cursor(block);
-                cursor.select(QTextCursor::LineUnderCursor);
-                cursor.removeSelectedText();
-                cursor.insertText(line);
-                return true;
-            }
-            break;
-        }
-        return false;
-    };
-
-    bool shouldScrollToBottom = false;
-
-    auto insertLine = [&](const QString &line, bool addNewline, bool overwriteCurrentLine) {
-        QTextCursor cursor = outputBox->textCursor();
-        cursor.movePosition(QTextCursor::End);
-        const bool shouldOverwrite = overwriteCurrentLine && !line.isEmpty();
-        if (shouldOverwrite) {
-            cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
-            cursor.removeSelectedText();
-        }
-        cursor.insertText(line);
-        if (addNewline) {
-            cursor.insertText("\n");
-        }
-        outputBox->setTextCursor(cursor);
-        if (addNewline || !shouldOverwrite) {
-            shouldScrollToBottom = true;
-        }
-    };
-
-    bool overwriteCurrentLine = false;
-    bool skipNextLineFeed = false;
-    QString buffer;
-    auto flushBuffer = [&](bool addNewline) {
-        if (buffer.isEmpty() && !addNewline) {
+    void append(const QString &output)
+    {
+        if (!outputBox || output.isEmpty()) {
             return;
         }
-        const QString line = buffer;
-        buffer.clear();
-        const QRegularExpressionMatch match = statusKey.match(line);
-        const QString key = match.hasMatch() ? match.captured(1) : QString();
-        const bool replaced = !key.isEmpty() && !overwriteCurrentLine && replaceLastStatusLine(key, line);
-        if (!replaced) {
-            insertLine(line, addNewline, overwriteCurrentLine);
-        }
-    };
 
-    for (int i = 0; i < cleanOutput.size(); ++i) {
-        const QChar ch = cleanOutput.at(i);
-        if (ch == QLatin1Char('\r')) {
-            if (buffer.isEmpty()) {
-                overwriteCurrentLine = true;
-                skipNextLineFeed = false;
+        // Re-sync with the document if something else edited the box since the last
+        // append (status messages, a clear(), the core-install retry truncation). During
+        // normal streaming the last block already equals currentLine, so this is a no-op
+        // and the cursor column persists across chunks.
+        const QString lastBlockText = outputBox->document()->lastBlock().text();
+        if (lastBlockText != currentLine) {
+            currentLine = lastBlockText;
+            cursorColumn = currentLine.size();
+        }
+
+        QStringList completedLines;
+        const int size = output.size();
+        for (int i = 0; i < size; ++i) {
+            const QChar ch = output.at(i);
+            if (ch == QChar(0x1B)) { // ESC: consume an ANSI control sequence
+                i = consumeEscape(output, i);
                 continue;
             }
-
-            const bool isProgressLine = statusKey.match(buffer).hasMatch();
-            // A bare carriage return (not part of a "\r\n" line ending) means the tool
-            // is redrawing the current line in place. flatpak's progress lines match
-            // statusKey and are collapsed below; snap's progress bar does not, so without
-            // this it would stack one line per redraw. Overwrite the line instead.
-            const bool isCrlf = (i + 1 < cleanOutput.size()) && cleanOutput.at(i + 1) == QLatin1Char('\n');
-            if (!isProgressLine && !isCrlf) {
-                flushBuffer(false);
-                overwriteCurrentLine = true;
-                skipNextLineFeed = false;
+            if (ch == QLatin1Char('\n')) {
+                completedLines.append(currentLine);
+                currentLine.clear();
+                cursorColumn = 0;
+            } else if (ch == QLatin1Char('\r')) {
+                cursorColumn = 0;
             } else {
-                flushBuffer(!isProgressLine);
-                overwriteCurrentLine = isProgressLine;
-                skipNextLineFeed = !isProgressLine;
+                if (cursorColumn < currentLine.size()) {
+                    currentLine[cursorColumn] = ch;
+                } else {
+                    currentLine.append(ch);
+                }
+                ++cursorColumn;
             }
-        } else if (ch == QLatin1Char('\n')) {
-            if (skipNextLineFeed) {
-                skipNextLineFeed = false;
-                overwriteCurrentLine = false;
-                continue;
-            }
-            flushBuffer(true);
-            overwriteCurrentLine = false;
-        } else {
-            skipNextLineFeed = false;
-            buffer.append(ch);
         }
-    }
-    flushBuffer(false);
 
-    if (shouldScrollToBottom) {
+        // The document's last block still holds the previous currentLine. Replace it
+        // with the lines completed in this chunk followed by the live current line.
+        QTextCursor cursor(outputBox->document());
+        cursor.movePosition(QTextCursor::End);
+        cursor.movePosition(QTextCursor::StartOfBlock, QTextCursor::KeepAnchor);
+        cursor.removeSelectedText();
+        QString replacement;
+        for (const QString &line : completedLines) {
+            replacement += line;
+            replacement += QLatin1Char('\n');
+        }
+        replacement += currentLine;
+        cursor.insertText(replacement);
+
         outputBox->verticalScrollBar()->setValue(outputBox->verticalScrollBar()->maximum());
     }
-}
+
+private:
+    // Handle the ANSI escape sequence starting at escIndex (output[escIndex] == ESC).
+    // Honors "erase in line" (CSI K), which tools use to clear a progress line before
+    // printing a shorter final line; everything else (colors, cursor show/hide, status
+    // reports) is skipped. Returns the index of the last consumed character.
+    int consumeEscape(const QString &output, int escIndex)
+    {
+        const int size = output.size();
+        if (escIndex + 1 >= size || output.at(escIndex + 1) != QLatin1Char('[')) {
+            return escIndex; // lone ESC or non-CSI escape: drop just the ESC
+        }
+        int j = escIndex + 2;
+        while (j < size) {
+            const QChar c = output.at(j);
+            if ((c >= QLatin1Char('0') && c <= QLatin1Char('9')) || c == QLatin1Char(';')
+                || c == QLatin1Char('?')) {
+                ++j;
+            } else {
+                break;
+            }
+        }
+        if (j >= size) {
+            return size - 1; // sequence split across chunks: drop what we have
+        }
+        const QChar finalByte = output.at(j);
+        const QString params = output.mid(escIndex + 2, j - (escIndex + 2));
+        if (finalByte == QLatin1Char('K')) {
+            if (params.isEmpty() || params == QLatin1String("0")) {
+                currentLine.truncate(cursorColumn); // erase from cursor to end of line
+            } else if (params == QLatin1String("2")) {
+                currentLine.clear(); // erase the whole line
+                cursorColumn = 0;
+            }
+        }
+        return j;
+    }
+
+    QPlainTextEdit *outputBox = nullptr;
+    QString currentLine;
+    int cursorColumn = 0;
+};
 
 } // namespace OutputRender
