@@ -303,12 +303,39 @@ endif()
 
 add_test(NAME PopularFilterProxyTest COMMAND test_popularfilterproxy)
 
+# Test for the Output-tab rendering helpers (carriage-return / progress handling)
+add_executable(test_outputrender
+    test_outputrender.cpp
+)
+
+target_link_libraries(test_outputrender
+    Qt6::Core
+    Qt6::Test
+    Qt6::Widgets
+)
+
+target_compile_options(test_outputrender PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_outputrender PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_outputrender PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME OutputRenderTest COMMAND test_outputrender)
+
 # Add convenience target to run all tests
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
     DEPENDS test_versionnumber test_aptcache test_packagemodel test_flatpakmodel
             test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
-            test_popularmodel test_popularfilterproxy
+            test_popularmodel test_popularfilterproxy test_outputrender
     COMMENT "Running all tests"
 )
 

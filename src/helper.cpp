@@ -33,7 +33,17 @@
 #include <QSet>
 #include <QtXml/QDomDocument>
 
+#include <cerrno>
 #include <cstdio>
+#include <cstdlib>
+#include <vector>
+
+#include <pty.h>
+#include <sys/ioctl.h>
+#include <sys/select.h>
+#include <sys/wait.h>
+#include <termios.h>
+#include <unistd.h>
 
 namespace
 {
@@ -149,6 +159,128 @@ void printError(const QString &message)
     return result;
 }
 
+// Run a command attached to a pseudo-terminal so tools that gate their progress
+// output on isatty() (notably `snap`) emit their live progress instead of staying
+// silent until completion. Output is relayed to our stdout in real time and also
+// captured. stdin is forwarded so the child can still read input if it needs to.
+[[nodiscard]] ProcessResult runProcessOnPty(const QString &program, const QStringList &args,
+                                            const QHash<QString, QString> &environment)
+{
+    ProcessResult result;
+
+    // Materialize argv and the environment overrides before forking; the child must
+    // avoid heap allocation between fork() and exec().
+    const QByteArray programBytes = program.toLocal8Bit();
+    QList<QByteArray> argStorage;
+    argStorage.reserve(args.size());
+    for (const QString &arg : args) {
+        argStorage.append(arg.toLocal8Bit());
+    }
+    std::vector<char *> argv;
+    argv.reserve(static_cast<size_t>(args.size()) + 2);
+    argv.push_back(const_cast<char *>(programBytes.constData()));
+    for (QByteArray &arg : argStorage) {
+        argv.push_back(arg.data());
+    }
+    argv.push_back(nullptr);
+
+    QList<QPair<QByteArray, QByteArray>> envOverrides;
+    envOverrides.reserve(environment.size());
+    for (auto it = environment.cbegin(); it != environment.cend(); ++it) {
+        envOverrides.append({it.key().toLocal8Bit(), it.value().toLocal8Bit()});
+    }
+
+    // Hand the child a roomy terminal so progress bars are not truncated.
+    struct winsize ws {};
+    ws.ws_row = 24;
+    ws.ws_col = 120;
+
+    int masterFd = -1;
+    const pid_t pid = forkpty(&masterFd, nullptr, nullptr, &ws);
+    if (pid < 0) {
+        result.standardError = QByteArrayLiteral("Failed to allocate pseudo-terminal");
+        result.exitCode = 127;
+        return result;
+    }
+
+    if (pid == 0) {
+        // Child: the helper is single-threaded, so applying the environment with
+        // setenv() before exec() is safe here.
+        for (const auto &envVar : envOverrides) {
+            setenv(envVar.first.constData(), envVar.second.constData(), 1);
+        }
+        execv(programBytes.constData(), argv.data());
+        _exit(127); // exec failed
+    }
+
+    result.started = true;
+
+    const int stdinFd = fileno(stdin);
+    bool stdinOpen = stdinFd >= 0;
+    char buffer[4096];
+
+    for (;;) {
+        fd_set readFds;
+        FD_ZERO(&readFds);
+        FD_SET(masterFd, &readFds);
+        int maxFd = masterFd;
+        if (stdinOpen) {
+            FD_SET(stdinFd, &readFds);
+            maxFd = std::max(maxFd, stdinFd);
+        }
+
+        if (select(maxFd + 1, &readFds, nullptr, nullptr, nullptr) < 0) {
+            if (errno == EINTR) {
+                continue;
+            }
+            break;
+        }
+
+        if (FD_ISSET(masterFd, &readFds)) {
+            const ssize_t count = read(masterFd, buffer, sizeof(buffer));
+            if (count > 0) {
+                const QByteArray chunk = QByteArray::fromRawData(buffer, static_cast<int>(count));
+                result.standardOutput += chunk;
+                writeAndFlush(stdout, chunk);
+            } else if (count == 0) {
+                break;
+            } else if (errno != EINTR && errno != EAGAIN) {
+                break; // EIO on Linux once the child has closed the slave side
+            }
+        }
+
+        if (stdinOpen && FD_ISSET(stdinFd, &readFds)) {
+            const ssize_t count = read(stdinFd, buffer, sizeof(buffer));
+            if (count > 0) {
+                ssize_t written = 0;
+                while (written < count) {
+                    const ssize_t bytes = write(masterFd, buffer + written, static_cast<size_t>(count - written));
+                    if (bytes <= 0) {
+                        break;
+                    }
+                    written += bytes;
+                }
+            } else if (count == 0 || (errno != EINTR && errno != EAGAIN)) {
+                stdinOpen = false; // our stdin closed; stop forwarding
+            }
+        }
+    }
+
+    int status = 0;
+    while (waitpid(pid, &status, 0) < 0 && errno == EINTR) {
+    }
+    close(masterFd);
+
+    if (WIFEXITED(status)) {
+        result.exitStatus = QProcess::NormalExit;
+        result.exitCode = WEXITSTATUS(status);
+    } else {
+        result.exitStatus = QProcess::CrashExit;
+        result.exitCode = 1;
+    }
+    return result;
+}
+
 [[nodiscard]] int relayResult(const ProcessResult &result)
 {
     if (!result.started) {
@@ -190,6 +322,12 @@ void printError(const QString &message)
             path = path.isEmpty() ? QStringLiteral("/snap/bin") : path + QStringLiteral(":/snap/bin");
         }
         commandEnvironment.insert(QStringLiteral("PATH"), path);
+    }
+
+    if (command == QLatin1String("snap")) {
+        // snap stays silent unless it believes it is writing to a terminal, so run it
+        // under a pseudo-terminal to surface its live progress in the Output tab.
+        return relayResult(runProcessOnPty(resolvedCommand, commandArgs, commandEnvironment));
     }
 
     return relayResult(runProcess(resolvedCommand, commandArgs, commandEnvironment));

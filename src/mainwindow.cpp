@@ -48,6 +48,7 @@
 #include "about.h"
 #include "aptcache.h"
 #include "checkableheaderview.h"
+#include "outputrender.h"
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
@@ -58,15 +59,7 @@ using namespace std::chrono_literals;
 namespace {
 constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
 
-QString sanitizeOutputForDisplay(const QString &output)
-{
-    static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
-    static const QRegularExpression ansiQuery {R"(\x1B\[[0-9;?]*n)"};
-    QString cleanOutput = output;
-    cleanOutput.remove(ansiEscape);
-    cleanOutput.remove(ansiQuery);
-    return cleanOutput;
-}
+using OutputRender::sanitizeOutputForDisplay;
 
 QString debconfFrontend()
 {
@@ -852,100 +845,7 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
-    static const QRegularExpression statusKey {
-        R"(^\s*(Installing|Uninstalling|Updating)(?:\s+\d+/\d+(?:…|\.\.\.)?|(?:…|\.\.\.)))"};
-
-    // Remove ANSI escape sequences
-    QString cleanOutput = sanitizeOutputForDisplay(output);
-
-    auto replaceLastStatusLine = [&](const QString &key, const QString &line) {
-        QTextBlock block = ui->outputBox->document()->lastBlock();
-        while (block.isValid()) {
-            const QString text = block.text();
-            if (text.trimmed().isEmpty()) {
-                block = block.previous();
-                continue;
-            }
-            const QRegularExpressionMatch match = statusKey.match(text);
-            if (match.hasMatch() && match.captured(1) == key) {
-                QTextCursor cursor(block);
-                cursor.select(QTextCursor::LineUnderCursor);
-                cursor.removeSelectedText();
-                cursor.insertText(line);
-                return true;
-            }
-            break;
-        }
-        return false;
-    };
-
-    bool shouldScrollToBottom = false;
-
-    auto insertLine = [&](const QString &line, bool addNewline, bool overwriteCurrentLine) {
-        QTextCursor cursor = ui->outputBox->textCursor();
-        cursor.movePosition(QTextCursor::End);
-        const bool shouldOverwrite = overwriteCurrentLine && !line.isEmpty();
-        if (shouldOverwrite) {
-            cursor.movePosition(QTextCursor::StartOfLine, QTextCursor::KeepAnchor);
-            cursor.removeSelectedText();
-        }
-        cursor.insertText(line);
-        if (addNewline) {
-            cursor.insertText("\n");
-        }
-        ui->outputBox->setTextCursor(cursor);
-        if (addNewline || !shouldOverwrite) {
-            shouldScrollToBottom = true;
-        }
-    };
-
-    bool overwriteCurrentLine = false;
-    bool skipNextLineFeed = false;
-    QString buffer;
-    auto flushBuffer = [&](bool addNewline) {
-        if (buffer.isEmpty() && !addNewline) {
-            return;
-        }
-        const QString line = buffer;
-        buffer.clear();
-        const QRegularExpressionMatch match = statusKey.match(line);
-        const QString key = match.hasMatch() ? match.captured(1) : QString();
-        const bool replaced = !key.isEmpty() && !overwriteCurrentLine && replaceLastStatusLine(key, line);
-        if (!replaced) {
-            insertLine(line, addNewline, overwriteCurrentLine);
-        }
-    };
-
-    for (const QChar ch : cleanOutput) {
-        if (ch == QLatin1Char('\r')) {
-            if (buffer.isEmpty()) {
-                overwriteCurrentLine = true;
-                skipNextLineFeed = false;
-                continue;
-            }
-
-            const bool isProgressLine = statusKey.match(buffer).hasMatch();
-            flushBuffer(!isProgressLine);
-            overwriteCurrentLine = isProgressLine;
-            skipNextLineFeed = !isProgressLine;
-        } else if (ch == QLatin1Char('\n')) {
-            if (skipNextLineFeed) {
-                skipNextLineFeed = false;
-                overwriteCurrentLine = false;
-                continue;
-            }
-            flushBuffer(true);
-            overwriteCurrentLine = false;
-        } else {
-            skipNextLineFeed = false;
-            buffer.append(ch);
-        }
-    }
-    flushBuffer(false);
-
-    if (shouldScrollToBottom) {
-        ui->outputBox->verticalScrollBar()->setValue(ui->outputBox->verticalScrollBar()->maximum());
-    }
+    OutputRender::appendProcessOutput(ui->outputBox, output);
 }
 
 void MainWindow::loadPmFiles()
@@ -4452,21 +4352,50 @@ void MainWindow::setupSnapd()
     if (ready && !coreInstalled) {
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        // Wait (bounded) for snapd to finish seeding first; installing before that
-        // fails with "too early for operation, device not yet seeded". Read-only, so
-        // it needs no elevation. A stale helper skips this, hence doing it here too.
-        Cmd waitCmd;
-        waitCmd.run(QStringLiteral("timeout 120 snap wait system seed.loaded"), Cmd::QuietMode::Yes);
-        // Route through the MXPI helper (auth_admin_keep) so the password cached by the
-        // snapd apt install is reused instead of prompting again.
-        cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("install"), QStringLiteral("core")});
-        const QString coreOutput = cmd.readAllOutput().trimmed();
+        appendFlatpakStatusMessage(ui->outputBox, tr("Installing the base \"core\" snap..."));
+        // Remember where this attempt's output starts so a transient first-try failure
+        // can be discarded before retrying, keeping it from reaching the user.
+        const int outputAnchor = ui->outputBox->document()->characterCount() - 1;
+
+        // Just after snapd is enabled the daemon is often not ready yet: the first
+        // install can fail with "too early for operation, device not yet seeded" or a
+        // transient connection error even though a later attempt succeeds. Wait for
+        // seeding, then retry a few times with a short backoff, surfacing only the last
+        // attempt's output so the user never sees the transient error.
+        constexpr int maxAttempts = 3;
+        QString coreOutput;
+        for (int attempt = 1; attempt <= maxAttempts && !coreInstalled; ++attempt) {
+            // Bounded, read-only wait for seeding (needs no elevation). A stale helper
+            // skips its own wait, hence doing it here too.
+            Cmd waitCmd;
+            waitCmd.run(QStringLiteral("timeout 120 snap wait system seed.loaded"), Cmd::QuietMode::Yes);
+            if (attempt > 1) {
+                // Give snapd a moment to finish coming up before trying again.
+                Cmd backoffCmd;
+                backoffCmd.run(QStringLiteral("sleep 3"), Cmd::QuietMode::Yes);
+            }
+            // Route through the MXPI helper (auth_admin_keep) so the password cached by
+            // the snapd apt install is reused instead of prompting again.
+            cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("install"), QStringLiteral("core")});
+            coreOutput = cmd.readAllOutput().trimmed();
+            coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
+            if (coreInstalled) {
+                break;
+            }
+            // Failed and a retry remains: drop this attempt's output so the next try
+            // starts clean and the transient error is not surfaced.
+            if (attempt < maxAttempts) {
+                QTextCursor cursor(ui->outputBox->document());
+                cursor.setPosition(outputAnchor);
+                cursor.movePosition(QTextCursor::End, QTextCursor::KeepAnchor);
+                cursor.removeSelectedText();
+            }
+        }
         if (!coreOutput.isEmpty()) {
             setupOutput = coreOutput;
         }
         setCursor(QCursor(Qt::ArrowCursor));
         displaySnaps(true);
-        coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
     }
 
     ready = isSnapdReady();
