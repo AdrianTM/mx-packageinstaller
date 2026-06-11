@@ -220,12 +220,13 @@ void TestFlatpakModel::testDataUserRole()
 
 void TestFlatpakModel::testSizeStringToBytes()
 {
-    QCOMPARE(FlatpakModel::sizeStringToBytes("500 kB"), 500ULL * 1024ULL);
-    QCOMPARE(FlatpakModel::sizeStringToBytes("1,0 MB"), 1024ULL * 1024ULL);
+    QCOMPARE(FlatpakModel::sizeStringToBytes("500 kB"), 500ULL * 1000ULL);
+    QCOMPARE(FlatpakModel::sizeStringToBytes("1,0 MB"), 1000ULL * 1000ULL);
     QCOMPARE(FlatpakModel::sizeStringToBytes(QString("1,0") + QChar(0x00a0) + "GB"),
-             1024ULL * 1024ULL * 1024ULL);
+             1000ULL * 1000ULL * 1000ULL);
     QCOMPARE(FlatpakModel::sizeStringToBytes("1.1 GB"),
-             static_cast<quint64>(1.1 * 1024.0 * 1024.0 * 1024.0));
+             static_cast<quint64>(1.1 * 1000.0 * 1000.0 * 1000.0));
+    QCOMPARE(FlatpakModel::sizeStringToBytes("1 MiB"), 1024ULL * 1024ULL);
     QCOMPARE(FlatpakModel::sizeStringToBytes("42 bytes"), 42ULL);
 }
 

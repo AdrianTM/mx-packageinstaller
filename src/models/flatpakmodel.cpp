@@ -345,15 +345,24 @@ quint64 FlatpakModel::sizeStringToBytes(const QString &size)
         return 0;
     }
 
+    // Flatpak formats sizes with SI decimal units (1 kB = 1000 bytes)
     const QString unit = match.captured(2).toUpper();
     quint64 multiplier = 1;
-    if (unit == QLatin1String("KB") || unit == QLatin1String("KIB")) {
+    if (unit == QLatin1String("KB")) {
+        multiplier = 1000ULL;
+    } else if (unit == QLatin1String("KIB")) {
         multiplier = 1024ULL;
-    } else if (unit == QLatin1String("MB") || unit == QLatin1String("MIB")) {
+    } else if (unit == QLatin1String("MB")) {
+        multiplier = 1000ULL * 1000ULL;
+    } else if (unit == QLatin1String("MIB")) {
         multiplier = 1024ULL * 1024ULL;
-    } else if (unit == QLatin1String("GB") || unit == QLatin1String("GIB")) {
+    } else if (unit == QLatin1String("GB")) {
+        multiplier = 1000ULL * 1000ULL * 1000ULL;
+    } else if (unit == QLatin1String("GIB")) {
         multiplier = 1024ULL * 1024ULL * 1024ULL;
-    } else if (unit == QLatin1String("TB") || unit == QLatin1String("TIB")) {
+    } else if (unit == QLatin1String("TB")) {
+        multiplier = 1000ULL * 1000ULL * 1000ULL * 1000ULL;
+    } else if (unit == QLatin1String("TIB")) {
         multiplier = 1024ULL * 1024ULL * 1024ULL * 1024ULL;
     }
 
