@@ -1,6 +1,12 @@
-mx-packageinstaller (26.06.2) mx; urgency=medium
+mx-packageinstaller (26.06.3) mx; urgency=medium
 
   * Fix Flatpak size sorting
+  * Fix size units in Flatpak
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 11 Jun 2026 16:08:35 -0400
+
+mx-packageinstaller (26.06.2) mx; urgency=medium
+
   * Show live Snap progress in the Output tab while Snaps download and install,
     instead of leaving it blank until the operation finishes
   * Make first-time Snap setup more reliable by automatically retrying the
