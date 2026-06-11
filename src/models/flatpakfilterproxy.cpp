@@ -109,6 +109,18 @@ bool FlatpakFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
 bool FlatpakFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+    if (left.column() == FlatCol::Size && right.column() == FlatCol::Size) {
+        const quint64 leftSize = left.data(Qt::UserRole).toULongLong();
+        const quint64 rightSize = right.data(Qt::UserRole).toULongLong();
+        if (leftSize != rightSize) {
+            return leftSize < rightSize;
+        }
+
+        const QString leftName = left.siblingAtColumn(FlatCol::Name).data(Qt::DisplayRole).toString();
+        const QString rightName = right.siblingAtColumn(FlatCol::Name).data(Qt::DisplayRole).toString();
+        return QString::localeAwareCompare(leftName, rightName) < 0;
+    }
+
     return QSortFilterProxyModel::lessThan(left, right);
 }
 

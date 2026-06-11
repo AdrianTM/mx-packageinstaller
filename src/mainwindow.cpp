@@ -575,13 +575,7 @@ bool MainWindow::updateApt()
 // Convert different size units to bytes
 quint64 MainWindow::convert(const QString &size)
 {
-    static const QMap<QString, quint64> multipliers {{"KB", KiB}, {"MB", MiB}, {"GB", GiB}};
-
-    const QString number = size.section(QChar(160), 0, 0);
-    const QString unit = size.section(QChar(160), 1).toUpper();
-    const double value = number.toDouble();
-
-    return static_cast<quint64>(value * multipliers.value(unit, 1)); // Default multiplier 1 for bytes
+    return FlatpakModel::sizeStringToBytes(size);
 }
 
 // Convert to string (#bytes, KiB, MiB, and GiB)

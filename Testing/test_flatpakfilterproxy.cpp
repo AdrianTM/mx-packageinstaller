@@ -12,6 +12,7 @@ private slots:
     void testAllowedRefs();
     void testStatusFilter();
     void testSearchText();
+    void testSizeSortUsesBytes();
 
 private:
     QVector<FlatpakData> createFlatpaks() const;
@@ -100,6 +101,44 @@ void TestFlatpakFilterProxy::testSearchText()
 
     QCOMPARE(proxy.rowCount(), 1);
     QCOMPARE(proxy.index(0, FlatCol::Name).data().toString(), QString("Firefox"));
+}
+
+void TestFlatpakFilterProxy::testSizeSortUsesBytes()
+{
+    QVector<FlatpakData> flatpaks;
+
+    auto addFlatpak = [&flatpaks](const QString &name, const QString &size) {
+        FlatpakData fp;
+        fp.shortName = name;
+        fp.longName = QStringLiteral("org.test.") + name;
+        fp.size = size;
+        fp.canonicalRef = QStringLiteral("app/org.test.") + name + QStringLiteral("/x86_64/stable");
+        fp.fullName = QStringLiteral("org.test.") + name + QStringLiteral("/x86_64/stable");
+        fp.status = Status::NotInstalled;
+        flatpaks.append(fp);
+    };
+
+    addFlatpak("OneGb", "1,0 GB");
+    addFlatpak("HundredMb", "100,0 MB");
+    addFlatpak("OneMb", "1,0 MB");
+    addFlatpak("OnePointOneGb", "1,1 GB");
+    addFlatpak("FiveHundredKb", "500 kB");
+
+    FlatpakModel model;
+    model.setFlatpakData(flatpaks);
+
+    FlatpakFilterProxy proxy;
+    proxy.setSourceModel(&model);
+    proxy.sort(FlatCol::Size, Qt::AscendingOrder);
+
+    QStringList names;
+    for (int row = 0; row < proxy.rowCount(); ++row) {
+        names.append(proxy.index(row, FlatCol::Name).data().toString());
+    }
+
+    const QStringList expected {"FiveHundredKb", "OneMb", "HundredMb", "OneGb",
+                                "OnePointOneGb"};
+    QCOMPARE(names, expected);
 }
 
 QTEST_MAIN(TestFlatpakFilterProxy)

@@ -21,6 +21,7 @@ private slots:
     void testDataDisplayRole();
     void testDataCheckStateRole();
     void testDataUserRole();
+    void testSizeStringToBytes();
 
     // Check state tests
     void testCheckStateChange();
@@ -215,6 +216,17 @@ void TestFlatpakModel::testDataUserRole()
     // CanonicalRef via UserRole+1
     QCOMPARE(model.data(fullNameIndex, Qt::UserRole + 1).toString(),
              QString("app/org.gimp.GIMP/x86_64/stable"));
+}
+
+void TestFlatpakModel::testSizeStringToBytes()
+{
+    QCOMPARE(FlatpakModel::sizeStringToBytes("500 kB"), 500ULL * 1024ULL);
+    QCOMPARE(FlatpakModel::sizeStringToBytes("1,0 MB"), 1024ULL * 1024ULL);
+    QCOMPARE(FlatpakModel::sizeStringToBytes(QString("1,0") + QChar(0x00a0) + "GB"),
+             1024ULL * 1024ULL * 1024ULL);
+    QCOMPARE(FlatpakModel::sizeStringToBytes("1.1 GB"),
+             static_cast<quint64>(1.1 * 1024.0 * 1024.0 * 1024.0));
+    QCOMPARE(FlatpakModel::sizeStringToBytes("42 bytes"), 42ULL);
 }
 
 void TestFlatpakModel::testCheckStateChange()
@@ -429,7 +441,9 @@ void TestFlatpakModel::testSetInstalledSizes()
     model.setInstalledSizes(sizeMap);
 
     QCOMPARE(model.flatpakAt(0)->size, QString("250 MB"));
+    QCOMPARE(model.flatpakAt(0)->sizeBytes, FlatpakModel::sizeStringToBytes("250 MB"));
     QCOMPARE(model.flatpakAt(1)->size, QString("180 MB"));
+    QCOMPARE(model.flatpakAt(1)->sizeBytes, FlatpakModel::sizeStringToBytes("180 MB"));
     QCOMPARE(model.flatpakAt(2)->size, QString("150 MB"));  // Unchanged
 }
 
