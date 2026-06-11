@@ -56,6 +56,7 @@
 
 #include "about.h"
 #include "checkableheaderview.h"
+#include "sizeutils.h"
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
@@ -177,6 +178,14 @@ public:
                 return 3;
             };
             return priority(leftStatus) < priority(rightStatus);
+        }
+        if (column == FlatCol::Size) {
+            const quint64 leftSize = data(FlatCol::Size, Qt::UserRole).toULongLong();
+            const quint64 rightSize = other.data(FlatCol::Size, Qt::UserRole).toULongLong();
+            if (leftSize != rightSize) {
+                return leftSize < rightSize;
+            }
+            return QString::localeAwareCompare(text(FlatCol::Name), other.text(FlatCol::Name)) < 0;
         }
         return QTreeWidgetItem::operator<(other);
     }
@@ -690,13 +699,7 @@ QStringList MainWindow::getAutoremovablePackages()
 // Convert different size units to bytes
 quint64 MainWindow::convert(const QString &size)
 {
-    static const QMap<QString, quint64> multipliers {{"KB", KiB}, {"MB", MiB}, {"GB", GiB}};
-
-    const QString number = size.section(QChar(160), 0, 0);
-    const QString unit = size.section(QChar(160), 1).toUpper();
-    const double value = number.toDouble();
-
-    return static_cast<quint64>(value * multipliers.value(unit, 1)); // Default multiplier 1 for bytes
+    return SizeUtils::sizeStringToBytes(size);
 }
 
 // Convert to string (#bytes, KiB, MiB, and GiB)
@@ -1576,6 +1579,7 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     widget_item->setText(FlatCol::Version, version);
     widget_item->setText(FlatCol::Branch, branch);
     widget_item->setText(FlatCol::Size, size);
+    widget_item->setData(FlatCol::Size, Qt::UserRole, SizeUtils::sizeStringToBytes(size));
     widget_item->setData(FlatCol::FullName, Qt::UserRole, originalRef.isEmpty() ? name : originalRef);
     widget_item->setData(FlatCol::FullName, Qt::UserRole + 1, name); // canonical for matching
     widget_item->setData(0, Qt::UserRole, true);
