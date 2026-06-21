@@ -160,6 +160,17 @@ QString sanitizeOutputForDisplay(const QString &output)
     return cleanOutput;
 }
 
+[[nodiscard]] QString extractPackageInfoField(const QString &text, const QString &field)
+{
+    const QString paddedPrefix = field + QLatin1Char(' ');
+    for (const QString &line : text.split('\n')) {
+        if (line.startsWith(paddedPrefix)) {
+            return line.section(':', 1).trimmed();
+        }
+    }
+    return {};
+}
+
 class FlatpakTreeItem : public QTreeWidgetItem
 {
 public:
@@ -691,7 +702,7 @@ QStringList MainWindow::getAutoremovablePackages()
     if (cachedAutoremovableFetched) {
         return cachedAutoremovable;
     }
-    cachedAutoremovable = cmd.getOut("pacman -Qtdq").split('\n', Qt::SkipEmptyParts);
+    cachedAutoremovable = cmd.getOut("LANG=C pacman -Qtdq").split('\n', Qt::SkipEmptyParts);
     cachedAutoremovableFetched = true;
     return cachedAutoremovable;
 }
@@ -2218,7 +2229,7 @@ bool MainWindow::checkInstalled(const QVariant &names) const
             if (name.trimmed().isEmpty()) {
                 continue;
             }
-            const QString out = shell.getOut("pacman -Qq --color never " + shellQuote(name), Cmd::QuietMode::Yes);
+            const QString out = shell.getOut("LANG=C pacman -Qq --color never " + shellQuote(name), Cmd::QuietMode::Yes);
             Q_UNUSED(out);
             if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
                 return false;
@@ -2595,16 +2606,33 @@ void MainWindow::showAurPackageInfo(const QString &packageName)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
 
+    // Keep the AUR metadata from paru -Si (votes, first submitted, last modified, etc.)
+    // and append installed-package details from pacman -Qi when the package is installed.
+    QString aurInfo = shell.getOut("LANG=C " + paruPath + " -Si --color never " + packageName);
+    const bool hasAurInfo = !isErrorOutput(aurInfo);
+    QString installedInfo = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
+    const bool hasInstalledInfo = !isErrorOutput(installedInfo);
+
     QString msg;
-    // For installed packages, pacman -Qi gives more detail (install date, size, etc.)
-    if (installedPackages.contains(packageName)) {
-        msg = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
-    }
-    if (isErrorOutput(msg)) {
-        msg = shell.getOut("LANG=C " + paruPath + " -Si --color never " + packageName);
-    }
-    if (isErrorOutput(msg)) {
-        msg = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
+    if (hasAurInfo) {
+        msg = aurInfo;
+        if (hasInstalledInfo) {
+            QStringList installedFields;
+            for (const QString &field : {QStringLiteral("Installed Size"), QStringLiteral("Packager"),
+                                         QStringLiteral("Build Date"), QStringLiteral("Install Date"),
+                                         QStringLiteral("Install Reason"), QStringLiteral("Required By"),
+                                         QStringLiteral("Optional For")}) {
+                const QString value = extractPackageInfoField(installedInfo, field);
+                if (!value.isEmpty() && extractPackageInfoField(aurInfo, field).isEmpty()) {
+                    installedFields.append(field + QStringLiteral(" : ") + value);
+                }
+            }
+            if (!installedFields.isEmpty()) {
+                msg += QStringLiteral("\n\nInstalled package information:\n") + installedFields.join('\n');
+            }
+        }
+    } else {
+        msg = installedInfo;
     }
     QApplication::restoreOverrideCursor();
 
@@ -2638,11 +2666,32 @@ void MainWindow::showRepoPackageInfo(const QString &packageName)
 
     // On the repository view, prefer the current repo package metadata so users can
     // inspect the newest available version (including build date) even when they already
-    // have an older version installed locally.
-    QString msg = shell.getOut("LANG=C pacman -Si --color never " + packageName);
-    if (isErrorOutput(msg)) {
-        // Fall back to the installed package record only when the repo package lookup fails.
-        msg = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
+    // have an older version installed locally. Append installed-package fields from
+    // pacman -Qi so the dialog keeps install date/reason and reverse-dependency info.
+    QString repoInfo = shell.getOut("LANG=C pacman -Si --color never " + packageName);
+    const bool hasRepoInfo = !isErrorOutput(repoInfo);
+    QString installedInfo = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
+    const bool hasInstalledInfo = !isErrorOutput(installedInfo);
+
+    QString msg;
+    if (hasRepoInfo) {
+        msg = repoInfo;
+        if (hasInstalledInfo) {
+            QStringList installedFields;
+            for (const QString &field : {QStringLiteral("Install Date"), QStringLiteral("Install Reason"),
+                                         QStringLiteral("Install Script"), QStringLiteral("Required By"),
+                                         QStringLiteral("Optional For")}) {
+                const QString value = extractPackageInfoField(installedInfo, field);
+                if (!value.isEmpty() && extractPackageInfoField(repoInfo, field).isEmpty()) {
+                    installedFields.append(field + QStringLiteral(" : ") + value);
+                }
+            }
+            if (!installedFields.isEmpty()) {
+                msg += QStringLiteral("\n\nInstalled package information:\n") + installedFields.join('\n');
+            }
+        }
+    } else {
+        msg = installedInfo;
     }
     QApplication::restoreOverrideCursor();
 
@@ -3296,7 +3345,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
             return true;
         }
         const QStringList installed
-            = shell.getOut("pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
+            = shell.getOut("LANG=C pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
             return false;
         }
@@ -3319,7 +3368,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
 
         QHash<QString, QString> aurUpdates;
         const QStringList updates
-            = shell.getOut(paruPath + " -Qua --color never").split('\n', Qt::SkipEmptyParts);
+            = shell.getOut("LANG=C " + paruPath + " -Qua --color never").split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0) {
             aurUpdates.reserve(updates.size());
             for (const QString &line : updates) {
@@ -3350,7 +3399,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
         return '\'' + escaped + '\'';
     };
     QStringList results
-        = shell.getOut(paruPath + " -Ssq --color never " + shellQuote(term)).split('\n', Qt::SkipEmptyParts);
+        = shell.getOut("LANG=C " + paruPath + " -Ssq --color never " + shellQuote(term)).split('\n', Qt::SkipEmptyParts);
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         return false;
     }
@@ -3363,7 +3412,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
         results = results.mid(0, maxResults);
     }
 
-    const QString infoOutput = shell.getOut(paruPath + " -Si --color never " + results.join(' '));
+    const QString infoOutput = shell.getOut("LANG=C " + paruPath + " -Si --color never " + results.join(' '));
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         for (const QString &name : std::as_const(results)) {
             aurList.insert(name, {QString(), QString()});
@@ -3434,7 +3483,7 @@ bool MainWindow::buildRepoCache(bool showProgress)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
 
-    const QString infoOutput = shell.getOut("pacman -Ss --color never");
+    const QString infoOutput = shell.getOut("LANG=C pacman -Ss --color never");
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         return finish(false);
     }
@@ -3513,7 +3562,7 @@ void MainWindow::applyRepoFilter(int statusFilter)
         }
         Cmd shell;
         QScopedValueRollback<bool> guard(suppressCmdOutput, true);
-        const QStringList lines = shell.getOut("pacman -Qq").split('\n', Qt::SkipEmptyParts);
+        const QStringList lines = shell.getOut("LANG=C pacman -Qq").split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
             return;
         }
@@ -3538,7 +3587,7 @@ void MainWindow::applyRepoFilter(int statusFilter)
         }
         Cmd shell;
         QScopedValueRollback<bool> guard(suppressCmdOutput, true);
-        const QStringList lines = shell.getOut("pacman -Qu --color never").split('\n', Qt::SkipEmptyParts);
+        const QStringList lines = shell.getOut("LANG=C pacman -Qu --color never").split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
             return;
         }
@@ -3611,7 +3660,7 @@ void MainWindow::startAurInstalledCacheLoad()
         Cmd shell;
 
         const QStringList installedLines
-            = shell.getOut("pacman -Qm --color never", Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+            = shell.getOut("LANG=C pacman -Qm --color never", Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
             return result;
         }
@@ -3685,7 +3734,7 @@ void MainWindow::startAurUpgradesLoad()
         QHash<QString, QString> updates;
         Cmd shell;
         const QStringList lines
-            = shell.getOut(paruPath + " -Qua --color never", Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+            = shell.getOut("LANG=C " + paruPath + " -Qua --color never", Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
             return updates;
         }
@@ -4377,14 +4426,14 @@ void MainWindow::filterChanged(const QString &arg1)
         };
 
         const QStringList aurInstalledLines
-            = cmd.getOut("pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
+            = cmd.getOut("LANG=C pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
         const QSet<QString> aurInstalled = parseNameSet(aurInstalledLines);
 
         QSet<QString> aurUpgradable;
         QHash<QString, QString> aurUpgradableVersions;
         if (statusFilter == Status::Upgradable) {
             const QStringList aurUpgradableLines
-                = cmd.getOut("paru -Qua --color never").split('\n', Qt::SkipEmptyParts);
+                = cmd.getOut("LANG=C paru -Qua --color never").split('\n', Qt::SkipEmptyParts);
             aurUpgradable.reserve(aurUpgradableLines.size());
             aurUpgradableVersions.reserve(aurUpgradableLines.size());
             for (const QString &line : aurUpgradableLines) {
