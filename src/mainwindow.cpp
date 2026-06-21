@@ -2598,13 +2598,13 @@ void MainWindow::showAurPackageInfo(const QString &packageName)
     QString msg;
     // For installed packages, pacman -Qi gives more detail (install date, size, etc.)
     if (installedPackages.contains(packageName)) {
-        msg = shell.getOut("pacman -Qi --color never " + packageName);
+        msg = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
     }
     if (isErrorOutput(msg)) {
-        msg = shell.getOut(paruPath + " -Si --color never " + packageName);
+        msg = shell.getOut("LANG=C " + paruPath + " -Si --color never " + packageName);
     }
     if (isErrorOutput(msg)) {
-        msg = shell.getOut("pacman -Qi --color never " + packageName);
+        msg = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
     }
     QApplication::restoreOverrideCursor();
 
@@ -2636,10 +2636,13 @@ void MainWindow::showRepoPackageInfo(const QString &packageName)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
 
-    // pacman -Qi for installed packages (includes install date, size, requiredby, etc.)
-    QString msg = shell.getOut("pacman -Qi --color never " + packageName);
+    // On the repository view, prefer the current repo package metadata so users can
+    // inspect the newest available version (including build date) even when they already
+    // have an older version installed locally.
+    QString msg = shell.getOut("LANG=C pacman -Si --color never " + packageName);
     if (isErrorOutput(msg)) {
-        msg = shell.getOut("pacman -Si --color never " + packageName);
+        // Fall back to the installed package record only when the repo package lookup fails.
+        msg = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
     }
     QApplication::restoreOverrideCursor();
 
