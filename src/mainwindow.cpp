@@ -1124,7 +1124,9 @@ void MainWindow::removeDuplicatesFP()
 
 void MainWindow::setConnections()
 {
-    connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::cleanup, Qt::QueuedConnection);
+    // Direct connection: aboutToQuit is emitted after the event loop has exited,
+    // so a queued invocation would never be dispatched and cleanup would not run.
+    connect(QApplication::instance(), &QApplication::aboutToQuit, this, &MainWindow::cleanup);
     // Connect search boxes
     connect(ui->searchPopular, &QLineEdit::textChanged, this, &MainWindow::findPopular);
     connect(ui->searchBoxEnabled, &QLineEdit::textChanged, this, &MainWindow::findPackage);
@@ -2639,6 +2641,12 @@ void MainWindow::clearUi()
 void MainWindow::cleanup()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
+    // Callers like pushCancel_clicked() and closeEvent() clean up before quitting,
+    // which then emits aboutToQuit — only the first invocation should do the work.
+    if (cleanupDone) {
+        return;
+    }
+    cleanupDone = true;
     if (cmd.state() != QProcess::NotRunning) {
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }

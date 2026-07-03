@@ -165,6 +165,7 @@ private:
     OutputRender::OutputRenderer outputRenderer;
 
     QString indexFilterFP;
+    bool cleanupDone {false};
     bool dirtyBackports {true};
     bool dirtyEnabledRepos {true};
     bool dirtyTest {true};
