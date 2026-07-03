@@ -2084,6 +2084,9 @@ bool MainWindow::installBatch(const QStringList &nameList)
             result = false;
         }
     }
+    if (operationWasCanceled()) {
+        return false;
+    }
 
     if (!postinstallHooks.isEmpty()) {
         qDebug() << "Post-install";
@@ -2137,6 +2140,9 @@ bool MainWindow::installPopularApp(const QString &name)
         ui->tabWidget->setTabText(Tab::Output, tr("Installing ") + name);
         result = install(installNames);
     }
+    if (operationWasCanceled()) {
+        return false;
+    }
     enableOutput();
     // Postinstall
     if (!postinstall.isEmpty()) {
@@ -2169,6 +2175,9 @@ bool MainWindow::installPopularApps()
     if (!updatedOnce) {
         updateApt();
     }
+    if (operationWasCanceled()) {
+        return false;
+    }
 
     if (!popularModel) {
         return false;
@@ -2193,12 +2202,19 @@ bool MainWindow::installPopularApps()
     if (!installBatch(batchNames)) {
         result = false;
     }
+    if (operationWasCanceled()) {
+        setCursor(QCursor(Qt::ArrowCursor));
+        return false;
+    }
 
     // Install the rest of the apps (those with preinstall)
     for (const QString &name : checkedApps) {
         if (!batchNames.contains(name)) {
             if (!installPopularApp(name)) {
                 result = false;
+            }
+            if (operationWasCanceled()) {
+                break;
             }
         }
     }
@@ -3475,7 +3491,7 @@ void MainWindow::showOutput()
 void MainWindow::pushInstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    operationCanceled = false;
+    beginOperation();
     showOutput();
     if (currentTree == ui->treeFlatpak) {
         // showOutput() cleared the visible checkboxes; work from changeList. Only
@@ -3574,9 +3590,11 @@ void MainWindow::pushInstall_clicked()
             displaySnaps(true);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
-        } else {
+        } else if (!Cmd::elevationDismissed()) {
             showError(tr("Problem detected while installing a snap. Click \"Show Details\" for more information."),
                       errorDetails);
+        } else {
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
         }
         changeList.clear();
         enableTabs(true);
@@ -3591,10 +3609,10 @@ void MainWindow::pushInstall_clicked()
             success = installSelected();
         }
         rebuildPackageViews();
-        if (success && !operationCanceled) {
+        if (success && !operationWasCanceled()) {
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
-        } else if (!operationCanceled) {
+        } else if (!operationWasCanceled()) {
             QMessageBox::critical(this, tr("Error"),
                                   tr("Problem detected while installing, please inspect the console output."));
         } else {
@@ -3674,7 +3692,7 @@ void MainWindow::treePopularApps_itemCollapsed(const QModelIndex &index)
 void MainWindow::pushUninstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    operationCanceled = false;
+    beginOperation();
 
     showOutput();
 
@@ -3800,9 +3818,11 @@ void MainWindow::pushUninstall_clicked()
             displaySnaps(true);
             QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
-        } else {
+        } else if (!Cmd::elevationDismissed()) {
             showError(tr("We encountered a problem removing a snap. Click \"Show Details\" for more information."),
                       errorDetails);
+        } else {
+            ui->tabWidget->setCurrentWidget(ui->tabSnap);
         }
         changeList.clear();
         enableTabs(true);
@@ -3813,10 +3833,10 @@ void MainWindow::pushUninstall_clicked()
 
     bool success = uninstall(names, preuninstall, postuninstall);
     rebuildPackageViews();
-    if (success && !operationCanceled) {
+    if (success && !operationWasCanceled()) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
-    } else if (!operationCanceled) {
+    } else if (!operationWasCanceled()) {
         QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling the program"));
     } else {
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
@@ -4152,14 +4172,14 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
 
 void MainWindow::installFlatpak()
 {
-    operationCanceled = false;
+    beginOperation();
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
     setCursor(QCursor(Qt::BusyCursor));
     showOutput();
     displayFlatpaksIsRunning = true;
     install("flatpak");
-    if (operationCanceled) {
+    if (operationWasCanceled()) {
         setCursor(QCursor(Qt::ArrowCursor));
         enableTabs(true);
         currentTree->blockSignals(false);
@@ -4444,7 +4464,7 @@ void MainWindow::searchSnapStore()
 void MainWindow::setupSnapd()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    operationCanceled = false;
+    beginOperation();
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
     showOutput();
@@ -4466,7 +4486,7 @@ void MainWindow::setupSnapd()
         const bool ok = install(QStringLiteral("snapd"));
         const QString installOutput = cmd.readAllOutput();
         currentTree = savedTree;
-        if (operationCanceled) {
+        if (operationWasCanceled()) {
             setCursor(QCursor(Qt::ArrowCursor));
             ui->tabWidget->setCurrentWidget(ui->tabSnap);
             enableTabs(true);
@@ -4639,6 +4659,7 @@ void MainWindow::pushUpgradeSnap_clicked()
     if (!isSnapdReady()) {
         return;
     }
+    Cmd::resetElevationDismissed();
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
@@ -4648,11 +4669,14 @@ void MainWindow::pushUpgradeSnap_clicked()
         setCursor(QCursor(Qt::ArrowCursor));
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(ui->tabSnap);
-    } else {
+    } else if (!Cmd::elevationDismissed()) {
         const QString errorDetails = cmd.readAllOutput();
         setCursor(QCursor(Qt::ArrowCursor));
         showError(tr("Problem detected while updating snaps. Click \"Show Details\" for more information."),
                   errorDetails);
+    } else {
+        setCursor(QCursor(Qt::ArrowCursor));
+        ui->tabWidget->setCurrentWidget(ui->tabSnap);
     }
     enableTabs(true);
 }
@@ -5154,7 +5178,7 @@ void MainWindow::checkHideLibs_toggled(bool checked)
 void MainWindow::pushUpgradeAll_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    operationCanceled = false;
+    beginOperation();
     showOutput();
 
     QStringList names;
@@ -5166,10 +5190,10 @@ void MainWindow::pushUpgradeAll_clicked()
     }
     bool success = install(names.join(' '));
     rebuildPackageViews();
-    if (success && !operationCanceled) {
+    if (success && !operationWasCanceled()) {
         QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
-    } else if (!operationCanceled) {
+    } else if (!operationWasCanceled()) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Problem detected while installing, please inspect the console output."));
     } else {
@@ -5433,7 +5457,7 @@ QString MainWindow::getMXTestRepoUrl()
 
 void MainWindow::pushRemoveAutoremovable_clicked()
 {
-    operationCanceled = false;
+    beginOperation();
     QString names = cmd.getOut(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')");
     QMessageBox::warning(this, tr("Warning"),
                          tr("Potentially dangerous operation.\nPlease make sure you check "
@@ -5441,10 +5465,10 @@ void MainWindow::pushRemoveAutoremovable_clicked()
     showOutput();
     bool success = uninstall(names);
     rebuildPackageViews();
-    if (success && !operationCanceled) {
+    if (success && !operationWasCanceled()) {
         QMessageBox::information(this, tr("Success"), tr("Processing finished successfully."));
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());
-    } else if (!operationCanceled) {
+    } else if (!operationWasCanceled()) {
         QMessageBox::critical(this, tr("Error"), tr("We encountered a problem uninstalling the program"));
     } else {
         ui->tabWidget->setCurrentWidget(currentTree->parentWidget());

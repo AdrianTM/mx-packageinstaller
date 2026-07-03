@@ -280,6 +280,15 @@ private:
         PackageFilterProxy *proxy = nullptr;
         QHash<QString, PackageInfo> *list = nullptr;
     };
+    // True once either a confirmation dialog was canceled or an elevated call was
+    // dismissed anywhere during the current operation. Callers use this to abort
+    // and revert to the calling tab quietly instead of reporting a generic error.
+    [[nodiscard]] bool operationWasCanceled() const { return operationCanceled || Cmd::elevationDismissed(); }
+    void beginOperation()
+    {
+        operationCanceled = false;
+        Cmd::resetElevationDismissed();
+    }
     [[nodiscard]] AptTabContext currentAptTab();
     [[nodiscard]] QHash<QString, PackageInfo> *getCurrentList();
     [[nodiscard]] PackageModel *getCurrentModel();

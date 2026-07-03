@@ -26,6 +26,11 @@ QString markerDirectory()
     }
     return QDir::tempPath();
 }
+
+// Set by handleElevationError() whenever an elevated call anywhere is dismissed
+// by the user, and cleared by resetElevationDismissed(). GUI is single-threaded,
+// so a plain static is enough to let unrelated Cmd instances share this state.
+bool elevationWasDismissed = false;
 } // namespace
 
 Cmd::Cmd(QObject *parent)
@@ -117,7 +122,9 @@ bool Cmd::runHookAsRoot(const QString &script, QuietMode quiet)
 QString Cmd::lockingProcessAsRoot(const QString &path, QuietMode quiet)
 {
     QString output;
-    helperProc({"locking-process", path}, &output, nullptr, quiet);
+    if (!helperProc({"locking-process", path}, &output, nullptr, quiet)) {
+        return {};
+    }
     return output.trimmed();
 }
 
@@ -230,8 +237,18 @@ bool Cmd::isAuthenticationDismissed() const
 
 void Cmd::handleElevationError()
 {
+    elevationWasDismissed = true;
     QMessageBox::critical(nullptr, tr("Administrator Access Required"),
                           tr("This operation requires administrator privileges. Please restart the "
                              "application and enter your password when prompted."));
-    QCoreApplication::exit(EXIT_FAILURE);
+}
+
+bool Cmd::elevationDismissed()
+{
+    return elevationWasDismissed;
+}
+
+void Cmd::resetElevationDismissed()
+{
+    elevationWasDismissed = false;
 }

@@ -33,6 +33,14 @@ public:
     bool writeFileAsRoot(const QString &path, const QString &content, QuietMode quiet = QuietMode::No);
     [[nodiscard]] bool terminateAndKill();
 
+    // Whether any elevated call anywhere was dismissed by the user (as opposed to
+    // failing for a real reason) since the last reset. Callers use this to abort
+    // the whole operation and revert quietly instead of reporting a generic error.
+    // Deliberately sticky: a dismissal whose return value goes unchecked (e.g. a
+    // postinstall hook) is still caught by the next check in the same operation.
+    [[nodiscard]] static bool elevationDismissed();
+    static void resetElevationDismissed();
+
 signals:
     void done();
     void errorAvailable(const QString &err);

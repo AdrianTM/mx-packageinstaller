@@ -46,6 +46,12 @@ bool LockFile::isLocked()
 bool LockFile::isLockedGUI()
 {
     QString proc = getLockingProcess();
+    if (Cmd::elevationDismissed()) {
+        // The lock check itself required elevation and the user dismissed it.
+        // Cmd already showed the "Administrator Access Required" message; don't
+        // pile on a confusing, misleading "locked by another program" box on top.
+        return true;
+    }
     if (!proc.isEmpty()) {
         QMessageBox::warning(nullptr, QObject::tr("Warning"),
                              QObject::tr("Dpkg/apt database is locked by another program: %1"
