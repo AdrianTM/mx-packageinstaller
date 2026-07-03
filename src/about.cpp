@@ -85,8 +85,8 @@ void displayHelpDoc(const QString &path, const QString &title)
     showHtmlDoc(path, title, true);
 }
 
-void displayAboutMsgBox(const QString &title, const QString &message, const QString &licence_url,
-                        const QString &license_title)
+void displayAboutMsgBox(const QString &title, const QString &message, const QString &licenceUrl,
+                        const QString &licenseTitle)
 {
     QMessageBox msgBox(QMessageBox::NoIcon, title, message);
     auto *btnLicense = msgBox.addButton(QObject::tr("License"), QMessageBox::HelpRole);
@@ -96,6 +96,6 @@ void displayAboutMsgBox(const QString &title, const QString &message, const QStr
     msgBox.exec();
 
     if (msgBox.clickedButton() == btnLicense) {
-        displayDoc(licence_url, license_title);
+        displayDoc(licenceUrl, licenseTitle);
     }
 }

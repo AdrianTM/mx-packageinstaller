@@ -35,28 +35,28 @@ void VersionNumber::setStrings(const QString &value)
 {
     // Initialize epoch, upstream, and release strings
     str = value;
-    QString upstream_str;
-    QString release_str;
+    QString upstreamStr;
+    QString releaseStr;
 
     // Parse epoch and upstream_version
     int colonIndex = value.indexOf(':');
     if (colonIndex != -1) {
         epoch = value.left(colonIndex).toInt();
-        upstream_str = value.mid(colonIndex + 1);
+        upstreamStr = value.mid(colonIndex + 1);
     } else {
         epoch = 0;
-        upstream_str = value;
+        upstreamStr = value;
     }
 
     // Parse release revision
-    int dashIndex = upstream_str.lastIndexOf('-');
+    int dashIndex = upstreamStr.lastIndexOf('-');
     if (dashIndex != -1) {
-        release_str = upstream_str.mid(dashIndex + 1);
-        upstream_str = upstream_str.left(dashIndex);
+        releaseStr = upstreamStr.mid(dashIndex + 1);
+        upstreamStr = upstreamStr.left(dashIndex);
     }
 
-    upstream_version = groupDigits(upstream_str);
-    release_revision = groupDigits(release_str);
+    upstream_version = groupDigits(upstreamStr);
+    release_revision = groupDigits(releaseStr);
 }
 
 VersionNumber &VersionNumber::operator=(const QString &value)
@@ -65,34 +65,22 @@ VersionNumber &VersionNumber::operator=(const QString &value)
     return *this;
 }
 
-bool VersionNumber::operator<(const VersionNumber &value) const
+std::weak_ordering VersionNumber::operator<=>(const VersionNumber &value) const
 {
-    return compare(*this, value) == 1;
-}
-
-bool VersionNumber::operator<=(const VersionNumber &value) const
-{
-    return !(*this > value);
-}
-
-bool VersionNumber::operator>(const VersionNumber &value) const
-{
-    return compare(*this, value) == -1;
-}
-
-bool VersionNumber::operator>=(const VersionNumber &value) const
-{
-    return !(*this < value);
+    // compare() returns 1 when value > *this, -1 when value < *this, 0 when equal.
+    switch (compare(*this, value)) {
+    case 1:
+        return std::weak_ordering::less;
+    case -1:
+        return std::weak_ordering::greater;
+    default:
+        return std::weak_ordering::equivalent;
+    }
 }
 
 bool VersionNumber::operator==(const VersionNumber &value) const
 {
     return compare(*this, value) == 0;
-}
-
-bool VersionNumber::operator!=(const VersionNumber &value) const
-{
-    return !(*this == value);
 }
 
 // Transform QString into QStringList with digits grouped together

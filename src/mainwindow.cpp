@@ -1321,10 +1321,10 @@ void MainWindow::displayPackages()
     emit displayPackagesFinished();
 }
 
-void MainWindow::displayFlatpaks(bool force_update)
+void MainWindow::displayFlatpaks(bool forceUpdate)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    if (!flatpaks.isEmpty() && !force_update) {
+    if (!flatpaks.isEmpty() && !forceUpdate) {
         return;
     }
 
@@ -1450,20 +1450,20 @@ void MainWindow::loadFlatpakData()
 
 void MainWindow::populateFlatpakTree()
 {
-    const QStringList installed_all = installedAppsFP + installedRuntimesFP;
-    uint total_count = 0;
+    const QStringList installedAll = installedAppsFP + installedRuntimesFP;
+    uint totalCount = 0;
 
     for (const QString &item : std::as_const(flatpaks)) {
-        if (createFlatpakItem(item, installed_all)) {
-            ++total_count;
+        if (createFlatpakItem(item, installedAll)) {
+            ++totalCount;
         }
     }
 
-    updateFlatpakCounts(total_count);
+    updateFlatpakCounts(totalCount);
     formatFlatpakTree();
 }
 
-QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStringList &installed_all) const
+QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStringList &installedAll) const
 {
     const RemoteLsEntry entry = parseRemoteLsLine(item);
 
@@ -1479,44 +1479,44 @@ QTreeWidgetItem *MainWindow::createFlatpakItem(const QString &item, const QStrin
     if (canonicalRef.isEmpty()) {
         return nullptr;
     }
-    const QString long_name = canonicalRef.section('/', 0, 0);
-    const QString short_name = long_name.section('.', -1);
+    const QString longName = canonicalRef.section('/', 0, 0);
+    const QString shortName = longName.section('.', -1);
     const QString name = canonicalRef;
 
     // Skip unwanted packages
     static const QSet<QString> unwantedPackages
         = {QLatin1String("Locale"), QLatin1String("Sources"), QLatin1String("Debug")};
-    if (unwantedPackages.contains(short_name)) {
+    if (unwantedPackages.contains(shortName)) {
         return nullptr;
     }
 
-    auto *widget_item = new FlatpakTreeItem(ui->treeFlatpak);
-    widget_item->setCheckState(FlatCol::Check, Qt::Unchecked);
-    widget_item->setText(FlatCol::Name, short_name);
-    widget_item->setText(FlatCol::LongName, long_name);
-    widget_item->setText(FlatCol::Version, version);
-    widget_item->setText(FlatCol::Branch, branch);
-    widget_item->setText(FlatCol::Size, size);
-    widget_item->setData(FlatCol::Size, Qt::UserRole, SizeUtils::sizeStringToBytes(size));
-    widget_item->setData(FlatCol::FullName, Qt::UserRole, originalRef.isEmpty() ? name : originalRef);
-    widget_item->setData(FlatCol::FullName, Qt::UserRole + 1, name); // canonical for matching
-    widget_item->setData(0, Qt::UserRole, true);
+    auto *widgetItem = new FlatpakTreeItem(ui->treeFlatpak);
+    widgetItem->setCheckState(FlatCol::Check, Qt::Unchecked);
+    widgetItem->setText(FlatCol::Name, shortName);
+    widgetItem->setText(FlatCol::LongName, longName);
+    widgetItem->setText(FlatCol::Version, version);
+    widgetItem->setText(FlatCol::Branch, branch);
+    widgetItem->setText(FlatCol::Size, size);
+    widgetItem->setData(FlatCol::Size, Qt::UserRole, SizeUtils::sizeStringToBytes(size));
+    widgetItem->setData(FlatCol::FullName, Qt::UserRole, originalRef.isEmpty() ? name : originalRef);
+    widgetItem->setData(FlatCol::FullName, Qt::UserRole + 1, name); // canonical for matching
+    widgetItem->setData(0, Qt::UserRole, true);
 
-    if (installed_all.contains(name)) {
-        widget_item->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
+    if (installedAll.contains(name)) {
+        widgetItem->setIcon(FlatCol::Check, QIcon::fromTheme("package-installed-updated",
                                                               QIcon(":/icons/package-installed-updated.png")));
-        widget_item->setData(FlatCol::Status, Qt::UserRole, Status::Installed);
+        widgetItem->setData(FlatCol::Status, Qt::UserRole, Status::Installed);
     } else {
-        widget_item->setData(FlatCol::Status, Qt::UserRole, Status::NotInstalled);
+        widgetItem->setData(FlatCol::Status, Qt::UserRole, Status::NotInstalled);
     }
 
-    return widget_item;
+    return widgetItem;
 }
 
-void MainWindow::updateFlatpakCounts(uint total_count)
+void MainWindow::updateFlatpakCounts(uint totalCount)
 {
     listSizeInstalledFP();
-    ui->labelNumAppFP->setText(QString::number(total_count));
+    ui->labelNumAppFP->setText(QString::number(totalCount));
     ui->labelNumInstFP->setText(QString::number(!installedAppsFP.isEmpty() ? installedAppsFP.count() : 0));
 }
 
@@ -1621,9 +1621,19 @@ void MainWindow::listFlatpakRemotes() const
 
     auto fetchRemotes = [this](QStringList &outList) {
         Cmd shell;
-        outList
-            = shell.getOut("flatpak remote-list " + fpUser + "| cut -f1").remove(' ').split('\n', Qt::SkipEmptyParts);
-        return shell.exitCode() == 0;
+        QString output;
+        const bool ok = shell.proc("flatpak", {"remote-list", fpUser.trimmed()}, &output);
+        outList.clear();
+        // Take the first tab-separated column (the remote name) from each line in Qt,
+        // rather than piping through `cut` in a shell.
+        const QStringList lines = output.split('\n', Qt::SkipEmptyParts);
+        for (const QString &line : lines) {
+            const QString name = line.section('\t', 0, 0).trimmed();
+            if (!name.isEmpty()) {
+                outList.append(name);
+            }
+        }
+        return ok;
     };
 
     auto addUserRemotes = []() {
@@ -1674,38 +1684,38 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     qDebug() << "names" << names << "and" << changeList;
     QString msg;
 
-    QStringList detailed_installed_names;
-    QString detailed_to_install;
-    QString detailed_removed_names;
+    QStringList detailedInstalledNames;
+    QString detailedToInstall;
+    QString detailedRemovedNames;
     const int currentTab = ui->tabWidget->currentIndex();
     if (currentTab == Tab::Flatpak && names != "flatpak") {
-        detailed_installed_names = changeList;
+        detailedInstalledNames = changeList;
     }
 
     if (currentTab != Tab::Flatpak) {
-        detailed_installed_names = changeList;
-        detailed_installed_names.sort();
-        qDebug() << "detailed installed names sorted " << detailed_installed_names;
+        detailedInstalledNames = changeList;
+        detailedInstalledNames.sort();
+        qDebug() << "detailed installed names sorted " << detailedInstalledNames;
 
         if (action == QLatin1String("install")) {
-            detailed_to_install = detailed_installed_names.join('\n');
-            if (!detailed_to_install.isEmpty()) {
-                detailed_to_install.prepend(tr("Install") + '\n');
+            detailedToInstall = detailedInstalledNames.join('\n');
+            if (!detailedToInstall.isEmpty()) {
+                detailedToInstall.prepend(tr("Install") + '\n');
             }
         } else if (action == QLatin1String("remove")) {
-            detailed_removed_names = detailed_installed_names.join('\n');
-            if (!detailed_removed_names.isEmpty()) {
-                detailed_removed_names.prepend(tr("Remove") + '\n');
+            detailedRemovedNames = detailedInstalledNames.join('\n');
+            if (!detailedRemovedNames.isEmpty()) {
+                detailedRemovedNames.prepend(tr("Remove") + '\n');
             }
         }
     } else {
         if (action == QLatin1String("remove")) {
-            detailed_removed_names = changeList.join('\n');
-            detailed_to_install.clear();
+            detailedRemovedNames = changeList.join('\n');
+            detailedToInstall.clear();
         }
         if (action == QLatin1String("install")) {
-            detailed_to_install = changeList.join('\n');
-            detailed_removed_names.clear();
+            detailedToInstall = changeList.join('\n');
+            detailedRemovedNames.clear();
         }
     }
 
@@ -1716,9 +1726,9 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     msgBox.setInformativeText('\n' + names);
 
     if (action == QLatin1String("install")) {
-        msgBox.setDetailedText(detailed_to_install + '\n' + detailed_removed_names);
+        msgBox.setDetailedText(detailedToInstall + '\n' + detailedRemovedNames);
     } else {
-        msgBox.setDetailedText(detailed_removed_names + '\n' + detailed_to_install);
+        msgBox.setDetailedText(detailedRemovedNames + '\n' + detailedToInstall);
     }
 
     // Find Detailed Info box and set heigth, set box height between 100 - 400 depending on length of content
@@ -1999,32 +2009,32 @@ void MainWindow::cleanup()
 bool MainWindow::checkInstalled(const QVariant &names) const
 {
 
-    QStringList name_list;
+    QStringList nameList;
     if (names.canConvert<QStringList>()) {
-        name_list = names.toStringList();
+        nameList = names.toStringList();
         // Flatten any strings in the list that contain newlines
-        QStringList expanded_list;
-        for (const QString &name : name_list) {
+        QStringList expandedList;
+        for (const QString &name : nameList) {
             if (name.contains('\n')) {
-                expanded_list.append(name.split('\n', Qt::SkipEmptyParts));
+                expandedList.append(name.split('\n', Qt::SkipEmptyParts));
             } else {
-                expanded_list.append(name);
+                expandedList.append(name);
             }
         }
-        name_list = expanded_list;
+        nameList = expandedList;
     } else if (names.canConvert<QString>()) {
-        name_list = names.toString().split('\n', Qt::SkipEmptyParts);
+        nameList = names.toString().split('\n', Qt::SkipEmptyParts);
     } else {
         return false;
     }
 
-    if (name_list.isEmpty()) {
+    if (nameList.isEmpty()) {
         return false;
     }
 
     if (installedPackages.isEmpty()) {
         Cmd shell;
-        for (const QString &name : name_list) {
+        for (const QString &name : nameList) {
             if (name.trimmed().isEmpty()) {
                 continue;
             }
@@ -2038,10 +2048,10 @@ bool MainWindow::checkInstalled(const QVariant &names) const
     }
 
     // Trim whitespace from all package names
-    for (QString &name : name_list) {
+    for (QString &name : nameList) {
         name = name.trimmed();
     }
-    for (const QString &name : name_list) {
+    for (const QString &name : nameList) {
         if (!installedPackages.contains(name)) {
             return false;
         }
@@ -2050,10 +2060,10 @@ bool MainWindow::checkInstalled(const QVariant &names) const
 }
 
 // Return true if all the items in the list are upgradable
-bool MainWindow::checkUpgradable(const QStringList &name_list) const
+bool MainWindow::checkUpgradable(const QStringList &nameList) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    if (name_list.isEmpty()) {
+    if (nameList.isEmpty()) {
         return false;
     }
 
@@ -2069,7 +2079,7 @@ bool MainWindow::checkUpgradable(const QStringList &name_list) const
     }
 
     // Check only the current tab's model
-    for (const QString &name : name_list) {
+    for (const QString &name : nameList) {
         int row = model->findPackageRow(name);
         if (row < 0) {
             return false; // Package not found
@@ -2131,8 +2141,8 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
-    QString arch_fp = getArchOption();
-    if (arch_fp.isEmpty()) {
+    QString archFp = getArchOption();
+    if (archFp.isEmpty()) {
         return {};
     }
 
@@ -2145,7 +2155,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     const bool isUserScope = fpUser.startsWith("--user");
 
     auto buildRemoteLsCommand = [&](const QString &scope) {
-        return "flatpak remote-ls " + scope + shellSingleQuote(remote) + ' ' + arch_fp
+        return "flatpak remote-ls " + scope + shellSingleQuote(remote) + ' ' + archFp
                + "--columns=ver,branch,ref,installed-size ";
     };
 
@@ -2288,19 +2298,19 @@ void MainWindow::setDirty()
 void MainWindow::setIcons()
 {
 
-    const QString icon_upgradable {"package-installed-outdated"};
-    const QString icon_installed {"package-installed-updated"};
+    const QString iconUpgradable {"package-installed-outdated"};
+    const QString iconInstalled {"package-installed-updated"};
 
-    const QIcon backup_icon_upgradable(":/icons/package-installed-outdated.png");
-    const QIcon backup_icon_installed(":/icons/package-installed-updated.png");
+    const QIcon backupIconUpgradable(":/icons/package-installed-outdated.png");
+    const QIcon backupIconInstalled(":/icons/package-installed-updated.png");
 
-    const QIcon theme_icon_upgradable = QIcon::fromTheme(icon_upgradable, backup_icon_upgradable);
-    const QIcon theme_icon_installed = QIcon::fromTheme(icon_installed, backup_icon_installed);
+    const QIcon themeIconUpgradable = QIcon::fromTheme(iconUpgradable, backupIconUpgradable);
+    const QIcon themeIconInstalled = QIcon::fromTheme(iconInstalled, backupIconInstalled);
 
-    const bool force_backup_icon = (theme_icon_upgradable.name() == theme_icon_installed.name());
+    const bool forceBackupIcon = (themeIconUpgradable.name() == themeIconInstalled.name());
 
-    qiconInstalled = force_backup_icon ? backup_icon_installed : theme_icon_installed;
-    qiconUpgradable = force_backup_icon ? backup_icon_upgradable : theme_icon_upgradable;
+    qiconInstalled = forceBackupIcon ? backupIconInstalled : themeIconInstalled;
+    qiconUpgradable = forceBackupIcon ? backupIconUpgradable : themeIconUpgradable;
     const auto upgradableIcons = {ui->iconUpgradableRepo, ui->iconUpgradable_2};
     const auto installedIcons = {ui->iconInstalledPackagesRepo, ui->iconInstalledPackages_2,
                                  ui->iconInstalledPackages_4};
@@ -2957,8 +2967,8 @@ void MainWindow::tabWidget_currentChanged(int index)
     ui->pushUninstall->setEnabled(false);
 
     resetCheckboxes();
-    QString search_str;
-    saveSearchText(search_str, savedComboIndex);
+    QString searchStr;
+    saveSearchText(searchStr, savedComboIndex);
     if (index != Tab::Output) {
         setCurrentTree();
     }
@@ -2977,16 +2987,16 @@ void MainWindow::tabWidget_currentChanged(int index)
     setTabsEnabled(false);
     switch (index) {
     case Tab::Repos:
-        handleRepoTab(search_str);
+        handleRepoTab(searchStr);
         break;
     case Tab::AUR:
-        handleAurTab(search_str);
+        handleAurTab(searchStr);
         break;
     case Tab::Flatpak:
-        handleFlatpakTab(search_str);
+        handleFlatpakTab(searchStr);
         break;
     case Tab::Snap:
-        handleSnapTab(search_str);
+        handleSnapTab(searchStr);
         break;
     case Tab::Output:
         handleOutputTab();
@@ -3022,24 +3032,24 @@ void MainWindow::resetCheckboxes()
     // For Repo/AUR tabs: checkbox state is in the model, should be cleared differently
 }
 
-void MainWindow::saveSearchText(QString &search_str, int &filter_idx)
+void MainWindow::saveSearchText(QString &searchStr, int &filterIdx)
 {
     // Read from the PREVIOUS tab to carry search text over to the new tab
     if (previousTab == Tab::Repos) {
-        search_str = ui->searchBoxRepo->text();
-        filter_idx = ui->comboFilterRepo->currentIndex();
+        searchStr = ui->searchBoxRepo->text();
+        filterIdx = ui->comboFilterRepo->currentIndex();
     } else if (previousTab == Tab::AUR) {
-        search_str = ui->searchBoxAUR->text();
-        filter_idx = ui->comboFilterAUR->currentIndex();
+        searchStr = ui->searchBoxAUR->text();
+        filterIdx = ui->comboFilterAUR->currentIndex();
     } else if (previousTab == Tab::Flatpak) {
-        search_str = ui->searchBoxFlatpak->text();
+        searchStr = ui->searchBoxFlatpak->text();
     } else if (previousTab == Tab::Snap) {
-        search_str = ui->searchBoxSnap->text();
+        searchStr = ui->searchBoxSnap->text();
     }
-    // If previousTab was Output, search_str stays empty (as initialized)
+    // If previousTab was Output, searchStr stays empty (as initialized)
 }
 
-void MainWindow::handleAurTab(const QString &search_str)
+void MainWindow::handleAurTab(const QString &searchStr)
 {
     if (getParuPath().isEmpty()) {
         QMessageBox::critical(this, tr("Error"),
@@ -3049,7 +3059,7 @@ void MainWindow::handleAurTab(const QString &search_str)
     }
     // Block signals to prevent onAurSearchTextChanged from triggering during setText
     ui->searchBoxAUR->blockSignals(true);
-    ui->searchBoxAUR->setText(search_str);
+    ui->searchBoxAUR->setText(searchStr);
     ui->searchBoxAUR->blockSignals(false);
 
     changeList.clear();
@@ -3078,11 +3088,11 @@ void MainWindow::handleAurTab(const QString &search_str)
     // currentTree->blockSignals(false);  // Removed - using QTreeView now
 }
 
-void MainWindow::handleRepoTab(const QString &search_str)
+void MainWindow::handleRepoTab(const QString &searchStr)
 {
     // Block signals to prevent onRepoSearchTextChanged from triggering during setText
     ui->searchBoxRepo->blockSignals(true);
-    ui->searchBoxRepo->setText(search_str);
+    ui->searchBoxRepo->setText(searchStr);
     ui->searchBoxRepo->blockSignals(false);
 
     changeList.clear();
@@ -3551,16 +3561,16 @@ void MainWindow::updateRepoSetsFromInstalled()
     }
 }
 
-void MainWindow::handleFlatpakTab(const QString &search_str)
+void MainWindow::handleFlatpakTab(const QString &searchStr)
 {
     lastItemClicked = nullptr;
-    ui->searchBoxFlatpak->setText(search_str);
+    ui->searchBoxFlatpak->setText(searchStr);
     setCurrentTree();
     displayWarning("flatpaks");
     ui->searchBoxFlatpak->setFocus();
     listFlatpakRemotes();
     if (!firstRunFP && checkInstalled("flatpak")) {
-        if (!search_str.isEmpty()) {
+        if (!searchStr.isEmpty()) {
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
         if (!displayFlatpaksIsRunning) {
@@ -3599,7 +3609,7 @@ void MainWindow::handleFlatpakTab(const QString &search_str)
                 qApp->processEvents();
             }
         }
-        if (!search_str.isEmpty()) {
+        if (!searchStr.isEmpty()) {
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
     }
@@ -3702,10 +3712,10 @@ QStringList MainWindow::listInstalledSnaps() const
     return names;
 }
 
-void MainWindow::handleSnapTab(const QString &search_str)
+void MainWindow::handleSnapTab(const QString &searchStr)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ui->searchBoxSnap->setText(search_str);
+    ui->searchBoxSnap->setText(searchStr);
     setCurrentTree();
     ui->searchBoxSnap->setFocus();
     // changeList is shared across tabs; start the Snap tab with a clean slate so
@@ -3734,7 +3744,7 @@ void MainWindow::handleSnapTab(const QString &search_str)
 
     // Arriving from another tab with a pending search term: default to searching the
     // store for it (searchSnapStore() flips the combo to "Search store" itself).
-    if (!search_str.isEmpty()) {
+    if (!searchStr.isEmpty()) {
         firstRunSnap = false;
         ui->searchBoxSnap->setFocus();
         QMetaObject::invokeMethod(this, [this] { searchSnapStore(); }, Qt::QueuedConnection);
@@ -3751,7 +3761,7 @@ void MainWindow::handleSnapTab(const QString &search_str)
     ui->treeSnap->blockSignals(false);
 }
 
-void MainWindow::displaySnaps(bool /*force_update*/)
+void MainWindow::displaySnaps(bool /*forceUpdate*/)
 {
     if (!snapModel) {
         return;

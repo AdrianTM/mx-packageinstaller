@@ -74,12 +74,12 @@ bool Log::openLogFile()
 
 void Log::messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
-    QTextStream term_out(stdout);
+    QTextStream termOut(stdout);
     if (msg.contains('\r')) {
-        term_out << msg;
+        termOut << msg;
         return;
     }
-    term_out << msg << '\n';
+    termOut << msg << '\n';
 
     QTextStream out(&logFile);
     out << QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss.zzz "));
