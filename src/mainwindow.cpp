@@ -1113,7 +1113,6 @@ void MainWindow::setProgressDialog()
 {
     progress = new QProgressDialog(this);
     bar = new QProgressBar(progress);
-    bar->setMaximum(bar->maximum());
     pushCancel = new QPushButton(tr("Cancel"));
     connect(pushCancel, &QPushButton::clicked, this, &MainWindow::cancelDownload);
     progress->setWindowModality(Qt::WindowModal);
@@ -1878,7 +1877,7 @@ bool MainWindow::isOnline()
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
     auto error = QNetworkReply::NoError;
-    for (const QString address : {"https://archlinux.org", "https://google.com"}) {
+    for (const QString &address : {"https://archlinux.org", "https://google.com"}) {
         error = QNetworkReply::NoError; // reset for each tried address
         QNetworkProxyQuery query {QUrl(address)};
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
@@ -4112,17 +4111,12 @@ void MainWindow::filterChanged(const QString &arg1)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++" << "arg1=" << arg1 << "sender=" << sender();
 
-    // Prevent recursive calls
-    static bool isProcessing = false;
-    if (isProcessing) {
+    // Prevent recursive calls (instance-scoped; reset via RAII on return)
+    if (filterChangedProcessing) {
         qDebug() << "Skipping recursive filterChanged call";
         return;
     }
-
-    struct Guard {
-        ~Guard() { isProcessing = false; }
-    } guard;
-    isProcessing = true;
+    QScopedValueRollback<bool> guard(filterChangedProcessing, true);
 
     const int currentTab = ui->tabWidget->currentIndex();
 

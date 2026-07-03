@@ -205,6 +205,7 @@ private:
     bool flatpakCancelHidden {false};
     bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
+    bool filterChangedProcessing {false};
     QTimer timer;
     QTreeWidget *currentTree {}; // current/calling tree (Flatpak only)
     QTreeWidgetItem *lastItemClicked {};
