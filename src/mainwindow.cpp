@@ -59,6 +59,7 @@ using namespace std::chrono_literals;
 
 namespace {
 constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
+constexpr auto MxpiMaintenancePath = "/usr/lib/mx-packageinstaller/mxpi-maintenance";
 
 using OutputRender::sanitizeOutputForDisplay;
 
@@ -169,18 +170,40 @@ void appendFlatpakStatusMessage(QPlainTextEdit *outputBox, const QString &messag
     outputBox->verticalScrollBar()->setValue(outputBox->verticalScrollBar()->maximum());
 }
 
+bool runScriptAsRoot(Cmd &cmd, const char *scriptPath, const QString &action, Cmd::QuietMode quiet)
+{
+    const QString path = QString::fromLatin1(scriptPath);
+    if (getuid() == 0) {
+        return cmd.proc(path, {action}, nullptr, nullptr, quiet);
+    }
+    return cmd.proc(Cmd::elevationTool(), {path, action}, nullptr, nullptr, quiet);
+}
+
 bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
 {
-    const QString mxpiLibPath = QString::fromLatin1(MxpiLibPath);
-    if (getuid() == 0) {
-        return cmd.proc(mxpiLibPath, {action}, nullptr, nullptr, quiet);
-    }
-    return cmd.proc(Cmd::elevationTool(), {mxpiLibPath, action}, nullptr, nullptr, quiet);
+    return runScriptAsRoot(cmd, MxpiLibPath, action, quiet);
 }
 
 bool runMxpiLib(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
 {
     return cmd.proc(QString::fromLatin1(MxpiLibPath), {action}, nullptr, nullptr, quiet);
+}
+
+bool runMxpiMaintenanceAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)
+{
+    return runScriptAsRoot(cmd, MxpiMaintenancePath, action, quiet);
+}
+
+bool systemFlatpakDefaultsPresent()
+{
+    Cmd shell;
+    QStringList remotes
+        = shell.getOut("flatpak", {"--system", "remote-list", "--columns=name"}, Cmd::QuietMode::Yes)
+              .split('\n', Qt::SkipEmptyParts);
+    for (QString &remote : remotes) {
+        remote = remote.trimmed();
+    }
+    return remotes.contains(QLatin1String("flathub")) && remotes.contains(QLatin1String("flathub-verified"));
 }
 } // namespace
 
@@ -278,13 +301,11 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
             Qt::QueuedConnection);
     });
 
-    // Run flatpak setup and display in a separate thread
+    // Preload the flatpak list so the tab is populated on first visit. Listing
+    // needs no elevation; system remote setup, if defaults are missing, happens
+    // on the first visit to the Flatpak tab where an auth prompt has context.
     if (arch != QLatin1String("i386") && checkInstalled(QStringLiteral("flatpak"))) {
-        auto flatpakFuture [[maybe_unused]] = QtConcurrent::run([this] {
-            Cmd helperCmd;
-            runMxpiLibAsRoot(helperCmd, QStringLiteral("flatpak_add_repos"));
-            QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
-        });
+        QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
     }
 }
 
@@ -579,7 +600,7 @@ bool MainWindow::updateApt()
     }
 
     enableOutput();
-    if (runMxpiLibAsRoot(cmd, QStringLiteral("apt_update"))) {
+    if (runMxpiMaintenanceAsRoot(cmd, QStringLiteral("apt_update"))) {
         qDebug() << "sources updated OK";
         updatedOnce = true;
         return true;
@@ -2096,7 +2117,7 @@ bool MainWindow::installPopularApp(const QString &name)
         if (!cmd.runHookAsRoot(preinstall)) {
             if (QFile::exists(tempList)) {
                 Cmd helperCmd;
-                runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
+                runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
                 updateApt();
             }
             return false;
@@ -2119,7 +2140,7 @@ bool MainWindow::installPopularApp(const QString &name)
     }
     if (QFile::exists(tempList)) {
         Cmd helperCmd;
-        runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
+        runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
         updateApt();
     }
     return result;
@@ -2204,7 +2225,7 @@ bool MainWindow::installSelected()
     if (currentTree == ui->treeBackports || currentTree == ui->treeMXtest) {
         if (QFile::exists(tempList)) {
             Cmd helperCmd;
-            runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
+            runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
             updateApt();
         }
     }
@@ -2652,11 +2673,11 @@ void MainWindow::cleanup()
     }
     if (QFile::exists(tempList)) {
         Cmd helperCmd;
-        runMxpiLibAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
+        runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
         updateApt();
     }
     Cmd helperCmd;
-    runMxpiLibAsRoot(helperCmd, QStringLiteral("copy_log"));
+    runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("copy_log"));
     settings.setValue("geometry", saveGeometry());
     settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
     settings.setValue("FlatpakUser", ui->comboUser->currentText());
@@ -3988,8 +4009,38 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
     setCurrentTree();
     displayWarning("flatpaks");
     ui->searchBoxFlatpak->setFocus();
+    const bool flatpakInstalled = checkInstalled("flatpak");
+    const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
+    bool systemRemotesAdded = false;
+    // Not gated on firstRunFP: the startup preload of displayFlatpaks() already
+    // clears that flag before the user ever opens this tab.
+    if (!flatpakSetupChecked && flatpakInstalled && !isUserScope) {
+        if (!systemFlatpakDefaultsPresent()) {
+            setCursor(QCursor(Qt::BusyCursor));
+            Cmd helperCmd;
+            if (runMxpiLibAsRoot(helperCmd, QStringLiteral("flatpak_add_repos"))) {
+                flatpakSetupChecked = true;
+                systemRemotesAdded = true;
+                invalidateFlatpakRemoteCache();
+            } else {
+                // Authentication declined or setup failed: fall back to per-user
+                // remotes (no admin rights needed) so the tab still works. The
+                // combo change triggers the full user-scope setup and redisplay.
+                // flatpakSetupChecked stays false: staying in user scope keeps
+                // this gate off, but a deliberate return to system scope gets a
+                // fresh setup attempt instead of an empty tab until restart.
+                ui->comboUser->setCurrentIndex(1);
+            }
+            setCursor(QCursor(Qt::ArrowCursor));
+        } else {
+            flatpakSetupChecked = true;
+        }
+    }
     listFlatpakRemotes();
-    if (!firstRunFP && checkInstalled("flatpak")) {
+    if (systemRemotesAdded) {
+        displayFlatpaks(true);
+    }
+    if (!firstRunFP && flatpakInstalled) {
         ui->searchBoxBP->setText(searchStr);
         if (!searchStr.isEmpty()) {
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
@@ -4002,7 +4053,7 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
     }
     firstRunFP = false;
     blockInterfaceFP();
-    if (!checkInstalled("flatpak")) {
+    if (!flatpakInstalled) {
         int ans = QMessageBox::question(this, tr("Flatpak not installed"),
                                         tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
         if (ans == QMessageBox::No) {

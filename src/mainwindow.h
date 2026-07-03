@@ -172,6 +172,7 @@ private:
     bool displayFlatpaksIsRunning {false};
     bool displayPackagesIsRunning {false};
     bool firstRunFP {true};
+    bool flatpakSetupChecked {false};
     bool firstRunSnap {true};
     bool snapStoreMode {false};
     bool hideLibsChecked {true};

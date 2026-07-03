@@ -80,7 +80,6 @@ void printError(const QString &message)
         {"aptitude", {"/usr/bin/aptitude"}},
         {"chown", {"/usr/bin/chown", "/bin/chown"}},
         {"fuser", {"/usr/bin/fuser", "/bin/fuser"}},
-        {"mxpi-lib", {"/usr/lib/mx-packageinstaller/mxpi-lib"}},
         {"ps", {"/usr/bin/ps", "/bin/ps"}},
         {"snap", {"/usr/bin/snap", "/snap/bin/snap"}},
     };
