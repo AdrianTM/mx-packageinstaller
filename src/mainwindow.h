@@ -222,6 +222,7 @@ private:
     bool holdProgressForAptRefresh {false};
     bool holdProgressForFlatpakRefresh {false};
     bool downloadCancelRequested {false};
+    bool operationCanceled {false};
     bool flatpakCancelHidden {false};
     bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
