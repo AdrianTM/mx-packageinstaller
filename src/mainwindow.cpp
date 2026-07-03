@@ -456,8 +456,12 @@ void MainWindow::setup()
             tree->setContextMenuPolicy(Qt::CustomContextMenu);
         }
         connect(tree, &QTreeView::doubleClicked, this, &MainWindow::checkUncheckItem);
-        connect(tree, &QTreeView::customContextMenuRequested, this,
-                [this, tree](QPoint pos) { displayPackageInfo(tree, pos); });
+        // treePopularApps has its own context-menu handler wired in setConnections();
+        // wiring the generic one too would pop up two menus.
+        if (tree != ui->treePopularApps) {
+            connect(tree, &QTreeView::customContextMenuRequested, this,
+                    [this, tree](QPoint pos) { displayPackageInfo(tree, pos); });
+        }
     }
 }
 
@@ -3169,16 +3173,9 @@ void MainWindow::displayPackageInfo(QTreeView *tree, QPoint pos)
         return;
     }
 
+    // treePopularApps is handled by treePopularApps_customContextMenuRequested; this
+    // path only serves the APT trees (Enabled repos, MX Test, Backports).
     auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
-    if (tree == ui->treePopularApps) {
-        // Skip categories (items with no parent in hierarchical model)
-        if (!currentIdx.parent().isValid()) {
-            action->deleteLater();
-            return;
-        }
-        connect(action, &QAction::triggered, this,
-                [this, currentIdx] { displayPopularInfo(currentIdx); });
-    }
     QMenu menu(this);
     menu.addAction(action);
     if (tree == ui->treeEnabled) {
