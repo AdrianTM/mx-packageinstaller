@@ -21,6 +21,8 @@
  **********************************************************************/
 #include "snapfilterproxy.h"
 
+#include "../versionnumber.h"
+
 SnapFilterProxy::SnapFilterProxy(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
@@ -66,6 +68,16 @@ bool SnapFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sourceP
     }
 
     return true;
+}
+
+bool SnapFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
+{
+    if (left.column() == SnapCol::Version) {
+        const VersionNumber leftVersion(left.data(Qt::DisplayRole).toString());
+        const VersionNumber rightVersion(right.data(Qt::DisplayRole).toString());
+        return leftVersion < rightVersion;
+    }
+    return QSortFilterProxyModel::lessThan(left, right);
 }
 
 bool SnapFilterProxy::matchesSearch(const SnapData &snap) const

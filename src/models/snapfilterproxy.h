@@ -39,6 +39,7 @@ public:
 
 protected:
     [[nodiscard]] bool filterAcceptsRow(int sourceRow, const QModelIndex &sourceParent) const override;
+    [[nodiscard]] bool lessThan(const QModelIndex &left, const QModelIndex &right) const override;
 
 private:
     [[nodiscard]] bool matchesSearch(const SnapData &snap) const;

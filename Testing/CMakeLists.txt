@@ -165,6 +165,7 @@ add_executable(test_flatpakfilterproxy
     test_flatpakfilterproxy.cpp
     ../src/models/flatpakmodel.cpp
     ../src/models/flatpakfilterproxy.cpp
+    ../src/versionnumber.cpp
 )
 
 target_link_libraries(test_flatpakfilterproxy
@@ -222,6 +223,7 @@ add_executable(test_snapfilterproxy
     test_snapfilterproxy.cpp
     ../src/models/snapmodel.cpp
     ../src/models/snapfilterproxy.cpp
+    ../src/versionnumber.cpp
 )
 
 target_link_libraries(test_snapfilterproxy

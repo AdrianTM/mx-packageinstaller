@@ -265,7 +265,6 @@ private:
     [[nodiscard]] bool isOnline();
     [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;
     [[nodiscard]] static QString getDebianVerName(uchar version = 0);
-    [[nodiscard]] static bool isFilteredName(const QString &name);
     [[nodiscard]] static uchar getDebianVerNum();
     [[nodiscard]] static uchar showVersionDialog(const QString &message);
     [[nodiscard]] QVector<PackageData> createPackageDataList(QHash<QString, PackageInfo> *list) const;

@@ -2245,14 +2245,6 @@ bool MainWindow::markKeep()
     return cmd.procAsRoot("apt-mark", args);
 }
 
-bool MainWindow::isFilteredName(const QString &name)
-{
-    static const QRegularExpression filterRegex(R"((^lib(?!reoffice|rewolf))|(-dev$)|(-dbg$)|(-dbgsym$)|(-libs$))",
-                                                QRegularExpression::CaseInsensitiveOption);
-
-    return filterRegex.match(name).hasMatch();
-}
-
 bool MainWindow::isOnline()
 {
     if (settings.value("skiponlinecheck", false).toBool() || args.isSet("skip-online-check")) {

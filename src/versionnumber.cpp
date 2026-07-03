@@ -158,19 +158,17 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second)
             return -1;
         }
 
-        // Compare remaining digits - follow dpkg semantics
-        int firstInt = first.at(i).toInt();
-        int secondInt = second.at(i).toInt();
-
-        if (secondInt > firstInt) {
-            return 1;
-        } else if (secondInt < firstInt) {
-            return -1;
-        } else {
-            // Numerically equal - dpkg treats versions like "8" and "08" as equal
-            // Continue to next component (don't return here)
-            continue;
+        // Compare remaining digits - follow dpkg semantics. Both entries are
+        // all-digit groups here, so compare them as arbitrary-precision integers
+        // rather than via toInt(), which returns 0 (comparing equal) for
+        // components wider than INT_MAX, e.g. snapshot timestamps.
+        int numericComparison = compareNumeric(first.at(i), second.at(i));
+        if (numericComparison != 0) {
+            return numericComparison;
         }
+        // Numerically equal - dpkg treats versions like "8" and "08" as equal.
+        // Continue to next component (don't return here)
+        continue;
     }
 
     // If equal till the end of one of the lists, compare list size
@@ -182,6 +180,32 @@ int VersionNumber::compare(const QStringList &first, const QStringList &second)
     }
 
     return 0;
+}
+
+// Return 1 if second > first, -1 if second < first, 0 if equal.
+// Both arguments are all-digit strings; compares them as integers of
+// arbitrary width by ignoring leading zeros, then length, then digits.
+int VersionNumber::compareNumeric(const QString &first, const QString &second)
+{
+    auto significant = [](const QString &digits) {
+        qsizetype start = 0;
+        while (start < digits.size() - 1 && digits.at(start) == QLatin1Char('0')) {
+            ++start;
+        }
+        return QStringView(digits).mid(start);
+    };
+
+    const QStringView a = significant(first);
+    const QStringView b = significant(second);
+
+    if (a.size() != b.size()) {
+        return a.size() < b.size() ? 1 : -1;
+    }
+    const int lexical = a.compare(b);
+    if (lexical == 0) {
+        return 0;
+    }
+    return lexical < 0 ? 1 : -1;
 }
 
 // Return 1 if second > first, -1 if second < first, 0 if equal

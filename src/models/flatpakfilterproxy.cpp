@@ -21,6 +21,8 @@
  **********************************************************************/
 #include "flatpakfilterproxy.h"
 
+#include "../versionnumber.h"
+
 FlatpakFilterProxy::FlatpakFilterProxy(QObject *parent)
     : QSortFilterProxyModel(parent)
 {
@@ -119,6 +121,12 @@ bool FlatpakFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &ri
         const QString leftName = left.siblingAtColumn(FlatCol::Name).data(Qt::DisplayRole).toString();
         const QString rightName = right.siblingAtColumn(FlatCol::Name).data(Qt::DisplayRole).toString();
         return QString::localeAwareCompare(leftName, rightName) < 0;
+    }
+
+    if (left.column() == FlatCol::Version && right.column() == FlatCol::Version) {
+        const VersionNumber leftVersion(left.data(Qt::DisplayRole).toString());
+        const VersionNumber rightVersion(right.data(Qt::DisplayRole).toString());
+        return leftVersion < rightVersion;
     }
 
     return QSortFilterProxyModel::lessThan(left, right);
