@@ -67,6 +67,7 @@ public:
     {
         currentLine.clear();
         cursorColumn = 0;
+        pendingEscape.clear();
     }
 
     void append(const QString &output)
@@ -85,12 +86,15 @@ public:
             cursorColumn = currentLine.size();
         }
 
+        QString input = pendingEscape + output;
+        pendingEscape.clear();
+
         QStringList completedLines;
-        const int size = output.size();
+        const int size = input.size();
         for (int i = 0; i < size; ++i) {
-            const QChar ch = output.at(i);
+            const QChar ch = input.at(i);
             if (ch == QChar(0x1B)) { // ESC: consume an ANSI control sequence
-                i = consumeEscape(output, i);
+                i = consumeEscape(input, i);
                 continue;
             }
             if (ch == QLatin1Char('\n')) {
@@ -135,6 +139,13 @@ private:
     {
         const int size = output.size();
         if (escIndex + 1 >= size || output.at(escIndex + 1) != QLatin1Char('[')) {
+            if (escIndex + 1 >= size) {
+                pendingEscape = output.mid(escIndex);
+                return size - 1;
+            }
+            if (output.at(escIndex + 1) == QLatin1Char(']')) {
+                return consumeOsc(output, escIndex);
+            }
             return escIndex; // lone ESC or non-CSI escape: drop just the ESC
         }
         // CSI: ESC '[' parameter-bytes (0x30-0x3F) intermediate-bytes (0x20-0x2F) final (0x40-0x7E)
@@ -158,6 +169,7 @@ private:
             }
         }
         if (j >= size) {
+            pendingEscape = output.mid(escIndex);
             return size - 1; // sequence split across chunks: drop what we have
         }
         const QChar finalByte = output.at(j);
@@ -173,8 +185,24 @@ private:
         return j;
     }
 
+    int consumeOsc(const QString &output, int escIndex)
+    {
+        const int size = output.size();
+        for (int j = escIndex + 2; j < size; ++j) {
+            if (output.at(j) == QChar(0x07)) {
+                return j;
+            }
+            if (output.at(j) == QChar(0x1B) && j + 1 < size && output.at(j + 1) == QLatin1Char('\\')) {
+                return j + 1;
+            }
+        }
+        pendingEscape = output.mid(escIndex);
+        return size - 1;
+    }
+
     QPlainTextEdit *outputBox = nullptr;
     QString currentLine;
+    QString pendingEscape;
     int cursorColumn = 0;
 };
 

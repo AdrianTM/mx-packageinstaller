@@ -150,10 +150,12 @@ constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
 
 QString sanitizeOutputForDisplay(const QString &output)
 {
+    static const QRegularExpression oscEscape {R"(\x1B\][^\x07\x1B]*(?:\x07|\x1B\\))"};
     static const QRegularExpression ansiEscape {R"(\x1B\[[0-9;?]*[A-Za-z])"};
     static const QRegularExpression ansiQuery {R"(\x1B\[[0-9;?]*n)"};
     static const QRegularExpression ansiCursorStyle {R"(\x1B\[[0-9;?]*\s*q)"};
     QString cleanOutput = output;
+    cleanOutput.remove(oscEscape);
     cleanOutput.remove(ansiEscape);
     cleanOutput.remove(ansiQuery);
     cleanOutput.remove(ansiCursorStyle);
@@ -879,10 +881,11 @@ void MainWindow::checkUncheckItem()
 void MainWindow::outputAvailable(const QString &output)
 {
     static const QRegularExpression sudoPrompt {R"(sudo.*password)", QRegularExpression::CaseInsensitiveOption};
-    if (sudoPrompt.match(sanitizeOutputForDisplay(output)).hasMatch()) {
+    const QString cleanOutput = sanitizeOutputForDisplay(output);
+    if (sudoPrompt.match(cleanOutput).hasMatch()) {
         setLineEditMasked(true);
     }
-    outputRenderer.append(output);
+    outputRenderer.append(cleanOutput);
 }
 
 namespace
