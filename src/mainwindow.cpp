@@ -258,7 +258,12 @@ bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cm
     if (getuid() == 0) {
         return cmd.proc(mxpiLibPath, {action}, nullptr, nullptr, quiet);
     }
-    return cmd.proc(Cmd::elevationTool(), {mxpiLibPath, action}, nullptr, nullptr, quiet);
+    const QString elevate = Cmd::elevationTool();
+    if (elevate.isEmpty()) {
+        qWarning() << "No elevation helper available";
+        return false;
+    }
+    return cmd.proc(elevate, {mxpiLibPath, action}, nullptr, nullptr, quiet);
 }
 } // namespace
 

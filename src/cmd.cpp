@@ -26,7 +26,7 @@ QString Cmd::elevationTool()
 {
     if (QFile::exists("/usr/bin/pkexec")) return QStringLiteral("/usr/bin/pkexec");
     if (QFile::exists("/usr/bin/sudo")) return QStringLiteral("/usr/bin/sudo");
-    return QStringLiteral("/usr/bin/sudo"); // fallback
+    return {}; // no elevation tool available; callers check for empty
 }
 
 QString Cmd::getOut(const QString &cmd, QuietMode quiet)
