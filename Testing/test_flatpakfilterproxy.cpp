@@ -10,6 +10,7 @@ class TestFlatpakFilterProxy : public QObject
 private slots:
     void testHideDuplicates();
     void testAllowedRefs();
+    void testEmptyAllowedRefsShowsNothing();
     void testStatusFilter();
     void testSearchText();
     void testSizeSortUsesBytes();
@@ -59,8 +60,10 @@ void TestFlatpakFilterProxy::testHideDuplicates()
     proxy.setSourceModel(&model);
     proxy.setHideDuplicates(true);
 
-    QCOMPARE(proxy.rowCount(), 1);
-    QCOMPARE(proxy.index(0, FlatCol::Name).data().toString(), QString("Firefox"));
+    // One GIMP survivor (first occurrence) plus Firefox; the duplicate GIMP is hidden.
+    QCOMPARE(proxy.rowCount(), 2);
+    QCOMPARE(proxy.index(0, FlatCol::Name).data().toString(), QString("GIMP"));
+    QCOMPARE(proxy.index(1, FlatCol::Name).data().toString(), QString("Firefox"));
 }
 
 void TestFlatpakFilterProxy::testAllowedRefs()
@@ -76,6 +79,24 @@ void TestFlatpakFilterProxy::testAllowedRefs()
 
     QCOMPARE(proxy.rowCount(), 1);
     QCOMPARE(proxy.index(0, FlatCol::Name).data().toString(), QString("Firefox"));
+}
+
+void TestFlatpakFilterProxy::testEmptyAllowedRefsShowsNothing()
+{
+    FlatpakModel model;
+    model.setFlatpakData(createFlatpaks());
+
+    FlatpakFilterProxy proxy;
+    proxy.setSourceModel(&model);
+
+    // An empty allowed-refs set means "restrict to nothing", not "no restriction",
+    // so e.g. selecting "Installed apps" on a system with none shows an empty list.
+    proxy.setAllowedRefs({});
+    QCOMPARE(proxy.rowCount(), 0);
+
+    // Clearing the restriction shows everything again.
+    proxy.clearAllowedRefs();
+    QCOMPARE(proxy.rowCount(), 3);
 }
 
 void TestFlatpakFilterProxy::testStatusFilter()

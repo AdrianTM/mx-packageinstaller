@@ -24,6 +24,7 @@
 #include "../packagestatus.h"
 
 #include <QRegularExpression>
+#include <QSet>
 
 namespace {
 QString normalizeNumber(QString number)
@@ -279,18 +280,28 @@ int FlatpakModel::findFlatpakRow(const QString &canonicalRef) const
 
 void FlatpakModel::markDuplicates()
 {
-    QHash<QString, int> refCount;
-    for (const FlatpakData &fp : m_flatpaks) {
-        refCount[fp.canonicalRef]++;
-    }
-
+    // Keep the first occurrence of each canonical ref visible and mark only the
+    // later copies as duplicates, so the hide-duplicates filter collapses each
+    // ref to one installable row rather than hiding every copy.
+    QSet<QString> seen;
     for (int i = 0; i < m_flatpaks.size(); ++i) {
-        bool wasDuplicate = m_flatpaks[i].isDuplicate;
-        m_flatpaks[i].isDuplicate = refCount.value(m_flatpaks[i].canonicalRef, 0) > 1;
+        const bool wasDuplicate = m_flatpaks[i].isDuplicate;
+        m_flatpaks[i].isDuplicate = seen.contains(m_flatpaks[i].canonicalRef);
+        seen.insert(m_flatpaks[i].canonicalRef);
         if (wasDuplicate != m_flatpaks[i].isDuplicate) {
             emit dataChanged(index(i, FlatCol::Duplicate), index(i, FlatCol::Duplicate));
         }
     }
+}
+
+int FlatpakModel::findRowByFullName(const QString &fullName) const
+{
+    for (int i = 0; i < m_flatpaks.size(); ++i) {
+        if (m_flatpaks.at(i).fullName == fullName) {
+            return i;
+        }
+    }
+    return -1;
 }
 
 void FlatpakModel::updateInstalledStatus(const QStringList &installedRefs)

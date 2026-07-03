@@ -56,12 +56,14 @@ void FlatpakFilterProxy::setHideDuplicates(bool hide)
 void FlatpakFilterProxy::setAllowedRefs(const QSet<QString> &refs)
 {
     m_allowedRefs = refs;
+    m_refFilterActive = true;
     invalidateFilter();
 }
 
 void FlatpakFilterProxy::clearAllowedRefs()
 {
     m_allowedRefs.clear();
+    m_refFilterActive = false;
     invalidateFilter();
 }
 
@@ -89,8 +91,9 @@ bool FlatpakFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
         return false;
     }
 
-    // If allowed refs are set, only show items in that set
-    if (!m_allowedRefs.isEmpty() && !m_allowedRefs.contains(fp->canonicalRef)) {
+    // When a ref filter is active, only show items in the set — an empty set
+    // legitimately means "show nothing" (e.g. no installed apps/runtimes).
+    if (m_refFilterActive && !m_allowedRefs.contains(fp->canonicalRef)) {
         return false;
     }
 

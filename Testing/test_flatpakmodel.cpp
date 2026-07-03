@@ -390,11 +390,11 @@ void TestFlatpakModel::testMarkDuplicates()
     model.setFlatpakData(flatpaks);
     model.markDuplicates();
 
-    // First two should be duplicates
-    QVERIFY(model.flatpakAt(0)->isDuplicate);
+    // The first occurrence stays visible; only the later copy is marked duplicate.
+    QVERIFY(!model.flatpakAt(0)->isDuplicate);
     QVERIFY(model.flatpakAt(1)->isDuplicate);
 
-    // Third should not be a duplicate
+    // A ref appearing once is never a duplicate
     QVERIFY(!model.flatpakAt(2)->isDuplicate);
 }
 

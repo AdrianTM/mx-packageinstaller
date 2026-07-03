@@ -327,10 +327,12 @@ void MainWindow::setup()
     font.setStyleHint(QFont::Monospace);
     ui->outputBox->setFont(font);
 
-    QString defaultFSUser = settings.value(QStringLiteral("FlatpakUser"), tr("For all users")).toString();
-    fpUser = defaultFSUser == tr("For all users") ? QStringLiteral("--system ") : QStringLiteral("--user ");
+    // Stored as a locale-independent token ("system"/"user"); anything else
+    // (including labels saved by older versions) falls back to system scope.
+    const bool userScope = settings.value(QStringLiteral("FlatpakUser")).toString() == QLatin1String("user");
+    fpUser = userScope ? QStringLiteral("--user ") : QStringLiteral("--system ");
     ui->comboUser->blockSignals(true);
-    ui->comboUser->setCurrentText(defaultFSUser);
+    ui->comboUser->setCurrentIndex(userScope ? 1 : 0);
     ui->comboUser->blockSignals(false);
 
     arch = AptCache::getArch();
@@ -2672,7 +2674,8 @@ void MainWindow::cleanup()
     runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("copy_log"));
     settings.setValue("geometry", saveGeometry());
     settings.setValue("FlatpakRemote", ui->comboRemote->currentText());
-    settings.setValue("FlatpakUser", ui->comboUser->currentText());
+    settings.setValue("FlatpakUser",
+                      fpUser.startsWith(QLatin1String("--user")) ? QStringLiteral("user") : QStringLiteral("system"));
 }
 
 QString MainWindow::getVersion(const QString &name) const
@@ -3445,6 +3448,22 @@ void MainWindow::pushInstall_clicked()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     showOutput();
     if (currentTree == ui->treeFlatpak) {
+        // showOutput() cleared the visible checkboxes; work from changeList. Only
+        // install flatpaks that are not already installed (the selection may be mixed).
+        QStringList toInstall;
+        for (const QString &name : std::as_const(changeList)) {
+            const int row = flatpakModel ? flatpakModel->findRowByFullName(name) : -1;
+            const FlatpakData *fp = (row >= 0) ? flatpakModel->flatpakAt(row) : nullptr;
+            if (!fp || fp->status != Status::Installed) {
+                toInstall.append(name);
+            }
+        }
+        changeList = toInstall;
+        if (changeList.isEmpty()) {
+            ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
+            enableTabs(true);
+            return;
+        }
         // Confirmation dialog
         if (!confirmActions(changeList.join(' '), "install")) {
             displayFlatpaks(true);
@@ -3649,6 +3668,23 @@ void MainWindow::pushUninstall_clicked()
         }
     } else if (currentTree == ui->treeFlatpak) {
         bool success = true;
+
+        // showOutput() cleared the visible checkboxes; work from changeList. Only
+        // uninstall flatpaks that are actually installed (the selection may be mixed).
+        QStringList toUninstall;
+        for (const QString &name : std::as_const(changeList)) {
+            const int row = flatpakModel ? flatpakModel->findRowByFullName(name) : -1;
+            const FlatpakData *fp = (row >= 0) ? flatpakModel->flatpakAt(row) : nullptr;
+            if (fp && fp->status == Status::Installed) {
+                toUninstall.append(name);
+            }
+        }
+        changeList = toUninstall;
+        if (changeList.isEmpty()) {
+            ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
+            enableTabs(true);
+            return;
+        }
 
         // Confirmation dialog
         if (!confirmActions(changeList.join(' '), "remove")) {
@@ -4967,7 +5003,7 @@ void MainWindow::buildChangeList(const QString &packageName, Qt::CheckState stat
 }
 
 // Build the changeList for Flatpak packages
-void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState state, int status)
+void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState state, int /*status*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
 
@@ -4976,26 +5012,33 @@ void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState 
     }
 
     if (state == Qt::Checked) {
-        ui->pushInstall->setEnabled(true);
         changeList.append(fullName);
     } else {
         changeList.removeOne(fullName);
     }
 
-    ui->pushInstall->setText(tr("Install"));
-    if (status == Status::Installed) {
-        ui->pushUninstall->setEnabled(true);
-        ui->pushInstall->setEnabled(false);
-    } else {
-        ui->pushUninstall->setEnabled(false);
-        ui->pushInstall->setEnabled(true);
+    // Enable each action based on the whole selection, not just the last toggle:
+    // Install if any selected flatpak is not installed, Uninstall if any is installed.
+    // The install/uninstall handlers split the selection by status accordingly.
+    bool anyInstalled = false;
+    bool anyNotInstalled = false;
+    for (const QString &selectedName : std::as_const(changeList)) {
+        const int row = flatpakModel ? flatpakModel->findRowByFullName(selectedName) : -1;
+        const FlatpakData *fp = (row >= 0) ? flatpakModel->flatpakAt(row) : nullptr;
+        if (fp && fp->status == Status::Installed) {
+            anyInstalled = true;
+        } else {
+            anyNotInstalled = true;
+        }
     }
+
+    ui->pushInstall->setText(tr("Install"));
+    ui->pushInstall->setEnabled(!changeList.isEmpty() && anyNotInstalled);
+    ui->pushUninstall->setEnabled(!changeList.isEmpty() && anyInstalled);
 
     if (changeList.isEmpty()) {
         ui->comboFilterFlatpak->setCurrentText(indexFilterFP);
         indexFilterFP.clear();
-        ui->pushInstall->setEnabled(false);
-        ui->pushUninstall->setEnabled(false);
     }
     ui->treeFlatpak->setFocus();
 }

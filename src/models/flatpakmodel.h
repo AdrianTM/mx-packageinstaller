@@ -71,6 +71,7 @@ public:
 
     [[nodiscard]] const FlatpakData *flatpakAt(int row) const;
     [[nodiscard]] int findFlatpakRow(const QString &canonicalRef) const;
+    [[nodiscard]] int findRowByFullName(const QString &fullName) const;
 
     void markDuplicates();
     void updateInstalledStatus(const QStringList &installedRefs);
