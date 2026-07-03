@@ -68,13 +68,11 @@ public:
     void setAllChecked(bool checked);
     void uncheckAll();
     void setCheckedForVisible(const QVector<int> &visibleRows, bool checked);
-    void checkByStatus(int status, bool checked);
 
     [[nodiscard]] const PackageData *packageAt(int row) const;
     [[nodiscard]] int findPackageRow(const QString &name) const;
 
     void setAutoremovable(const QStringList &names);
-    void updateInstalledVersions(const QHash<QString, QString> &versions);
 
     void setIcons(const QIcon &installed, const QIcon &upgradable);
 

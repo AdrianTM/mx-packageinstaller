@@ -1107,8 +1107,6 @@ void MainWindow::setConnections() const
     connect(headerRepo, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(headerAUR, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(ui->treeFlatpak, &QTreeWidget::itemChanged, this, &MainWindow::treeFlatpak_itemChanged);
-    // Removed: connect(ui->treeAUR, &QTreeWidget::itemChanged, this, &MainWindow::treeAUR_itemChanged);
-    // Removed: connect(ui->treeRepo, &QTreeWidget::itemChanged, this, &MainWindow::treeRepo_itemChanged);
 }
 
 void MainWindow::setProgressDialog()
@@ -1347,77 +1345,6 @@ void MainWindow::displayPackages()
     displayPackagesIsRunning = false;
     emit displayPackagesFinished();
 }
-
-/* Removed - no longer in header, using model-based approach for Repo/AUR
-// Keep createTreeItemsList for Flatpak (still using QTreeWidget)
-QList<QTreeWidgetItem *> MainWindow::createTreeItemsList(QHash<QString, PackageInfo> *list) const
-{
-    QList<QTreeWidgetItem *> items;
-    items.reserve(list->size());
-
-    for (auto it = list->constBegin(); it != list->constEnd(); ++it) {
-        items.append(createTreeItem(it.key(), it.value().version, it.value().description));
-    }
-
-    return items;
-}
-
-void MainWindow::updateTreeItems(QTreeWidget *tree)
-{
-    tree->setUpdatesEnabled(false);
-
-    const auto installedVersions = listInstalledVersions();
-
-    // Optimization: Pre-cache VersionNumber objects for repo versions to avoid repeated parsing
-    QHash<QString, VersionNumber> repoVersionCache;
-    repoVersionCache.reserve(tree->topLevelItemCount() * 2);
-
-    for (QTreeWidgetItemIterator it(tree); *it; ++it) {
-        auto *item = *it;
-        const QString &appName = item->text(TreeCol::Name);
-
-        // Get installed version information
-        const VersionNumber installedVersion = installedVersions.value(appName);
-        const QString installedVersionStr = installedVersion.toString();
-
-        // Update installed version text only if changed
-        if (!installedVersionStr.isEmpty() && item->text(TreeCol::InstalledVersion) != installedVersionStr) {
-            item->setText(TreeCol::InstalledVersion, installedVersionStr);
-        }
-
-        // Set status based on installation state
-        if (installedVersionStr.isEmpty()) {
-            item->setData(TreeCol::Status, Qt::UserRole, Status::NotInstalled);
-        } else {
-            // Optimization: Cache VersionNumber objects for repo versions
-            const QString repoVersionStr = item->text(TreeCol::RepoVersion);
-            VersionNumber repoVersion;
-
-            auto cacheIt = repoVersionCache.find(repoVersionStr);
-            if (cacheIt != repoVersionCache.end()) {
-                repoVersion = cacheIt.value();
-            } else {
-                repoVersion = VersionNumber(repoVersionStr);
-                repoVersionCache.insert(repoVersionStr, repoVersion);
-            }
-
-            // Compare versions and set appropriate icon
-            const bool isUpToDate = installedVersion >= repoVersion;
-            item->setIcon(TreeCol::Check, isUpToDate ? qiconInstalled : qiconUpgradable);
-            item->setData(TreeCol::Status, Qt::UserRole, isUpToDate ? Status::Installed : Status::Upgradable);
-        }
-    }
-
-    // Optimization: Defer column resizing until the end and only resize visible columns
-    tree->setUpdatesEnabled(true); // Enable updates first so resizing is efficient
-
-    for (int i = 0; i < tree->columnCount(); ++i) {
-        if (!tree->isColumnHidden(i)) {
-            tree->resizeColumnToContents(i);
-        }
-    }
-}
-*/
 
 void MainWindow::displayFlatpaks(bool force_update)
 {
@@ -1837,107 +1764,6 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     return msgBox.exec() == QMessageBox::Ok;
 }
 
-// Validate sudo password and cache credentials for paru
-bool MainWindow::validateSudoPassword(QByteArray *passwordOut)
-{
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    if (passwordOut) {
-        passwordOut->fill('\0');
-        passwordOut->clear();
-    }
-
-    // First check if sudo is already cached (valid for 5 minutes by default)
-    QProcess checkSudo;
-    checkSudo.start("/usr/bin/sudo", {"-n", "-v"});
-    checkSudo.waitForFinished(1000);
-
-    if (checkSudo.exitCode() == 0) {
-        qDebug() << "Sudo credentials already cached";
-        return true;
-    }
-
-    // Prompt for password
-    QByteArray passwordBytes;
-    if (!promptSudoPassword(&passwordBytes)) {
-        qDebug() << "User cancelled password prompt";
-        return false;
-    }
-
-    // Validate password and cache sudo credentials
-    QProcess validateSudo;
-    validateSudo.start("/usr/bin/sudo", {"-S", "-v"});
-    if (!validateSudo.waitForStarted(1000)) {
-        // Securely zero password before returning
-        passwordBytes.fill('\0');
-        passwordBytes.clear();
-        QMessageBox::critical(this, tr("Authentication Failed"),
-                            tr("Could not start sudo. Please check your system configuration."));
-        return false;
-    }
-    validateSudo.write(passwordBytes + '\n');
-    validateSudo.closeWriteChannel();
-    validateSudo.waitForFinished(3000);
-
-    QString output = validateSudo.readAllStandardOutput() + validateSudo.readAllStandardError();
-
-    if (validateSudo.exitCode() != 0) {
-        qDebug() << "Sudo validation failed:" << output;
-        // Securely zero password before returning
-        passwordBytes.fill('\0');
-        passwordBytes.clear();
-        QMessageBox::critical(this, tr("Authentication Failed"),
-                            tr("Incorrect password or sudo not configured properly."));
-        return false;
-    }
-
-    if (passwordOut) {
-        *passwordOut = passwordBytes;
-    }
-    // Zero the local password copy
-    passwordBytes.fill('\0');
-    passwordBytes.clear();
-
-    qDebug() << "Sudo credentials validated and cached";
-    return true;
-}
-
-bool MainWindow::promptSudoPassword(QByteArray *passwordOut)
-{
-    if (!passwordOut) {
-        return false;
-    }
-
-    QDialog dialog(this);
-    dialog.setWindowTitle(tr("Sudo Password Required"));
-    dialog.setModal(true);
-    dialog.setMinimumWidth(450);
-
-    auto *layout = new QVBoxLayout(&dialog);
-    auto *label = new QLabel(tr("Paru needs sudo privileges for package installation.\n"
-                                "Please enter your password:"), &dialog);
-    label->setWordWrap(true);
-    layout->addWidget(label);
-
-    auto *passwordEdit = new QLineEdit(&dialog);
-    passwordEdit->setEchoMode(QLineEdit::Password);
-    layout->addWidget(passwordEdit);
-
-    auto *buttons = new QDialogButtonBox(QDialogButtonBox::Ok | QDialogButtonBox::Cancel, &dialog);
-    layout->addWidget(buttons);
-    connect(buttons, &QDialogButtonBox::accepted, &dialog, &QDialog::accept);
-    connect(buttons, &QDialogButtonBox::rejected, &dialog, &QDialog::reject);
-
-    if (dialog.exec() != QDialog::Accepted) {
-        passwordEdit->clear();
-        return false;
-    }
-
-    // Best-effort: QLineEdit exposes QString, so convert immediately and clear widget.
-    *passwordOut = passwordEdit->text().toUtf8();
-    passwordEdit->clear();
-    return !passwordOut->isEmpty();
-}
-
 bool MainWindow::install(const QString &names, int sourceTab)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -2196,12 +2022,6 @@ void MainWindow::cleanup()
     settings.setValue("FlatpakUser", ui->comboUser->currentText());
 }
 
-QString MainWindow::getVersion(const QString &name) const
-{
-    const QString output = Cmd().getOut("LANG=C pacman -Q " + name);
-    return output.section(' ', 1).trimmed();
-}
-
 // Return true if all the packages listed are installed
 bool MainWindow::checkInstalled(const QVariant &names) const
 {
@@ -2452,20 +2272,6 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
     }
     return refs;
 }
-
-/* Removed - no longer in header, using model-based approach
-QTreeWidgetItem *MainWindow::createTreeItem(const QString &name, const QString &version,
-                                            const QString &description) const
-{
-    auto *widget_item = new QTreeWidgetItem();
-    widget_item->setCheckState(TreeCol::Check, Qt::Unchecked);
-    widget_item->setText(TreeCol::Name, name);
-    widget_item->setText(TreeCol::RepoVersion, version);
-    widget_item->setText(TreeCol::Description, description);
-    widget_item->setData(0, Qt::UserRole, true); // All items are displayed till filtered
-    return widget_item;
-}
-*/
 
 PackageData MainWindow::createPackageData(const QString &name, const QString &version,
                                           const QString &description) const
@@ -4408,13 +4214,6 @@ void MainWindow::filterChanged(const QString &arg1)
         }
     };
 
-    auto handleAurQueryError = [this]() {
-        QMessageBox::critical(this, tr("Error"),
-                              tr("Could not query AUR packages. Please check that paru is installed."));
-        currentTree->setUpdatesEnabled(true);
-        currentTree->blockSignals(false);
-    };
-
     // Hide and reset all header checkboxes by default
     if (headerRepo) {
         headerRepo->setCheckboxVisible(false);
@@ -4672,8 +4471,6 @@ void MainWindow::selectAllUpgradable_toggled(bool checked)
         ui->pushInstall->setText(checkUpgradable(changeList) ? tr("Upgrade") : tr("Install"));
     }
 }
-
-// Removed: treeAUR_itemChanged and treeRepo_itemChanged (using models now)
 
 void MainWindow::treeFlatpak_itemChanged(QTreeWidgetItem *item)
 {

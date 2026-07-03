@@ -251,38 +251,6 @@ void PackageModel::setAutoremovable(const QStringList &names)
     }
 }
 
-void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versions)
-{
-    m_countInstalled = 0;
-    m_countUpgradable = 0;
-    for (int i = 0; i < m_packages.size(); ++i) {
-        PackageData &pkg = m_packages[i];
-        auto it = versions.find(pkg.name);
-        if (it != versions.end()) {
-            pkg.installedVersion = it.value();
-            if (!pkg.repoVersion.isEmpty()) {
-                const VersionNumber repoVersion(pkg.repoVersion);
-                const VersionNumber installedVersion(pkg.installedVersion);
-                pkg.status = (repoVersion > installedVersion) ? Status::Upgradable : Status::Installed;
-            } else {
-                pkg.status = Status::Installed;
-            }
-        } else {
-            pkg.installedVersion.clear();
-            pkg.status = Status::NotInstalled;
-        }
-        if (pkg.status == Status::Installed) {
-            ++m_countInstalled;
-        } else if (pkg.status == Status::Upgradable) {
-            ++m_countUpgradable;
-        }
-    }
-
-    if (!m_packages.isEmpty()) {
-        emit dataChanged(index(0, 0), index(m_packages.size() - 1, columnCount() - 1));
-    }
-}
-
 void PackageModel::setIcons(const QIcon &installed, const QIcon &upgradable)
 {
     m_iconInstalled = installed;
@@ -316,18 +284,4 @@ QStringList PackageModel::checkedPackageNames() const
 void PackageModel::uncheckAll()
 {
     setAllChecked(false);
-}
-
-void PackageModel::checkByStatus(int status, bool checked)
-{
-    Qt::CheckState state = checked ? Qt::Checked : Qt::Unchecked;
-    for (int i = 0; i < m_packages.size(); ++i) {
-        if (m_packages[i].status == status || (status == Status::Installed && m_packages[i].status == Status::Upgradable)) {
-            m_packages[i].checkState = state;
-        }
-    }
-    if (!m_packages.isEmpty()) {
-        emit dataChanged(index(0, TreeCol::Check), index(m_packages.size() - 1, TreeCol::Check),
-                         {Qt::CheckStateRole});
-    }
 }

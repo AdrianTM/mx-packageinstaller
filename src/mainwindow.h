@@ -218,8 +218,6 @@ private:
 
     [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString getArchOption() const;
-    [[nodiscard]] QString getVersion(const QString &name) const;
-    [[nodiscard]] QString mapArchToFormat(const QString &arch) const;
     [[nodiscard]] QStringList listFlatpaks(const QString &remote, const QString &type = QLatin1String("")) const;
     [[nodiscard]] QStringList listInstalledFlatpaks(const QString &type = QLatin1String(""));
     [[nodiscard]] QTreeWidgetItem *createFlatpakItem(const QString &item, const QStringList &installedAll) const;
@@ -228,7 +226,6 @@ private:
     [[nodiscard]] bool checkInstalled(const QVariant &names) const;
     [[nodiscard]] bool checkUpgradable(const QStringList &nameList) const;
     [[nodiscard]] bool isOnline();
-    [[nodiscard]] bool isPackageInstallable(const QString &installable, const QString &modArch) const;
 
     bool buildPackageLists(bool forceDownload = false);
     bool confirmActions(const QString &names, const QString &action);
@@ -299,8 +296,6 @@ private:
     bool buildAurList(const QString &searchTerm);
     bool buildRepoCache(bool showProgress);
     void applyRepoFilter(int statusFilter);
-    bool validateSudoPassword(QByteArray *passwordOut = nullptr);
-    bool promptSudoPassword(QByteArray *passwordOut);
     void onAurSearchTextChanged();
     void showAurPackageInfo(const QString &packageName);
     void showRepoPackageInfo(const QString &packageName);
