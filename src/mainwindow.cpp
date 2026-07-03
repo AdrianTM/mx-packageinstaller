@@ -733,30 +733,6 @@ QString MainWindow::convert(quint64 bytes)
     }
 }
 
-// Quote a token for safe use inside a single-quoted shell context
-// Replaces ' with '\'' (end quote, escaped quote, start quote)
-// Returns a fully single-quoted token, suitable for use inside SYSTEM:'...'
-QString MainWindow::shellQuote(const QString &value)
-{
-    QString escaped = value;
-    escaped.replace('\'', QLatin1String("'\\''"));
-    return QLatin1Char('\'') + escaped + QLatin1Char('\'');
-}
-
-// Quote a list of package names for safe use in shell commands
-// Each package name is wrapped in single quotes after escaping
-QString MainWindow::shellQuotePackageList(const QStringList &packages)
-{
-    QStringList quoted;
-    quoted.reserve(packages.size());
-    for (const QString &pkg : packages) {
-        QString escaped = pkg;
-        escaped.replace('\'', QLatin1String("'\\''"));
-        quoted.append('\'' + escaped + '\'');
-    }
-    return quoted.join(' ');
-}
-
 void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
@@ -1798,7 +1774,7 @@ bool MainWindow::install(const QString &names, int sourceTab)
         }
 
         const QStringList nameList = names.split(' ', Qt::SkipEmptyParts);
-        const QString quotedNames = shellQuotePackageList(nameList);
+        const QString quotedNames = shellCommandFromArgs(nameList);
         const QString paruInvocation = paruPath + " -S --needed " + quotedNames;
         const bool hasScript = QFile::exists("/usr/bin/script");
 
@@ -1821,17 +1797,17 @@ bool MainWindow::install(const QString &names, int sourceTab)
             const QString home = homeDirForUser(buildUser);
             QString env = "env ";
             if (!home.isEmpty()) {
-                env += "HOME=" + shellQuote(home) + ' ';
+                env += "HOME=" + shellSingleQuote(home) + ' ';
             }
             env += "SHELL=/bin/sh LANG=C PAGER=cat PARU_PAGER=cat ";
             const QString payload = hasScript
-                                        ? "/usr/bin/script -qefc " + shellQuote(paruInvocation) + " /dev/null"
+                                        ? "/usr/bin/script -qefc " + shellSingleQuote(paruInvocation) + " /dev/null"
                                         : paruInvocation;
-            command = "runuser -u " + shellQuote(buildUser) + " -- " + env + payload;
+            command = "runuser -u " + shellSingleQuote(buildUser) + " -- " + env + payload;
         } else {
             command = "LANG=C PAGER=cat PARU_PAGER=cat " + paruInvocation;
             if (hasScript) {
-                command = "/usr/bin/script -qefc " + shellQuote(command) + " /dev/null";
+                command = "/usr/bin/script -qefc " + shellSingleQuote(command) + " /dev/null";
             }
         }
         return cmd.run(command);
@@ -2052,7 +2028,7 @@ bool MainWindow::checkInstalled(const QVariant &names) const
             if (name.trimmed().isEmpty()) {
                 continue;
             }
-            const QString out = shell.getOut("LANG=C pacman -Qq --color never " + shellQuote(name), Cmd::QuietMode::Yes);
+            const QString out = shell.getOut("LANG=C pacman -Qq --color never " + shellSingleQuote(name), Cmd::QuietMode::Yes);
             Q_UNUSED(out);
             if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
                 return false;
@@ -3200,13 +3176,8 @@ bool MainWindow::buildAurList(const QString &searchTerm)
     if (!isOnline()) {
         return false;
     }
-    auto shellQuote = [](const QString &value) {
-        QString escaped = value;
-        escaped.replace('\'', QLatin1String("'\\''"));
-        return '\'' + escaped + '\'';
-    };
     QStringList results
-        = shell.getOut("LANG=C " + paruPath + " -Ssq --color never " + shellQuote(term)).split('\n', Qt::SkipEmptyParts);
+        = shell.getOut("LANG=C " + paruPath + " -Ssq --color never " + shellSingleQuote(term)).split('\n', Qt::SkipEmptyParts);
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         return false;
     }
