@@ -322,8 +322,8 @@ void MainWindow::setup()
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
 
-    testInitiallyEnabled
-        = cmd.run("apt-get update --print-uris | grep -m1 -qE '/mx/testrepo/dists/" + verName + "/test/'");
+    testInitiallyEnabled = cmd.run("apt-get update --print-uris | grep -m1 -qE "
+                                   + shellSingleQuote("/mx/testrepo/dists/" + verName + "/test/"));
 
     setWindowTitle(tr("MX Package Installer"));
 
@@ -2326,7 +2326,7 @@ bool MainWindow::downloadAndUnzip(const QString &url, QFile &file)
     const QString fileExt = QFileInfo(file).suffix();
     const QString unzipCommand = (fileExt == QLatin1String("gz")) ? QStringLiteral("gunzip -f ") : QStringLiteral("unxz -f ");
 
-    if (!cmd.run(unzipCommand + file.fileName())) {
+    if (!cmd.run(unzipCommand + shellSingleQuote(file.fileName()))) {
         qDebug() << "Could not unzip file:" << file.fileName();
         file.remove();
         return false;
@@ -2656,7 +2656,7 @@ void MainWindow::cleanup()
 
 QString MainWindow::getVersion(const QString &name) const
 {
-    return Cmd().getOut("LANG=C dpkg-query -f '${Version}' -W " + name);
+    return Cmd().getOut("LANG=C dpkg-query -f '${Version}' -W " + shellSingleQuote(name));
 }
 
 // Return true if all the packages listed are installed
@@ -3249,12 +3249,12 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
         return;
     }
 
-    QString msg = cmd.getOut("aptitude show " + packageName);
+    QString msg = cmd.getOut("aptitude show " + shellSingleQuote(packageName));
     // Keep last 5 lines from aptitude output
     const QString rawDetails = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
                                           "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
                                           "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
-                                          + packageName);
+                                          + shellSingleQuote(packageName));
     const QStringList rawLines = rawDetails.split('\n');
     QString details = rawLines.mid(qMax(0, rawLines.size() - 5)).join('\n');
 
@@ -5269,15 +5269,16 @@ void MainWindow::pushRemoveUnused_clicked()
 QString MainWindow::getMXTestRepoUrl()
 {
     // Try to get test repo URL directly
-    if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oP 'https?://.*/mx/testrepo/dists/(?=" + verName
-                + "/test/)'")) {
+    if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oP "
+                + shellSingleQuote("https?://.*/mx/testrepo/dists/(?=" + verName + "/test/)"))) {
         return cmd.readAllOutput();
     }
 
     // Fall back to deriving from main repo URL
-    if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oE 'https?://.*/mx/repo/dists/" + verName
-                + "/main/' | sed -e 's:/mx/repo/dists/" + verName
-                + "/main/:/mx/testrepo/dists/:' | grep -oE 'https?://.*/mx/testrepo/dists/'")) {
+    if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oE "
+                + shellSingleQuote("https?://.*/mx/repo/dists/" + verName + "/main/") + " | sed -e "
+                + shellSingleQuote("s:/mx/repo/dists/" + verName + "/main/:/mx/testrepo/dists/:")
+                + " | grep -oE 'https?://.*/mx/testrepo/dists/'")) {
         return cmd.readAllOutput();
     }
 
