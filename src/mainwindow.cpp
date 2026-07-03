@@ -2145,7 +2145,8 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     const bool isUserScope = fpUser.startsWith("--user");
 
     auto buildRemoteLsCommand = [&](const QString &scope) {
-        return "flatpak remote-ls " + scope + remote + ' ' + arch_fp + "--columns=ver,branch,ref,installed-size ";
+        return "flatpak remote-ls " + scope + shellSingleQuote(remote) + ' ' + arch_fp
+               + "--columns=ver,branch,ref,installed-size ";
     };
 
     QString typeFlag;
@@ -2175,7 +2176,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
 
         // Try to update the remote if it's empty
-        QString updateCommand = "flatpak update " + fpUser + "--appstream " + remote + " 2>/dev/null";
+        QString updateCommand = "flatpak update " + fpUser + "--appstream " + shellSingleQuote(remote) + " 2>/dev/null";
         qDebug() << "Running remote update command:" << updateCommand;
 
         Cmd updateShell;
@@ -2393,9 +2394,9 @@ void MainWindow::showAurPackageInfo(const QString &packageName)
 
     // Keep the AUR metadata from paru -Si (votes, first submitted, last modified, etc.)
     // and append installed-package details from pacman -Qi when the package is installed.
-    QString aurInfo = shell.getOut("LANG=C " + paruPath + " -Si --color never " + packageName);
+    QString aurInfo = shell.getOut("LANG=C " + paruPath + " -Si --color never " + shellSingleQuote(packageName));
     const bool hasAurInfo = !isErrorOutput(aurInfo);
-    QString installedInfo = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
+    QString installedInfo = shell.getOut("LANG=C pacman -Qi --color never " + shellSingleQuote(packageName));
     const bool hasInstalledInfo = !isErrorOutput(installedInfo);
 
     QString msg;
@@ -2453,9 +2454,9 @@ void MainWindow::showRepoPackageInfo(const QString &packageName)
     // inspect the newest available version (including build date) even when they already
     // have an older version installed locally. Append installed-package fields from
     // pacman -Qi so the dialog keeps install date/reason and reverse-dependency info.
-    QString repoInfo = shell.getOut("LANG=C pacman -Si --color never " + packageName);
+    QString repoInfo = shell.getOut("LANG=C pacman -Si --color never " + shellSingleQuote(packageName));
     const bool hasRepoInfo = !isErrorOutput(repoInfo);
-    QString installedInfo = shell.getOut("LANG=C pacman -Qi --color never " + packageName);
+    QString installedInfo = shell.getOut("LANG=C pacman -Qi --color never " + shellSingleQuote(packageName));
     const bool hasInstalledInfo = !isErrorOutput(installedInfo);
 
     QString msg;
@@ -2510,12 +2511,12 @@ void MainWindow::showFlatpakPackageInfo(QTreeWidgetItem *item)
 
     QString msg;
     if (installed) {
-        msg = shell.getOut("flatpak info " + fpUser + ref);
+        msg = shell.getOut("flatpak info " + fpUser + shellSingleQuote(ref));
     }
     if (msg.trimmed().isEmpty() || msg.trimmed().toLower().startsWith("error")) {
         const QString remote = ui->comboRemote->currentText();
         if (!remote.isEmpty()) {
-            msg = shell.getOut("flatpak remote-info " + fpUser + remote + " " + ref);
+            msg = shell.getOut("flatpak remote-info " + fpUser + shellSingleQuote(remote) + " " + shellSingleQuote(ref));
         }
     }
     QApplication::restoreOverrideCursor();
@@ -3190,7 +3191,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
         results = results.mid(0, maxResults);
     }
 
-    const QString infoOutput = shell.getOut("LANG=C " + paruPath + " -Si --color never " + results.join(' '));
+    const QString infoOutput = shell.getOut("LANG=C " + paruPath + " -Si --color never " + shellCommandFromArgs(results));
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         for (const QString &name : std::as_const(results)) {
             aurList.insert(name, {QString(), QString()});
