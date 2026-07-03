@@ -3271,12 +3271,26 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
         return;
     }
 
-    QString msg = cmd.getOut("aptitude show " + shellSingleQuote(packageName));
-    // Keep last 5 lines from aptitude output
-    const QString rawDetails = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
-                                          "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
-                                          "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
-                                          + shellSingleQuote(packageName));
+    QString msg;
+    QString rawDetails;
+    {
+        // These aptitude queries spin nested event loops inside Cmd::startAndWait,
+        // which keep the window interactive. Disable it (with a busy cursor) for the
+        // duration so a second action can't reenter the shared cmd — which would hit
+        // its "already running" guard and fail with a misleading error.
+        setEnabled(false);
+        QApplication::setOverrideCursor(Qt::BusyCursor);
+        auto restore = qScopeGuard([this] {
+            QApplication::restoreOverrideCursor();
+            setEnabled(true);
+        });
+        msg = cmd.getOut("aptitude show " + shellSingleQuote(packageName));
+        // Keep last 5 lines from aptitude output
+        rawDetails = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
+                                "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
+                                "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
+                                + shellSingleQuote(packageName));
+    }
     const QStringList rawLines = rawDetails.split('\n');
     QString details = rawLines.mid(qMax(0, rawLines.size() - 5)).join('\n');
 
