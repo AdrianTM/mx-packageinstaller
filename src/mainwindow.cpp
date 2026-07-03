@@ -2262,10 +2262,12 @@ bool MainWindow::isOnline()
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setRawHeader("User-Agent", QApplication::applicationName().toUtf8() + '/'
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
+    // Set the timeout on the request itself so it applies to the very first HEAD;
+    // setting it on the manager only affects requests started afterwards, and would
+    // also leak the timeout onto later downloads that share this manager.
+    request.setTransferTimeout(std::chrono::milliseconds {settings.value("timeout", 7000).toInt()});
 
-    auto error = QNetworkReply::NoError;
     for (const QString address : {"https://mxrepo.com", "https://google.com"}) {
-        error = QNetworkReply::NoError; // reset for each tried address
         QNetworkProxyQuery query {QUrl(address)};
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
         if (!proxies.isEmpty()) {
@@ -2276,8 +2278,6 @@ bool MainWindow::isOnline()
         QEventLoop loop;
         connect(onlineReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
         connect(onlineReply, &QNetworkReply::errorOccurred, &loop, &QEventLoop::quit);
-        auto timeout = settings.value("timeout", 7000).toUInt();
-        manager.setTransferTimeout(timeout);
         loop.exec();
         onlineReply->disconnect();
         if (onlineReply->error() == QNetworkReply::NoError) {
@@ -2287,7 +2287,7 @@ bool MainWindow::isOnline()
         // Clean up failed reply before next iteration
         onlineReply->deleteLater();
     }
-    qDebug() << "No network detected:" << error;
+    qDebug() << "No network detected";
     return false;
 }
 
