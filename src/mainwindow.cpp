@@ -1876,9 +1876,9 @@ bool MainWindow::isOnline()
     request.setRawHeader("User-Agent", QApplication::applicationName().toUtf8() + '/'
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
-    auto error = QNetworkReply::NoError;
+    // The second address is a backup: the machine is considered online as soon as any
+    // address responds, so we return on the first success and only fall through when all fail.
     for (const QString &address : {"https://archlinux.org", "https://google.com"}) {
-        error = QNetworkReply::NoError; // reset for each tried address
         QNetworkProxyQuery query {QUrl(address)};
         QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
         if (!proxies.isEmpty()) {
@@ -1893,16 +1893,14 @@ bool MainWindow::isOnline()
         manager.setTransferTimeout(timeout);
         loop.exec();
         reply->disconnect();
-        if (reply->error() == QNetworkReply::NoError) {
-            reply->deleteLater();
-            reply = nullptr;
-            return true;
-        }
-        // Clean up failed reply before next iteration
+        const bool reachable = (reply->error() == QNetworkReply::NoError);
         reply->deleteLater();
         reply = nullptr;
+        if (reachable) {
+            return true;
+        }
     }
-    qDebug() << "No network detected:" << error;
+    qDebug() << "No network detected";
     return false;
 }
 
