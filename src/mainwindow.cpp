@@ -2917,7 +2917,6 @@ void MainWindow::pushInstall_clicked()
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
-            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
             enableTabs(true);
             return;
@@ -3064,7 +3063,6 @@ void MainWindow::pushUninstall_clicked()
             ui->comboRemote->setCurrentIndex(0);
             comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
-            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
             enableTabs(true);
             return;
