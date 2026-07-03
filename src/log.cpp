@@ -24,6 +24,8 @@
 #include <QDate>
 #include <QDateTime>
 #include <QFileInfo>
+#include <QMutex>
+#include <QMutexLocker>
 
 #include <fcntl.h>
 #include <unistd.h>
@@ -74,6 +76,9 @@ bool Log::openLogFile()
 
 void Log::messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
+    static QMutex logMutex;
+    const QMutexLocker locker(&logMutex);
+
     QTextStream termOut(stdout);
     if (msg.contains('\r')) {
         termOut << msg;
