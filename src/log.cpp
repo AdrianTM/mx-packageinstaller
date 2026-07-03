@@ -29,11 +29,11 @@
 #include <unistd.h>
 #include <sys/stat.h>
 
-Log::Log(const QString &file_name)
+Log::Log(const QString &fileName)
 {
-    logFile.setFileName(file_name);
+    logFile.setFileName(fileName);
     if (!openLogFile()) {
-        qDebug() << "Could not open log file:" << file_name;
+        qDebug() << "Could not open log file:" << fileName;
         return;
     }
     qInstallMessageHandler(Log::messageHandler);
@@ -74,12 +74,12 @@ bool Log::openLogFile()
 
 void Log::messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg)
 {
-    QTextStream term_out(stdout);
+    QTextStream termOut(stdout);
     if (msg.contains('\r')) {
-        term_out << msg;
+        termOut << msg;
         return;
     }
-    term_out << msg << '\n';
+    termOut << msg << '\n';
 
     QTextStream out(&logFile);
     out << QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd hh:mm:ss.zzz "));

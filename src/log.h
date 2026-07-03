@@ -28,7 +28,7 @@
 class Log
 {
 public:
-    explicit Log(const QString &file_name = "/tmp/mxpi.log");
+    explicit Log(const QString &fileName = "/tmp/mxpi.log");
     [[nodiscard]] static QString getLog();
     static void messageHandler(QtMsgType type, const QMessageLogContext &, const QString &msg);
     // Safe default log location, kept out of world-writable /tmp:

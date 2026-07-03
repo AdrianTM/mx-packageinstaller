@@ -32,8 +32,8 @@
 
 #include <unistd.h>
 
-LockFile::LockFile(const QString &file_name)
-    : file(file_name)
+LockFile::LockFile(const QString &fileName)
+    : file(fileName)
 {
 }
 

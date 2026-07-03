@@ -35,28 +35,28 @@ void VersionNumber::setStrings(const QString &value)
 {
     // Initialize epoch, upstream, and debian strings
     str = value;
-    QString upstream_str;
-    QString debian_str;
+    QString upstreamStr;
+    QString debianStr;
 
     // Parse epoch and upstream_version
     int colonIndex = value.indexOf(':');
     if (colonIndex != -1) {
         epoch = value.left(colonIndex).toInt();
-        upstream_str = value.mid(colonIndex + 1);
+        upstreamStr = value.mid(colonIndex + 1);
     } else {
         epoch = 0;
-        upstream_str = value;
+        upstreamStr = value;
     }
 
     // Parse debian_revision
-    int dashIndex = upstream_str.lastIndexOf('-');
+    int dashIndex = upstreamStr.lastIndexOf('-');
     if (dashIndex != -1) {
-        debian_str = upstream_str.mid(dashIndex + 1);
-        upstream_str = upstream_str.left(dashIndex);
+        debianStr = upstreamStr.mid(dashIndex + 1);
+        upstreamStr = upstreamStr.left(dashIndex);
     }
 
-    upstreamVersion = groupDigits(upstream_str);
-    debianRevision = groupDigits(debian_str);
+    upstreamVersion = groupDigits(upstreamStr);
+    debianRevision = groupDigits(debianStr);
 }
 
 VersionNumber &VersionNumber::operator=(const QString &value)

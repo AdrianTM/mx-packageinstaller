@@ -37,6 +37,13 @@ QString Cmd::getOut(const QString &cmd, QuietMode quiet)
     return outBuffer.trimmed();
 }
 
+QString Cmd::getOut(const QString &cmd, const QStringList &args, QuietMode quiet)
+{
+    QString output;
+    proc(cmd, args, &output, nullptr, quiet);
+    return output;
+}
+
 QStringList Cmd::helperExecArgs(const QString &cmd, const QStringList &args, const QHash<QString, QString> &environment) const
 {
     QStringList helperArgs {"exec"};

@@ -25,6 +25,7 @@ public:
                            const QStringList &args = {}, QString *output = nullptr,
                            const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString getOut(const QString &cmd, QuietMode quiet = QuietMode::No);
+    [[nodiscard]] QString getOut(const QString &cmd, const QStringList &args, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString readAllOutput() const;
     bool run(const QString &cmd, QuietMode quiet = QuietMode::No);
     bool runHookAsRoot(const QString &script, QuietMode quiet = QuietMode::No);
