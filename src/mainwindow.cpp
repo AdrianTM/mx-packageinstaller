@@ -2065,6 +2065,7 @@ bool MainWindow::isOnline()
         reply->disconnect();
         if (reply->error() == QNetworkReply::NoError) {
             reply->deleteLater();
+            reply = nullptr;
             return true;
         }
         // Clean up failed reply before next iteration
