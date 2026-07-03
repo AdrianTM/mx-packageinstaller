@@ -263,8 +263,22 @@ void printError(const QString &message)
                     }
                     written += bytes;
                 }
-            } else if (count == 0 || (errno != EINTR && errno != EAGAIN)) {
-                stdinOpen = false; // our stdin closed; stop forwarding
+            } else if (count == 0) {
+                // Our stdin hit EOF. In canonical mode the child only sees EOF
+                // once we send the terminal's VEOF character; without this a
+                // child that reads stdin to EOF would hang waiting for input
+                // that never comes. (Skipped in raw mode, where VEOF would just
+                // be delivered as a stray data byte.)
+                struct termios tio {};
+                if (tcgetattr(masterFd, &tio) == 0 && (tio.c_lflag & ICANON) != 0) {
+                    const char eofByte = static_cast<char>(tio.c_cc[VEOF]);
+                    if (write(masterFd, &eofByte, 1) < 0) {
+                        // best effort: nothing useful to do if this fails
+                    }
+                }
+                stdinOpen = false;
+            } else if (errno != EINTR && errno != EAGAIN) {
+                stdinOpen = false; // read error; stop forwarding
             }
         }
     }
@@ -482,19 +496,52 @@ void printError(const QString &message)
 
     return relayResult(runProcess(QStringLiteral("/bin/bash"), {"-c", script}));
 }
+
+// The marker path comes from the (unprivileged) caller, and creating it truncates
+// that path as root. Constrain it the way handleWriteFile constrains its target:
+// it must be a "mx-pkg-helper-*.marker" file directly inside the caller's runtime
+// dir (/run/user/<PKEXEC_UID>) or the temp dir, so a hostile path cannot truncate
+// an arbitrary root-owned file.
+[[nodiscard]] bool isValidMarkerPath(const QString &path)
+{
+    const QFileInfo info(path);
+    const QString name = info.fileName();
+    if (!name.startsWith(QLatin1String("mx-pkg-helper-")) || !name.endsWith(QLatin1String(".marker"))) {
+        return false;
+    }
+    const QString dir = info.absolutePath();
+    const QString pkexecUid = qEnvironmentVariable("PKEXEC_UID");
+    static const QRegularExpression digits(QStringLiteral("^[0-9]+$"));
+    if (digits.match(pkexecUid).hasMatch() && dir == QStringLiteral("/run/user/") + pkexecUid) {
+        return true;
+    }
+    return dir == QDir::tempPath();
+}
 } // namespace
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
-    const QString markerPath = qEnvironmentVariable("MX_PKG_HELPER_MARKER");
-    if (!markerPath.isEmpty()) {
-        QFile markerFile(markerPath);
-        if (markerFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-            markerFile.close();
+    QStringList arguments = app.arguments().mid(1);
+
+    // The caller passes an auth-success marker path as a leading "--marker
+    // <path>" argument (not via the environment, which pkexec strips). Creating
+    // the file proves the helper actually ran, so the caller can tell a real
+    // 126/127 from a dismissed authentication dialog.
+    if (arguments.size() >= 2 && arguments.constFirst() == QLatin1String("--marker")) {
+        const QString markerPath = arguments.at(1);
+        arguments.removeFirst();
+        arguments.removeFirst();
+        if (isValidMarkerPath(markerPath)) {
+            QFile markerFile(markerPath);
+            if (markerFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
+                markerFile.close();
+            }
+        } else {
+            printError(QString("Ignoring invalid marker path: %1").arg(markerPath));
         }
     }
-    const QStringList arguments = app.arguments().mid(1);
+
     if (arguments.isEmpty()) {
         printError(QStringLiteral("Missing helper action"));
         return 1;

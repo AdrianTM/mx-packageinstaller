@@ -11,6 +11,23 @@
 
 #include <unistd.h>
 
+namespace
+{
+// Directory for the auth-success marker. Prefer the caller's private runtime
+// dir (/run/user/<uid>, mode 0700): the root helper can create the marker there
+// and this unprivileged process can still remove it afterwards. In the
+// world-writable /tmp fallback a root-owned marker cannot be unlinked from here,
+// so it may briefly linger, but that only affects the check's cleanup.
+QString markerDirectory()
+{
+    const QString runtimeDir = qEnvironmentVariable("XDG_RUNTIME_DIR");
+    if (!runtimeDir.isEmpty() && QDir(runtimeDir).exists()) {
+        return runtimeDir;
+    }
+    return QDir::tempPath();
+}
+} // namespace
+
 Cmd::Cmd(QObject *parent)
     : QProcess(parent),
       elevate {elevationTool()},
@@ -128,20 +145,24 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
     }
 
     setProcessEnvironment(QProcessEnvironment::systemEnvironment());
+    QStringList launchArgs = arguments;
     if (elevated) {
-        helperMarkerPath = QDir::tempPath() + QStringLiteral("/mx-pkg-helper-")
+        helperMarkerPath = markerDirectory() + QStringLiteral("/mx-pkg-helper-")
                            + QUuid::createUuid().toString(QUuid::Id128) + QStringLiteral(".marker");
-        auto env = QProcessEnvironment::systemEnvironment();
-        env.insert(QStringLiteral("MX_PKG_HELPER_MARKER"), helperMarkerPath);
-        setProcessEnvironment(env);
+        // pkexec sanitizes the environment, so hand the marker path to the
+        // helper as an explicit leading argument. arguments[0] is the helper
+        // binary (pkexec's target); insert "--marker <path>" right after it.
+        if (!launchArgs.isEmpty()) {
+            launchArgs.insert(1, helperMarkerPath);
+            launchArgs.insert(1, QStringLiteral("--marker"));
+        }
     }
 
     QEventLoop loop;
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &loop, &QEventLoop::quit);
-    start(program, arguments);
+    start(program, launchArgs);
     if (!waitForStarted()) {
         if (elevated) {
-            setProcessEnvironment(QProcessEnvironment::systemEnvironment());
             QFile::remove(helperMarkerPath);
             helperMarkerPath.clear();
         }
@@ -160,7 +181,6 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
     loop.exec();
 
     if (elevated) {
-        setProcessEnvironment(QProcessEnvironment::systemEnvironment());
         if (isAuthenticationDismissed()) {
             handleElevationError();
         }
