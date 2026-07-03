@@ -2304,7 +2304,15 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     request.setRawHeader("User-Agent", QApplication::applicationName().toUtf8() + '/'
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
 
+    downloadCancelRequested = false;
     QNetworkReply *dlReply = manager.get(request);
+    activeDownloadReply = dlReply;
+    auto clearActiveReply = qScopeGuard([this, dlReply] {
+        if (activeDownloadReply == dlReply) {
+            activeDownloadReply = nullptr;
+        }
+        downloadCancelRequested = false;
+    });
     QEventLoop loop;
 
     connect(dlReply, &QNetworkReply::readyRead, this, [&file, dlReply]() {
@@ -2320,10 +2328,12 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     file.close();
 
     if (dlReply->error() != QNetworkReply::NoError) {
-        QMessageBox::warning(this, tr("Error"),
-                             tr("There was an error downloading or writing the file: %1. Please check your internet "
-                                "connection and free space on your drive")
-                                 .arg(file.fileName()));
+        if (dlReply->error() != QNetworkReply::OperationCanceledError || !downloadCancelRequested) {
+            QMessageBox::warning(this, tr("Error"),
+                                 tr("There was an error downloading or writing the file: %1. Please check your internet "
+                                    "connection and free space on your drive")
+                                     .arg(file.fileName()));
+        }
         qDebug() << "There was an error downloading the file:" << url << "Error:" << dlReply->errorString();
         file.remove();
         dlReply->deleteLater();
@@ -2602,6 +2612,10 @@ void MainWindow::cancelDownload()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     holdProgressForAptRefresh = false;
     holdProgressForFlatpakRefresh = false;
+    if (activeDownloadReply) {
+        downloadCancelRequested = true;
+        activeDownloadReply->abort();
+    }
     cmd.terminate();
 }
 
@@ -2660,13 +2674,13 @@ void MainWindow::clearUi()
 
 void MainWindow::cleanup()
 {
-    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     // Callers like pushCancel_clicked() and closeEvent() clean up before quitting,
     // which then emits aboutToQuit — only the first invocation should do the work.
     if (cleanupDone) {
         return;
     }
     cleanupDone = true;
+    qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     if (cmd.state() != QProcess::NotRunning) {
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }

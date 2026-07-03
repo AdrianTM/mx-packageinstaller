@@ -61,6 +61,8 @@ namespace Ui
 class MainWindow;
 }
 
+class QNetworkReply;
+
 namespace Tab
 {
 enum { Popular, EnabledRepos, Test, Backports, Flatpak, Snap, Output };
@@ -219,6 +221,7 @@ private:
     bool cachedInstalledFetched {false};
     bool holdProgressForAptRefresh {false};
     bool holdProgressForFlatpakRefresh {false};
+    bool downloadCancelRequested {false};
     bool flatpakCancelHidden {false};
     bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
@@ -247,6 +250,7 @@ private:
     PopularFilterProxy *popularProxy {nullptr};
 
     QNetworkAccessManager manager;
+    QNetworkReply *activeDownloadReply {nullptr};
 
     [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
     [[nodiscard]] QString categoryTranslation(const QString &item);
