@@ -35,6 +35,7 @@
 #include <QNetworkReply>
 #include <QProgressBar>
 #include <QRegularExpression>
+#include <QScopeGuard>
 #include <QScreen>
 #include <QScopedValueRollback>
 #include <QScrollBar>
@@ -3464,12 +3465,11 @@ void MainWindow::pushInstall_clicked()
             enableTabs(true);
             return;
         }
-        // Confirmation dialog
+        // Confirmation dialog — on cancel, restore the tab without claiming success.
         if (!confirmActions(changeList.join(' '), "install")) {
             displayFlatpaks(true);
             indexFilterFP.clear();
             ui->comboFilterFlatpak->setCurrentIndex(0);
-            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
             enableTabs(true);
             return;
@@ -3686,7 +3686,7 @@ void MainWindow::pushUninstall_clicked()
             return;
         }
 
-        // Confirmation dialog
+        // Confirmation dialog — on cancel, restore the tab without claiming success.
         if (!confirmActions(changeList.join(' '), "remove")) {
             displayFlatpaks(true);
             indexFilterFP.clear();
@@ -3694,7 +3694,6 @@ void MainWindow::pushUninstall_clicked()
             ui->comboRemote->setCurrentIndex(0);
             comboRemote_activated();
             ui->comboFilterFlatpak->setCurrentIndex(0);
-            QMessageBox::information(this, tr("Done"), tr("Processing finished successfully."));
             ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
             enableTabs(true);
             return;
@@ -4032,6 +4031,10 @@ void MainWindow::handleTab(const QString &searchStr, QLineEdit *searchBox, const
 
 void MainWindow::handleFlatpakTab(const QString &searchStr)
 {
+    // The tab-change handler blocked treeFlatpak's signals before calling us;
+    // restore them on every exit path.
+    auto unblockGuard = qScopeGuard([this] { ui->treeFlatpak->blockSignals(false); });
+
     lastIndexClicked = QModelIndex();
     ui->searchBoxFlatpak->setText(searchStr);
     setCurrentTree();
@@ -4069,14 +4072,12 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
         displayFlatpaks(true);
     }
     if (!firstRunFP && flatpakInstalled) {
-        ui->searchBoxBP->setText(searchStr);
         if (!searchStr.isEmpty()) {
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
         if (!displayFlatpaksIsRunning) {
             filterChanged(ui->comboFilterFlatpak->currentText());
         }
-        currentTree->blockSignals(false);
         return;
     }
     firstRunFP = false;
@@ -4109,7 +4110,6 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
                 qApp->processEvents();
             }
         }
-        ui->searchBoxBP->setText(searchStr);
         if (!searchStr.isEmpty()) {
             QMetaObject::invokeMethod(this, [this] { findPackage(); }, Qt::QueuedConnection);
         }
