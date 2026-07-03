@@ -33,6 +33,7 @@
 #include <unistd.h>
 #include <errno.h>
 #include <fcntl.h>
+#include <pwd.h>
 
 LockFile::LockFile(const QString &file_name)
     : file(file_name)
@@ -83,7 +84,25 @@ bool LockFile::lock()
     if (isLockedGUI()) {
         return false;
     }
-    Cmd().procAsRoot("chown", {qEnvironmentVariable("LOGNAME") + ':', file.fileName()}, nullptr, nullptr, Cmd::QuietMode::Yes); // take ownership
+    // Take ownership so this (unprivileged) process can open the lock file for writing.
+    // Resolve the invoking user's name from the password database first (reliable even
+    // when LOGNAME/USER are unset), then fall back to the environment. The trailing ':'
+    // tells chown to also reset the group to that user's login group.
+    QString owner;
+    if (const struct passwd *pw = getpwuid(getuid())) {
+        owner = QString::fromLocal8Bit(pw->pw_name);
+    }
+    if (owner.isEmpty()) {
+        owner = qEnvironmentVariable("LOGNAME");
+    }
+    if (owner.isEmpty()) {
+        owner = qEnvironmentVariable("USER");
+    }
+    if (owner.isEmpty()) {
+        qWarning() << "Could not determine current user; skipping ownership change on" << file.fileName();
+    } else {
+        Cmd().procAsRoot("chown", {owner + ':', file.fileName()}, nullptr, nullptr, Cmd::QuietMode::Yes);
+    }
     if (!file.open(QIODevice::WriteOnly)) {
         qWarning() << "Unable to open lock file" << file.fileName() << "for writing:" << file.errorString();
         return false;
