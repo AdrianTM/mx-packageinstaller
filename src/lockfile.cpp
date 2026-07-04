@@ -45,6 +45,9 @@ bool LockFile::isLocked()
 // Check if the file is locked and pop up a message
 bool LockFile::isLockedGUI()
 {
+    if (Cmd::elevationDismissed()) {
+        return true;
+    }
     QString proc = getLockingProcess();
     if (Cmd::elevationDismissed()) {
         // The lock check itself required elevation and the user dismissed it.
