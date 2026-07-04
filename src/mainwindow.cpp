@@ -3871,6 +3871,9 @@ void MainWindow::tabWidget_currentChanged(int index)
         if (ui->tabWidget->currentIndex() != index) {
             return;
         }
+        if (index != Tab::Output && !operationInProgress) {
+            beginOperation();
+        }
 
         // Only block signals for non-Output tabs since Output doesn't need tree interaction
         if (index != Tab::Output) {
@@ -5133,6 +5136,7 @@ void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState 
 // Force repo upgrade — shared implementation for APT tabs
 void MainWindow::forceUpdateAptTab(QLineEdit *searchBox, QComboBox *filterCombo)
 {
+    beginOperation();
     searchBox->clear();
     filterCombo->setCurrentIndex(0);
     buildPackageLists(true);
