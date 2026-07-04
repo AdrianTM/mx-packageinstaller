@@ -1,9 +1,24 @@
-mx-packageinstaller (26.06.3) mx; urgency=medium
+mx-packageinstaller (26.07) mx; urgency=medium
 
-  * Fix Flatpak size sorting
-  * Fix size units in Flatpak
+  * Abort the current operation and return to where you were when
+    the authentication dialog is cancelled, instead of showing a
+    confusing message or appearing to succeed
+  * Allow cancelling package list downloads
+  * Apply a timeout to the online connection check so it does not
+    hang indefinitely
+  * Stop the installation when refreshing package sources fails
+  * Fix LibreOffice and LibreWolf no longer hidden from the APT
+    package lists
+  * Fix version column sorting in APT, Snap, and Flatpak lists so
+    numeric versions like 2.10 and 2.9 sort correctly
+  * Fix Flatpak duplicates from different remotes remaining
+    uninstallable after installation
+  * Fix showing a success pop-up when the install or uninstall
+    confirmation was cancelled
+  * Fix a duplicate right-click menu on the Popular tab that
+    could run the package info command twice
 
- -- Adrian <adrian@mxlinux.org>  Thu, 11 Jun 2026 16:08:35 -0400
+ -- Adrian <adrian@mxlinux.org>  Fri, 03 Jul 2026 20:31:08 -0400
 
 mx-packageinstaller (26.06.2) mx; urgency=medium
 
