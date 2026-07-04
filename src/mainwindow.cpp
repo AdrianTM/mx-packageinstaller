@@ -2239,12 +2239,22 @@ bool MainWindow::installSelected()
                 return false;
             }
         }
-        updateApt();
+        if (!updateApt()) {
+            if (QFile::exists(tempList)) {
+                Cmd helperCmd;
+                runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
+            }
+            return false;
+        }
     } else if (currentTree == ui->treeBackports) {
         if (!cmd.writeFileAsRoot(tempList, backportsSourceLine(verName), Cmd::QuietMode::Yes)) {
             return false;
         }
-        updateApt();
+        if (!updateApt()) {
+            Cmd helperCmd;
+            runMxpiMaintenanceAsRoot(helperCmd, QStringLiteral("cleanup_temp"));
+            return false;
+        }
     }
     bool result = install(names);
     if (currentTree == ui->treeBackports || currentTree == ui->treeMXtest) {
