@@ -109,6 +109,18 @@ bool Cmd::procAsRootWithEnv(const QHash<QString, QString> &environment, const QS
     return helperProc(helperExecArgs(cmd, args, environment), output, input, quiet);
 }
 
+bool Cmd::procScriptAsRoot(const QString &path, const QStringList &args, QString *output, const QByteArray *input,
+                           QuietMode quiet)
+{
+    if (getuid() == 0) {
+        return proc(path, args, output, input, quiet);
+    }
+
+    QStringList elevatedArgs {path};
+    elevatedArgs += args;
+    return startAndWait(elevationTool(), elevatedArgs, output, input, quiet, true);
+}
+
 bool Cmd::run(const QString &cmd, QuietMode quiet)
 {
     return startAndWait("/bin/bash", {"-c", cmd}, nullptr, nullptr, quiet, false);
@@ -159,9 +171,8 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
     if (elevated) {
         helperMarkerPath = markerDirectory() + QStringLiteral("/mx-pkg-helper-")
                            + QUuid::createUuid().toString(QUuid::Id128) + QStringLiteral(".marker");
-        // pkexec sanitizes the environment, so hand the marker path to the
-        // helper as an explicit leading argument. arguments[0] is the helper
-        // binary (pkexec's target); insert "--marker <path>" right after it.
+        // pkexec sanitizes the environment, so hand the marker path to the target
+        // as explicit leading arguments.
         if (!launchArgs.isEmpty()) {
             launchArgs.insert(1, helperMarkerPath);
             launchArgs.insert(1, QStringLiteral("--marker"));

@@ -2,6 +2,14 @@
 
 # Root level functions requiring authentication for mx-packageinstaller
 
+if [[ $# -ge 2 && "$1" == "--marker" ]]; then
+    marker="$2"
+    if [[ "$marker" =~ ^/run/user/[0-9]+/mx-pkg-helper-[0-9A-Fa-f]+\.marker$ || "$marker" =~ ^/tmp/mx-pkg-helper-[0-9A-Fa-f]+\.marker$ ]]; then
+        : > "$marker"
+    fi
+    shift 2
+fi
+
 flatpak_add_repos() {
     flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
     flatpak remote-add --if-not-exists --subset=verified flathub-verified https://flathub.org/repo/flathub.flatpakrepo

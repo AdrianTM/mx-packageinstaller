@@ -2,6 +2,14 @@
 
 # Passwordless, fixed-scope maintenance actions for mx-packageinstaller.
 
+if [[ $# -ge 2 && "$1" == "--marker" ]]; then
+    marker="$2"
+    if [[ "$marker" =~ ^/run/user/[0-9]+/mx-pkg-helper-[0-9A-Fa-f]+\.marker$ || "$marker" =~ ^/tmp/mx-pkg-helper-[0-9A-Fa-f]+\.marker$ ]]; then
+        : > "$marker"
+    fi
+    shift 2
+fi
+
 apt_update() {
     apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o Acquire::https:Timeout=10 -o Acquire::ftp:Timeout=10
 }

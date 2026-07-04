@@ -174,10 +174,7 @@ void appendFlatpakStatusMessage(QPlainTextEdit *outputBox, const QString &messag
 bool runScriptAsRoot(Cmd &cmd, const char *scriptPath, const QString &action, Cmd::QuietMode quiet)
 {
     const QString path = QString::fromLatin1(scriptPath);
-    if (getuid() == 0) {
-        return cmd.proc(path, {action}, nullptr, nullptr, quiet);
-    }
-    return cmd.proc(Cmd::elevationTool(), {path, action}, nullptr, nullptr, quiet);
+    return cmd.procScriptAsRoot(path, {action}, nullptr, nullptr, quiet);
 }
 
 bool runMxpiLibAsRoot(Cmd &cmd, const QString &action, Cmd::QuietMode quiet = Cmd::QuietMode::Yes)

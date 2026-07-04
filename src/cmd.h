@@ -24,6 +24,8 @@ public:
     bool procAsRootWithEnv(const QHash<QString, QString> &environment, const QString &cmd,
                            const QStringList &args = {}, QString *output = nullptr,
                            const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No);
+    bool procScriptAsRoot(const QString &path, const QStringList &args = {}, QString *output = nullptr,
+                          const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString getOut(const QString &cmd, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString getOut(const QString &cmd, const QStringList &args, QuietMode quiet = QuietMode::No);
     [[nodiscard]] QString readAllOutput() const;
