@@ -4190,7 +4190,9 @@ void MainWindow::installFlatpak()
     displayFlatpaksIsRunning = true;
     install("flatpak");
     if (operationWasCanceled()) {
-        setCursor(QCursor(Qt::ArrowCursor));
+        displayFlatpaksIsRunning = false;
+        blockInterfaceFP();
+        ui->tabWidget->setCurrentWidget(ui->tabFlatpak);
         enableTabs(true);
         currentTree->blockSignals(false);
         return;
