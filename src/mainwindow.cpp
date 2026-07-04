@@ -4560,6 +4560,12 @@ void MainWindow::setupSnapd()
             // Route through the MXPI helper (auth_admin_keep) so the password cached by
             // the snapd apt install is reused instead of prompting again.
             cmd.procAsRoot(QStringLiteral("snap"), {QStringLiteral("install"), QStringLiteral("core")});
+            if (Cmd::elevationDismissed()) {
+                setCursor(QCursor(Qt::ArrowCursor));
+                ui->tabWidget->setCurrentWidget(ui->tabSnap);
+                enableTabs(true);
+                return;
+            }
             coreOutput = cmd.readAllOutput().trimmed();
             coreInstalled = listInstalledSnaps().contains(QStringLiteral("core"));
             if (coreInstalled) {
