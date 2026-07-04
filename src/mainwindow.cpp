@@ -2290,7 +2290,8 @@ bool MainWindow::isOnline()
     // Set the timeout on the request itself so it applies to the very first HEAD;
     // setting it on the manager only affects requests started afterwards, and would
     // also leak the timeout onto later downloads that share this manager.
-    request.setTransferTimeout(std::chrono::milliseconds {settings.value("timeout", 7000).toInt()});
+    // int overload (msec); the std::chrono overload needs Qt >= 6.7, Bookworm has 6.4
+    request.setTransferTimeout(settings.value("timeout", 7000).toInt());
 
     for (const QString address : {"https://mxrepo.com", "https://google.com"}) {
         QNetworkProxyQuery query {QUrl(address)};
