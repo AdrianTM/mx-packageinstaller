@@ -253,8 +253,8 @@ void Cmd::handleElevationError()
 {
     elevationWasDismissed = true;
     QMessageBox::critical(nullptr, tr("Administrator Access Required"),
-                          tr("This operation requires administrator privileges. Please restart the "
-                             "application and enter your password when prompted."));
+                          tr("This operation requires administrator privileges. Try the action again and "
+                             "enter your password when prompted."));
 }
 
 bool Cmd::elevationDismissed()
