@@ -123,7 +123,10 @@ QString Cmd::lockingProcessAsRoot(const QString &path, QuietMode quiet)
 {
     QString output;
     if (!helperProc({"locking-process", path}, &output, nullptr, quiet)) {
-        return {};
+        if (Cmd::elevationDismissed()) {
+            return {};
+        }
+        return output.trimmed().isEmpty() ? QStringLiteral("unknown process") : output.trimmed();
     }
     return output.trimmed();
 }
