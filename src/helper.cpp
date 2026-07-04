@@ -119,9 +119,13 @@ void printError(const QString &message)
     result.started = true;
 
     QFile stdinFile;
-    stdinFile.open(stdin, QIODevice::ReadOnly | QIODevice::Unbuffered);
+    const bool stdinOpen = stdinFile.open(stdin, QIODevice::ReadOnly | QIODevice::Unbuffered);
+    if (!stdinOpen) {
+        process.closeWriteChannel();
+    }
 
     QSocketNotifier stdinNotifier(stdinFile.handle(), QSocketNotifier::Read);
+    stdinNotifier.setEnabled(stdinOpen);
     QObject::connect(&stdinNotifier, &QSocketNotifier::activated, [&](QSocketDescriptor) {
         const QByteArray data = stdinFile.read(4096);
         if (data.isEmpty()) {
