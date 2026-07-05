@@ -57,15 +57,18 @@ jobs:
           draft: false
           prerelease: false
 
-      - name: Trigger OBS service run
+      - name: Trigger OBS workflow
         env:
-          OBS_RUNSERVICE_TOKEN: ${{ secrets.OBS_RUNSERVICE_TOKEN }}
+          OBS_WORKFLOW_TOKEN: ${{ secrets.OBS_WORKFLOW_TOKEN }}
         run: |
-          if [[ -z "${OBS_RUNSERVICE_TOKEN}" ]]; then
-              echo "::error::Missing OBS_RUNSERVICE_TOKEN repository secret"
+          if [[ -z "${OBS_WORKFLOW_TOKEN}" ]]; then
+              echo "::error::Missing OBS_WORKFLOW_TOKEN repository or organization secret"
               exit 1
           fi
 
           curl --fail --show-error --silent --request POST \
-              --header "Authorization: Token ${OBS_RUNSERVICE_TOKEN}" \
-              https://api.opensuse.org/trigger/runservice
+              --header "Authorization: Token ${OBS_WORKFLOW_TOKEN}" \
+              --header "X-GitHub-Event: push" \
+              --header "Content-Type: application/json" \
+              --data-binary "@${GITHUB_EVENT_PATH}" \
+              https://api.opensuse.org/trigger/workflow
