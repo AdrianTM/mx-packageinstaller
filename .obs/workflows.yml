@@ -2,6 +2,4 @@ workflow:
   steps:
     - trigger_services:
         project: home:mx-packaging
-        package: %{SCM_REPOSITORY_NAME}
-  filters:
-    event: tag_push
+        package: "%{SCM_REPOSITORY_NAME}"
