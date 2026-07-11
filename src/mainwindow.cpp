@@ -2148,7 +2148,9 @@ bool MainWindow::installPopularApp(const QString &name)
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        cmd.runHookAsRoot(postinstall);
+        if (!cmd.runHookAsRoot(postinstall)) {
+            result = false;
+        }
     }
     if (QFile::exists(tempList)) {
         Cmd helperCmd;
