@@ -2453,7 +2453,6 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         qDebug() << "Can't create temp folder";
         return false;
     }
-    QDir::setCurrent(tempDir.path());
     progress->setLabelText(tr("Downloading package info..."));
     pushCancel->setEnabled(true);
 
@@ -2528,7 +2527,7 @@ bool MainWindow::downloadPackageList(bool forceDownload)
 
             // Combine all package files
             pushCancel->setDisabled(true);
-            QFile outputFile("allPackages");
+            QFile outputFile(tempDir.filePath("allPackages"));
             if (!outputFile.open(QIODevice::WriteOnly | QIODevice::Text)) {
                 qWarning() << "Could not open:" << outputFile.fileName();
                 return false;
