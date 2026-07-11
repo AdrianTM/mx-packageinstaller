@@ -1,3 +1,16 @@
+mx-packageinstaller (26.07.2) mx; urgency=medium
+
+  * Stop the complete package operation, including child processes, when
+    cancelling an installation, removal, or package-list download
+  * Report package-list download timeouts instead of waiting indefinitely,
+    and safely skip malformed package entries
+  * Keep the remote list in sync after a Flatpak remote is removed, and show
+    an error when the removal fails
+  * Report when installing a popular application fails during its final setup
+  * Harden privileged marker creation
+
+ -- Adrian <adrian@mxlinux.org>  Sat, 11 Jul 2026 13:48:31 -0400
+
 mx-packageinstaller (26.07.1) mx; urgency=medium
 
   * Abort the current operation and return to where you were when
