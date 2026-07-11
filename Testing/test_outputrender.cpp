@@ -92,6 +92,11 @@ private slots:
         QCOMPARE(render(chunks), QString("core installed\n"));
     }
 
+    void ansiEscapeSplitAcrossChunks()
+    {
+        QCOMPARE(render({"before\x1B[31", "m after\n"}), QString("before after\n"));
+    }
+
     void flatpakProgressStillCollapses()
     {
         const QString stream = "\rInstalling 1/2… 8%\rInstalling 1/2… 53%\rInstalling 1/2… 100%\n";

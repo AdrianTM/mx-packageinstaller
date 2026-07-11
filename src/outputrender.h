@@ -79,6 +79,7 @@ public:
     {
         currentLine.clear();
         cursorColumn = 0;
+        pendingEscape.clear();
     }
 
     void append(const QString &output)
@@ -98,11 +99,13 @@ public:
         }
 
         QStringList completedLines;
-        const int size = output.size();
+        const QString input = pendingEscape + output;
+        pendingEscape.clear();
+        const int size = input.size();
         for (int i = 0; i < size; ++i) {
-            const QChar ch = output.at(i);
+            const QChar ch = input.at(i);
             if (ch == QChar(0x1B)) { // ESC: consume an ANSI control sequence
-                i = consumeEscape(output, i);
+                i = consumeEscape(input, i);
                 continue;
             }
             if (ch == QLatin1Char('\n')) {
@@ -146,8 +149,12 @@ private:
     int consumeEscape(const QString &output, int escIndex)
     {
         const int size = output.size();
-        if (escIndex + 1 >= size || output.at(escIndex + 1) != QLatin1Char('[')) {
-            return escIndex; // lone ESC or non-CSI escape: drop just the ESC
+        if (escIndex + 1 >= size) {
+            pendingEscape = output.mid(escIndex);
+            return size;
+        }
+        if (output.at(escIndex + 1) != QLatin1Char('[')) {
+            return escIndex; // non-CSI escape: drop just the ESC
         }
         int j = escIndex + 2;
         while (j < size) {
@@ -160,7 +167,8 @@ private:
             }
         }
         if (j >= size) {
-            return size - 1; // sequence split across chunks: drop what we have
+            pendingEscape = output.mid(escIndex);
+            return size; // preserve the incomplete sequence for the next chunk
         }
         const QChar finalByte = output.at(j);
         const QString params = output.mid(escIndex + 2, j - (escIndex + 2));
@@ -178,6 +186,7 @@ private:
     QPlainTextEdit *outputBox = nullptr;
     QString currentLine;
     int cursorColumn = 0;
+    QString pendingEscape;
 };
 
 } // namespace OutputRender
