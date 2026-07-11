@@ -4,8 +4,9 @@
 
 if [[ $# -ge 2 && "$1" == "--marker" ]]; then
     marker="$2"
-    if [[ "$marker" =~ ^/run/user/[0-9]+/mx-pkg-helper-[0-9A-Fa-f]+\.marker$ || "$marker" =~ ^/tmp/mx-pkg-helper-[0-9A-Fa-f]+\.marker$ ]]; then
-        : > "$marker"
+    if ! /usr/lib/mx-packageinstaller/helper create-marker "$marker"; then
+        echo "mxpi-lib: could not create authentication marker" >&2
+        exit 1
     fi
     shift 2
 fi

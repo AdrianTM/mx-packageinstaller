@@ -35,12 +35,15 @@
 
 #include <cerrno>
 #include <cstdio>
+#include <cstring>
 #include <cstdlib>
 #include <vector>
 
+#include <fcntl.h>
 #include <pty.h>
 #include <sys/ioctl.h>
 #include <sys/select.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <unistd.h>
@@ -501,11 +504,9 @@ void printError(const QString &message)
     return relayResult(runProcess(QStringLiteral("/bin/bash"), {"-c", script}));
 }
 
-// The marker path comes from the (unprivileged) caller, and creating it truncates
-// that path as root. Constrain it the way handleWriteFile constrains its target:
-// it must be a "mx-pkg-helper-*.marker" file directly inside the caller's runtime
-// dir (/run/user/<PKEXEC_UID>) or the temp dir, so a hostile path cannot truncate
-// an arbitrary root-owned file.
+// The marker path comes from the (unprivileged) caller. Restrict it to a marker
+// directly in the caller's runtime directory (/run/user/<PKEXEC_UID>) or the
+// temp directory before creating it as root.
 [[nodiscard]] bool isValidMarkerPath(const QString &path)
 {
     const QFileInfo info(path);
@@ -521,6 +522,35 @@ void printError(const QString &message)
     }
     return dir == QDir::tempPath();
 }
+
+// This is the sole privileged marker creator used by both the helper and the
+// policy-authorized shell scripts. O_EXCL rejects every pre-existing path
+// (including symlinks), while O_NOFOLLOW provides an explicit second guard
+// against following a symlink during the create operation. A pre-created marker
+// consequently aborts the operation rather than risking a root write through an
+// attacker-controlled path; UUID marker names and the private runtime directory
+// make that denial of service impractical during normal operation.
+[[nodiscard]] bool createMarker(const QString &path)
+{
+    if (!isValidMarkerPath(path)) {
+        printError(QString("Invalid marker path: %1").arg(path));
+        return false;
+    }
+
+    const QByteArray nativePath = QFile::encodeName(path);
+    const int fd = ::open(nativePath.constData(), O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC,
+                          S_IRUSR | S_IWUSR);
+    if (fd == -1) {
+        printError(QString("Could not create marker file %1: %2").arg(path, QString::fromLocal8Bit(std::strerror(errno))));
+        return false;
+    }
+
+    if (::close(fd) == -1) {
+        printError(QString("Could not close marker file %1: %2").arg(path, QString::fromLocal8Bit(std::strerror(errno))));
+        return false;
+    }
+    return true;
+}
 } // namespace
 
 int main(int argc, char *argv[])
@@ -529,20 +559,15 @@ int main(int argc, char *argv[])
     QStringList arguments = app.arguments().mid(1);
 
     // The caller passes an auth-success marker path as a leading "--marker
-    // <path>" argument (not via the environment, which pkexec strips). Creating
-    // the file proves the helper actually ran, so the caller can tell a real
-    // 126/127 from a dismissed authentication dialog.
+    // <path>" argument (not via the environment, which pkexec strips). The
+    // atomically-created file proves the helper actually ran, so the caller can
+    // tell a real 126/127 from a dismissed authentication dialog.
     if (arguments.size() >= 2 && arguments.constFirst() == QLatin1String("--marker")) {
         const QString markerPath = arguments.at(1);
         arguments.removeFirst();
         arguments.removeFirst();
-        if (isValidMarkerPath(markerPath)) {
-            QFile markerFile(markerPath);
-            if (markerFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-                markerFile.close();
-            }
-        } else {
-            printError(QString("Ignoring invalid marker path: %1").arg(markerPath));
+        if (!createMarker(markerPath)) {
+            return 1;
         }
     }
 
@@ -565,6 +590,13 @@ int main(int argc, char *argv[])
     }
     if (action == QLatin1String("write-file")) {
         return handleWriteFile(remainingArgs);
+    }
+    if (action == QLatin1String("create-marker")) {
+        if (remainingArgs.size() != 1) {
+            printError(QStringLiteral("create-marker requires exactly one path"));
+            return 1;
+        }
+        return createMarker(remainingArgs.constFirst()) ? 0 : 1;
     }
 
     printError(QString("Unsupported helper action: %1").arg(action));
