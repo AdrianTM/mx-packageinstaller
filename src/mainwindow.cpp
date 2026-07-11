@@ -2621,25 +2621,30 @@ bool MainWindow::readPackageList(bool forceDownload)
     // Parse package information from the file
     QTextStream stream(&file);
     QString line, package, version, description;
+    const auto finalizePackage = [&] {
+        if (!package.isEmpty() && !version.isEmpty()) {
+            targetMap.insert(package, {version, description});
+        }
+    };
     while (stream.readLineInto(&line)) {
         if (line.startsWith(QLatin1String("Package: "))) {
+            // A new Package field starts a new stanza. Finalize the previous
+            // stanza first so a missing Version cannot bleed into this entry.
+            finalizePackage();
             package = line.section(' ', 1);
             if (!isValidPackageName(package)) {
                 qWarning() << "Skipping invalid package name in downloaded list:" << package;
                 package.clear();
             }
+            version.clear();
+            description.clear();
         } else if (line.startsWith(QLatin1String("Version: "))) {
             version = line.section(' ', 1);
         } else if (line.startsWith(QLatin1String("Description: "))) {
             description = line.section(' ', 1);
-            if (!package.isEmpty()) {
-                targetMap.insert(package, {version, description});
-                package.clear();
-                version.clear();
-                description.clear();
-            }
         }
     }
+    finalizePackage();
 
     file.close();
     return true;
