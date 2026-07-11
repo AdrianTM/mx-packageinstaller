@@ -361,6 +361,14 @@ endif()
 
 add_test(NAME CmdTest COMMAND test_cmd)
 
+# Keep the default CTest invocation usable on headless CI and local consoles.
+set_tests_properties(
+    VersionNumberTest AptCacheTest PackageModelTest FlatpakModelTest
+    PackageFilterProxyTest FlatpakFilterProxyTest SnapModelTest SnapFilterProxyTest
+    PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest
+    PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
+)
+
 # Add convenience target to run all tests
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
