@@ -1949,7 +1949,9 @@ void MainWindow::cancelDownload()
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     holdProgressForRepoRefresh = false;
     holdProgressForFlatpakRefresh = false;
-    cmd.terminate();
+    if (!cmd.terminateAndKill()) {
+        qWarning() << "Could not terminate the active command";
+    }
 }
 
 void MainWindow::centerWindow()

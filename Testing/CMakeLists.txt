@@ -50,6 +50,14 @@ configure_mxpi_test(test_outputrender)
 add_test(NAME OutputRenderTest COMMAND test_outputrender)
 set_tests_properties(OutputRenderTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscreen)
 
+add_executable(test_cmd
+    test_cmd.cpp
+    ../src/cmd.cpp
+)
+configure_mxpi_test(test_cmd)
+add_test(NAME CmdTest COMMAND test_cmd)
+set_tests_properties(CmdTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscreen)
+
 add_executable(test_sizeutils
     test_sizeutils.cpp
 )
@@ -59,6 +67,6 @@ set_tests_properties(SizeUtilsTest PROPERTIES ENVIRONMENT QT_QPA_PLATFORM=offscr
 
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
-    DEPENDS test_snapmodel test_snapfilterproxy test_outputrender test_sizeutils
+    DEPENDS test_snapmodel test_snapfilterproxy test_outputrender test_sizeutils test_cmd
     COMMENT "Running Snap tests"
 )

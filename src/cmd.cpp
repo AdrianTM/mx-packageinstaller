@@ -10,6 +10,8 @@
 #include <QRegularExpression>
 #include <QUuid>
 
+#include <csignal>
+
 #include <unistd.h>
 
 namespace
@@ -68,10 +70,13 @@ bool Cmd::helperProc(const QStringList &helperArgs, QString *output, const QByte
 
     const QString program = (getuid() == 0) ? helper : elevate;
     QStringList programArgs = helperArgs;
+    if (input == nullptr) {
+        programArgs.prepend(QStringLiteral("--cancel-on-eof"));
+    }
     if (getuid() != 0) {
         programArgs.prepend(helper);
     }
-    return startAndWait(program, programArgs, output, input, quiet, getuid() != 0);
+    return startAndWait(program, programArgs, output, input, quiet, getuid() != 0, {}, input == nullptr);
 }
 
 bool Cmd::proc(const QString &cmd, const QStringList &args, QString *output, const QByteArray *input, QuietMode quiet)
@@ -102,7 +107,7 @@ QString Cmd::lockingProcessAsRoot(const QString &path, QuietMode quiet)
 }
 
 bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QString *output, const QByteArray *input,
-                       QuietMode quiet, bool elevated, const QString &shellCommand)
+                       QuietMode quiet, bool elevated, const QString &shellCommand, bool protectedOperation)
 {
     outBuffer.clear();
     helperMarkerPath.clear();
@@ -110,6 +115,7 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
         qDebug() << "Process already running:" << this->program() << this->arguments();
         return false;
     }
+    elevatedOperation = protectedOperation;
 
     if (quiet == QuietMode::No) {
         if (shellCommand.isEmpty()) {
@@ -130,6 +136,13 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
 
     QEventLoop loop;
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &loop, &QEventLoop::quit);
+#ifdef Q_OS_UNIX
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    setUnixProcessParameters(QProcess::UnixProcessFlag::CreateNewSession);
+#else
+    setChildProcessModifier([] { ::setsid(); });
+#endif
+#endif
     start(program, arguments);
     if (!waitForStarted()) {
         if (elevated) {
@@ -137,6 +150,7 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
             QFile::remove(helperMarkerPath);
             helperMarkerPath.clear();
         }
+        elevatedOperation = false;
         if (output) {
             *output = outBuffer.trimmed();
         }
@@ -157,6 +171,7 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
         QFile::remove(helperMarkerPath);
         helperMarkerPath.clear();
     }
+    elevatedOperation = false;
 
     if (output) {
         *output = outBuffer.trimmed();
@@ -166,13 +181,28 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
     return (exitStatus() == QProcess::NormalExit && exitCode() == 0);
 }
 
-// Return true when process is killed or not running
+// Return true when the operation (including its child process group) has stopped.
 bool Cmd::terminateAndKill()
 {
     if (state() != QProcess::NotRunning) {
-        terminate();
-        if (!waitForFinished(2000)) {
-            kill();
+        if (elevatedOperation) {
+            closeWriteChannel();
+            waitForFinished(ElevatedTerminateTimeoutMs);
+            return state() == QProcess::NotRunning;
+        }
+
+        const qint64 pid = processId();
+        const auto signalProcessGroup = [pid](int signal) {
+            return pid > 0 && ::kill(-static_cast<pid_t>(pid), signal) == 0;
+        };
+        if (!signalProcessGroup(SIGTERM)) {
+            terminate();
+        }
+        if (!waitForFinished(TerminateTimeoutMs)) {
+            if (!signalProcessGroup(SIGKILL)) {
+                kill();
+            }
+            waitForFinished(TerminateTimeoutMs);
         }
     }
     return state() == QProcess::NotRunning;

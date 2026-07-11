@@ -4,6 +4,9 @@
 
 class QTextStream;
 
+constexpr int TerminateTimeoutMs = 2000;
+constexpr int ElevatedTerminateTimeoutMs = 12000;
+
 class Cmd : public QProcess
 {
     Q_OBJECT
@@ -35,13 +38,14 @@ private:
     QString helper;
     QString outBuffer;
     QString helperMarkerPath;
+    bool elevatedOperation = false;
 
     [[nodiscard]] QStringList helperExecArgs(const QString &cmd, const QStringList &args) const;
     bool helperProc(const QStringList &helperArgs, QString *output = nullptr, const QByteArray *input = nullptr,
                     QuietMode quiet = QuietMode::No);
     bool startAndWait(const QString &program, const QStringList &arguments, QString *output = nullptr,
                       const QByteArray *input = nullptr, QuietMode quiet = QuietMode::No, bool elevated = false,
-                      const QString &shellCommand = {});
+                      const QString &shellCommand = {}, bool protectedOperation = false);
     [[nodiscard]] bool isAuthenticationDismissed() const;
     void handleElevationError();
 };

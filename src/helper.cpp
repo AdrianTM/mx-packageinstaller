@@ -22,12 +22,14 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QHash>
 #include <QProcess>
 #include <QProcessEnvironment>
 #include <QRegularExpression>
+#include <QSocketNotifier>
 #include <QSet>
 
 #include <algorithm>
@@ -50,6 +52,7 @@ namespace
 struct ProcessResult
 {
     bool started = false;
+    bool cancelled = false;
     int exitCode = 1;
     QProcess::ExitStatus exitStatus = QProcess::NormalExit;
     QByteArray standardOutput;
@@ -57,6 +60,25 @@ struct ProcessResult
 };
 
 constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
+volatile sig_atomic_t activeChildProcessGroup = 0;
+
+extern "C" void forwardTerminationToChild(int signal)
+{
+    const sig_atomic_t pid = activeChildProcessGroup;
+    if (pid > 0) {
+        ::kill(-static_cast<pid_t>(pid), signal);
+    }
+}
+
+void installTerminationHandlers()
+{
+    struct sigaction action {};
+    action.sa_handler = forwardTerminationToChild;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = SA_RESTART;
+    sigaction(SIGTERM, &action, nullptr);
+    sigaction(SIGHUP, &action, nullptr);
+}
 
 void writeAndFlush(FILE *stream, const QByteArray &data)
 {
@@ -145,13 +167,49 @@ void printError(const QString &message)
     return {};
 }
 
+void createProcessSession(QProcess &process)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    process.setUnixProcessParameters(QProcess::UnixProcessFlag::CreateNewSession
+                                     | QProcess::UnixProcessFlag::ResetSignalHandlers);
+#else
+    process.setChildProcessModifier([] {
+        struct sigaction action {};
+        action.sa_handler = SIG_DFL;
+        sigemptyset(&action.sa_mask);
+        sigaction(SIGTERM, &action, nullptr);
+        sigaction(SIGHUP, &action, nullptr);
+        ::setsid();
+    });
+#endif
+}
+
+void terminateProcessGroup(QProcess &process)
+{
+    const qint64 pid = process.processId();
+    const auto signalGroup = [pid](int signal) {
+        return pid > 0 && ::kill(-static_cast<pid_t>(pid), signal) == 0;
+    };
+    if (!signalGroup(SIGTERM)) {
+        process.terminate();
+    }
+    if (!process.waitForFinished(10000)) {
+        if (!signalGroup(SIGKILL)) {
+            process.kill();
+        }
+        process.waitForFinished(2000);
+    }
+}
+
 [[nodiscard]] ProcessResult runProcess(const QString &program, const QStringList &args,
-                                       const QProcessEnvironment &environment = QProcessEnvironment::systemEnvironment())
+                                       const QProcessEnvironment &environment = QProcessEnvironment::systemEnvironment(),
+                                       bool cancelOnStdinEof = false)
 {
     ProcessResult result;
 
     QProcess process;
     process.setProcessEnvironment(environment);
+    createProcessSession(process);
     process.start(program, args, QIODevice::ReadWrite);
     if (!process.waitForStarted()) {
         result.standardError = QString("Failed to start %1").arg(program).toUtf8();
@@ -160,23 +218,48 @@ void printError(const QString &message)
     }
 
     result.started = true;
-    process.closeWriteChannel();
-    process.waitForFinished(-1);
+    activeChildProcessGroup = static_cast<sig_atomic_t>(process.processId());
+    if (!cancelOnStdinEof) {
+        process.closeWriteChannel();
+        process.waitForFinished(-1);
+    } else {
+        // Non-interactive commands must receive EOF immediately; the notifier
+        // only watches the helper's stdin so the privileged parent can request
+        // cancellation without keeping the child waiting for input.
+        process.closeWriteChannel();
+        QSocketNotifier stdinNotifier(fileno(stdin), QSocketNotifier::Read);
+        QObject::connect(&stdinNotifier, &QSocketNotifier::activated, [&] {
+            char buffer[4096];
+            const ssize_t count = ::read(fileno(stdin), buffer, sizeof(buffer));
+            if (count <= 0) {
+                stdinNotifier.setEnabled(false);
+                result.cancelled = true;
+                terminateProcessGroup(process);
+            }
+        });
+        while (process.state() != QProcess::NotRunning) {
+            process.waitForFinished(50);
+            QCoreApplication::processEvents();
+        }
+    }
     result.exitStatus = process.exitStatus();
     result.exitCode = process.exitCode();
     result.standardOutput = process.readAllStandardOutput();
     result.standardError = process.readAllStandardError();
+    activeChildProcessGroup = 0;
     return result;
 }
 
 // Run with stdin/stdout/stderr forwarded directly to the parent process,
 // allowing real-time interactive I/O (e.g. pacman prompts).
 [[nodiscard]] int runProcessInteractive(const QString &program, const QStringList &args,
-                                        const QProcessEnvironment &environment = QProcessEnvironment::systemEnvironment())
+                                        const QProcessEnvironment &environment = QProcessEnvironment::systemEnvironment(),
+                                        bool cancelOnStdinEof = false)
 {
     QProcess process;
     process.setProcessEnvironment(environment);
-    process.setInputChannelMode(QProcess::ForwardedInputChannel);
+    createProcessSession(process);
+    process.setInputChannelMode(cancelOnStdinEof ? QProcess::ManagedInputChannel : QProcess::ForwardedInputChannel);
     process.setProcessChannelMode(QProcess::ForwardedChannels);
     process.start(program, args);
     if (!process.waitForStarted()) {
@@ -184,7 +267,27 @@ void printError(const QString &message)
         return 127;
     }
 
-    process.waitForFinished(-1);
+    activeChildProcessGroup = static_cast<sig_atomic_t>(process.processId());
+    if (cancelOnStdinEof) {
+        QSocketNotifier stdinNotifier(fileno(stdin), QSocketNotifier::Read);
+        QObject::connect(&stdinNotifier, &QSocketNotifier::activated, [&] {
+            char buffer[4096];
+            const ssize_t count = ::read(fileno(stdin), buffer, sizeof(buffer));
+            if (count <= 0) {
+                stdinNotifier.setEnabled(false);
+                terminateProcessGroup(process);
+            } else {
+                process.write(buffer, count);
+            }
+        });
+        while (process.state() != QProcess::NotRunning) {
+            process.waitForFinished(50);
+            QCoreApplication::processEvents();
+        }
+    } else {
+        process.waitForFinished(-1);
+    }
+    activeChildProcessGroup = 0;
     if (process.exitStatus() != QProcess::NormalExit) {
         return 1;
     }
@@ -196,7 +299,7 @@ void printError(const QString &message)
 // completion. Output is relayed to our stdout in real time; stdin is forwarded so the
 // child can still read input. Returns the child's exit code.
 [[nodiscard]] int runProcessOnPty(const QString &program, const QStringList &args,
-                                  const QProcessEnvironment &environment)
+                                  const QProcessEnvironment &environment, bool cancelOnStdinEof = false)
 {
     // Materialize argv and envp before forking; the child must avoid heap allocation
     // (and Qt calls) between fork() and exec().
@@ -239,6 +342,8 @@ void printError(const QString &message)
         return 127;
     }
 
+    activeChildProcessGroup = static_cast<sig_atomic_t>(pid);
+
     if (pid == 0) {
         // forkpty leaves the pty master open in the child; close it (and any other
         // inherited descriptors above stdio) so the privileged child only keeps the
@@ -250,6 +355,9 @@ void printError(const QString &message)
 
     const int stdinFd = fileno(stdin);
     bool stdinOpen = stdinFd >= 0;
+    bool cancellationRequested = false;
+    bool killSent = false;
+    QElapsedTimer cancellationTimer;
     char buffer[4096];
 
     for (;;) {
@@ -262,11 +370,25 @@ void printError(const QString &message)
             maxFd = std::max(maxFd, stdinFd);
         }
 
-        if (select(maxFd + 1, &readFds, nullptr, nullptr, nullptr) < 0) {
+        timeval timeout {};
+        timeval *timeoutPtr = nullptr;
+        if (cancellationRequested) {
+            timeout.tv_usec = 100000;
+            timeoutPtr = &timeout;
+        }
+        const int selectResult = select(maxFd + 1, &readFds, nullptr, nullptr, timeoutPtr);
+        if (selectResult < 0) {
             if (errno == EINTR) {
                 continue;
             }
             break;
+        }
+        if (selectResult == 0) {
+            if (!killSent && cancellationTimer.elapsed() >= 10000) {
+                ::kill(-pid, SIGKILL);
+                killSent = true;
+            }
+            continue;
         }
 
         if (FD_ISSET(masterFd, &readFds)) {
@@ -291,7 +413,14 @@ void printError(const QString &message)
                     }
                     written += bytes;
                 }
-            } else if (count == 0 || (errno != EINTR && errno != EAGAIN)) {
+            } else if (count == 0) {
+                stdinOpen = false;
+                if (cancelOnStdinEof) {
+                    cancellationRequested = true;
+                    cancellationTimer.start();
+                    ::kill(-pid, SIGTERM);
+                }
+            } else if (errno != EINTR && errno != EAGAIN) {
                 stdinOpen = false; // our stdin closed; stop forwarding
             }
         }
@@ -301,9 +430,10 @@ void printError(const QString &message)
     while (waitpid(pid, &status, 0) < 0 && errno == EINTR) {
     }
     close(masterFd);
+    activeChildProcessGroup = 0;
 
     if (WIFEXITED(status)) {
-        return WEXITSTATUS(status);
+        return cancellationRequested ? 143 : WEXITSTATUS(status);
     }
     return 1;
 }
@@ -315,11 +445,14 @@ void printError(const QString &message)
     if (!result.started) {
         return result.exitCode;
     }
+    if (result.cancelled) {
+        return 143;
+    }
     return result.exitStatus == QProcess::NormalExit ? result.exitCode : 1;
 }
 
 [[nodiscard]] int runAllowedCommand(const QString &command, const QStringList &commandArgs,
-                                    bool interactive = false)
+                                    bool interactive = false, bool cancelOnStdinEof = false)
 {
     const auto commandIt = allowedCommands().constFind(command);
     if (commandIt == allowedCommands().constEnd()) {
@@ -347,23 +480,23 @@ void printError(const QString &message)
         }
         // snap stays silent unless it believes it is writing to a terminal, so run it
         // under a pseudo-terminal to surface its live progress in the Output tab.
-        return runProcessOnPty(resolvedCommand, commandArgs, environment);
+        return runProcessOnPty(resolvedCommand, commandArgs, environment, cancelOnStdinEof);
     }
 
     if (interactive) {
-        return runProcessInteractive(resolvedCommand, commandArgs, environment);
+        return runProcessInteractive(resolvedCommand, commandArgs, environment, cancelOnStdinEof);
     }
-    return relayResult(runProcess(resolvedCommand, commandArgs, environment));
+    return relayResult(runProcess(resolvedCommand, commandArgs, environment, cancelOnStdinEof));
 }
 
-[[nodiscard]] int handleExec(const QStringList &args)
+[[nodiscard]] int handleExec(const QStringList &args, bool cancelOnStdinEof)
 {
     if (args.isEmpty()) {
         printError(QStringLiteral("exec requires a command name"));
         return 1;
     }
 
-    return runAllowedCommand(args.constFirst(), args.mid(1), true);
+    return runAllowedCommand(args.constFirst(), args.mid(1), true, cancelOnStdinEof);
 }
 
 [[nodiscard]] int handleLockingProcess(const QStringList &args)
@@ -403,7 +536,7 @@ void printError(const QString &message)
     return 0;
 }
 
-[[nodiscard]] int handleRunHook(const QStringList &args)
+[[nodiscard]] int handleRunHook(const QStringList &args, bool cancelOnStdinEof)
 {
     if (args.size() != 1) {
         printError(QStringLiteral("run-hook requires exactly one script"));
@@ -415,13 +548,15 @@ void printError(const QString &message)
         return 0;
     }
 
-    return relayResult(runProcess(QStringLiteral("/bin/bash"), {"-c", script}));
+    return relayResult(runProcess(QStringLiteral("/bin/bash"), {"-c", script},
+                                  QProcessEnvironment::systemEnvironment(), cancelOnStdinEof));
 }
 } // namespace
 
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+    installTerminationHandlers();
     const QString markerPath = qEnvironmentVariable("MX_PKG_HELPER_MARKER");
     if (!markerPath.isEmpty()) {
         if (!createMarker(markerPath)) {
@@ -430,7 +565,12 @@ int main(int argc, char *argv[])
             printError(QStringLiteral("Could not create authentication marker; continuing"));
         }
     }
-    const QStringList arguments = app.arguments().mid(1);
+    QStringList arguments = app.arguments().mid(1);
+    bool cancelOnStdinEof = false;
+    if (!arguments.isEmpty() && arguments.constFirst() == QLatin1String("--cancel-on-eof")) {
+        cancelOnStdinEof = true;
+        arguments.removeFirst();
+    }
     if (arguments.isEmpty()) {
         printError(QStringLiteral("Missing helper action"));
         return 1;
@@ -440,13 +580,13 @@ int main(int argc, char *argv[])
     const QString action = remainingArgs.takeFirst();
 
     if (action == QLatin1String("exec")) {
-        return handleExec(remainingArgs);
+        return handleExec(remainingArgs, cancelOnStdinEof);
     }
     if (action == QLatin1String("locking-process")) {
         return handleLockingProcess(remainingArgs);
     }
     if (action == QLatin1String("run-hook")) {
-        return handleRunHook(remainingArgs);
+        return handleRunHook(remainingArgs, cancelOnStdinEof);
     }
 
     printError(QString("Unsupported helper action: %1").arg(action));
