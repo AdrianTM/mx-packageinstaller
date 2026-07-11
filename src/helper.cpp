@@ -23,6 +23,7 @@
 
 #include <QCoreApplication>
 #include <QDir>
+#include <QElapsedTimer>
 #include <QFile>
 #include <QFileInfo>
 #include <QHash>
@@ -34,6 +35,7 @@
 #include <QtXml/QDomDocument>
 
 #include <cerrno>
+#include <csignal>
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
@@ -53,6 +55,7 @@ namespace
 struct ProcessResult
 {
     bool started = false;
+    bool cancelled = false;
     int exitCode = 1;
     QProcess::ExitStatus exitStatus = QProcess::NormalExit;
     QByteArray standardOutput;
@@ -61,6 +64,25 @@ struct ProcessResult
 
 constexpr auto TempSourceListPath = "/etc/apt/sources.list.d/mxpitemp.list";
 constexpr auto PkgListDirPath = "/usr/share/mx-packageinstaller-pkglist";
+volatile sig_atomic_t activeChildProcessGroup = 0;
+
+extern "C" void forwardTerminationToChild(int signal)
+{
+    const sig_atomic_t pid = activeChildProcessGroup;
+    if (pid > 0) {
+        ::kill(-static_cast<pid_t>(pid), signal);
+    }
+}
+
+void installTerminationHandlers()
+{
+    struct sigaction action {};
+    action.sa_handler = forwardTerminationToChild;
+    sigemptyset(&action.sa_mask);
+    action.sa_flags = SA_RESTART;
+    sigaction(SIGTERM, &action, nullptr);
+    sigaction(SIGHUP, &action, nullptr);
+}
 
 void writeAndFlush(FILE *stream, const QByteArray &data)
 {
@@ -100,9 +122,43 @@ void printError(const QString &message)
     return {};
 }
 
+void createProcessSession(QProcess &process)
+{
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    process.setUnixProcessParameters(QProcess::UnixProcessFlag::CreateNewSession
+                                     | QProcess::UnixProcessFlag::ResetSignalHandlers);
+#else
+    process.setChildProcessModifier([] {
+        struct sigaction action {};
+        action.sa_handler = SIG_DFL;
+        sigemptyset(&action.sa_mask);
+        sigaction(SIGTERM, &action, nullptr);
+        sigaction(SIGHUP, &action, nullptr);
+        ::setsid();
+    });
+#endif
+}
+
+void terminateProcessGroup(QProcess &process)
+{
+    const qint64 pid = process.processId();
+    const auto signalGroup = [pid](int signal) {
+        return pid > 0 && ::kill(-static_cast<pid_t>(pid), signal) == 0;
+    };
+    if (!signalGroup(SIGTERM)) {
+        process.terminate();
+    }
+    if (!process.waitForFinished(10000)) {
+        if (!signalGroup(SIGKILL)) {
+            process.kill();
+        }
+        process.waitForFinished(2000);
+    }
+}
+
 [[nodiscard]] ProcessResult runProcess(const QString &program, const QStringList &args,
                                        const QHash<QString, QString> &environment = {}, bool relayStdout = true,
-                                       bool relayStderr = true)
+                                       bool relayStderr = true, bool cancelOnStdinEof = false)
 {
     ProcessResult result;
 
@@ -112,6 +168,7 @@ void printError(const QString &message)
         env.insert(it.key(), it.value());
     }
     process.setProcessEnvironment(env);
+    createProcessSession(process);
     process.start(program, args, QIODevice::ReadWrite);
     if (!process.waitForStarted()) {
         result.standardError = QString("Failed to start %1").arg(program).toUtf8();
@@ -120,6 +177,7 @@ void printError(const QString &message)
     }
 
     result.started = true;
+    activeChildProcessGroup = static_cast<sig_atomic_t>(process.processId());
 
     QFile stdinFile;
     const bool stdinOpen = stdinFile.open(stdin, QIODevice::ReadOnly | QIODevice::Unbuffered);
@@ -133,7 +191,12 @@ void printError(const QString &message)
         const QByteArray data = stdinFile.read(4096);
         if (data.isEmpty()) {
             stdinNotifier.setEnabled(false);
-            process.closeWriteChannel();
+            if (cancelOnStdinEof) {
+                result.cancelled = true;
+                terminateProcessGroup(process);
+            } else {
+                process.closeWriteChannel();
+            }
         } else {
             process.write(data);
         }
@@ -162,6 +225,7 @@ void printError(const QString &message)
 
     result.exitStatus = process.exitStatus();
     result.exitCode = process.exitCode();
+    activeChildProcessGroup = 0;
     return result;
 }
 
@@ -170,7 +234,7 @@ void printError(const QString &message)
 // silent until completion. Output is relayed to our stdout in real time and also
 // captured. stdin is forwarded so the child can still read input if it needs to.
 [[nodiscard]] ProcessResult runProcessOnPty(const QString &program, const QStringList &args,
-                                            const QHash<QString, QString> &environment)
+                                            const QHash<QString, QString> &environment, bool cancelOnStdinEof)
 {
     ProcessResult result;
 
@@ -224,9 +288,13 @@ void printError(const QString &message)
     }
 
     result.started = true;
+    activeChildProcessGroup = static_cast<sig_atomic_t>(pid);
 
     const int stdinFd = fileno(stdin);
     bool stdinOpen = stdinFd >= 0;
+    bool cancellationRequested = false;
+    bool killSent = false;
+    QElapsedTimer cancellationTimer;
     char buffer[4096];
 
     for (;;) {
@@ -239,11 +307,25 @@ void printError(const QString &message)
             maxFd = std::max(maxFd, stdinFd);
         }
 
-        if (select(maxFd + 1, &readFds, nullptr, nullptr, nullptr) < 0) {
+        timeval timeout {};
+        timeval *timeoutPtr = nullptr;
+        if (cancellationRequested) {
+            timeout.tv_usec = 100000;
+            timeoutPtr = &timeout;
+        }
+        const int selectResult = select(maxFd + 1, &readFds, nullptr, nullptr, timeoutPtr);
+        if (selectResult < 0) {
             if (errno == EINTR) {
                 continue;
             }
             break;
+        }
+        if (selectResult == 0) {
+            if (!killSent && cancellationTimer.elapsed() >= 10000) {
+                ::kill(-pid, SIGKILL);
+                killSent = true;
+            }
+            continue;
         }
 
         if (FD_ISSET(masterFd, &readFds)) {
@@ -271,6 +353,12 @@ void printError(const QString &message)
                     written += bytes;
                 }
             } else if (count == 0) {
+                if (cancelOnStdinEof) {
+                    result.cancelled = true;
+                    cancellationRequested = true;
+                    cancellationTimer.start();
+                    ::kill(-pid, SIGTERM);
+                } else {
                 // Our stdin hit EOF. In canonical mode the child only sees EOF
                 // once we send the terminal's VEOF character; without this a
                 // child that reads stdin to EOF would hang waiting for input
@@ -283,6 +371,7 @@ void printError(const QString &message)
                         // best effort: nothing useful to do if this fails
                     }
                 }
+                }
                 stdinOpen = false;
             } else if (errno != EINTR && errno != EAGAIN) {
                 stdinOpen = false; // read error; stop forwarding
@@ -294,6 +383,7 @@ void printError(const QString &message)
     while (waitpid(pid, &status, 0) < 0 && errno == EINTR) {
     }
     close(masterFd);
+    activeChildProcessGroup = 0;
 
     if (WIFEXITED(status)) {
         result.exitStatus = QProcess::NormalExit;
@@ -310,6 +400,9 @@ void printError(const QString &message)
     if (!result.started) {
         return result.exitCode;
     }
+    if (result.cancelled) {
+        return 143;
+    }
     return result.exitStatus == QProcess::NormalExit ? result.exitCode : 1;
 }
 
@@ -320,7 +413,7 @@ void printError(const QString &message)
 }
 
 [[nodiscard]] int runAllowedCommand(const QString &command, const QStringList &commandArgs,
-                                    const QHash<QString, QString> &environment = {})
+                                    const QHash<QString, QString> &environment = {}, bool cancelOnStdinEof = false)
 {
     const auto commandIt = allowedCommands().constFind(command);
     if (commandIt == allowedCommands().constEnd()) {
@@ -351,13 +444,13 @@ void printError(const QString &message)
     if (command == QLatin1String("snap")) {
         // snap stays silent unless it believes it is writing to a terminal, so run it
         // under a pseudo-terminal to surface its live progress in the Output tab.
-        return relayResult(runProcessOnPty(resolvedCommand, commandArgs, commandEnvironment));
+        return relayResult(runProcessOnPty(resolvedCommand, commandArgs, commandEnvironment, cancelOnStdinEof));
     }
 
-    return relayResult(runProcess(resolvedCommand, commandArgs, commandEnvironment));
+    return relayResult(runProcess(resolvedCommand, commandArgs, commandEnvironment, true, true, cancelOnStdinEof));
 }
 
-[[nodiscard]] int handleExec(const QStringList &args)
+[[nodiscard]] int handleExec(const QStringList &args, bool cancelOnStdinEof)
 {
     QStringList remainingArgs = args;
     QHash<QString, QString> environment;
@@ -385,7 +478,7 @@ void printError(const QString &message)
         return 1;
     }
 
-    return runAllowedCommand(remainingArgs.constFirst(), remainingArgs.mid(1), environment);
+    return runAllowedCommand(remainingArgs.constFirst(), remainingArgs.mid(1), environment, cancelOnStdinEof);
 }
 
 [[nodiscard]] int handleLockingProcess(const QStringList &args)
@@ -483,7 +576,7 @@ void printError(const QString &message)
     return hooks;
 }
 
-[[nodiscard]] int handleRunHook(const QStringList &args)
+[[nodiscard]] int handleRunHook(const QStringList &args, bool cancelOnStdinEof)
 {
     if (args.size() != 1) {
         printError(QStringLiteral("run-hook requires exactly one script"));
@@ -501,7 +594,7 @@ void printError(const QString &message)
         return 1;
     }
 
-    return relayResult(runProcess(QStringLiteral("/bin/bash"), {"-c", script}));
+    return relayResult(runProcess(QStringLiteral("/bin/bash"), {"-c", script}, {}, true, true, cancelOnStdinEof));
 }
 
 // The marker path comes from the (unprivileged) caller. Restrict it to a marker
@@ -556,7 +649,9 @@ void printError(const QString &message)
 int main(int argc, char *argv[])
 {
     QCoreApplication app(argc, argv);
+    installTerminationHandlers();
     QStringList arguments = app.arguments().mid(1);
+    bool cancelOnStdinEof = false;
 
     // The caller passes an auth-success marker path as a leading "--marker
     // <path>" argument (not via the environment, which pkexec strips). The
@@ -571,6 +666,11 @@ int main(int argc, char *argv[])
         }
     }
 
+    if (!arguments.isEmpty() && arguments.constFirst() == QLatin1String("--cancel-on-eof")) {
+        cancelOnStdinEof = true;
+        arguments.removeFirst();
+    }
+
     if (arguments.isEmpty()) {
         printError(QStringLiteral("Missing helper action"));
         return 1;
@@ -580,13 +680,13 @@ int main(int argc, char *argv[])
     const QString action = remainingArgs.takeFirst();
 
     if (action == QLatin1String("exec")) {
-        return handleExec(remainingArgs);
+        return handleExec(remainingArgs, cancelOnStdinEof);
     }
     if (action == QLatin1String("locking-process")) {
         return handleLockingProcess(remainingArgs);
     }
     if (action == QLatin1String("run-hook")) {
-        return handleRunHook(remainingArgs);
+        return handleRunHook(remainingArgs, cancelOnStdinEof);
     }
     if (action == QLatin1String("write-file")) {
         return handleWriteFile(remainingArgs);

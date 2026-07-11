@@ -2645,7 +2645,9 @@ void MainWindow::cancelDownload()
         downloadCancelRequested = true;
         activeDownloadReply->abort();
     }
-    cmd.terminate();
+    if (!cmd.terminateAndKill()) {
+        qWarning() << "Could not terminate the active command";
+    }
 }
 
 void MainWindow::centerWindow()

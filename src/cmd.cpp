@@ -9,6 +9,8 @@
 #include <QProcessEnvironment>
 #include <QUuid>
 
+#include <csignal>
+
 #include <unistd.h>
 
 namespace
@@ -87,10 +89,17 @@ bool Cmd::helperProc(const QStringList &helperArgs, QString *output, const QByte
 
     const QString program = (getuid() == 0) ? helper : elevate;
     QStringList programArgs = helperArgs;
+    // An elevated helper cannot be signalled by the unprivileged GUI after
+    // pkexec changes its uid. For operations without stdin input, opt into the
+    // helper's EOF cancellation protocol so closeWriteChannel() can request a
+    // privileged child-process-group shutdown instead.
+    if (input == nullptr) {
+        programArgs.prepend(QStringLiteral("--cancel-on-eof"));
+    }
     if (getuid() != 0) {
         programArgs.prepend(helper);
     }
-    return startAndWait(program, programArgs, output, input, quiet, getuid() != 0);
+    return startAndWait(program, programArgs, output, input, quiet, getuid() != 0, {}, input == nullptr);
 }
 
 bool Cmd::proc(const QString &cmd, const QStringList &args, QString *output, const QByteArray *input, QuietMode quiet)
@@ -149,7 +158,7 @@ bool Cmd::writeFileAsRoot(const QString &path, const QString &content, QuietMode
 }
 
 bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QString *output, const QByteArray *input,
-                       QuietMode quiet, bool elevated, const QString &shellCommand)
+                       QuietMode quiet, bool elevated, const QString &shellCommand, bool protectedOperation)
 {
     outBuffer.clear();
     helperMarkerPath.clear();
@@ -157,6 +166,7 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
         qDebug() << "Process already running:" << this->program() << this->arguments();
         return false;
     }
+    elevatedOperation = protectedOperation;
 
     if (quiet == QuietMode::No) {
         if (shellCommand.isEmpty()) {
@@ -181,12 +191,23 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
 
     QEventLoop loop;
     connect(this, QOverload<int, QProcess::ExitStatus>::of(&QProcess::finished), &loop, &QEventLoop::quit);
+#ifdef Q_OS_UNIX
+    // Every command gets its own session (and therefore process group). Package
+    // managers frequently spawn helpers; terminateAndKill() can then cancel the
+    // entire operation rather than merely its immediate launcher.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 6, 0)
+    setUnixProcessParameters(QProcess::UnixProcessFlag::CreateNewSession);
+#else
+    setChildProcessModifier([] { ::setsid(); });
+#endif
+#endif
     start(program, launchArgs);
     if (!waitForStarted()) {
         if (elevated) {
             QFile::remove(helperMarkerPath);
             helperMarkerPath.clear();
         }
+        elevatedOperation = false;
         if (output) {
             *output = outBuffer.trimmed();
         }
@@ -208,6 +229,7 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
         QFile::remove(helperMarkerPath);
         helperMarkerPath.clear();
     }
+    elevatedOperation = false;
 
     if (output) {
         *output = outBuffer.trimmed();
@@ -217,13 +239,36 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
     return (exitStatus() == QProcess::NormalExit && exitCode() == 0);
 }
 
-// Return true when process is killed or not running
+// Return true when the operation (including its child process group) has stopped.
 bool Cmd::terminateAndKill()
 {
     if (state() != QProcess::NotRunning) {
-        terminate();
+        if (elevatedOperation) {
+            // Once pkexec has changed uid, an unprivileged UI cannot signal the
+            // root process group. --cancel-on-eof tells the helper to terminate
+            // its own tree; this also cancels the operation if the GUI crashes.
+            closeWriteChannel();
+            waitForFinished(ElevatedTerminateTimeoutMs);
+            return state() == QProcess::NotRunning;
+        }
+
+        const qint64 pid = processId();
+        const auto signalProcessGroup = [pid](int signal) {
+            return pid > 0 && ::kill(-static_cast<pid_t>(pid), signal) == 0;
+        };
+
+        if (!signalProcessGroup(SIGTERM)) {
+            // pkexec may already have changed the child to root, in which case
+            // an unprivileged signal is denied. The helper watches this EOF for
+            // --cancel-on-eof operations and terminates its own child group.
+            closeWriteChannel();
+            terminate();
+        }
         if (!waitForFinished(TerminateTimeoutMs)) {
-            kill();
+            if (!signalProcessGroup(SIGKILL)) {
+                kill();
+            }
+            waitForFinished(TerminateTimeoutMs);
         }
     }
     return state() == QProcess::NotRunning;

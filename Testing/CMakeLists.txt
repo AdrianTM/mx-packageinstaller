@@ -332,12 +332,41 @@ endif()
 
 add_test(NAME OutputRenderTest COMMAND test_outputrender)
 
+# Test that cancelling a command terminates its complete process group
+add_executable(test_cmd
+    test_cmd.cpp
+    ../src/cmd.cpp
+    ../src/cmd.h
+)
+
+target_link_libraries(test_cmd
+    Qt6::Core
+    Qt6::Test
+    Qt6::Widgets
+)
+
+target_compile_options(test_cmd PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_cmd PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_cmd PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME CmdTest COMMAND test_cmd)
+
 # Add convenience target to run all tests
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
     DEPENDS test_versionnumber test_aptcache test_packagemodel test_flatpakmodel
             test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
-            test_popularmodel test_popularfilterproxy test_outputrender
+            test_popularmodel test_popularfilterproxy test_outputrender test_cmd
     COMMENT "Running all tests"
 )
 
