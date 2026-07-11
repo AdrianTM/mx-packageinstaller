@@ -2862,46 +2862,60 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 
     const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
 
-    auto buildRemoteLsCommand = [&](const QString &scope) {
-        return QStringLiteral("flatpak remote-ls ") + scope + remote + ' ' + archFp + QStringLiteral("--columns=ver,branch,ref,installed-size ");
+    auto buildRemoteLsArgs = [&](const QString &scope) {
+        QStringList args {"remote-ls"};
+        args += flatpakArgsWithScope(scope, {});
+        args << remote;
+        const QString archOption = archFp.trimmed();
+        if (!archOption.isEmpty()) {
+            args << archOption;
+        }
+        args << "--columns=ver,branch,ref,installed-size";
+        return args;
     };
 
     QString typeFlag;
     if (type == QLatin1String("--app")) {
-        typeFlag = QStringLiteral("--app ");
+        typeFlag = QStringLiteral("--app");
     } else if (type == QLatin1String("--runtime")) {
-        typeFlag = QStringLiteral("--runtime ");
+        typeFlag = QStringLiteral("--runtime");
     }
-    const QString commandSuffix = typeFlag + "2>/dev/null";
-
-    // Construct the base command for listing flatpaks
-    QString baseCommand = buildRemoteLsCommand(fpUser) + commandSuffix;
-
-    auto runRemoteLs = [](const QString &command) {
-        Cmd shell;
-        QStringList output;
-        if (shell.run(command)) {
-            output = shell.readAllOutput().split('\n', Qt::SkipEmptyParts);
+    auto runRemoteLs = [&typeFlag](QStringList args) {
+        if (!typeFlag.isEmpty()) {
+            args << typeFlag;
         }
-        return output;
+        QString output;
+        Cmd command;
+        if (!command.proc("flatpak", args, &output, nullptr, Cmd::QuietMode::Yes)) {
+            return QStringList {};
+        }
+        QStringList rows;
+        for (const QString &line : output.split('\n', Qt::SkipEmptyParts)) {
+            if (line.contains('\t')) {
+                rows << line;
+            }
+        }
+        return rows;
     };
 
     // Execute the command and process the output
-    QStringList list = runRemoteLs(baseCommand);
+    QStringList list = runRemoteLs(buildRemoteLsArgs(fpUser));
 
     if (list.isEmpty()) {
         qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
 
         // Try to update the remote if it's empty
-        QString updateCommand = QStringLiteral("flatpak update ") + fpUser + QStringLiteral("--appstream ") + remote + QStringLiteral(" 2>/dev/null");
-        qDebug() << "Running remote update command:" << updateCommand;
+        QStringList updateArgs {"update"};
+        updateArgs += flatpakArgsWithScope(fpUser, {});
+        updateArgs << "--appstream" << remote;
+        qDebug() << "Running remote update command:" << updateArgs;
 
-        Cmd updateShell;
-        if (updateShell.run(updateCommand)) {
+        Cmd updateCommand;
+        if (updateCommand.proc("flatpak", updateArgs, nullptr, nullptr, Cmd::QuietMode::Yes)) {
             qDebug() << "Remote update completed, retrying package list";
 
             // Retry the original command after update
-            list = runRemoteLs(baseCommand);
+            list = runRemoteLs(buildRemoteLsArgs(fpUser));
             if (!list.isEmpty()) {
                 qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
             } else {
@@ -2914,9 +2928,9 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
 
     // If user scope returned nothing (e.g. only system remotes exist), fall back to system remotes for listing
     if (list.isEmpty() && isUserScope) {
-        const QString systemCommand = buildRemoteLsCommand(QStringLiteral("--system ")) + commandSuffix;
-        qDebug() << "User remotes empty; retrying flatpak listing using system remotes:" << systemCommand;
-        list = runRemoteLs(systemCommand);
+        const QStringList systemArgs = buildRemoteLsArgs(QStringLiteral("--system "));
+        qDebug() << "User remotes empty; retrying flatpak listing using system remotes:" << systemArgs;
+        list = runRemoteLs(systemArgs);
     }
 
     return list;
