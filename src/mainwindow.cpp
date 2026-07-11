@@ -2331,8 +2331,13 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     request.setAttribute(QNetworkRequest::RedirectPolicyAttribute, QNetworkRequest::NoLessSafeRedirectPolicy);
     request.setRawHeader("User-Agent", QApplication::applicationName().toUtf8() + '/'
                                            + QApplication::applicationVersion().toUtf8() + " (linux-gnu)");
+    // Bound stalled package-list transfers; the same setting is used by the
+    // connectivity probe above, while keeping this request-local for screenshots
+    // and other network operations sharing the manager.
+    request.setTransferTimeout(settings.value("timeout", 7000).toInt());
 
     downloadCancelRequested = false;
+    bool writeFailed = false;
     QNetworkReply *dlReply = manager.get(request);
     activeDownloadReply = dlReply;
     auto clearActiveReply = qScopeGuard([this, dlReply] {
@@ -2343,8 +2348,9 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     });
     QEventLoop loop;
 
-    connect(dlReply, &QNetworkReply::readyRead, this, [&file, dlReply]() {
+    connect(dlReply, &QNetworkReply::readyRead, this, [&file, dlReply, &writeFailed]() {
         if (file.write(dlReply->readAll()) == -1) {
+            writeFailed = true;
             qDebug() << "Failed to write data to file:" << file.fileName();
             dlReply->abort();
             file.close();
@@ -2356,11 +2362,15 @@ bool MainWindow::downloadFile(const QString &url, QFile &file)
     file.close();
 
     if (dlReply->error() != QNetworkReply::NoError) {
-        if (dlReply->error() != QNetworkReply::OperationCanceledError || !downloadCancelRequested) {
-            QMessageBox::warning(this, tr("Error"),
-                                 tr("There was an error downloading or writing the file: %1. Please check your internet "
-                                    "connection and free space on your drive")
-                                     .arg(file.fileName()));
+        const bool timedOut = dlReply->error() == QNetworkReply::TimeoutError
+            || (dlReply->error() == QNetworkReply::OperationCanceledError && !downloadCancelRequested && !writeFailed);
+        if (!downloadCancelRequested || writeFailed) {
+            const QString message = timedOut
+                ? tr("The download timed out. Please check your internet connection and try again.")
+                : tr("There was an error downloading or writing the file: %1. Please check your internet connection "
+                     "and free space on your drive")
+                      .arg(file.fileName());
+            QMessageBox::warning(this, tr("Error"), message);
         }
         qDebug() << "There was an error downloading the file:" << url << "Error:" << dlReply->errorString();
         file.remove();
