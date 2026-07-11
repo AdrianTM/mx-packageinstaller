@@ -24,6 +24,7 @@
  **********************************************************************/
 
 #include "mainwindow.h"
+#include "packagelistparser.h"
 #include "ui_mainwindow.h"
 
 #include <QDebug>
@@ -92,15 +93,6 @@ QStringList flatpakArgsWithScope(const QString &scope, QStringList args)
         args.insert(0, normalizedScope);
     }
     return args;
-}
-
-// Debian policy 5.6.1: lowercase alphanumerics plus '+', '-', '.', at least two
-// characters, starting with an alphanumeric. Names from downloaded package lists
-// are interpolated into shell commands and apt-get argv, so reject anything else.
-bool isValidPackageName(const QString &name)
-{
-    static const QRegularExpression validName(QStringLiteral("^[a-z0-9][a-z0-9+.-]+$"));
-    return validName.match(name).hasMatch();
 }
 
 QString mxTestSourceLine(QString repoDistsUrl, const QString &suite, const QString &arch)
@@ -2617,33 +2609,7 @@ bool MainWindow::readPackageList(bool forceDownload)
     auto &targetMap = (currentTree == ui->treeMXtest) ? mxList : backportsList;
     targetMap.clear();
 
-    // Parse package information from the file
-    QTextStream stream(&file);
-    QString line, package, version, description;
-    const auto finalizePackage = [&] {
-        if (!package.isEmpty() && !version.isEmpty()) {
-            targetMap.insert(package, {version, description});
-        }
-    };
-    while (stream.readLineInto(&line)) {
-        if (line.startsWith(QLatin1String("Package: "))) {
-            // A new Package field starts a new stanza. Finalize the previous
-            // stanza first so a missing Version cannot bleed into this entry.
-            finalizePackage();
-            package = line.section(' ', 1);
-            if (!isValidPackageName(package)) {
-                qWarning() << "Skipping invalid package name in downloaded list:" << package;
-                package.clear();
-            }
-            version.clear();
-            description.clear();
-        } else if (line.startsWith(QLatin1String("Version: "))) {
-            version = line.section(' ', 1);
-        } else if (line.startsWith(QLatin1String("Description: "))) {
-            description = line.section(' ', 1);
-        }
-    }
-    finalizePackage();
+    targetMap = PackageListParser::parse(file.readAll());
 
     file.close();
     return true;

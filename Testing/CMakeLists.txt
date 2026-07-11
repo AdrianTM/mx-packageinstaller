@@ -361,11 +361,17 @@ endif()
 
 add_test(NAME CmdTest COMMAND test_cmd)
 
+add_executable(test_packagelistparser
+    test_packagelistparser.cpp
+)
+target_link_libraries(test_packagelistparser Qt6::Core Qt6::Test)
+add_test(NAME PackageListParserTest COMMAND test_packagelistparser)
+
 # Keep the default CTest invocation usable on headless CI and local consoles.
 set_tests_properties(
     VersionNumberTest AptCacheTest PackageModelTest FlatpakModelTest
     PackageFilterProxyTest FlatpakFilterProxyTest SnapModelTest SnapFilterProxyTest
-    PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest
+    PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest PackageListParserTest
     PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
 )
 
