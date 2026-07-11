@@ -21,6 +21,7 @@
  **********************************************************************/
 
 #include <QCoreApplication>
+#include <QDir>
 #include <QFile>
 #include <QFileInfo>
 #include <QHash>
@@ -32,11 +33,14 @@
 #include <algorithm>
 #include <cerrno>
 #include <cstdio>
+#include <cstring>
 #include <vector>
 
+#include <fcntl.h>
 #include <pty.h>
 #include <sys/ioctl.h>
 #include <sys/select.h>
+#include <sys/stat.h>
 #include <sys/wait.h>
 #include <termios.h>
 #include <unistd.h>
@@ -65,6 +69,56 @@ void writeAndFlush(FILE *stream, const QByteArray &data)
 void printError(const QString &message)
 {
     writeAndFlush(stderr, message.toUtf8() + '\n');
+}
+
+// The marker path is supplied by the unprivileged caller. Restrict it to a
+// marker directly inside that caller's runtime directory or /tmp before the
+// helper creates it as root.
+[[nodiscard]] bool isValidMarkerPath(const QString &path)
+{
+    const QFileInfo info(path);
+    const QString name = info.fileName();
+    if (!name.startsWith(QLatin1String("mx-pkg-helper-")) || !name.endsWith(QLatin1String(".marker"))) {
+        return false;
+    }
+
+    const QString dir = info.absolutePath();
+    QString callerUid = qEnvironmentVariable("PKEXEC_UID");
+    if (callerUid.isEmpty()) {
+        callerUid = qEnvironmentVariable("SUDO_UID");
+    }
+    static const QRegularExpression digits(QStringLiteral("^[0-9]+$"));
+    if (digits.match(callerUid).hasMatch() && dir == QStringLiteral("/run/user/") + callerUid) {
+        return true;
+    }
+    return dir == QLatin1String("/tmp");
+}
+
+// Create the marker without truncating an attacker-controlled pre-existing
+// path. O_EXCL rejects existing files and symlinks; O_NOFOLLOW makes the
+// no-follow requirement explicit at the open boundary.
+[[nodiscard]] bool createMarker(const QString &path)
+{
+    if (!isValidMarkerPath(path)) {
+        printError(QString("Invalid marker path: %1").arg(path));
+        return false;
+    }
+
+    const QByteArray nativePath = QFile::encodeName(path);
+    const int fd = ::open(nativePath.constData(), O_WRONLY | O_CREAT | O_EXCL | O_NOFOLLOW | O_CLOEXEC,
+                          S_IRUSR | S_IWUSR);
+    if (fd == -1) {
+        printError(QString("Could not create marker file %1: %2")
+                       .arg(path, QString::fromLocal8Bit(std::strerror(errno))));
+        return false;
+    }
+
+    if (::close(fd) == -1) {
+        printError(QString("Could not close marker file %1: %2")
+                       .arg(path, QString::fromLocal8Bit(std::strerror(errno))));
+        return false;
+    }
+    return true;
 }
 
 [[nodiscard]] const QHash<QString, QStringList> &allowedCommands()
@@ -370,9 +424,10 @@ int main(int argc, char *argv[])
     QCoreApplication app(argc, argv);
     const QString markerPath = qEnvironmentVariable("MX_PKG_HELPER_MARKER");
     if (!markerPath.isEmpty()) {
-        QFile markerFile(markerPath);
-        if (markerFile.open(QIODevice::WriteOnly | QIODevice::Truncate)) {
-            markerFile.close();
+        if (!createMarker(markerPath)) {
+            // The marker only tells the caller whether elevation was dismissed;
+            // it must not prevent the requested privileged operation itself.
+            printError(QStringLiteral("Could not create authentication marker; continuing"));
         }
     }
     const QStringList arguments = app.arguments().mid(1);

@@ -7,9 +7,23 @@
 #include <QFile>
 #include <QMessageBox>
 #include <QProcessEnvironment>
+#include <QRegularExpression>
 #include <QUuid>
 
 #include <unistd.h>
+
+namespace
+{
+QString markerDirectory()
+{
+    const QString runtimeDir = qEnvironmentVariable("XDG_RUNTIME_DIR");
+    static const QRegularExpression runtimePath(QStringLiteral("^/run/user/[0-9]+$"));
+    if (runtimePath.match(runtimeDir).hasMatch() && QDir(runtimeDir).exists()) {
+        return runtimeDir;
+    }
+    return QStringLiteral("/tmp");
+}
+} // namespace
 
 Cmd::Cmd(QObject *parent)
     : QProcess(parent),
@@ -107,7 +121,7 @@ bool Cmd::startAndWait(const QString &program, const QStringList &arguments, QSt
 
     setProcessEnvironment(QProcessEnvironment::systemEnvironment());
     if (elevated) {
-        helperMarkerPath = QDir::tempPath() + QStringLiteral("/mx-pkg-helper-")
+        helperMarkerPath = markerDirectory() + QStringLiteral("/mx-pkg-helper-")
                            + QUuid::createUuid().toString(QUuid::Id128) + QStringLiteral(".marker");
         auto env = QProcessEnvironment::systemEnvironment();
         env.insert(QStringLiteral("MX_PKG_HELPER_MARKER"), helperMarkerPath);
