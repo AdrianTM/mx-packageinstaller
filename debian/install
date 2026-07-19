@@ -4,8 +4,8 @@ icons/mx-packageinstaller.svg	usr/share/icons/hicolor/scalable/apps
 mx-packageinstaller.desktop	usr/share/applications
 scripts/mxpi-lib                usr/lib/mx-packageinstaller
 scripts/mxpi-maintenance        usr/lib/mx-packageinstaller
-scripts/*.policy		usr/share/polkit-1/actions
+obj-*/*.policy		usr/share/polkit-1/actions
 bin/*				usr/bin
 obj-*/*.qm			usr/share/mx-packageinstaller/locale
-obj-*/helper			usr/lib/mx-packageinstaller
+obj-*/helper			usr/libexec/mx-packageinstaller
 obj-*/mx-packageinstaller	usr/bin

@@ -38,7 +38,7 @@ bool elevationWasDismissed = false;
 Cmd::Cmd(QObject *parent)
     : QProcess(parent),
       elevate {elevationTool()},
-      helper {"/usr/lib/mx-packageinstaller/helper"}
+      helper {QStringLiteral(HELPER_PATH)}
 {
     connect(this, &Cmd::readyReadStandardOutput, [this] { emit outputAvailable(readAllStandardOutput()); });
     connect(this, &Cmd::readyReadStandardError, [this] { emit errorAvailable(readAllStandardError()); });
