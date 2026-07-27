@@ -1,5 +1,5 @@
 # **********************************************************************
-# * Copyright (C) 2017-2025 MX Authors
+# * Copyright (C) 2017-2026 MX Authors
 # *
 # * Authors: Adrian
 # *          Dolphin_Oracle
