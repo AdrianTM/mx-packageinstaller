@@ -7,5 +7,3 @@ scripts/mxpi-maintenance        usr/lib/mx-packageinstaller
 obj-*/*.policy		usr/share/polkit-1/actions
 bin/*				usr/bin
 obj-*/*.qm			usr/share/mx-packageinstaller/locale
-obj-*/helper			usr/libexec/mx-packageinstaller
-obj-*/mx-packageinstaller	usr/bin
