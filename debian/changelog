@@ -1,3 +1,18 @@
+mx-packageinstaller (26.07.3) mx; urgency=medium
+
+  * Prevent package names from being interpreted as commands when showing
+    installation and removal previews
+  * Select the correct newest package version when a version ends with an
+    omitted zero
+  * Keep LibreCAD and LibrePCB visible when hiding library packages
+  * Show an error when refreshing Flatpak application data fails
+  * Remove terminal control sequences that would otherwise appear as garbage
+    in the operation output
+  * Detect package-manager conflicts while dpkg is installing or configuring
+    packages
+
+ -- Adrian <adrian@mxlinux.org>  Wed, 29 Jul 2026 01:14:57 -0400
+
 mx-packageinstaller (26.07.2) mx; urgency=medium
 
   * Stop the complete package operation, including child processes, when
