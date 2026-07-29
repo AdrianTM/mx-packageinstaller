@@ -5052,9 +5052,15 @@ void MainWindow::setupSnapd()
             enableTabs(true);
             return;
         }
-        // Reuse the standard APT install path (uses default repo flags).
         QTreeView *savedTree = currentTree;
+#ifdef PACKAGE_BACKEND_PACMAN
+        // snapd is not in the official Arch repos -- it's AUR-only, so route this
+        // through install()'s paru/AUR branch by pretending the AUR tree is current.
+        currentTree = ui->treeAUR;
+#else
+        // Reuse the standard APT install path (uses default repo flags).
         currentTree = ui->treeEnabled;
+#endif
         const bool ok = install(QStringLiteral("snapd"));
         const QString installOutput = cmd.readAllOutput();
         currentTree = savedTree;
