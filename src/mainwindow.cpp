@@ -431,7 +431,13 @@ void MainWindow::setup()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ui->tabWidget->blockSignals(true);
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Popular apps has no data on this backend (see the Tab::Popular visibility
+    // gating below), so land on Enabled Repos instead.
+    ui->tabWidget->setCurrentWidget(ui->tabEnabled);
+#else
     ui->tabWidget->setCurrentWidget(ui->tabPopular);
+#endif
     ui->tabWidget->setTabEnabled(Tab::Test, false);
     ui->tabWidget->setTabEnabled(Tab::Backports, false);
     ui->pushRemoveAutoremovable->setHidden(true);
@@ -469,6 +475,11 @@ void MainWindow::setup()
     ui->tabWidget->setTabVisible(Tab::Test, false);
     ui->tabWidget->setTabVisible(Tab::Backports, false);
     ui->tabWidget->setTabVisible(Tab::AUR, true);
+    // Popular apps' package-list data (.pm files under
+    // /usr/share/mx-packageinstaller-pkglist) is Debian-package-name-keyed and
+    // shipped by a separate, apt-only packaging source; there's no Arch data for
+    // it, so the tab would just be empty. Hide it rather than show dead space.
+    ui->tabWidget->setTabVisible(Tab::Popular, false);
     // "Install recommends" has no pacman equivalent (installPackages() ignores
     // extraArgs on this backend) -- showing a checkbox with no effect would mislead.
     ui->checkBoxInstallRecommends->setVisible(false);
@@ -563,8 +574,13 @@ void MainWindow::setup()
 
     setConnections();
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    ui->searchBoxEnabled->setFocus();
+    currentTree = ui->treeEnabled;
+#else
     ui->searchPopular->setFocus();
     currentTree = ui->treePopularApps;
+#endif
 
     ui->tabWidget->setTabEnabled(Tab::Output, false);
     ui->tabWidget->blockSignals(false);
@@ -2846,7 +2862,11 @@ void MainWindow::enableTabs(bool enable)
 
 void MainWindow::hideColumns()
 {
+#ifdef PACKAGE_BACKEND_PACMAN
+    ui->tabWidget->setCurrentIndex(Tab::EnabledRepos);
+#else
     ui->tabWidget->setCurrentIndex(Tab::Popular);
+#endif
 
     const bool showFlatpakBranch = debianVersion < Release::Trixie;
     ui->treeFlatpak->setColumnHidden(FlatCol::Branch, !showFlatpakBranch);
@@ -4608,7 +4628,11 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
         int ans = QMessageBox::question(this, tr("Flatpak not installed"),
                                         tr("Flatpak is not currently installed.\nOK to go ahead and install it?"));
         if (ans == QMessageBox::No) {
+#ifdef PACKAGE_BACKEND_PACMAN
+            ui->tabWidget->setCurrentIndex(Tab::EnabledRepos);
+#else
             ui->tabWidget->setCurrentIndex(Tab::Popular);
+#endif
             enableTabs(true);
             return;
         }
@@ -4660,7 +4684,11 @@ void MainWindow::installFlatpak()
     buildPackageLists();
     if (!checkInstalled("flatpak")) {
         QMessageBox::critical(this, tr("Flatpak not installed"), tr("Flatpak was not installed"));
+#ifdef PACKAGE_BACKEND_PACMAN
+        ui->tabWidget->setCurrentIndex(Tab::EnabledRepos);
+#else
         ui->tabWidget->setCurrentIndex(Tab::Popular);
+#endif
         setCursor(QCursor(Qt::ArrowCursor));
         enableTabs(true);
         currentTree->blockSignals(false);
@@ -5898,6 +5926,10 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
             ui->searchBoxMX->setFocus();
         } else if (ui->tabWidget->currentWidget() == ui->tabBackports) {
             ui->searchBoxBP->setFocus();
+#ifdef PACKAGE_BACKEND_PACMAN
+        } else if (ui->tabWidget->currentWidget() == ui->tabAUR) {
+            ui->searchBoxAUR->setFocus();
+#endif
         } else if (ui->tabWidget->currentWidget() == ui->tabFlatpak) {
             ui->searchBoxFlatpak->setFocus();
         } else if (ui->tabWidget->currentWidget() == ui->tabSnap) {
