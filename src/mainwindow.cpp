@@ -718,6 +718,9 @@ void MainWindow::setupModels()
     flatpakModel->setIcons(qiconInstalled);
     snapModel->setIcons(qiconInstalled);
     popularModel->setIcons(qiconInstalled, QIcon::fromTheme("folder"), QIcon::fromTheme("dialog-information"));
+#ifdef PACKAGE_BACKEND_PACMAN
+    aurModel->setIcons(qiconInstalled, qiconUpgradable);
+#endif
 
     // Connect model signals to slots
     connect(enabledModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
@@ -2785,6 +2788,12 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         if (!timer.isActive()) {
             timer.start(100ms);
         }
+        // pacman -Ss's full repo listing is tens of thousands of lines; relaying it
+        // through the Cmd::outputAvailable -> qDebug/sanitizeOutputForDisplay path
+        // (the default for any Cmd output) is real, measurable overhead for a dump
+        // this size, not just log noise -- suppress it like the other bulk-output
+        // queries below already do.
+        QScopedValueRollback<bool> guard(suppressCmdOutput, true);
         enabledList = pacmanAvailablePackages(cmd);
     }
     return true;
@@ -4416,6 +4425,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
     }
 
     Cmd shell;
+    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
     if (term.isEmpty()) {
         const QStringList installed = shell.getOut("LANG=C pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
