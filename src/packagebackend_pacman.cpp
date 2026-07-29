@@ -32,6 +32,53 @@ bool PackageBackend::refreshRepositories(Cmd &cmd)
                                 {QStringLiteral("repo_sync")}, nullptr, nullptr, Cmd::QuietMode::Yes);
 }
 
+// All packages available in the sync DBs (not just installed), for the Enabled
+// Repos tab's package list. Apt's equivalent is AptCache::getCandidates(), parsed
+// from downloaded archive files; pacman has no local archive to parse, so this
+// queries "pacman -Ss" directly instead -- fed by the same repo cache updateApt()
+// (via PackageBackend::refreshRepositories) already refreshes for both backends.
+// Not part of the PackageBackend:: interface: apt has no equivalent shape for
+// this (see packagebackend.h's note on asymmetric operations), so it's a plain
+// pacman-only free function instead, callable from a background thread via its
+// own local Cmd instance like listInstalled() above.
+// Output shape, one entry per package: "repo/name version [installed]" then an
+// indented description line, e.g.:
+//   extra/firefox 130.0-1 [installed]
+//       Fast, Private and Safe Web Browser
+QHash<QString, PackageInfo> pacmanAvailablePackages(bool *ok)
+{
+    Cmd shell;
+    const QString output = shell.getOut("LANG=C pacman -Ss --color never");
+
+    if (ok) {
+        *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
+    }
+
+    QHash<QString, PackageInfo> packages;
+    QString pendingName;
+    QString pendingVersion;
+    for (const QString &line : output.split('\n')) {
+        if (line.isEmpty()) {
+            continue;
+        }
+        if (line.startsWith(' ') || line.startsWith('\t')) {
+            if (!pendingName.isEmpty()) {
+                packages.insert(pendingName, {pendingVersion, line.trimmed()});
+                pendingName.clear();
+            }
+            continue;
+        }
+        const QString repoAndName = line.section(' ', 0, 0);
+        const QString name = repoAndName.section('/', 1);
+        if (name.isEmpty()) {
+            continue;
+        }
+        pendingName = name;
+        pendingVersion = line.section(' ', 1, 1);
+    }
+    return packages;
+}
+
 QHash<QString, PackageInfo> PackageBackend::listInstalled(bool *ok)
 {
     Cmd shell;

@@ -64,6 +64,15 @@
 
 using namespace std::chrono_literals;
 
+#ifdef PACKAGE_BACKEND_PACMAN
+// Defined in packagebackend_pacman.cpp -- not part of the shared PackageBackend::
+// interface (apt has no equivalent shape for this), but relocated there so it
+// sits next to listInstalled() and can use its own local Cmd instance the same
+// way, safe to call from a background thread. Declared here at external linkage
+// (not inside the anonymous namespace below) to match its definition there.
+QHash<QString, PackageInfo> pacmanAvailablePackages(bool *ok = nullptr);
+#endif
+
 namespace {
 constexpr auto MxpiLibPath = "/usr/lib/mx-packageinstaller/mxpi-lib";
 constexpr auto MxpiMaintenancePath = "/usr/lib/mx-packageinstaller/mxpi-maintenance";
@@ -87,44 +96,6 @@ QStringList packageArgs(const QString &names)
 }
 
 #ifdef PACKAGE_BACKEND_PACMAN
-// All packages available in the sync DBs (not just installed), for the Enabled
-// Repos tab's package list. Apt's equivalent is AptCache::getCandidates(), parsed
-// from downloaded archive files; pacman has no local archive to parse, so this
-// queries "pacman -Ss" directly instead -- fed by the same repo cache updateApt()
-// (via PackageBackend::refreshRepositories) already refreshes for both backends.
-// Output shape, one entry per package: "repo/name version [installed]" then an
-// indented description line, e.g.:
-//   extra/firefox 130.0-1 [installed]
-//       Fast, Private and Safe Web Browser
-QHash<QString, PackageInfo> pacmanAvailablePackages(Cmd &cmd)
-{
-    QHash<QString, PackageInfo> packages;
-    const QString output = cmd.getOut("LANG=C pacman -Ss --color never");
-
-    QString pendingName;
-    QString pendingVersion;
-    for (const QString &line : output.split('\n')) {
-        if (line.isEmpty()) {
-            continue;
-        }
-        if (line.startsWith(' ') || line.startsWith('\t')) {
-            if (!pendingName.isEmpty()) {
-                packages.insert(pendingName, {pendingVersion, line.trimmed()});
-                pendingName.clear();
-            }
-            continue;
-        }
-        const QString repoAndName = line.section(' ', 0, 0);
-        const QString name = repoAndName.section('/', 1);
-        if (name.isEmpty()) {
-            continue;
-        }
-        pendingName = name;
-        pendingVersion = line.section(' ', 1, 1);
-    }
-    return packages;
-}
-
 [[nodiscard]] QString userNameForUid(uid_t uid)
 {
     if (const struct passwd *pw = getpwuid(uid)) {
@@ -2894,13 +2865,10 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         // No progress dialog here: "pacman -Ss" itself takes well under a second
         // (measured ~0.2s for a full repo), so showing a modal progress dialog just
         // for it to immediately hide again reads as extra jank, not less.
-        // pacman -Ss's full repo listing is tens of thousands of lines; relaying it
-        // through the Cmd::outputAvailable -> qDebug/sanitizeOutputForDisplay path
-        // (the default for any Cmd output) is real, measurable overhead for a dump
-        // this size, not just log noise -- suppress it like the other bulk-output
-        // queries below already do.
-        QScopedValueRollback<bool> guard(suppressCmdOutput, true);
-        enabledList = pacmanAvailablePackages(cmd);
+        // pacmanAvailablePackages() uses its own local Cmd instance (not the shared
+        // member), so its output never reaches outputAvailable() in the first place
+        // -- no suppressCmdOutput guard needed, unlike the shared-cmd queries below.
+        enabledList = pacmanAvailablePackages();
     }
     return true;
 #else
