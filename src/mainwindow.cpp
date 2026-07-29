@@ -77,11 +77,6 @@ QString debconfFrontend()
     return QStringLiteral("noninteractive");
 }
 
-QHash<QString, QString> debconfEnvironment()
-{
-    return {{QStringLiteral("DEBIAN_FRONTEND"), debconfFrontend()}};
-}
-
 QStringList packageArgs(const QString &names)
 {
     return names.split(' ', Qt::SkipEmptyParts);
@@ -567,9 +562,7 @@ bool MainWindow::uninstall(const QString &names, const QStringList &preuninstall
         if (lockFile.isLockedGUI()) {
             return false;
         }
-        QStringList args {"-o=Dpkg::Use-Pty=0", "remove", "-y"};
-        args += packageArgs(names);
-        success = cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
+        success = PackageBackend::removePackages(cmd, packageArgs(names));
     }
 
     if (success && !postuninstall.isEmpty()) {
@@ -2036,10 +2029,9 @@ bool MainWindow::install(const QString &names)
     }
 
     const QString recommends = recommendsCheck->isChecked() ? "--install-recommends" : "--no-install-recommends";
-    QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y", recommends};
-    args += extraArgs;
-    args += packageArgs(names);
-    return cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
+    QStringList backendArgs {recommends};
+    backendArgs += extraArgs;
+    return PackageBackend::installPackages(cmd, packageArgs(names), backendArgs);
 }
 
 // Install a list of application and run postprocess for each of them.

@@ -107,3 +107,18 @@ QStringList PackageBackend::autoremovableCandidates(Cmd &cmd)
 {
     return cmd.getOut("LANG=C pacman -Qtdq").split('\n', Qt::SkipEmptyParts);
 }
+
+bool PackageBackend::installPackages(Cmd &cmd, const QStringList &names, const QStringList &extraArgs)
+{
+    Q_UNUSED(extraArgs); // no pacman equivalent to apt's recommends/-t release flags today
+    QStringList args {"-S", "--needed"};
+    args += names;
+    return cmd.procAsRoot("pacman", args);
+}
+
+bool PackageBackend::removePackages(Cmd &cmd, const QStringList &names)
+{
+    QStringList args {"-Rns"};
+    args += names;
+    return cmd.procAsRoot("pacman", args);
+}

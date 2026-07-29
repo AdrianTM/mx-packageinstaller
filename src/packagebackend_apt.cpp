@@ -22,9 +22,30 @@
 
 #include "packagebackend.h"
 
+#include <QFile>
 #include <QProcess>
 
 #include "cmd.h"
+
+namespace {
+
+QString debconfFrontend()
+{
+    if (QFile::exists("/usr/share/doc/debconf-kde-helper")) {
+        return QStringLiteral("kde");
+    }
+    if (QFile::exists("/usr/share/doc/debconf-gnome")) {
+        return QStringLiteral("gnome");
+    }
+    return QStringLiteral("noninteractive");
+}
+
+QHash<QString, QString> debconfEnvironment()
+{
+    return {{QStringLiteral("DEBIAN_FRONTEND"), debconfFrontend()}};
+}
+
+} // namespace
 
 bool PackageBackend::refreshRepositories(Cmd &cmd)
 {
@@ -116,4 +137,19 @@ QStringList PackageBackend::autoremovableCandidates(Cmd &cmd)
         }
     }
     return names;
+}
+
+bool PackageBackend::installPackages(Cmd &cmd, const QStringList &names, const QStringList &extraArgs)
+{
+    QStringList args {"-o=Dpkg::Use-Pty=0", "install", "-y"};
+    args += extraArgs;
+    args += names;
+    return cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
+}
+
+bool PackageBackend::removePackages(Cmd &cmd, const QStringList &names)
+{
+    QStringList args {"-o=Dpkg::Use-Pty=0", "remove", "-y"};
+    args += names;
+    return cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
 }

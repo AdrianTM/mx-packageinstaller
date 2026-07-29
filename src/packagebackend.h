@@ -60,4 +60,13 @@ namespace PackageBackend
 // Package names that are candidates for autoremoval/orphan cleanup.
 [[nodiscard]] QStringList autoremovableCandidates(Cmd &cmd);
 
+// Install/remove packages from the repo (apt's enabled/Test/Backports or pacman's
+// sync DBs) -- NOT AUR, which has no privilege-elevation concept in common with this
+// (paru builds unprivileged) and stays entirely in mainwindow.cpp's install() once
+// the AUR tab exists. extraArgs carries apt-specific flags (recommends, -t release)
+// that mainwindow.cpp computes from checkbox/tab state; pacman's implementation
+// ignores them (no equivalent concept exists there today).
+[[nodiscard]] bool installPackages(Cmd &cmd, const QStringList &names, const QStringList &extraArgs);
+[[nodiscard]] bool removePackages(Cmd &cmd, const QStringList &names);
+
 } // namespace PackageBackend
