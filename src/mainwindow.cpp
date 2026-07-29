@@ -5163,7 +5163,19 @@ void MainWindow::pushForceUpdateFP_clicked()
     }
     holdProgressForFlatpakRefresh = true;
     progress->show();
-    cmd.proc("flatpak", {"update", "--appstream"});
+    if (!cmd.proc("flatpak", {"update", "--appstream"})) {
+        holdProgressForFlatpakRefresh = false;
+        progress->hide();
+        if (flatpakCancelHidden && pushCancel) {
+            pushCancel->show();
+            pushCancel->setEnabled(true);
+            flatpakCancelHidden = false;
+        }
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Problem detected during last operation, please inspect the console output."));
+        updateInterface();
+        return;
+    }
     displayFlatpaks(true);
     updateInterface();
 }
