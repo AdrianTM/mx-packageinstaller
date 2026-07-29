@@ -37,8 +37,14 @@ package() {
     install -Dm644 icons/mx-packageinstaller.png "${pkgdir}/usr/share/icons/hicolor/48x48/apps/mx-packageinstaller.png"
     install -Dm644 icons/mx-packageinstaller.png "${pkgdir}/usr/share/pixmaps/mx-packageinstaller.png"
     install -Dm644 icons/mx-packageinstaller.svg "${pkgdir}/usr/share/icons/hicolor/scalable/apps/mx-packageinstaller.svg"
+    install -Dm644 debian/mx-packageinstaller.1 "${pkgdir}/usr/share/man/man1/mx-packageinstaller.1"
     install -dm755 "${pkgdir}/usr/share/doc/mx-packageinstaller"
-    if [ -d help ]; then
-        cp -r help/* "${pkgdir}/usr/share/doc/mx-packageinstaller/" 2>/dev/null || true
-    fi
+    install -Dm644 help/mx-package-installer-pacman.html \
+        "${pkgdir}/usr/share/doc/mx-packageinstaller/mx-package-installer-pacman.html"
+    install -Dm644 help/license.html "${pkgdir}/usr/share/doc/mx-packageinstaller/license.html"
+    for shot in pacman-1.png pacman-2.png pacman-3.png pacman-4.png; do
+        if [ -f "help/${shot}" ]; then
+            install -Dm644 "help/${shot}" "${pkgdir}/usr/share/doc/mx-packageinstaller/${shot}"
+        fi
+    done
 }

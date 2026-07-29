@@ -4140,7 +4140,12 @@ void MainWindow::pushAbout_clicked()
 
 void MainWindow::pushHelp_clicked()
 {
+#ifdef PACKAGE_BACKEND_PACMAN
+    displayHelpDoc("/usr/share/doc/mx-packageinstaller/mx-package-installer-pacman.html",
+                   tr("%1 Help").arg(windowTitle()));
+#else
     displayHelpDoc("/usr/share/doc/mx-packageinstaller/mx-package-installer.html", tr("%1 Help").arg(windowTitle()));
+#endif
 }
 
 // Resize columns when expanding
