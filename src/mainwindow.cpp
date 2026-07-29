@@ -442,7 +442,11 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // Preload the flatpak list so the tab is populated on first visit. Listing
     // needs no elevation; system remote setup, if defaults are missing, happens
     // on the first visit to the Flatpak tab where an auth prompt has context.
-    if (arch != QLatin1String("i386") && checkInstalled(QStringLiteral("flatpak"))) {
+    // Checked via the binary's presence, not checkInstalled()/installedPackages:
+    // on pacman, installedPackages is now filled in by a background QtConcurrent
+    // task kicked off just above, so it's still empty at this exact point --
+    // checkInstalled() would always say "not installed" and silently skip this.
+    if (arch != QLatin1String("i386") && !QStandardPaths::findExecutable(QStringLiteral("flatpak")).isEmpty()) {
         QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
     }
 }
@@ -4744,7 +4748,9 @@ void MainWindow::handleFlatpakTab(const QString &searchStr)
     setCurrentTree();
     displayWarning("flatpaks");
     ui->searchBoxFlatpak->setFocus();
-    const bool flatpakInstalled = checkInstalled("flatpak");
+    // Binary presence, not checkInstalled()/installedPackages -- see the
+    // constructor's flatpak preload for why that cache can't be trusted yet.
+    const bool flatpakInstalled = !QStandardPaths::findExecutable(QStringLiteral("flatpak")).isEmpty();
     const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
     bool systemRemotesAdded = false;
     // Not gated on firstRunFP: the startup preload of displayFlatpaks() already
