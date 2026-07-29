@@ -2063,11 +2063,11 @@ void MainWindow::displayWarning(const QString &repo)
 
     QMessageBox msgBox(QMessageBox::Warning, tr("Warning"), msg);
     msgBox.addButton(QMessageBox::Close);
-    auto *cb = new QCheckBox();
+    auto *cb = new QCheckBox(tr("Do not show this message again"));
     msgBox.setCheckBox(cb);
-    cb->setText(tr("Do not show this message again"));
-    connect(cb, &QCheckBox::clicked, this, [this, key, cb] { settings.setValue(key, cb->isChecked()); });
     msgBox.exec();
+    settings.setValue(key, cb->isChecked());
+    settings.sync();
     *displayed = true;
 }
 
