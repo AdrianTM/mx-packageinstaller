@@ -62,7 +62,9 @@ struct ProcessResult
     QByteArray standardError;
 };
 
+#ifndef PACKAGE_BACKEND_PACMAN
 constexpr auto TempSourceListPath = "/etc/apt/sources.list.d/mxpitemp.list";
+#endif
 constexpr auto PkgListDirPath = "/usr/share/mx-packageinstaller-pkglist";
 volatile sig_atomic_t activeChildProcessGroup = 0;
 
@@ -100,13 +102,18 @@ void printError(const QString &message)
 [[nodiscard]] const QHash<QString, QStringList> &allowedCommands()
 {
     static const QHash<QString, QStringList> commands {
-        {"apt-get", {"/usr/bin/apt-get"}},
-        {"apt-mark", {"/usr/bin/apt-mark"}},
-        {"aptitude", {"/usr/bin/aptitude"}},
         {"chown", {"/usr/bin/chown", "/bin/chown"}},
         {"fuser", {"/usr/bin/fuser", "/bin/fuser"}},
         {"ps", {"/usr/bin/ps", "/bin/ps"}},
         {"snap", {"/usr/bin/snap", "/snap/bin/snap"}},
+#ifdef PACKAGE_BACKEND_PACMAN
+        {"pacman", {"/usr/bin/pacman"}},
+#else
+        {"apt-get", {"/usr/bin/apt-get"}},
+        {"apt-mark", {"/usr/bin/apt-mark"}},
+        // "aptitude" intentionally omitted: mainwindow.cpp only ever runs it
+        // unprivileged (for the info/simulate dialogs), never through this helper.
+#endif
     };
     return commands;
 }
@@ -441,9 +448,10 @@ void terminateProcessGroup(QProcess &process)
         commandEnvironment.insert(QStringLiteral("PATH"), path);
     }
 
-    if (command == QLatin1String("snap")) {
-        // snap stays silent unless it believes it is writing to a terminal, so run it
-        // under a pseudo-terminal to surface its live progress in the Output tab.
+    if (command == QLatin1String("snap") || command == QLatin1String("pacman")) {
+        // snap stays silent, and pacman drops its progress bars/coloring and
+        // confirmation-prompt formatting, unless each believes it is writing to a
+        // real terminal -- run both under a pseudo-terminal rather than plain pipes.
         return relayResult(runProcessOnPty(resolvedCommand, commandArgs, commandEnvironment, cancelOnStdinEof));
     }
 
@@ -481,6 +489,15 @@ void terminateProcessGroup(QProcess &process)
     return runAllowedCommand(remainingArgs.constFirst(), remainingArgs.mid(1), environment, cancelOnStdinEof);
 }
 
+// The only legitimate caller (LockFile::getLockingProcess()) always passes this
+// same literal for the compiled backend; reject anything else rather than trusting
+// an arbitrary caller-supplied path, even though the caller is already root-equivalent.
+#ifdef PACKAGE_BACKEND_PACMAN
+constexpr auto ExpectedLockPath = "/var/lib/pacman/db.lck";
+#else
+constexpr auto ExpectedLockPath = "/var/lib/dpkg/lock";
+#endif
+
 [[nodiscard]] int handleLockingProcess(const QStringList &args)
 {
     if (args.size() != 1) {
@@ -489,6 +506,10 @@ void terminateProcessGroup(QProcess &process)
     }
 
     const QString path = args.constFirst();
+    if (path != QLatin1String(ExpectedLockPath)) {
+        printError(QString("locking-process path is not allowed: %1").arg(path));
+        return 1;
+    }
     if (!QFileInfo::exists(path)) {
         return 0;
     }
@@ -518,6 +539,9 @@ void terminateProcessGroup(QProcess &process)
     return 0;
 }
 
+#ifndef PACKAGE_BACKEND_PACMAN
+// Writing an arbitrary apt sources-list entry as root has no pacman equivalent
+// (no temporary-repo concept on that side today), so this whole action is apt-only.
 [[nodiscard]] int handleWriteFile(const QStringList &args)
 {
     if (args.size() != 2) {
@@ -541,6 +565,7 @@ void terminateProcessGroup(QProcess &process)
     file.close();
     return 0;
 }
+#endif
 
 [[nodiscard]] QSet<QString> loadKnownHooks()
 {
@@ -688,9 +713,11 @@ int main(int argc, char *argv[])
     if (action == QLatin1String("run-hook")) {
         return handleRunHook(remainingArgs, cancelOnStdinEof);
     }
+#ifndef PACKAGE_BACKEND_PACMAN
     if (action == QLatin1String("write-file")) {
         return handleWriteFile(remainingArgs);
     }
+#endif
     if (action == QLatin1String("create-marker")) {
         if (remainingArgs.size() != 1) {
             printError(QStringLiteral("create-marker requires exactly one path"));
