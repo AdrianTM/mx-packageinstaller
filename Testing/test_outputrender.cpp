@@ -97,6 +97,21 @@ private slots:
         QCOMPARE(render({"before\x1B[31", "m after\n"}), QString("before after\n"));
     }
 
+    void oscBelSequenceIsStripped()
+    {
+        QCOMPARE(render({"before\x1B]0;window title\x07 after\n"}), QString("before after\n"));
+    }
+
+    void oscStringTerminatorSplitAcrossChunks()
+    {
+        QCOMPARE(render({"before\x1B]0;window title\x1B", "\\ after\n"}), QString("before after\n"));
+    }
+
+    void charsetEscapeSplitAcrossChunks()
+    {
+        QCOMPARE(render({"before\x1B(", "B after\n"}), QString("before after\n"));
+    }
+
     void flatpakProgressStillCollapses()
     {
         const QString stream = "\rInstalling 1/2… 8%\rInstalling 1/2… 53%\rInstalling 1/2… 100%\n";
