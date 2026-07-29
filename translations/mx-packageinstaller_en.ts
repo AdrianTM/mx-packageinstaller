@@ -15,6 +15,34 @@
     </message>
 </context>
 <context>
+    <name>FlatpakModel</name>
+    <message>
+        <location filename="../src/models/flatpakmodel.cpp" line="177"/>
+        <source>Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/flatpakmodel.cpp" line="179"/>
+        <source>Full Name</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/flatpakmodel.cpp" line="181"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/flatpakmodel.cpp" line="183"/>
+        <source>Branch</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/flatpakmodel.cpp" line="185"/>
+        <source>Size</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
@@ -995,6 +1023,52 @@ Please make sure you check carefully the list of packages to be removed.</source
     </message>
 </context>
 <context>
+    <name>PackageModel</name>
+    <message>
+        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <source>Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <source>Repo Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <source>Installed</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/packagemodel.cpp" line="149"/>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>PopularModel</name>
+    <message>
+        <location filename="../src/models/popularmodel.cpp" line="329"/>
+        <source>Category</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/popularmodel.cpp" line="333"/>
+        <source>Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/popularmodel.cpp" line="335"/>
+        <source>Info</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/popularmodel.cpp" line="337"/>
+        <source>Description</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
     <name>QObject</name>
     <message>
         <location filename="../src/about.cpp" line="71"/>
@@ -1040,7 +1114,7 @@ Close the program, or wait until it is done processing and try again.</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="../src/lockfile.cpp" line="85"/>
+        <location filename="../src/lockfile.cpp" line="87"/>
         <source>another package manager</source>
         <translation type="unfinished"></translation>
     </message>
@@ -1072,6 +1146,34 @@ Close the program, or wait until it is done processing and try again.</source>
     <message>
         <location filename="../src/main.cpp" line="111"/>
         <source>You must run this program with admin access.</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>SnapModel</name>
+    <message>
+        <location filename="../src/models/snapmodel.cpp" line="146"/>
+        <source>Package</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/snapmodel.cpp" line="148"/>
+        <source>Version</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/snapmodel.cpp" line="150"/>
+        <source>Publisher</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/snapmodel.cpp" line="152"/>
+        <source>Notes</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="../src/models/snapmodel.cpp" line="154"/>
+        <source>Description</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

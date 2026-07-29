@@ -2,14 +2,14 @@
 <context>
     <name>Cmd</name>
     <message>
-        <location filename="../src/cmd.cpp" line="255"/>
+        <location filename="../src/cmd.cpp" line="300"/>
         <source>Administrator Access Required</source>
         <translation>Pääkäyttäjän oikeudet vaaditaan</translation>
     </message>
     <message>
-        <location filename="../src/cmd.cpp" line="256"/>
+        <location filename="../src/cmd.cpp" line="301"/>
         <source>This operation requires administrator privileges. Try the action again and enter your password when prompted.</source>
-        <translation type="unfinished"/>
+        <translation>Tämä toiminto vaatii pääkäyttäjäoikeudet. Yritä toimintoa uudelleen ja syötä salasanasi kysyttäessä.</translation>
     </message>
 </context>
 <context>
@@ -44,7 +44,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="349"/>
+        <location filename="../src/mainwindow.cpp" line="341"/>
         <source>MX Package Installer</source>
         <translation>MX Sovellukset</translation>
     </message>
@@ -158,7 +158,7 @@
         <location filename="../src/mainwindow.ui" line="774"/>
         <location filename="../src/mainwindow.ui" line="1104"/>
         <location filename="../src/mainwindow.ui" line="1108"/>
-        <location filename="../src/mainwindow.cpp" line="4888"/>
+        <location filename="../src/mainwindow.cpp" line="4886"/>
         <source>All packages</source>
         <translation>Kaikki paketit</translation>
     </message>
@@ -166,7 +166,7 @@
         <location filename="../src/mainwindow.ui" line="470"/>
         <location filename="../src/mainwindow.ui" line="779"/>
         <location filename="../src/mainwindow.ui" line="1113"/>
-        <location filename="../src/mainwindow.cpp" line="4914"/>
+        <location filename="../src/mainwindow.cpp" line="4912"/>
         <source>Installed</source>
         <translation>Asennettu</translation>
     </message>
@@ -174,7 +174,7 @@
         <location filename="../src/mainwindow.ui" line="475"/>
         <location filename="../src/mainwindow.ui" line="784"/>
         <location filename="../src/mainwindow.ui" line="1118"/>
-        <location filename="../src/mainwindow.cpp" line="4915"/>
+        <location filename="../src/mainwindow.cpp" line="4913"/>
         <source>Upgradable</source>
         <translation>Päivitettävissä</translation>
     </message>
@@ -183,8 +183,8 @@
         <location filename="../src/mainwindow.ui" line="789"/>
         <location filename="../src/mainwindow.ui" line="1123"/>
         <location filename="../src/mainwindow.ui" line="1472"/>
-        <location filename="../src/mainwindow.cpp" line="4881"/>
-        <location filename="../src/mainwindow.cpp" line="4916"/>
+        <location filename="../src/mainwindow.cpp" line="4879"/>
+        <location filename="../src/mainwindow.cpp" line="4914"/>
         <source>Not installed</source>
         <translation>Ei asennettu</translation>
     </message>
@@ -192,11 +192,11 @@
         <location filename="../src/mainwindow.ui" line="485"/>
         <location filename="../src/mainwindow.ui" line="794"/>
         <location filename="../src/mainwindow.ui" line="1128"/>
-        <location filename="../src/mainwindow.cpp" line="3614"/>
-        <location filename="../src/mainwindow.cpp" line="4852"/>
-        <location filename="../src/mainwindow.cpp" line="4917"/>
-        <location filename="../src/mainwindow.cpp" line="4995"/>
-        <location filename="../src/mainwindow.cpp" line="5086"/>
+        <location filename="../src/mainwindow.cpp" line="3612"/>
+        <location filename="../src/mainwindow.cpp" line="4850"/>
+        <location filename="../src/mainwindow.cpp" line="4915"/>
+        <location filename="../src/mainwindow.cpp" line="4993"/>
+        <location filename="../src/mainwindow.cpp" line="5084"/>
         <source>Autoremovable</source>
         <translation>Autom. poistettavat</translation>
     </message>
@@ -241,37 +241,37 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1438"/>
         <location filename="../src/mainwindow.ui" line="1442"/>
-        <location filename="../src/mainwindow.cpp" line="4863"/>
+        <location filename="../src/mainwindow.cpp" line="4861"/>
         <source>All apps</source>
         <translation>Kaikki sovellukset</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1447"/>
-        <location filename="../src/mainwindow.cpp" line="4869"/>
+        <location filename="../src/mainwindow.cpp" line="4867"/>
         <source>All runtimes</source>
         <translation>Kaikki suoritusympäristöt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1452"/>
-        <location filename="../src/mainwindow.cpp" line="4875"/>
+        <location filename="../src/mainwindow.cpp" line="4873"/>
         <source>All available</source>
         <translation>Kaikki saatavilla olevat</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1457"/>
-        <location filename="../src/mainwindow.cpp" line="4860"/>
+        <location filename="../src/mainwindow.cpp" line="4858"/>
         <source>Installed apps</source>
         <translation>Asennetut sovellukset</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1462"/>
-        <location filename="../src/mainwindow.cpp" line="4857"/>
+        <location filename="../src/mainwindow.cpp" line="4855"/>
         <source>Installed runtimes</source>
         <translation>Asennetut suoritusympäristöt</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1467"/>
-        <location filename="../src/mainwindow.cpp" line="4879"/>
+        <location filename="../src/mainwindow.cpp" line="4877"/>
         <source>All installed</source>
         <translation>Kaikki asennetut</translation>
     </message>
@@ -317,54 +317,54 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1514"/>
         <source>Snaps</source>
-        <translation type="unfinished"/>
+        <translation>Snap-paketit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1535"/>
         <location filename="../src/mainwindow.ui" line="1539"/>
-        <location filename="../src/mainwindow.cpp" line="4444"/>
-        <location filename="../src/mainwindow.cpp" line="4668"/>
+        <location filename="../src/mainwindow.cpp" line="4442"/>
+        <location filename="../src/mainwindow.cpp" line="4666"/>
         <source>Installed snaps</source>
-        <translation type="unfinished"/>
+        <translation>Asennetut paketit</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1544"/>
-        <location filename="../src/mainwindow.cpp" line="4359"/>
+        <location filename="../src/mainwindow.cpp" line="4357"/>
+        <location filename="../src/mainwindow.cpp" line="4445"/>
         <location filename="../src/mainwindow.cpp" line="4447"/>
-        <location filename="../src/mainwindow.cpp" line="4449"/>
-        <location filename="../src/mainwindow.cpp" line="4738"/>
+        <location filename="../src/mainwindow.cpp" line="4736"/>
         <source>Search store</source>
-        <translation type="unfinished"/>
+        <translation>Etsi snap-varastosta</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1577"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type a term and press Enter to search the snap store.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Kirjoita hakusana ja paina Enter-nappia etsiäksesi snap-varastosta.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1609"/>
         <source>Snap support is not set up on this system. Click the button to install snapd and enable the Snap service.</source>
-        <translation type="unfinished"/>
+        <translation>Snap-tuki ei ole vielä käytössä. Paina nappia asentaaksesi snapd:n ja ottaaksesi Snap-palvelun käyttöön.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1619"/>
         <source>Set up Snap support</source>
-        <translation type="unfinished"/>
+        <translation>Ota Snap-tuki käyttöön</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1671"/>
         <source>Installed snaps:</source>
-        <translation type="unfinished"/>
+        <translation>Asennetut snap-paketit.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1698"/>
         <source>Update All</source>
-        <translation type="unfinished"/>
+        <translation>Päivitä kaikki</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1721"/>
-        <location filename="../src/mainwindow.cpp" line="3858"/>
-        <location filename="../src/mainwindow.cpp" line="4224"/>
+        <location filename="../src/mainwindow.cpp" line="3856"/>
+        <location filename="../src/mainwindow.cpp" line="4222"/>
         <source>Console Output</source>
         <translation>Konsoli</translation>
     </message>
@@ -380,14 +380,14 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1796"/>
-        <location filename="../src/mainwindow.cpp" line="1971"/>
-        <location filename="../src/mainwindow.cpp" line="4653"/>
-        <location filename="../src/mainwindow.cpp" line="4901"/>
-        <location filename="../src/mainwindow.cpp" line="4912"/>
-        <location filename="../src/mainwindow.cpp" line="5025"/>
-        <location filename="../src/mainwindow.cpp" line="5065"/>
-        <location filename="../src/mainwindow.cpp" line="5085"/>
-        <location filename="../src/mainwindow.cpp" line="5126"/>
+        <location filename="../src/mainwindow.cpp" line="1963"/>
+        <location filename="../src/mainwindow.cpp" line="4651"/>
+        <location filename="../src/mainwindow.cpp" line="4899"/>
+        <location filename="../src/mainwindow.cpp" line="4910"/>
+        <location filename="../src/mainwindow.cpp" line="5023"/>
+        <location filename="../src/mainwindow.cpp" line="5063"/>
+        <location filename="../src/mainwindow.cpp" line="5083"/>
+        <location filename="../src/mainwindow.cpp" line="5124"/>
         <source>Install</source>
         <translation>Asenna</translation>
     </message>
@@ -452,470 +452,479 @@
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="559"/>
+        <location filename="../src/mainwindow.cpp" line="551"/>
         <source>Uninstalling packages...</source>
         <translation>Poistetaan paketteja...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="564"/>
+        <location filename="../src/mainwindow.cpp" line="556"/>
         <source>Running pre-uninstall operations...</source>
         <translation>Suoritetaan asennusta edeltäviä poistoja...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="584"/>
+        <location filename="../src/mainwindow.cpp" line="576"/>
         <source>Running post-uninstall operations...</source>
         <translation>Ajetaan jälkiasennuksen toimia...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="601"/>
+        <location filename="../src/mainwindow.cpp" line="593"/>
         <source>Refreshing sources...</source>
         <translation>Päivitetään lähdeluetteloita...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="614"/>
-        <location filename="../src/mainwindow.cpp" line="2023"/>
-        <location filename="../src/mainwindow.cpp" line="2168"/>
-        <location filename="../src/mainwindow.cpp" line="2358"/>
-        <location filename="../src/mainwindow.cpp" line="2436"/>
-        <location filename="../src/mainwindow.cpp" line="2814"/>
-        <location filename="../src/mainwindow.cpp" line="3052"/>
-        <location filename="../src/mainwindow.cpp" line="3546"/>
-        <location filename="../src/mainwindow.cpp" line="3624"/>
-        <location filename="../src/mainwindow.cpp" line="3785"/>
-        <location filename="../src/mainwindow.cpp" line="3848"/>
-        <location filename="../src/mainwindow.cpp" line="4019"/>
-        <location filename="../src/mainwindow.cpp" line="4070"/>
-        <location filename="../src/mainwindow.cpp" line="4243"/>
-        <location filename="../src/mainwindow.cpp" line="5217"/>
-        <location filename="../src/mainwindow.cpp" line="5318"/>
-        <location filename="../src/mainwindow.cpp" line="5353"/>
-        <location filename="../src/mainwindow.cpp" line="5452"/>
-        <location filename="../src/mainwindow.cpp" line="5492"/>
+        <location filename="../src/mainwindow.cpp" line="606"/>
+        <location filename="../src/mainwindow.cpp" line="2015"/>
+        <location filename="../src/mainwindow.cpp" line="2162"/>
+        <location filename="../src/mainwindow.cpp" line="2365"/>
+        <location filename="../src/mainwindow.cpp" line="2440"/>
+        <location filename="../src/mainwindow.cpp" line="2798"/>
+        <location filename="../src/mainwindow.cpp" line="3050"/>
+        <location filename="../src/mainwindow.cpp" line="3544"/>
+        <location filename="../src/mainwindow.cpp" line="3622"/>
+        <location filename="../src/mainwindow.cpp" line="3783"/>
+        <location filename="../src/mainwindow.cpp" line="3846"/>
+        <location filename="../src/mainwindow.cpp" line="4017"/>
+        <location filename="../src/mainwindow.cpp" line="4068"/>
+        <location filename="../src/mainwindow.cpp" line="4241"/>
+        <location filename="../src/mainwindow.cpp" line="5215"/>
+        <location filename="../src/mainwindow.cpp" line="5316"/>
+        <location filename="../src/mainwindow.cpp" line="5351"/>
+        <location filename="../src/mainwindow.cpp" line="5450"/>
+        <location filename="../src/mainwindow.cpp" line="5490"/>
         <source>Error</source>
         <translation>Virhe</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="615"/>
+        <location filename="../src/mainwindow.cpp" line="607"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>Lähteitä päivitettäessä kohdattiin ongelma. Jotkut lähteet eivät ehkä tuottaneet näytille päivityksiä. Lisätietoja varten:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="727"/>
-        <location filename="../src/mainwindow.cpp" line="754"/>
+        <location filename="../src/mainwindow.cpp" line="719"/>
+        <location filename="../src/mainwindow.cpp" line="746"/>
         <source>Could not determine Debian version. Please select your version:</source>
         <translation>Ei voitu määrittää Debian-versiota. Valitse versio:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="760"/>
+        <location filename="../src/mainwindow.cpp" line="752"/>
         <source>Debian Version</source>
         <translation>Debian-versio</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1225"/>
+        <location filename="../src/mainwindow.cpp" line="1217"/>
         <source>Cancel</source>
         <translation>Peruuta</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1231"/>
+        <location filename="../src/mainwindow.cpp" line="1223"/>
         <source>Please wait...</source>
         <translation>Odota, ole hyvä...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1773"/>
+        <location filename="../src/mainwindow.cpp" line="1765"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>Olet aikeissa käyttää MX Testiarkistoa, jonka paketit on tarkoitettu vain testikäyttöön. Ne saattavat rikkoa järjestelmäsi, joten on suositeltavaa että varmuuskopioit järjestelmäsi sekä asennat tai päivität vain yhden paketin kerrallaan. Anna palautetta paketista ja sen toimivuudesta foorumilla, jotta paketti voidaan arvioida ennen sen siirtämistä varsinaiseen jakeluun.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1782"/>
+        <location filename="../src/mainwindow.cpp" line="1774"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>Olet aikomuksessa käyttää Debian:in Takaporttiohjelmistolähdettä, joka sisältää paketteja, jotka ovat otetut tulevasta Debian:in julkaisusta (nimeltään &apos;testing&apos;), säädettynä ja uudelleenkoottuna käytettäväksi sitten Debian:in vakaassa julkaisussa myöhemmin. Niitä ei ole voitu testata yhtä läpikotaisesti kuten Debian:in ja antiX:in vakaiden julkaisujen suhteen ja ne on annettu tarjolle sellaisena kuin ne sillä hetkellä ovat, sisältäen yhteensopivuusriskejä Debian:in vakaaseenjulkaisuun verrattuna. Käytä siis varauksella! </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1790"/>
+        <location filename="../src/mainwindow.cpp" line="1782"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux sisällyttää flatpak ohjelmat vain käyttäjän mukavuutta tavoitellen, eikä ole itse vastuussa flatpakien toimivuudesta. Lisätietoja, lue Wiki-sivujen osiosta flatpak.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1798"/>
-        <location filename="../src/mainwindow.cpp" line="5482"/>
+        <location filename="../src/mainwindow.cpp" line="1790"/>
+        <location filename="../src/mainwindow.cpp" line="5480"/>
         <source>Warning</source>
         <translation>Varoitus</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1802"/>
+        <location filename="../src/mainwindow.cpp" line="1794"/>
         <source>Do not show this message again</source>
         <translation>Älä näytä tätä viestiä uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1968"/>
+        <location filename="../src/mainwindow.cpp" line="1960"/>
         <source>Remove</source>
         <translation>Poista</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1984"/>
+        <location filename="../src/mainwindow.cpp" line="1976"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>Seuraavat paketit valittiin. Painike &quot;Näytä tiedot&quot; näyttää luettelon muutoksista.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2024"/>
-        <location filename="../src/mainwindow.cpp" line="2169"/>
-        <location filename="../src/mainwindow.cpp" line="2437"/>
+        <location filename="../src/mainwindow.cpp" line="2016"/>
+        <location filename="../src/mainwindow.cpp" line="2163"/>
+        <location filename="../src/mainwindow.cpp" line="2441"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>Internet ei ole käytettävissä, pakettilistauksen lataaminen ei onnistu.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2027"/>
+        <location filename="../src/mainwindow.cpp" line="2019"/>
         <source>Installing packages...</source>
         <translation>Asennetaan paketteja...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2090"/>
+        <location filename="../src/mainwindow.cpp" line="2082"/>
         <source>Post-processing...</source>
         <translation>Esikäsittely käynnissä...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2122"/>
+        <location filename="../src/mainwindow.cpp" line="2114"/>
         <source>Pre-processing for </source>
         <translation>Esikäsittely kohteelle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2137"/>
+        <location filename="../src/mainwindow.cpp" line="2129"/>
         <source>Installing </source>
         <translation>Asennetaan</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2147"/>
+        <location filename="../src/mainwindow.cpp" line="2139"/>
         <source>Post-processing for </source>
         <translation>Jälkikäsittely kohteelle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2359"/>
+        <location filename="../src/mainwindow.cpp" line="2362"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
         <translation>Virhe ladattaessa tai kirjoitettaessa: %1. Tarkista Internet-yhteys ja aseman vapaa tila</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2445"/>
+        <location filename="../src/mainwindow.cpp" line="2448"/>
         <source>Downloading package info...</source>
         <translation>Paketin tietoja ladataan...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2815"/>
+        <location filename="../src/mainwindow.cpp" line="2799"/>
         <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>dpkg-komento palautti virheen, suorita &quot;dpkg-query -W&quot; terminaalissa ja tarkista tulos.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3053"/>
+        <location filename="../src/mainwindow.cpp" line="3051"/>
         <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
         <translation>dpkg-kysely palautti virheen, suorita terminaalissa &quot;dpkg-query -W&quot; ja tarkista tulos.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3187"/>
-        <location filename="../src/mainwindow.cpp" line="3303"/>
-        <location filename="../src/mainwindow.cpp" line="3351"/>
+        <location filename="../src/mainwindow.cpp" line="3185"/>
+        <location filename="../src/mainwindow.cpp" line="3301"/>
+        <location filename="../src/mainwindow.cpp" line="3349"/>
         <source>Package info</source>
         <translation>Paketin tiedot</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3219"/>
-        <location filename="../src/mainwindow.cpp" line="5389"/>
+        <location filename="../src/mainwindow.cpp" line="3217"/>
+        <location filename="../src/mainwindow.cpp" line="5387"/>
         <source>More &amp;info...</source>
         <translation>&amp;Lisätietoja...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3244"/>
+        <location filename="../src/mainwindow.cpp" line="3242"/>
         <source>Packages to be installed: </source>
         <translation>Paketit, jotka tullaan asentamaan:</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3542"/>
-        <location filename="../src/mainwindow.cpp" line="3599"/>
-        <location filename="../src/mainwindow.cpp" line="3621"/>
-        <location filename="../src/mainwindow.cpp" line="3781"/>
-        <location filename="../src/mainwindow.cpp" line="3827"/>
-        <location filename="../src/mainwindow.cpp" line="4689"/>
-        <location filename="../src/mainwindow.cpp" line="5214"/>
-        <location filename="../src/mainwindow.cpp" line="5314"/>
-        <location filename="../src/mainwindow.cpp" line="5347"/>
-        <location filename="../src/mainwindow.cpp" line="5448"/>
+        <location filename="../src/mainwindow.cpp" line="3540"/>
+        <location filename="../src/mainwindow.cpp" line="3597"/>
+        <location filename="../src/mainwindow.cpp" line="3619"/>
+        <location filename="../src/mainwindow.cpp" line="3779"/>
+        <location filename="../src/mainwindow.cpp" line="3825"/>
+        <location filename="../src/mainwindow.cpp" line="4687"/>
+        <location filename="../src/mainwindow.cpp" line="5212"/>
+        <location filename="../src/mainwindow.cpp" line="5312"/>
+        <location filename="../src/mainwindow.cpp" line="5345"/>
+        <location filename="../src/mainwindow.cpp" line="5446"/>
         <source>Done</source>
         <translation>Valmis</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3542"/>
-        <location filename="../src/mainwindow.cpp" line="3599"/>
-        <location filename="../src/mainwindow.cpp" line="3621"/>
-        <location filename="../src/mainwindow.cpp" line="3781"/>
-        <location filename="../src/mainwindow.cpp" line="3827"/>
-        <location filename="../src/mainwindow.cpp" line="3845"/>
-        <location filename="../src/mainwindow.cpp" line="4689"/>
-        <location filename="../src/mainwindow.cpp" line="5214"/>
-        <location filename="../src/mainwindow.cpp" line="5314"/>
-        <location filename="../src/mainwindow.cpp" line="5347"/>
-        <location filename="../src/mainwindow.cpp" line="5448"/>
-        <location filename="../src/mainwindow.cpp" line="5489"/>
+        <location filename="../src/mainwindow.cpp" line="3540"/>
+        <location filename="../src/mainwindow.cpp" line="3597"/>
+        <location filename="../src/mainwindow.cpp" line="3619"/>
+        <location filename="../src/mainwindow.cpp" line="3779"/>
+        <location filename="../src/mainwindow.cpp" line="3825"/>
+        <location filename="../src/mainwindow.cpp" line="3843"/>
+        <location filename="../src/mainwindow.cpp" line="4687"/>
+        <location filename="../src/mainwindow.cpp" line="5212"/>
+        <location filename="../src/mainwindow.cpp" line="5312"/>
+        <location filename="../src/mainwindow.cpp" line="5345"/>
+        <location filename="../src/mainwindow.cpp" line="5446"/>
+        <location filename="../src/mainwindow.cpp" line="5487"/>
         <source>Processing finished successfully.</source>
         <translation>Käsittely päättyi onnistuneesti.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3537"/>
-        <location filename="../src/mainwindow.cpp" line="3597"/>
-        <location filename="../src/mainwindow.cpp" line="5342"/>
+        <location filename="../src/mainwindow.cpp" line="3535"/>
+        <location filename="../src/mainwindow.cpp" line="3595"/>
+        <location filename="../src/mainwindow.cpp" line="5340"/>
         <source>Install complete.</source>
         <translation>Asennus valmis.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3547"/>
-        <location filename="../src/mainwindow.cpp" line="3625"/>
-        <location filename="../src/mainwindow.cpp" line="5218"/>
-        <location filename="../src/mainwindow.cpp" line="5319"/>
-        <location filename="../src/mainwindow.cpp" line="5354"/>
+        <location filename="../src/mainwindow.cpp" line="2361"/>
+        <source>The download timed out. Please check your internet connection and try again.</source>
+        <translation>Lataus ei onnistunut. Tarkista internetyhteys ja yritä uudelleen.</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3545"/>
+        <location filename="../src/mainwindow.cpp" line="3623"/>
+        <location filename="../src/mainwindow.cpp" line="5216"/>
+        <location filename="../src/mainwindow.cpp" line="5317"/>
+        <location filename="../src/mainwindow.cpp" line="5352"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>Asennuksen aikana havaittiin ongelma, tutki konsolitulostetta.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3566"/>
+        <location filename="../src/mainwindow.cpp" line="3564"/>
         <source>Install snaps</source>
-        <translation type="unfinished"/>
+        <translation>Asenna snap-paketteja</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3567"/>
+        <location filename="../src/mainwindow.cpp" line="3565"/>
         <source>OK to install the following snap packages?
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Asennetaanko seuraavat snap-paketit?
+
+%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3578"/>
+        <location filename="../src/mainwindow.cpp" line="3576"/>
         <source>Installing packages: %1...</source>
-        <translation type="unfinished"/>
+        <translation>Asennetaan paketteja: %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3581"/>
+        <location filename="../src/mainwindow.cpp" line="3579"/>
         <source>Installing package: %1...</source>
-        <translation type="unfinished"/>
+        <translation>Asennetaan pakettia: %1...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3602"/>
+        <location filename="../src/mainwindow.cpp" line="3600"/>
         <source>Problem detected while installing a snap. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Ongelma snap-pakettia asennettaessa. Klikkaa &quot;näytä yksityiskohdat&quot;-nappia saadaksesi lisätietoja.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3637"/>
+        <location filename="../src/mainwindow.cpp" line="3635"/>
         <source>About %1</source>
         <translation>%1 lisätietoja</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3638"/>
+        <location filename="../src/mainwindow.cpp" line="3636"/>
         <source>Version: </source>
         <translation>Versio: </translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3640"/>
+        <location filename="../src/mainwindow.cpp" line="3638"/>
         <source>Package Installer for MX Linux</source>
         <translation>Pakettien asennus MX Linux:lle</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3642"/>
+        <location filename="../src/mainwindow.cpp" line="3640"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3643"/>
+        <location filename="../src/mainwindow.cpp" line="3641"/>
         <source>%1 License</source>
         <translation>%1 lisenssi</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3649"/>
+        <location filename="../src/mainwindow.cpp" line="3647"/>
         <source>%1 Help</source>
         <translation>%1 ohje</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3762"/>
-        <location filename="../src/mainwindow.cpp" line="5441"/>
+        <location filename="../src/mainwindow.cpp" line="3760"/>
+        <location filename="../src/mainwindow.cpp" line="5439"/>
         <source>Uninstalling flatpaks...</source>
         <translation>Poistetaan flatpak asennuksia...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3771"/>
-        <location filename="../src/mainwindow.cpp" line="3825"/>
-        <location filename="../src/mainwindow.cpp" line="5443"/>
+        <location filename="../src/mainwindow.cpp" line="3769"/>
+        <location filename="../src/mainwindow.cpp" line="3823"/>
+        <location filename="../src/mainwindow.cpp" line="5441"/>
         <source>Uninstall complete.</source>
         <translation>Poisto valmis.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3772"/>
-        <location filename="../src/mainwindow.cpp" line="5444"/>
+        <location filename="../src/mainwindow.cpp" line="3770"/>
+        <location filename="../src/mainwindow.cpp" line="5442"/>
         <source>Refreshing flatpaks...</source>
         <translation>Virkistetään flatpak...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3785"/>
+        <location filename="../src/mainwindow.cpp" line="3783"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>Poistamisen aikana kohdattiin ongelma, tarkista tuloste.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3805"/>
+        <location filename="../src/mainwindow.cpp" line="3803"/>
         <source>Remove snaps</source>
-        <translation type="unfinished"/>
+        <translation>Poista snap-paketteja</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3806"/>
+        <location filename="../src/mainwindow.cpp" line="3804"/>
         <source>OK to remove the following snap packages?
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Poistetaanko seuraavat snap-paketit?
+
+%1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3830"/>
+        <location filename="../src/mainwindow.cpp" line="3828"/>
         <source>We encountered a problem removing a snap. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Ongelma poistettaessa snap-pakettia. Klikkaa &quot;näytä yksityiskohdat&quot;-nappia saadaksesi lisätietoja.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3845"/>
-        <location filename="../src/mainwindow.cpp" line="5489"/>
+        <location filename="../src/mainwindow.cpp" line="3843"/>
+        <location filename="../src/mainwindow.cpp" line="5487"/>
         <source>Success</source>
         <translation>Onnistui</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3848"/>
-        <location filename="../src/mainwindow.cpp" line="5492"/>
+        <location filename="../src/mainwindow.cpp" line="3846"/>
+        <location filename="../src/mainwindow.cpp" line="5490"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>Ohjelman poistamisen aikana kohdattiin ongelma</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4020"/>
-        <location filename="../src/mainwindow.cpp" line="4071"/>
+        <location filename="../src/mainwindow.cpp" line="4018"/>
+        <location filename="../src/mainwindow.cpp" line="4069"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>Ei voitu ladata pakettiluetteloa. Tarkista APT-lähteet.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4151"/>
-        <location filename="../src/mainwindow.cpp" line="4205"/>
+        <location filename="../src/mainwindow.cpp" line="4149"/>
+        <location filename="../src/mainwindow.cpp" line="4203"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak ei ole asennettuna</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4152"/>
+        <location filename="../src/mainwindow.cpp" line="4150"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak ei ole tällä hetkellä asennettuna.
 Voinko asentaa sen?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4205"/>
+        <location filename="../src/mainwindow.cpp" line="4203"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak ei ole asennettuna</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4228"/>
-        <location filename="../src/mainwindow.cpp" line="4617"/>
+        <location filename="../src/mainwindow.cpp" line="4226"/>
+        <location filename="../src/mainwindow.cpp" line="4615"/>
         <source>Needs re-login</source>
         <translation>Kirjautuminen uudelleen tarvitaan</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4229"/>
+        <location filename="../src/mainwindow.cpp" line="4227"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>Sinun tulee kirjautua ulos ja takaisin sisään, jotta asennetut kohteet ilmestyvät valikkoon</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4472"/>
+        <location filename="../src/mainwindow.cpp" line="4470"/>
         <source>No results</source>
-        <translation type="unfinished"/>
+        <translation>Ei tuloksia</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4472"/>
+        <location filename="../src/mainwindow.cpp" line="4470"/>
         <source>No snaps found matching &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Ehtoon &quot;%1&quot; täsmääviä snap-paketteja ei löytynyt.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4515"/>
+        <location filename="../src/mainwindow.cpp" line="4513"/>
         <source>snapd was not installed. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Snapd-paketti ei ole asennettu. Klikkaa &quot;näytä yksityiskohdat&quot;-nappia saadaksesi lisätietoja.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4539"/>
+        <location filename="../src/mainwindow.cpp" line="4537"/>
         <source>Installing the base &quot;core&quot; snap...</source>
-        <translation type="unfinished"/>
+        <translation>Asennetaan Snapin &quot;core&quot;-pakettia...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4604"/>
+        <location filename="../src/mainwindow.cpp" line="4602"/>
         <source>No output was captured. Run &apos;sudo snap install core&apos; in a terminal to see the underlying error.</source>
-        <translation type="unfinished"/>
+        <translation>Tulostetta ei voida näyttää. Aja päätteessä komento &quot;sudo snap install core&quot;, jos haluat nähdä virhetulosteen.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4609"/>
+        <location filename="../src/mainwindow.cpp" line="4607"/>
         <source>snapd was installed but its service could not be started. You may need to reboot or log out and back in, then reopen the Snap tab. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Snapd-asennettiin, mutta Snap-palvelun käynnistäminen ei onnistunut. Tietokone on ehkä käynnistettävä uudelleen tai sitten joudut kirjautumaan ulos ja takaisin sisään, ja sitten avaamaan uudestaan Snap-välilehden. Klikkaa &quot;näytä yksityiskohdat&quot;-nappia saadaksesi lisätietoja.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4613"/>
+        <location filename="../src/mainwindow.cpp" line="4611"/>
         <source>Snap support was enabled, but the base &quot;core&quot; snap could not be installed, so most snaps will not work yet. Click &quot;Show Details&quot; for the underlying error.</source>
-        <translation type="unfinished"/>
+        <translation>Snap-tuki saatiin asennettua, mutta &quot;core&quot;-snap-paketin asennus ei onnistunut, joten suurin osa snap-paketeista ei vielä toimi. Klikkaa &quot;näytä yksityiskohdat&quot;-nappia nähdäksesi tarkemman virheilmoituksen.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4694"/>
+        <location filename="../src/mainwindow.cpp" line="4692"/>
         <source>Problem detected while updating snaps. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Ongelma päivitettäessä snap-paketteja. Klikkaa &quot;näytä yksityiskohdat&quot;-nappia saadaksesi lisätietoja.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4901"/>
-        <location filename="../src/mainwindow.cpp" line="4912"/>
-        <location filename="../src/mainwindow.cpp" line="5023"/>
-        <location filename="../src/mainwindow.cpp" line="5087"/>
+        <location filename="../src/mainwindow.cpp" line="4899"/>
+        <location filename="../src/mainwindow.cpp" line="4910"/>
+        <location filename="../src/mainwindow.cpp" line="5021"/>
+        <location filename="../src/mainwindow.cpp" line="5085"/>
         <source>Mark keep</source>
         <translation>Merkitse pidä</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4928"/>
+        <location filename="../src/mainwindow.cpp" line="4926"/>
         <source>Select/deselect all upgradable</source>
         <translation>Valitse kaikki päivitettävät/poista valinnat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4929"/>
+        <location filename="../src/mainwindow.cpp" line="4927"/>
         <source>Select/deselect all autoremovable</source>
         <translation>Valitse kaikki autom. poistettavat/poista valinnat</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5025"/>
-        <location filename="../src/mainwindow.cpp" line="5085"/>
+        <location filename="../src/mainwindow.cpp" line="5023"/>
+        <location filename="../src/mainwindow.cpp" line="5083"/>
         <source>Upgrade</source>
         <translation>Päivitä</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5248"/>
-        <location filename="../src/mainwindow.cpp" line="5400"/>
+        <location filename="../src/mainwindow.cpp" line="5246"/>
+        <location filename="../src/mainwindow.cpp" line="5398"/>
         <source>Quit?</source>
         <translation>Lopeta?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5249"/>
-        <location filename="../src/mainwindow.cpp" line="5401"/>
+        <location filename="../src/mainwindow.cpp" line="5247"/>
+        <location filename="../src/mainwindow.cpp" line="5399"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>Prosessi on edelleen käynnissä, lopettaminen saattaa jättää järjestelmän epävakaaseen tilaan. &lt;p&gt;&lt;b&gt; Haluatko poistua MX Sovellukset ohjelmasta?&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5065"/>
+        <location filename="../src/mainwindow.cpp" line="5063"/>
         <source>Reinstall</source>
         <translation>Asenna uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4618"/>
+        <location filename="../src/mainwindow.cpp" line="4616"/>
         <source>Log out and back in to see installed items in the menu and use snap commands from /snap/bin. These changes do not apply to your current session.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4686"/>
-        <location filename="../src/mainwindow.cpp" line="5311"/>
+        <location filename="../src/mainwindow.cpp" line="4684"/>
+        <location filename="../src/mainwindow.cpp" line="5309"/>
         <source>Update complete.</source>
         <translation>Päivitys valmis.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5453"/>
+        <location filename="../src/mainwindow.cpp" line="5451"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>Ongelma havaittiin viimeisen toiminnon aikana, tarkista mitä konsolissa sanotaan.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5483"/>
+        <location filename="../src/mainwindow.cpp" line="5481"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>Mahdollisesti vaarallista.
@@ -975,32 +984,42 @@ Varmista, että tarkistat huolellisesti poistettavien pakettien luettelo.</trans
         <translation>Sulje</translation>
     </message>
     <message>
-        <location filename="../src/remotes.cpp" line="82"/>
+        <location filename="../src/remotes.cpp" line="85"/>
         <source>Not removable</source>
         <translation>Ei poistettavissa</translation>
     </message>
     <message>
-        <location filename="../src/remotes.cpp" line="83"/>
+        <location filename="../src/remotes.cpp" line="86"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
         <translation>Flathub on ensisijainen flatpak-ohjelmalähde ja sitä ei voi poistaa</translation>
     </message>
     <message>
-        <location filename="../src/remotes.cpp" line="105"/>
+        <location filename="../src/remotes.cpp" line="100"/>
+        <source>Error removing remote</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/remotes.cpp" line="101"/>
+        <source>Could not remove remote - command returned an error. Please try again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/remotes.cpp" line="118"/>
         <source>Error adding remote</source>
         <translation>Virhe lisättäessä ohjelmalähdettä</translation>
     </message>
     <message>
-        <location filename="../src/remotes.cpp" line="106"/>
+        <location filename="../src/remotes.cpp" line="119"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
         <translation>Ohjelmalähdettä ei voitu lisätä - käsky palautti virheen. Tarkista ohjelmalähteen osoite ja yritä uudelleen</translation>
     </message>
     <message>
-        <location filename="../src/remotes.cpp" line="111"/>
+        <location filename="../src/remotes.cpp" line="124"/>
         <source>Success</source>
         <translation>Onnistui</translation>
     </message>
     <message>
-        <location filename="../src/remotes.cpp" line="111"/>
+        <location filename="../src/remotes.cpp" line="124"/>
         <source>Remote added successfully</source>
         <translation>Ohjelmalähde lisätty onnistuneesti</translation>
     </message>
@@ -1147,7 +1166,7 @@ Sulje ohjelma tai odota, kunnes se on valmiina  ja yritä uudelleen.</translatio
     <message>
         <location filename="../src/models/snapmodel.cpp" line="150"/>
         <source>Publisher</source>
-        <translation type="unfinished"/>
+        <translation>Julkaisija</translation>
     </message>
     <message>
         <location filename="../src/models/snapmodel.cpp" line="152"/>
