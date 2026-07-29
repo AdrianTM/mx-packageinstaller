@@ -2813,6 +2813,13 @@ bool MainWindow::buildPackageLists(bool forceDownload)
         ifDownloadFailed();
         return false;
     }
+    if (displayPackagesIsRunning) {
+        // pacman only: downloadPackageList() kicked off a background fetch instead
+        // of completing inline. Its own completion callback finishes the job
+        // (readPackageList()+displayPackages()+dirty-flag reset) once the data is
+        // ready; nothing left to do here.
+        return true;
+    }
     if (!readPackageList(forceDownload)) {
         ifDownloadFailed();
         return false;
@@ -2858,17 +2865,61 @@ bool MainWindow::downloadPackageList(bool forceDownload)
     // pacman has no local archive files to download/parse -- just (re-)query the
     // sync DBs directly. Test/MX/Backports don't exist on this backend (those tabs
     // are hidden), so there's nothing else for this function to do.
+    if (displayPackagesIsRunning) {
+        // A fetch is already in flight (e.g. a rapid rebuildPackageViews() call
+        // racing the startup preload) -- don't kick off a second concurrent
+        // "pacman -Ss", the one already running will refresh the data shortly.
+        return true;
+    }
     if (enabledList.isEmpty() || forceDownload) {
         if (forceDownload && !runUpdateApt()) {
             return false;
         }
-        // No progress dialog here: "pacman -Ss" itself takes well under a second
-        // (measured ~0.2s for a full repo), so showing a modal progress dialog just
-        // for it to immediately hide again reads as extra jank, not less.
-        // pacmanAvailablePackages() uses its own local Cmd instance (not the shared
-        // member), so its output never reaches outputAvailable() in the first place
-        // -- no suppressCmdOutput guard needed, unlike the shared-cmd queries below.
-        enabledList = pacmanAvailablePackages();
+        // "pacman -Ss" dumps every package in the sync DBs (tens of thousands of
+        // lines) -- measured ~600-900ms on a full repo, enough to notice at boot
+        // since pacman's landing tab is Enabled Repos. pacmanAvailablePackages()
+        // uses its own local Cmd instance (not the shared member), so it's safe to
+        // run on a background thread, same as listInstalled()'s startup preload.
+        // buildPackageLists() (the only caller) checks displayPackagesIsRunning
+        // and returns without touching readPackageList()/displayPackages() itself
+        // when it's set -- this completion callback does that part once the data
+        // is ready, via a temporary currentTree swap (same idiom rebuildPackageViews()
+        // uses) so it targets Enabled Repos regardless of which tab is current by
+        // the time the fetch finishes.
+        displayPackagesIsRunning = true;
+        [[maybe_unused]] auto future = QtConcurrent::run([this, forceDownload] {
+            bool ok = false;
+            auto loaded = pacmanAvailablePackages(&ok);
+            QMetaObject::invokeMethod(
+                this,
+                [this, ok, forceDownload, loaded = std::move(loaded)]() mutable {
+                    if (!ok) {
+                        displayPackagesIsRunning = false;
+                        emit displayPackagesFinished();
+                        QMessageBox::critical(this, tr("Error"),
+                                              tr("Could not download the list of packages. Please check your "
+                                                 "APT sources."));
+                        return;
+                    }
+                    enabledList = std::move(loaded);
+                    QTreeView *savedTree = currentTree;
+                    currentTree = ui->treeEnabled;
+                    // Always true for currentTree == treeEnabled (see readPackageList()'s
+                    // own early return); nothing to branch on, just satisfying [[nodiscard]].
+                    static_cast<void>(readPackageList(forceDownload));
+                    displayPackages(); // resets displayPackagesIsRunning and emits displayPackagesFinished
+                    dirtyEnabledRepos = false;
+                    currentTree = savedTree;
+                    if (currentTree == ui->treeEnabled) {
+                        // Still on (or back to) this tab -- redo the same "data just
+                        // became available" UI touches a synchronous load would have,
+                        // guarded by data-readiness so it's a no-op if not applicable.
+                        handleEnabledReposTab(ui->searchBoxEnabled->text());
+                    }
+                },
+                Qt::QueuedConnection);
+        });
+        return true;
     }
     return true;
 #else
@@ -5781,7 +5832,15 @@ void MainWindow::forceUpdateAptTab(QLineEdit *searchBox, QComboBox *filterCombo)
     searchBox->clear();
     filterCombo->setCurrentIndex(0);
     buildPackageLists(true);
-    updateInterface();
+    if (displayPackagesIsRunning) {
+        // pacman only: the fetch this just kicked off hasn't completed yet --
+        // its own completion runs displayPackages(), which already emits
+        // displayPackagesFinished(); wait for that instead of acting on stale data.
+        connect(this, &MainWindow::displayPackagesFinished, this, &MainWindow::updateInterface,
+                Qt::SingleShotConnection);
+    } else {
+        updateInterface();
+    }
 }
 
 void MainWindow::pushForceUpdateEnabled_clicked()
