@@ -190,6 +190,9 @@ private:
     bool warningBackports {false};
     bool warningFlatpaks {false};
     bool warningTest {false};
+#ifdef PACKAGE_BACKEND_PACMAN
+    bool warningAur {false};
+#endif
     int savedComboIndex {0};
 
     Cmd cmd;

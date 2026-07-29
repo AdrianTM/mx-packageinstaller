@@ -586,6 +586,17 @@ void MainWindow::setup()
     ui->tabWidget->blockSignals(false);
     ui->pushUpgradeAll->setVisible(false);
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Landing on Enabled Repos happened above while tabWidget signals were still
+    // blocked, so tabWidget_currentChanged (which is what actually loads a tab's
+    // data everywhere else) never fired for it. Apt's equivalent initial load
+    // comes from the constructor's background AptCache preload, which pacman
+    // deliberately skips (see MainWindow::MainWindow) -- so without this, the tab
+    // stays empty until the user switches away and back, which does fire a real
+    // signal. Trigger the same load explicitly instead.
+    QMetaObject::invokeMethod(this, [this] { handleEnabledReposTab(QString()); }, Qt::QueuedConnection);
+#endif
+
     const auto size = this->size();
     if (settings.contains(QStringLiteral("geometry"))) {
         restoreGeometry(settings.value("geometry").toByteArray());
@@ -1665,6 +1676,24 @@ QHash<QString, PackageInfo> *MainWindow::getCurrentList()
 QVector<PackageData> MainWindow::createPackageDataList(QHash<QString, PackageInfo> *list) const
 {
     QVector<PackageData> packages;
+
+#ifdef PACKAGE_BACKEND_PACMAN
+    // aurList is a small, deliberately curated view (either the installed-from-AUR
+    // set or live search results) -- not "every AUR package", unlike enabledList's
+    // repo-wide candidate set. Merging in every other installed package here (the
+    // way the repo tabs do, to surface installed packages missing from their repo
+    // candidate list) would flood the AUR tab with every native package instead.
+    if (currentTree == ui->treeAUR) {
+        packages.reserve(list->size());
+        for (const auto &[name, info] : std::as_const(*list).asKeyValueRange()) {
+            PackageData pkg = createPackageData(name, info.version, info.description);
+            pkg.fromRepo = true;
+            packages.append(pkg);
+        }
+        return packages;
+    }
+#endif
+
     packages.reserve(list->size() + installedPackages.size());
 
     for (const auto &[name, info] : std::as_const(*list).asKeyValueRange()) {
@@ -1989,6 +2018,14 @@ void MainWindow::displayWarning(const QString &repo)
         msg = tr("MX Linux includes this repository of flatpaks for the users' convenience only, and "
                  "is not responsible for the functionality of the individual flatpaks themselves. "
                  "For more, consult flatpaks in the Wiki.");
+#ifdef PACKAGE_BACKEND_PACMAN
+    } else if (repo == QLatin1String("aur")) {
+        displayed = &warningAur;
+        key = QStringLiteral("NoWarningAur");
+        msg = tr("You are about to use the AUR, which contains user-contributed packages. "
+                 "These packages are not vetted by the distribution, may be outdated, and could "
+                 "contain malicious or broken build scripts. Use with care.");
+#endif
     }
     if ((displayed == nullptr) || *displayed || settings.value(key, false).toBool()) {
         return;
@@ -4491,6 +4528,7 @@ void MainWindow::handleAurTab(const QString &searchStr)
 {
     ui->searchBoxAUR->setText(searchStr);
     changeList.clear();
+    displayWarning("aur");
     if (displayPackagesIsRunning) {
         progress->show();
         if (!timer.isActive()) {
