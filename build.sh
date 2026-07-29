@@ -31,6 +31,7 @@ BUILD_TYPE="Release"
 USE_CLANG=false
 CLEAN=false
 DEBIAN_BUILD=false
+ARCH_BUILD=false
 BUILD_TESTS=false
 RUN_TESTS_ONLY=false
 
@@ -53,6 +54,10 @@ while [[ $# -gt 0 ]]; do
             DEBIAN_BUILD=true
             shift
             ;;
+        --arch)
+            ARCH_BUILD=true
+            shift
+            ;;
         -t|--tests)
             BUILD_TESTS=true
             shift
@@ -70,6 +75,7 @@ while [[ $# -gt 0 ]]; do
             echo "  --test          Run tests only (no build)"
             echo "  --clean         Clean build directory before building"
             echo "  --debian        Build Debian package"
+            echo "  --arch          Build Arch Linux package"
             echo "  -h, --help      Show this help message"
             exit 0
             ;;
@@ -114,6 +120,56 @@ if [ "$DEBIAN_BUILD" = true ]; then
 
     echo "Debian package build completed!"
     echo "Debian artifacts moved to debs/ directory"
+    exit 0
+fi
+
+# Build Arch Linux package
+if [ "$ARCH_BUILD" = true ]; then
+    echo "Building Arch Linux package..."
+
+    if ! command -v makepkg &> /dev/null; then
+        echo "Error: makepkg not found. Please install base-devel package."
+        exit 1
+    fi
+
+    if [ ! -f PKGBUILD ]; then
+        echo "Error: PKGBUILD not found; cannot determine version for Arch build."
+        exit 1
+    fi
+    PKGVER_LINE=$(sed -n 's/^pkgver=//p' PKGBUILD | head -n 1)
+    PKGREL=$(sed -n 's/^pkgrel=//p' PKGBUILD | head -n 1)
+    if [ -z "$PKGVER_LINE" ]; then
+        echo "Error: could not parse pkgver from PKGBUILD."
+        exit 1
+    fi
+    if [[ "$PKGVER_LINE" =~ ^\$\{PKGVER:-([^}]+)\}$ ]]; then
+        PKGVER="${BASH_REMATCH[1]}"
+    else
+        PKGVER="$PKGVER_LINE"
+    fi
+    if [ -n "$PKGREL" ]; then
+        ARCH_VERSION="${PKGVER}-${PKGREL}"
+    else
+        ARCH_VERSION="${PKGVER}"
+    fi
+    echo "Using version ${ARCH_VERSION} from PKGBUILD"
+
+    ARCH_BUILDDIR=$(mktemp -d -p "$PWD" archpkgbuild.XXXXXX)
+    trap 'rm -rf "$ARCH_BUILDDIR"' EXIT
+
+    rm -rf pkg *.pkg.tar.zst
+
+    PKG_DEST_DIR="$PWD/build"
+    mkdir -p "$PKG_DEST_DIR"
+
+    PKGDEST="$PKG_DEST_DIR" PKGVER="$PKGVER" PKGREL="$PKGREL" makepkg -f
+
+    echo "Cleaning makepkg artifacts..."
+    rm -rf pkg
+
+    echo "Arch Linux package build completed!"
+    echo "Package: $(ls *.pkg.tar.zst 2>/dev/null || echo 'not found')"
+    echo "Binary available at: build/mx-packageinstaller"
     exit 0
 fi
 

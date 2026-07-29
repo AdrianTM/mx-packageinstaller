@@ -68,10 +68,16 @@ void TestPackageFilterProxy::testHideLibraries()
     proxy.setSourceModel(&model);
     proxy.setHideLibraries(true);
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    // isLibraryPackage() is a no-op on Arch (no lib*/-dev/-dbg*/-libs split-package
+    // convention to filter on yet), so "hide libraries" hides nothing.
+    QCOMPARE(proxy.rowCount(), 6);
+#else
     QCOMPARE(proxy.rowCount(), 3);
     QCOMPARE(proxy.index(0, TreeCol::Name).data().toString(), QString("vim"));
     QCOMPARE(proxy.index(1, TreeCol::Name).data().toString(), QString("firefox"));
     QCOMPARE(proxy.index(2, TreeCol::Name).data().toString(), QString("librecad"));
+#endif
 }
 
 void TestPackageFilterProxy::testStatusFilter()
@@ -116,10 +122,15 @@ void TestPackageFilterProxy::testVisibleSourceRows()
     proxy.setHideLibraries(true);
 
     QVector<int> rows = proxy.visibleSourceRows();
+#ifdef PACKAGE_BACKEND_PACMAN
+    // isLibraryPackage() is a no-op on Arch, so nothing gets hidden; see testHideLibraries().
+    QCOMPARE(rows.size(), 6);
+#else
     QCOMPARE(rows.size(), 3);
     QCOMPARE(rows.at(0), 2);
     QCOMPARE(rows.at(1), 3);
     QCOMPARE(rows.at(2), 4);
+#endif
 }
 
 QTEST_MAIN(TestPackageFilterProxy)

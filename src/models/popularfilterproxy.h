@@ -43,6 +43,7 @@ protected:
 private:
     [[nodiscard]] bool matchesSearch(const QModelIndex &index) const;
     [[nodiscard]] bool hasMatchingChild(const QModelIndex &parent) const;
+    void invalidateRowFilter();
 
     QString m_searchText;
     int m_childSortColumn {PopCol::Name};

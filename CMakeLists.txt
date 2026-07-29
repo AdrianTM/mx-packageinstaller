@@ -31,13 +31,18 @@ if(USE_CLANG)
     message(STATUS "Using clang compiler")
 endif()
 
-# Version detection with override and fallback
+# Version detection with override and fallback. Tries, in order: an explicit
+# override, Debian's debian/changelog (via dpkg-parsechangelog, when available --
+# the Debian/MX packaging path), then the root PKGBUILD's pkgver= (the Arch
+# packaging path, including its `pkgver=${PKGVER:-<default>}` override syntax).
+# Whichever tool is actually present determines which path fires; this doesn't
+# need to know PACKAGE_BACKEND (selected further below, after project()).
 set(PROJECT_VERSION_OVERRIDE "" CACHE STRING "Override project version (e.g. 1.2.3)")
 set(PROJECT_VERSION_FROM_CHANGELOG "")
 find_program(DPKG_PARSECHANGELOG_EXECUTABLE NAMES dpkg-parsechangelog)
 if(PROJECT_VERSION_OVERRIDE)
     set(PROJECT_VERSION_FROM_CHANGELOG ${PROJECT_VERSION_OVERRIDE})
-elseif(DPKG_PARSECHANGELOG_EXECUTABLE)
+elseif(DPKG_PARSECHANGELOG_EXECUTABLE AND EXISTS ${CMAKE_SOURCE_DIR}/debian/changelog)
     execute_process(
         COMMAND ${DPKG_PARSECHANGELOG_EXECUTABLE} -SVersion
         WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
@@ -46,12 +51,29 @@ elseif(DPKG_PARSECHANGELOG_EXECUTABLE)
         RESULT_VARIABLE DPKG_RESULT
     )
     if(NOT DPKG_RESULT EQUAL 0 OR PROJECT_VERSION_FROM_CHANGELOG STREQUAL "")
-        set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
-        message(WARNING "Failed to get version from debian/changelog; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
+        set(PROJECT_VERSION_FROM_CHANGELOG "")
+        message(WARNING "Failed to get version from debian/changelog")
     endif()
-else()
+endif()
+
+if(PROJECT_VERSION_FROM_CHANGELOG STREQUAL "" AND EXISTS ${CMAKE_SOURCE_DIR}/PKGBUILD)
+    file(READ ${CMAKE_SOURCE_DIR}/PKGBUILD PROJECT_PKGBUILD_CONTENT)
+    string(REGEX MATCH "(^|[\r\n])[ \t]*pkgver=([^ \t\r\n]+)" _pkgver_match "${PROJECT_PKGBUILD_CONTENT}")
+    set(PROJECT_PKGBUILD_VER "${CMAKE_MATCH_2}")
+    if(_pkgver_match)
+        # Support pkgver=${PKGVER:-<version>} default syntax
+        string(REGEX MATCH "^\\$\\{PKGVER:-([^}]+)\\}$" _pkgver_default_match "${PROJECT_PKGBUILD_VER}")
+        if(_pkgver_default_match)
+            set(PROJECT_PKGBUILD_VER "${CMAKE_MATCH_1}")
+        endif()
+        set(PROJECT_VERSION_FROM_CHANGELOG "${PROJECT_PKGBUILD_VER}")
+        message(STATUS "Using version from PKGBUILD: ${PROJECT_VERSION_FROM_CHANGELOG}")
+    endif()
+endif()
+
+if(PROJECT_VERSION_FROM_CHANGELOG STREQUAL "")
     set(PROJECT_VERSION_FROM_CHANGELOG "0.0.0")
-    message(WARNING "dpkg-parsechangelog not found; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
+    message(WARNING "Could not determine version from debian/changelog or PKGBUILD; defaulting to ${PROJECT_VERSION_FROM_CHANGELOG}")
 endif()
 
 project(mx-packageinstaller
@@ -80,6 +102,29 @@ endif()
 # Option to build tests
 option(BUILD_TESTS "Build unit tests" OFF)
 
+# Which package-manager backend to build against. Auto-detected from what's on the
+# build machine, but can be overridden explicitly (e.g. cross-building/packaging).
+if(NOT DEFINED PACKAGE_BACKEND)
+    find_program(APT_GET_EXECUTABLE apt-get)
+    find_program(PACMAN_EXECUTABLE pacman)
+    if(APT_GET_EXECUTABLE)
+        set(PACKAGE_BACKEND_DEFAULT "apt")
+    elseif(PACMAN_EXECUTABLE)
+        set(PACKAGE_BACKEND_DEFAULT "pacman")
+    else()
+        set(PACKAGE_BACKEND_DEFAULT "apt")
+        message(WARNING "Neither apt-get nor pacman found; defaulting PACKAGE_BACKEND to apt")
+    endif()
+else()
+    set(PACKAGE_BACKEND_DEFAULT "${PACKAGE_BACKEND}")
+endif()
+set(PACKAGE_BACKEND "${PACKAGE_BACKEND_DEFAULT}" CACHE STRING "Package-manager backend to build (apt or pacman)")
+set_property(CACHE PACKAGE_BACKEND PROPERTY STRINGS apt pacman)
+if(NOT PACKAGE_BACKEND STREQUAL "apt" AND NOT PACKAGE_BACKEND STREQUAL "pacman")
+    message(FATAL_ERROR "PACKAGE_BACKEND must be 'apt' or 'pacman', got: ${PACKAGE_BACKEND}")
+endif()
+message(STATUS "Building PACKAGE_BACKEND=${PACKAGE_BACKEND}")
+
 # Find Qt6 components
 find_package(Qt6 REQUIRED COMPONENTS
     Core
@@ -95,8 +140,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTOUIC ON)
 set(CMAKE_AUTORCC ON)
 
-# Absolute directory where the privileged helper binary is installed.
-set(HELPER_INSTALL_DIR "/usr/libexec/mx-packageinstaller" CACHE PATH
+# Absolute directory where the privileged helper binary is installed. Defaults differ
+# by backend to match each distro's existing packaging convention (Debian/MX uses a
+# dedicated libexec dir; the pre-existing Arch package/AUR PKGBUILD installs to
+# /usr/lib/mx-packageinstaller) -- override explicitly if that's ever not what you want.
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    set(HELPER_INSTALL_DIR_DEFAULT "/usr/lib/mx-packageinstaller")
+else()
+    set(HELPER_INSTALL_DIR_DEFAULT "/usr/libexec/mx-packageinstaller")
+endif()
+set(HELPER_INSTALL_DIR "${HELPER_INSTALL_DIR_DEFAULT}" CACHE PATH
     "Absolute install directory for the privileged helper binary")
 if(NOT IS_ABSOLUTE "${HELPER_INSTALL_DIR}")
     message(FATAL_ERROR "HELPER_INSTALL_DIR must be an absolute path, got: ${HELPER_INSTALL_DIR}")
@@ -115,9 +168,7 @@ set(SOURCES
     src/main.cpp
     src/mainwindow.cpp
     src/checkableheaderview.cpp
-    src/lockfile.cpp
     src/versionnumber.cpp
-    src/aptcache.cpp
     src/remotes.cpp
     src/about.cpp
     src/cmd.cpp
@@ -141,11 +192,11 @@ set(HEADERS
     src/checkableheaderview.h
     src/lockfile.h
     src/versionnumber.h
-    src/aptcache.h
     src/remotes.h
     src/about.h
     src/cmd.h
     src/outputrender.h
+    src/sizeutils.h
     src/packagestatus.h
     src/models/packagemodel.h
     src/models/packagefilterproxy.h
@@ -156,6 +207,18 @@ set(HEADERS
     src/models/popularmodel.h
     src/models/popularfilterproxy.h
 )
+
+# Backend-specific sources. lockfile.{h,cpp} share the header above; only one of the
+# two lock-detection implementations is compiled in, matching each package manager's
+# own lock semantics (apt: dpkg frontend + raw lock check; pacman: direct lockf() probe).
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    list(APPEND SOURCES src/lockfile_pacman.cpp)
+else()
+    list(APPEND SOURCES src/lockfile_apt.cpp)
+    # Hand-parses raw Debian archive Packages files -- no pacman equivalent.
+    list(APPEND SOURCES src/aptcache.cpp)
+    list(APPEND HEADERS src/aptcache.h)
+endif()
 
 set(UI_FILES
     src/mainwindow.ui
@@ -247,6 +310,14 @@ target_compile_definitions(helper PRIVATE
     QT_DISABLE_DEPRECATED_BEFORE=0x060000
     VERSION="${PROJECT_VERSION}"
 )
+
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    target_compile_definitions(mx-packageinstaller PRIVATE PACKAGE_BACKEND_PACMAN)
+    target_compile_definitions(helper PRIVATE PACKAGE_BACKEND_PACMAN)
+else()
+    target_compile_definitions(mx-packageinstaller PRIVATE PACKAGE_BACKEND_APT)
+    target_compile_definitions(helper PRIVATE PACKAGE_BACKEND_APT)
+endif()
 
 # Release-specific optimizations
 if(CMAKE_BUILD_TYPE STREQUAL "Release")

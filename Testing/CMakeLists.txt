@@ -16,6 +16,15 @@ enable_testing()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(CMAKE_AUTOMOC ON)
 
+# PACKAGE_BACKEND is inherited from the top-level CMakeLists.txt; propagate it to every
+# test target so backend-conditional code (e.g. PackageFilterProxy::isLibraryPackage())
+# builds against the same variant being tested.
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    add_compile_definitions(PACKAGE_BACKEND_PACMAN)
+else()
+    add_compile_definitions(PACKAGE_BACKEND_APT)
+endif()
+
 # Test for VersionNumber class
 add_executable(test_versionnumber
     test_versionnumber.cpp
@@ -44,34 +53,37 @@ endif()
 
 add_test(NAME VersionNumberTest COMMAND test_versionnumber)
 
-# Test for AptCache class
-add_executable(test_aptcache
-    test_aptcache.cpp
-    ../src/aptcache.cpp
-    ../src/versionnumber.cpp
-)
+# Test for AptCache class (apt-only: hand-parses raw Debian archive Packages files,
+# no pacman equivalent)
+if(NOT PACKAGE_BACKEND STREQUAL "pacman")
+    add_executable(test_aptcache
+        test_aptcache.cpp
+        ../src/aptcache.cpp
+        ../src/versionnumber.cpp
+    )
 
-target_link_libraries(test_aptcache
-    Qt6::Core
-    Qt6::Test
-)
+    target_link_libraries(test_aptcache
+        Qt6::Core
+        Qt6::Test
+    )
 
-target_compile_options(test_aptcache PRIVATE
-    -Wpedantic
-    -pedantic
-    -Werror=return-type
-    -Werror=switch
-    -Werror=uninitialized
-)
+    target_compile_options(test_aptcache PRIVATE
+        -Wpedantic
+        -pedantic
+        -Werror=return-type
+        -Werror=switch
+        -Werror=uninitialized
+    )
 
-# Add compiler-specific flags for tests
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
-    target_compile_options(test_aptcache PRIVATE -Werror=return-stack-address)
-else()
-    target_compile_options(test_aptcache PRIVATE -Werror=return-local-addr)
+    # Add compiler-specific flags for tests
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(test_aptcache PRIVATE -Werror=return-stack-address)
+    else()
+        target_compile_options(test_aptcache PRIVATE -Werror=return-local-addr)
+    endif()
+
+    add_test(NAME AptCacheTest COMMAND test_aptcache)
 endif()
-
-add_test(NAME AptCacheTest COMMAND test_aptcache)
 
 # Test for PackageModel class
 add_executable(test_packagemodel
@@ -345,6 +357,10 @@ target_link_libraries(test_cmd
     Qt6::Widgets
 )
 
+target_compile_definitions(test_cmd PRIVATE
+    HELPER_PATH="${HELPER_PATH}"
+)
+
 target_compile_options(test_cmd PRIVATE
     -Wpedantic
     -pedantic
@@ -367,20 +383,59 @@ add_executable(test_packagelistparser
 target_link_libraries(test_packagelistparser Qt6::Core Qt6::Test)
 add_test(NAME PackageListParserTest COMMAND test_packagelistparser)
 
+# Test for the Flatpak size-string parsing helpers (shared, not backend-specific)
+add_executable(test_sizeutils
+    test_sizeutils.cpp
+)
+
+target_link_libraries(test_sizeutils
+    Qt6::Core
+    Qt6::Test
+)
+
+target_compile_options(test_sizeutils PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_sizeutils PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_sizeutils PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME SizeUtilsTest COMMAND test_sizeutils)
+
 # Keep the default CTest invocation usable on headless CI and local consoles.
-set_tests_properties(
-    VersionNumberTest AptCacheTest PackageModelTest FlatpakModelTest
+set(ALL_TEST_NAMES
+    VersionNumberTest PackageModelTest FlatpakModelTest
     PackageFilterProxyTest FlatpakFilterProxyTest SnapModelTest SnapFilterProxyTest
     PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest PackageListParserTest
+    SizeUtilsTest
+)
+set(ALL_TEST_TARGETS
+    test_versionnumber test_packagemodel test_flatpakmodel
+    test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
+    test_popularmodel test_popularfilterproxy test_outputrender test_cmd
+    test_packagelistparser test_sizeutils
+)
+if(NOT PACKAGE_BACKEND STREQUAL "pacman")
+    list(APPEND ALL_TEST_NAMES AptCacheTest)
+    list(APPEND ALL_TEST_TARGETS test_aptcache)
+endif()
+
+set_tests_properties(
+    ${ALL_TEST_NAMES}
     PROPERTIES ENVIRONMENT "QT_QPA_PLATFORM=offscreen"
 )
 
 # Add convenience target to run all tests
 add_custom_target(run_tests
     COMMAND ${CMAKE_CTEST_COMMAND} --verbose
-    DEPENDS test_versionnumber test_aptcache test_packagemodel test_flatpakmodel
-            test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
-            test_popularmodel test_popularfilterproxy test_outputrender test_cmd
+    DEPENDS ${ALL_TEST_TARGETS}
     COMMENT "Running all tests"
 )
 

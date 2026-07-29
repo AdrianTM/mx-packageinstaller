@@ -52,6 +52,7 @@ protected:
 private:
     [[nodiscard]] bool matchesSearch(const FlatpakData &fp) const;
     [[nodiscard]] bool matchesStatus(int status) const;
+    void invalidateRowFilter();
 
     QString m_searchText;
     int m_statusFilter = 0;

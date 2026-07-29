@@ -31,11 +31,23 @@ PackageFilterProxy::PackageFilterProxy(QObject *parent)
     setDynamicSortFilter(true);
 }
 
+void PackageFilterProxy::invalidateRowFilter()
+{
+    // beginFilterChange()/endFilterChange() replaced invalidateFilter() in Qt 6.10;
+    // invalidateFilter() is deprecated from 6.13 on. This proxy only filters rows.
+#if QT_VERSION >= QT_VERSION_CHECK(6, 10, 0)
+    beginFilterChange();
+    endFilterChange(QSortFilterProxyModel::Direction::Rows);
+#else
+    invalidateFilter();
+#endif
+}
+
 void PackageFilterProxy::setSearchText(const QString &text)
 {
     if (m_searchText != text) {
         m_searchText = text;
-        invalidateFilter();
+        invalidateRowFilter();
     }
 }
 
@@ -43,7 +55,7 @@ void PackageFilterProxy::setStatusFilter(int status)
 {
     if (m_statusFilter != status) {
         m_statusFilter = status;
-        invalidateFilter();
+        invalidateRowFilter();
     }
 }
 
@@ -51,7 +63,7 @@ void PackageFilterProxy::setHideLibraries(bool hide)
 {
     if (m_hideLibraries != hide) {
         m_hideLibraries = hide;
-        invalidateFilter();
+        invalidateRowFilter();
     }
 }
 
@@ -59,7 +71,7 @@ void PackageFilterProxy::setRepoOnly(bool repoOnly)
 {
     if (m_repoOnly != repoOnly) {
         m_repoOnly = repoOnly;
-        invalidateFilter();
+        invalidateRowFilter();
     }
 }
 
@@ -137,10 +149,18 @@ bool PackageFilterProxy::matchesStatus(int status) const
 
 bool PackageFilterProxy::isLibraryPackage(const QString &name)
 {
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Arch doesn't split packages into -dev/-dbg/-dbgsym/-libs the way Debian does,
+    // so there's no equivalent heuristic to apply here yet; "hide libraries" is a
+    // no-op until an Arch-appropriate pattern is authored.
+    Q_UNUSED(name);
+    return false;
+#else
     // Hide lib*, -dev, -dbg, -dbgsym and -libs packages, but keep known user-facing
     // applications whose names merely start with "lib".
     static const QRegularExpression libraryPattern(
         QStringLiteral(R"((^lib(?!re(?:cad|office|pcb|wolf)))|(-dev$)|(-dbg$)|(-dbgsym$)|(-libs$))"),
         QRegularExpression::CaseInsensitiveOption);
     return libraryPattern.match(name).hasMatch();
+#endif
 }

@@ -1,6 +1,10 @@
 #!/bin/bash
 
-# Passwordless, fixed-scope maintenance actions for mx-packageinstaller.
+# Passwordless, fixed-scope maintenance actions for mx-packageinstaller (pacman
+# backend). Installed as /usr/lib/mx-packageinstaller/mxpi-maintenance, same as the
+# apt variant (scripts/mxpi-maintenance) -- see that file for the reasoning behind
+# what belongs here (narrow, non-trust-mutating actions) versus in mxpi-lib
+# (auth_admin_keep-gated, for anything that adds trusted sources or enables services).
 
 if [[ $# -ge 2 && "$1" == "--marker" ]]; then
     marker="$2"
@@ -22,12 +26,8 @@ if [[ $# -ge 2 && "$1" == "--marker" ]]; then
     shift 2
 fi
 
-apt_update() {
-    apt-get update -o=Dpkg::Use-Pty=0 -o Acquire::http:Timeout=10 -o Acquire::https:Timeout=10 -o Acquire::ftp:Timeout=10
-}
-
-cleanup_temp() {
-    rm -f -- /etc/apt/sources.list.d/mxpitemp.list
+repo_sync() {
+    pacman -Sy --noconfirm
 }
 
 copy_log() {
@@ -36,7 +36,7 @@ copy_log() {
     # Where the app wrote its log (see Log::defaultLogPath): a GUI run logs to
     # the caller's private runtime dir (/run/user/<uid>); a root run logs to
     # /run. Both are non-world-writable, unlike the legacy /tmp fallback.
-    # The caller's uid may come from pkexec, sudo/gksu, or the login session.
+    # The caller's uid may come from pkexec, sudo, or the login session.
     if [[ "$PKEXEC_UID" =~ ^[0-9]+$ ]]; then
         uid="$PKEXEC_UID"
     elif [[ "$SUDO_UID" =~ ^[0-9]+$ ]]; then
@@ -74,12 +74,10 @@ copy_log() {
 
 main() {
 case "$1" in
-    apt_update)
-        apt_update;;
+    repo_sync)
+        repo_sync;;
     copy_log)
         copy_log;;
-    cleanup_temp)
-        cleanup_temp;;
     *)
         echo "mxpi-maintenance: unknown action '$1'" >&2
         exit 1;;

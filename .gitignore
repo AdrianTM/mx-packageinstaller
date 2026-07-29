@@ -27,6 +27,7 @@ ui_*.h
 Makefile*
 *-build-*
 build
+build-*
 debug
 
 # Local adhoc test binaries

@@ -31,6 +31,8 @@
 #include <QLocale>
 #include <QTranslator>
 
+#include <unistd.h>
+
 #include "log.h"
 #include "mainwindow.h"
 
