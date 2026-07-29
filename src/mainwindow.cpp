@@ -418,7 +418,33 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // task kicked off just above, so it's still empty at this exact point --
     // checkInstalled() would always say "not installed" and silently skip this.
     if (arch != QLatin1String("i386") && !QStandardPaths::findExecutable(QStringLiteral("flatpak")).isEmpty()) {
-        QMetaObject::invokeMethod(this, [this] { displayFlatpaks(); }, Qt::QueuedConnection);
+        // The two subprocess calls loadFlatpakData() would make ("flatpak remote-ls"
+        // against the full remote catalog, then "flatpak list") measured ~600-700ms
+        // combined on a real machine -- enough to notice at boot, same as the pacman
+        // -Ss fetch. Both go through listFlatpaks()/a local Cmd instance, neither
+        // touching the shared cmd member, so it's safe to run them in the background
+        // and finish on the GUI thread once they're done, same treatment as
+        // installedPackages above. remote/scope are captured now (GUI thread) rather
+        // than read from ui-> / fpUser inside the background lambda.
+        setupFlatpakDisplay();
+        const QString remote = ui->comboRemote->currentText();
+        const QString scope = fpUser;
+        [[maybe_unused]] auto flatpakFuture = QtConcurrent::run([this, remote, scope] {
+            const QStringList remoteEntries = listFlatpaks(remote, scope);
+            Cmd shell;
+            const QString allInstalledCommand
+                = QStringLiteral("flatpak list ") + scope + QStringLiteral("2>/dev/null --columns=ref,size");
+            const QStringList allInstalled
+                = shell.getOut(allInstalledCommand, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+            QMetaObject::invokeMethod(
+                this,
+                [this, remoteEntries, allInstalled, scope] {
+                    processFlatpakData(remoteEntries, allInstalled, scope);
+                    populateFlatpakTree();
+                    finalizeFlatpakDisplay();
+                },
+                Qt::QueuedConnection);
+        });
     }
 }
 
@@ -1861,7 +1887,25 @@ void MainWindow::setupFlatpakDisplay()
 
 void MainWindow::loadFlatpakData()
 {
-    flatpaks = listFlatpaks(ui->comboRemote->currentText());
+    const QStringList remoteEntries = listFlatpaks(ui->comboRemote->currentText(), fpUser);
+
+    // Optimize: Get all installed packages with one command (ref + size), then split by type
+    const QString allInstalledCommand = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("2>/dev/null --columns=ref,size");
+    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
+    const QStringList allInstalled = cmd.getOut(allInstalledCommand, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
+
+    processFlatpakData(remoteEntries, allInstalled, fpUser);
+}
+
+// Turns already-fetched remote-ls/list output into the member state populateFlatpakTree()
+// renders. Split out from loadFlatpakData() so the startup preload can run the two
+// subprocess calls above on a background thread (via local Cmd instances) and hand the
+// raw results here to finish on the GUI thread -- this part is pure string processing,
+// safe either way, but the member writes need to happen on the GUI thread.
+void MainWindow::processFlatpakData(const QStringList &remoteEntries, const QStringList &allInstalled,
+                                    const QString &scope)
+{
+    flatpaks = remoteEntries;
     flatpaksApps.clear();
     flatpaksRuntimes.clear();
     QSet<QString> installedCanonical;
@@ -1870,12 +1914,8 @@ void MainWindow::loadFlatpakData()
     cachedInstalledScope.clear();
     cachedInstalledFetched = false;
 
-    // Optimize: Get all installed packages with one command (ref + size), then split by type
-    const QString allInstalledCommand = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("2>/dev/null --columns=ref,size");
-    QScopedValueRollback<bool> guard(suppressCmdOutput, true);
-    const QStringList allInstalled = cmd.getOut(allInstalledCommand, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
     cachedInstalledFlatpaks = allInstalled;
-    cachedInstalledScope = fpUser;
+    cachedInstalledScope = scope;
     cachedInstalledFetched = true;
 
     // Clear and reserve space for better performance
@@ -3282,7 +3322,10 @@ QHash<QString, PackageInfo> MainWindow::listInstalled()
     return installedPackagesMap;
 }
 
-QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type) const
+// scope is taken explicitly (not read from the fpUser member) so this can be called
+// safely from a background thread (the startup preload does) without racing a
+// concurrent write to fpUser from the GUI thread.
+QStringList MainWindow::listFlatpaks(const QString &remote, const QString &fpUserScope, const QString &type) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
@@ -3298,7 +3341,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
         return {};
     }
 
-    const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
+    const bool isUserScope = fpUserScope.startsWith(QLatin1String("--user"));
 
     auto buildRemoteLsArgs = [&](const QString &scope) {
         QStringList args {"remote-ls"};
@@ -3337,14 +3380,14 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
     };
 
     // Execute the command and process the output
-    QStringList list = runRemoteLs(buildRemoteLsArgs(fpUser));
+    QStringList list = runRemoteLs(buildRemoteLsArgs(fpUserScope));
 
     if (list.isEmpty()) {
         qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
 
         // Try to update the remote if it's empty
         QStringList updateArgs {"update"};
-        updateArgs += flatpakArgsWithScope(fpUser, {});
+        updateArgs += flatpakArgsWithScope(fpUserScope, {});
         updateArgs << "--appstream" << remote;
         qDebug() << "Running remote update command:" << updateArgs;
 
@@ -3353,7 +3396,7 @@ QStringList MainWindow::listFlatpaks(const QString &remote, const QString &type)
             qDebug() << "Remote update completed, retrying package list";
 
             // Retry the original command after update
-            list = runRemoteLs(buildRemoteLsArgs(fpUser));
+            list = runRemoteLs(buildRemoteLsArgs(fpUserScope));
             if (!list.isEmpty()) {
                 qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
             } else {
@@ -5546,13 +5589,13 @@ void MainWindow::filterChanged(const QString &arg1)
             clearChangeListAndButtons();
         } else if (arg1 == tr("All apps")) {
             if (flatpaksApps.isEmpty()) {
-                flatpaksApps = listFlatpaks(ui->comboRemote->currentText(), "--app");
+                flatpaksApps = listFlatpaks(ui->comboRemote->currentText(), fpUser, "--app");
             }
             handleFlatpakFilter(flatpaksApps);
             clearChangeListAndButtons();
         } else if (arg1 == tr("All runtimes")) {
             if (flatpaksRuntimes.isEmpty()) {
-                flatpaksRuntimes = listFlatpaks(ui->comboRemote->currentText(), "--runtime");
+                flatpaksRuntimes = listFlatpaks(ui->comboRemote->currentText(), fpUser, "--runtime");
             }
             handleFlatpakFilter(flatpaksRuntimes);
             clearChangeListAndButtons();
