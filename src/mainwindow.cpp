@@ -1917,14 +1917,15 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
         }
         recommends = recommendsCheck->isChecked() ? "--install-recommends " : "--no-install-recommends ";
         recommendsAptitude = recommendsCheck->isChecked() ? "--with-recommends " : "--without-recommends ";
+        const QString quotedNames = shellCommandFromArgs(names.split(QLatin1Char(' '), Qt::SkipEmptyParts));
 
         const QString awkFilter =
             R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit";
         detailedNames = cmd.getOut(
-            frontend + aptget + action + ' ' + recommends + target + reinstall + names + awkFilter);
+            frontend + aptget + action + ' ' + recommends + target + reinstall + quotedNames + awkFilter);
         {
             const QStringList aptLines
-                = cmd.getOut(frontend + aptitude + action + ' ' + recommendsAptitude + target + names)
+                = cmd.getOut(frontend + aptitude + action + ' ' + recommendsAptitude + target + quotedNames)
                       .split('\n', Qt::KeepEmptyParts);
             if (aptLines.isEmpty()) {
                 aptitudeInfo.clear();
