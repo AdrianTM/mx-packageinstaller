@@ -8,7 +8,6 @@
 #include <QPushButton>
 
 #include "cmd.h"
-#include "scopedtimer.h"
 
 ManageRemotes::ManageRemotes(QWidget *parent, const QString &user)
     : QDialog(parent),
@@ -152,7 +151,6 @@ void ManageRemotes::userSelected(int index)
 void ManageRemotes::listFlatpakRemotes() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     comboRemote->clear();
     QStringList list = Cmd().getOut("flatpak", {"remote-list"}).replace('\t', " -- ").split('\n');
     comboRemote->addItems(list);

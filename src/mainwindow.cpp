@@ -55,7 +55,6 @@
 #include "checkableheaderview.h"
 #include "outputrender.h"
 #include "packagebackend.h"
-#include "scopedtimer.h"
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
@@ -456,7 +455,6 @@ MainWindow::~MainWindow()
 void MainWindow::setup()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ui->tabWidget->blockSignals(true);
 #ifdef PACKAGE_BACKEND_PACMAN
     // Popular apps has no data on this backend (see the Tab::Popular visibility
@@ -677,7 +675,6 @@ void MainWindow::setup()
 void MainWindow::setupModels()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     // Create Package models for APT trees
     enabledModel = new PackageModel(this);
@@ -776,7 +773,6 @@ void MainWindow::setupModels()
 bool MainWindow::uninstall(const QString &names, const QStringList &preuninstall, const QStringList &postuninstall)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
 
     bool success = true;
@@ -823,7 +819,6 @@ bool MainWindow::uninstall(const QString &names, const QStringList &preuninstall
 bool MainWindow::updateApt()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (lockFile.isLockedGUI()) {
         return false;
     }
@@ -872,7 +867,6 @@ QString MainWindow::convert(quint64 bytes)
 void MainWindow::listSizeInstalledFP()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     auto sumSizes = [](const QList<QString> &sizes) {
         return std::accumulate(sizes.cbegin(), sizes.cend(), quint64(0),
@@ -904,7 +898,6 @@ void MainWindow::blockInterfaceFP()
 void MainWindow::updateInterface()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (currentTree == ui->treePopularApps || currentTree == ui->treeFlatpak || currentTree == ui->treeSnap) {
         return;
     }
@@ -1147,7 +1140,6 @@ void MainWindow::outputAvailable(const QString &output)
 void MainWindow::loadPmFiles()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     const QString pmFolderPath {QStringLiteral("/usr/share/mx-packageinstaller-pkglist")};
     const QStringList pmFileList = QDir(pmFolderPath).entryList({"*.pm"});
@@ -1379,7 +1371,6 @@ RemoteLsEntry parseRemoteLsLine(const QString &line)
 void MainWindow::refreshPopularApps()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     disableOutput();
     // Don't clear the model here - setPopularApps() handles it with proper reset signals
     ui->searchPopular->clear();
@@ -1536,7 +1527,6 @@ void MainWindow::setSearchFocus() const
 void MainWindow::displayPopularApps()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     if (!popularModel || !ui->treePopularApps) {
         qWarning() << "PopularModel or treePopularApps not initialized!";
@@ -1594,7 +1584,6 @@ void MainWindow::displayPopularApps()
 void MainWindow::displayFilteredFP(QStringList list, bool raw)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     if (!flatpakModel || !flatpakProxy) {
         return;
@@ -1649,7 +1638,6 @@ void MainWindow::displayFilteredFP(QStringList list, bool raw)
 void MainWindow::displayPackages()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     displayPackagesIsRunning = true;
 
@@ -1670,26 +1658,15 @@ void MainWindow::displayPackages()
     }
 
     // Build package data list and set on model
-    QVector<PackageData> packages;
-    {
-        ScopedTimer t("displayPackages: createPackageDataList");
-        packages = createPackageDataList(list);
-    }
-    {
-        ScopedTimer t("displayPackages: setPackageData");
-        model->setPackageData(packages);
-    }
+    QVector<PackageData> packages = createPackageDataList(list);
+    model->setPackageData(packages);
 
     // Update installed versions
-    {
-        ScopedTimer t("displayPackages: updatePackageStatuses");
-        updatePackageStatuses();
-    }
+    updatePackageStatuses();
 
     // Sort by Package Name (column 1) after data is loaded
     auto *proxy = getCurrentProxy();
     if (proxy) {
-        ScopedTimer t("displayPackages: sort");
         proxy->sort(1, Qt::AscendingOrder);
     }
 
@@ -1817,13 +1794,9 @@ void MainWindow::updatePackageStatuses()
         versionStrings.insert(name, version.toString());
     }
 
-    {
-        ScopedTimer t("updatePackageStatuses: model->updateInstalledVersions");
-        model->updateInstalledVersions(versionStrings);
-    }
+    model->updateInstalledVersions(versionStrings);
 
     // Resize columns after updating statuses
-    ScopedTimer resizeTimer("updatePackageStatuses: resizeColumnToContents loop");
     if (currentTree && currentTree != ui->treePopularApps && currentTree != ui->treeFlatpak) {
         for (int i = 0; i < model->columnCount(); ++i) {
             if (!currentTree->isColumnHidden(i)) {
@@ -1836,7 +1809,6 @@ void MainWindow::updatePackageStatuses()
 void MainWindow::displayFlatpaks(bool forceUpdate)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (!flatpaks.isEmpty() && !forceUpdate) {
         return;
     }
@@ -2099,7 +2071,6 @@ void MainWindow::finalizeFlatpakDisplay()
 void MainWindow::displayWarning(const QString &repo)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     bool *displayed = nullptr;
     QString msg;
@@ -2154,7 +2125,6 @@ void MainWindow::displayWarning(const QString &repo)
 void MainWindow::ifDownloadFailed() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     progress->hide();
 }
 
@@ -2168,7 +2138,6 @@ void MainWindow::invalidateFlatpakRemoteCache()
 void MainWindow::listFlatpakRemotes() const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     QString currentRemote = ui->comboRemote->currentText();
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
@@ -2242,7 +2211,6 @@ void MainWindow::listFlatpakRemotes() const
 bool MainWindow::confirmActions(const QString &names, const QString &action)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     qDebug() << "names" << names << "and" << changeList;
 
 #ifdef PACKAGE_BACKEND_PACMAN
@@ -2390,7 +2358,6 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
 bool MainWindow::install(const QString &names)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     if (!isOnline()) {
         QMessageBox::critical(this, tr("Error"),
@@ -2488,7 +2455,6 @@ bool MainWindow::install(const QString &names)
 bool MainWindow::installBatch(const QStringList &nameList)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     bool result = true;
     QStringList postinstallHooks;
     QString installNames;
@@ -2530,7 +2496,6 @@ bool MainWindow::installBatch(const QStringList &nameList)
 bool MainWindow::installPopularApp(const QString &name)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     bool result = true;
     QString preinstall;
     QString postinstall;
@@ -2592,7 +2557,6 @@ bool MainWindow::installPopularApp(const QString &name)
 bool MainWindow::installPopularApps()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     QStringList batchNames;
     bool result = true;
 
@@ -2657,7 +2621,6 @@ bool MainWindow::installPopularApps()
 bool MainWindow::installSelected()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = changeList.join(' ');
 
@@ -2702,7 +2665,6 @@ bool MainWindow::installSelected()
 bool MainWindow::markKeep()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = changeList.join(' ');
     enableOutput();
@@ -2844,7 +2806,6 @@ bool MainWindow::downloadAndUnzip(const QString &url, const QString &repoName, c
 bool MainWindow::buildPackageLists(bool forceDownload)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (forceDownload) {
         setDirty();
     }
@@ -2882,7 +2843,6 @@ bool MainWindow::buildPackageLists(bool forceDownload)
 bool MainWindow::downloadPackageList(bool forceDownload)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (!isOnline()) {
         QMessageBox::critical(this, tr("Error"),
                               tr("Internet is not available, won't be able to download the list of packages"));
@@ -3098,7 +3058,6 @@ void MainWindow::hideColumns()
 bool MainWindow::readPackageList(bool forceDownload)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     pushCancel->setDisabled(true);
 
     // Early return if lists are already populated and not forced to download
@@ -3136,7 +3095,6 @@ bool MainWindow::readPackageList(bool forceDownload)
 void MainWindow::cancelDownload()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     holdProgressForAptRefresh = false;
     holdProgressForFlatpakRefresh = false;
     operationCanceled = true;
@@ -3160,7 +3118,6 @@ void MainWindow::centerWindow()
 void MainWindow::clearUi()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     blockSignals(true);
 
     // Configure buttons
@@ -3212,7 +3169,6 @@ void MainWindow::cleanup()
     }
     cleanupDone = true;
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (cmd.state() != QProcess::NotRunning) {
         qDebug() << "Command" << cmd.program() << cmd.arguments() << "terminated" << cmd.terminateAndKill();
     }
@@ -3277,7 +3233,6 @@ bool MainWindow::checkInstalled(const QVariant &names) const
 bool MainWindow::checkUpgradable(const QStringList &nameList) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (nameList.isEmpty()) {
         return false;
     }
@@ -3312,7 +3267,6 @@ bool MainWindow::checkUpgradable(const QStringList &nameList) const
 QHash<QString, PackageInfo> MainWindow::listInstalled()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     bool ok = false;
     QHash<QString, PackageInfo> installedPackagesMap = PackageBackend::listInstalled(&ok);
     if (!ok) {
@@ -3328,7 +3282,6 @@ QHash<QString, PackageInfo> MainWindow::listInstalled()
 QStringList MainWindow::listFlatpaks(const QString &remote, const QString &fpUserScope, const QString &type) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     QString archFp = getArchOption();
     if (archFp.isEmpty()) {
@@ -3468,7 +3421,6 @@ PackageData MainWindow::createPackageData(const QString &name, const QString &ve
 void MainWindow::setCurrentTree()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     const QList<QTreeView *> trees = {
         ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak, ui->treeSnap,
 #ifdef PACKAGE_BACKEND_PACMAN
@@ -3546,7 +3498,6 @@ void MainWindow::setIcons()
 QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     bool ok = false;
     QHash<QString, VersionNumber> installedVersions = PackageBackend::listInstalledVersions(&ok);
     if (!ok) {
@@ -4005,7 +3956,6 @@ void MainWindow::showOutput()
 void MainWindow::pushInstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     beginOperation();
     showOutput();
     if (currentTree == ui->treeFlatpak) {
@@ -4207,7 +4157,6 @@ void MainWindow::treePopularApps_itemCollapsed(const QModelIndex &index)
 void MainWindow::pushUninstall_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     beginOperation();
 
     showOutput();
@@ -4363,7 +4312,6 @@ void MainWindow::pushUninstall_clicked()
 void MainWindow::tabWidget_currentChanged(int index)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ui->tabWidget->setTabText(Tab::Output, tr("Console Output"));
     ui->pushInstall->setEnabled(false);
     ui->pushUninstall->setEnabled(false);
@@ -5046,7 +4994,6 @@ QVector<SnapData> MainWindow::parseSnapList(const QString &output, bool installe
 void MainWindow::handleSnapTab(const QString &searchStr)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ui->searchBoxSnap->setText(searchStr);
     setCurrentTree();
     ui->searchBoxSnap->setFocus();
@@ -5193,7 +5140,6 @@ void MainWindow::searchSnapStore()
 void MainWindow::setupSnapd()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     beginOperation();
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     ui->tabWidget->setCurrentWidget(ui->tabOutput);
@@ -5352,7 +5298,6 @@ void MainWindow::onSnapCheckStateChanged(const QString &name, Qt::CheckState sta
 void MainWindow::buildSnapChangeList(const QString &name, Qt::CheckState state, int /*status*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (state == Qt::Checked) {
         changeList.append(name);
     } else {
@@ -5383,7 +5328,6 @@ void MainWindow::buildSnapChangeList(const QString &name, Qt::CheckState state, 
 void MainWindow::pushRefreshSnap_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (!isSnapdReady()) {
         handleSnapTab(QString());
         return;
@@ -5400,7 +5344,6 @@ void MainWindow::pushRefreshSnap_clicked()
 void MainWindow::pushUpgradeSnap_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (!isSnapdReady()) {
         return;
     }
@@ -5452,7 +5395,6 @@ void MainWindow::handleOutputTab()
 void MainWindow::filterChanged(const QString &arg1)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     currentTree->blockSignals(true);
     currentTree->setUpdatesEnabled(false);
     updateInterface();
@@ -5493,16 +5435,13 @@ void MainWindow::filterChanged(const QString &arg1)
 
     // Helper functions
     auto resetTree = [this]() {
-        ScopedTimer t("filterChanged: resetTree");
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
         if (currentTree == ui->treeFlatpak) {
             if (flatpakModel) {
-                ScopedTimer t2("filterChanged: resetTree: flatpakModel->setAllChecked");
                 flatpakModel->setAllChecked(false);
             }
             if (flatpakProxy) {
-                ScopedTimer t2("filterChanged: resetTree: flatpakProxy resets");
                 flatpakProxy->setSearchText(QString());
                 flatpakProxy->setStatusFilter(0);
                 flatpakProxy->clearAllowedRefs();
@@ -5527,12 +5466,10 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     auto uncheckAllItems = [this]() {
-        ScopedTimer t("filterChanged: uncheckAllItems");
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
         if (currentTree == ui->treeFlatpak) {
             if (flatpakModel) {
-                ScopedTimer t2("filterChanged: uncheckAllItems: flatpakModel->setAllChecked");
                 flatpakModel->setAllChecked(false);
             }
         } else {
@@ -5545,7 +5482,6 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     auto handleFlatpakFilter = [this, uncheckAllItems](const QStringList &data, bool raw = true) {
-        ScopedTimer t("filterChanged: handleFlatpakFilter");
         uncheckAllItems();
         displayFilteredFP(data, raw);
     };
@@ -5569,26 +5505,22 @@ void MainWindow::filterChanged(const QString &arg1)
 
 
     // Hide and reset all header checkboxes by default
-    {
-        ScopedTimer t("filterChanged: header checkbox reset");
-        if (headerEnabled) {
-            headerEnabled->setCheckboxVisible(false);
-            headerEnabled->setChecked(false);
-        }
-        if (headerMX) {
-            headerMX->setCheckboxVisible(false);
-            headerMX->setChecked(false);
-        }
-        if (headerBP) {
-            headerBP->setCheckboxVisible(false);
-            headerBP->setChecked(false);
-        }
+    if (headerEnabled) {
+        headerEnabled->setCheckboxVisible(false);
+        headerEnabled->setChecked(false);
+    }
+    if (headerMX) {
+        headerMX->setCheckboxVisible(false);
+        headerMX->setChecked(false);
+    }
+    if (headerBP) {
+        headerBP->setCheckboxVisible(false);
+        headerBP->setChecked(false);
     }
 
     bool isAutoremovable = (arg1 == tr("Autoremovable"));
     bool shouldHideLibs = !isAutoremovable && hideLibsChecked;
 
-    ScopedTimer flatpakBranchTimer("filterChanged: Flatpak branch dispatch");
     // Handle Flatpak tree
     if (currentTree == ui->treeFlatpak) {
         if (arg1 == tr("Installed runtimes")) {
@@ -5811,7 +5743,6 @@ void MainWindow::onPopularItemChanged(const QModelIndex &index)
 void MainWindow::buildChangeList(const QString &packageName, Qt::CheckState state)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     /* if all apps are uninstalled (or some installed) -> enable Install, disable Uinstall
      * if all apps are installed or upgradable -> enable Uninstall, enable Install
      * if all apps are upgradable -> change Install label to Upgrade;
@@ -5840,7 +5771,6 @@ void MainWindow::buildChangeList(const QString &packageName, Qt::CheckState stat
 void MainWindow::buildFlatpakChangeList(const QString &fullName, Qt::CheckState state, int /*status*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
 
     if (changeList.isEmpty() && indexFilterFP.isEmpty()) {
         indexFilterFP = ui->comboFilterFlatpak->currentText();
@@ -5962,7 +5892,6 @@ void MainWindow::checkHideLibs_toggled(bool checked)
 void MainWindow::pushUpgradeAll_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     beginOperation();
     showOutput();
 
@@ -6000,7 +5929,6 @@ void MainWindow::pushEnter_clicked()
 void MainWindow::lineEdit_returnPressed()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     const QString input = ui->lineEdit->text();
     cmd.write(input.toUtf8() + '\n');
 #ifdef PACKAGE_BACKEND_PACMAN
@@ -6041,7 +5969,6 @@ void MainWindow::setLineEditMasked(bool masked)
 void MainWindow::pushCancel_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (cmd.state() != QProcess::NotRunning) {
         if (QMessageBox::warning(this, tr("Quit?"),
                                  tr("Process still running, quitting might leave the system in an unstable "
@@ -6095,7 +6022,6 @@ void MainWindow::checkRepoOnlyBP_clicked(bool checked)
 void MainWindow::comboRemote_activated(int /*index*/)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     lastIndexClicked = QModelIndex();
     displayFlatpaks(true);
 }
@@ -6103,7 +6029,6 @@ void MainWindow::comboRemote_activated(int /*index*/)
 void MainWindow::pushUpgradeFP_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
@@ -6124,7 +6049,6 @@ void MainWindow::pushUpgradeFP_clicked()
 void MainWindow::pushRemotes_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     ManageRemotes dialog(this, fpUser);
     dialog.exec();
     if (dialog.isChanged()) {
@@ -6161,7 +6085,6 @@ void MainWindow::pushRemotes_clicked()
 void MainWindow::comboUser_currentIndexChanged(int index)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     if (index == 0) {
         fpUser = "--system ";
     } else {
@@ -6241,7 +6164,6 @@ void MainWindow::keyPressEvent(QKeyEvent *event)
 void MainWindow::pushRemoveUnused_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    ScopedTimer scopedTimer(__PRETTY_FUNCTION__);
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
