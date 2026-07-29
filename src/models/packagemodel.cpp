@@ -253,6 +253,13 @@ void PackageModel::setAutoremovable(const QStringList &names)
 
 void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versions)
 {
+    // A single dataChanged() over the whole range makes a dynamicSortFilter-enabled
+    // proxy incrementally re-filter/re-sort every row as it comes in -- fine for a
+    // handful of rows, but a measured ~700ms+ on a full pacman repo listing (tens
+    // of thousands of rows). setPackageData() (called right before this, always)
+    // already does a full reset, so there's no extra view state lost by doing the
+    // same here -- and a plain reset lets the proxy do one clean resort instead.
+    beginResetModel();
     m_countInstalled = 0;
     m_countUpgradable = 0;
     for (int i = 0; i < m_packages.size(); ++i) {
@@ -278,9 +285,7 @@ void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versio
         }
     }
 
-    if (!m_packages.isEmpty()) {
-        emit dataChanged(index(0, 0), index(m_packages.size() - 1, columnCount() - 1));
-    }
+    endResetModel();
 }
 
 void PackageModel::setIcons(const QIcon &installed, const QIcon &upgradable)
