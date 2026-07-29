@@ -4,7 +4,7 @@
 
 if [[ $# -ge 2 && "$1" == "--marker" ]]; then
     marker="$2"
-    if ! /usr/lib/mx-packageinstaller/helper create-marker "$marker"; then
+    if ! /usr/libexec/mx-packageinstaller/helper create-marker "$marker"; then
         echo "mxpi-lib: could not create authentication marker" >&2
         exit 1
     fi

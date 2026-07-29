@@ -60,27 +60,33 @@ bool LockFile::isLockedGUI()
 
 QString LockFile::getLockingProcess() const
 {
+    // "apt-get check" acquires the dpkg *frontend* lock, which another apt-get/
+    // aptitude/synaptic session holds for its whole run (including its download
+    // phase, before dpkg is even invoked). It does not touch the lower-level
+    // /var/lib/dpkg/lock, which dpkg itself (or a bare `dpkg -i`/`dpkg --configure
+    // -a`) holds only while actually unpacking/configuring. Checking only one of
+    // the two misses conflicts the other would catch, so check both.
     Cmd probe;
     QString output;
     const QHash<QString, QString> environment {
         {QStringLiteral("LANG"), QStringLiteral("C")},
         {QStringLiteral("LC_ALL"), QStringLiteral("C")},
     };
-    if (probe.procAsRootWithEnv(environment, QStringLiteral("apt-get"), {QStringLiteral("check")}, &output, nullptr,
-                                Cmd::QuietMode::Yes)) {
-        return {};
-    }
+    const bool checkSucceeded = probe.procAsRootWithEnv(environment, QStringLiteral("apt-get"),
+                                                         {QStringLiteral("check")}, &output, nullptr,
+                                                         Cmd::QuietMode::Yes);
     if (Cmd::elevationDismissed()) {
         return {};
     }
-
-    static const QRegularExpression lockError(
-        QStringLiteral(R"((?:Unable to acquire|Could not get) the dpkg frontend lock)"));
-    if (!lockError.match(output).hasMatch()) {
-        return {};
+    if (!checkSucceeded) {
+        static const QRegularExpression lockError(
+            QStringLiteral(R"((?:Unable to acquire|Could not get) the dpkg frontend lock)"));
+        if (lockError.match(output).hasMatch()) {
+            static const QRegularExpression ownerPattern(QStringLiteral(R"(held by process \d+ \(([^)]+)\))"));
+            const QRegularExpressionMatch owner = ownerPattern.match(output);
+            return owner.hasMatch() ? owner.captured(1) : QObject::tr("another package manager");
+        }
     }
 
-    static const QRegularExpression ownerPattern(QStringLiteral(R"(held by process \d+ \(([^)]+)\))"));
-    const QRegularExpressionMatch owner = ownerPattern.match(output);
-    return owner.hasMatch() ? owner.captured(1) : QObject::tr("another package manager");
+    return Cmd().lockingProcessAsRoot(QStringLiteral("/var/lib/dpkg/lock"), Cmd::QuietMode::Yes);
 }
