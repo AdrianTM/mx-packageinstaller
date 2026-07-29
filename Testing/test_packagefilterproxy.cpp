@@ -44,6 +44,18 @@ QVector<PackageData> TestPackageFilterProxy::createPackages() const
     pkg4.status = Status::Installed;
     packages.append(pkg4);
 
+    PackageData pkg5;
+    pkg5.name = "librecad";
+    pkg5.description = "Computer-aided design application";
+    pkg5.status = Status::NotInstalled;
+    packages.append(pkg5);
+
+    PackageData pkg6;
+    pkg6.name = "librecad-dev";
+    pkg6.description = "LibreCAD development files";
+    pkg6.status = Status::NotInstalled;
+    packages.append(pkg6);
+
     return packages;
 }
 
@@ -56,9 +68,10 @@ void TestPackageFilterProxy::testHideLibraries()
     proxy.setSourceModel(&model);
     proxy.setHideLibraries(true);
 
-    QCOMPARE(proxy.rowCount(), 2);
+    QCOMPARE(proxy.rowCount(), 3);
     QCOMPARE(proxy.index(0, TreeCol::Name).data().toString(), QString("vim"));
     QCOMPARE(proxy.index(1, TreeCol::Name).data().toString(), QString("firefox"));
+    QCOMPARE(proxy.index(2, TreeCol::Name).data().toString(), QString("librecad"));
 }
 
 void TestPackageFilterProxy::testStatusFilter()
@@ -103,9 +116,10 @@ void TestPackageFilterProxy::testVisibleSourceRows()
     proxy.setHideLibraries(true);
 
     QVector<int> rows = proxy.visibleSourceRows();
-    QCOMPARE(rows.size(), 2);
+    QCOMPARE(rows.size(), 3);
     QCOMPARE(rows.at(0), 2);
     QCOMPARE(rows.at(1), 3);
+    QCOMPARE(rows.at(2), 4);
 }
 
 QTEST_MAIN(TestPackageFilterProxy)

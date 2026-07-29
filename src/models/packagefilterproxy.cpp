@@ -137,10 +137,10 @@ bool PackageFilterProxy::matchesStatus(int status) const
 
 bool PackageFilterProxy::isLibraryPackage(const QString &name)
 {
-    // Hide lib*, -dev, -dbg, -dbgsym and -libs packages, but keep user-facing
-    // applications whose names merely start with "lib" (LibreOffice, Librewolf).
+    // Hide lib*, -dev, -dbg, -dbgsym and -libs packages, but keep known user-facing
+    // applications whose names merely start with "lib".
     static const QRegularExpression libraryPattern(
-        QStringLiteral(R"((^lib(?!reoffice|rewolf))|(-dev$)|(-dbg$)|(-dbgsym$)|(-libs$))"),
+        QStringLiteral(R"((^lib(?!re(?:cad|office|pcb|wolf)))|(-dev$)|(-dbg$)|(-dbgsym$)|(-libs$))"),
         QRegularExpression::CaseInsensitiveOption);
     return libraryPattern.match(name).hasMatch();
 }
