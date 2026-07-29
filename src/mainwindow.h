@@ -192,6 +192,11 @@ private:
     bool warningTest {false};
 #ifdef PACKAGE_BACKEND_PACMAN
     bool warningAur {false};
+    // pacman -Qtdq is fast on its own, but running it automatically as part of
+    // the very first package-list display adds one more synchronous subprocess
+    // round-trip to boot. Skip just that first automatic check; later ones
+    // (after an install/uninstall or manual refresh) run normally.
+    bool skipInitialAutoremovableCheck {true};
 #endif
     int savedComboIndex {0};
 

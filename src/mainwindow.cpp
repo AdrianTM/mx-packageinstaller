@@ -505,8 +505,15 @@ void MainWindow::setup()
     setupModels();
 
     hideColumns();
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Popular Apps has no data on this backend (tab hidden above) -- skip
+    // scanning for .pm files and building/sorting an always-empty tree, but
+    // still need the installed-package snapshot other tabs rely on.
+    installedPackages = listInstalled();
+#else
     loadPmFiles();
     refreshPopularApps();
+#endif
 
     // Load persisted setting for hiding libraries/developer packages
     const bool savedHideLibs = settings.value("HideLibs", true).toBool();
@@ -1654,6 +1661,12 @@ void MainWindow::displayPackages()
 
 void MainWindow::displayAutoremovable()
 {
+#ifdef PACKAGE_BACKEND_PACMAN
+    if (skipInitialAutoremovableCheck) {
+        skipInitialAutoremovableCheck = false;
+        return;
+    }
+#endif
     const QStringList names = PackageBackend::autoremovableCandidates(cmd);
 
     ui->pushRemoveAutoremovable->setVisible(!names.isEmpty());
