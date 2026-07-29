@@ -285,6 +285,61 @@ bool systemFlatpakDefaultsPresent()
     }
     return remotes.contains(QLatin1String("flathub")) && remotes.contains(QLatin1String("flathub-verified"));
 }
+
+// The subprocess-calling half of listFlatpakRemotes(), extracted so the startup
+// preload can run it on a background thread: every call here goes through a local
+// Cmd instance, so it's safe off the GUI thread, unlike listFlatpakRemotes() itself
+// (which also touches ui->comboRemote directly and isn't split out).
+QStringList fetchFlatpakRemotes(const QString &scope, bool *ok)
+{
+    const bool isUserScope = scope.startsWith(QLatin1String("--user"));
+
+    auto fetchRemotes = [&scope](QStringList &outList) {
+        Cmd shell;
+        outList = shell.getOut("flatpak", flatpakArgsWithScope(scope, {"remote-list", "--columns=name"}))
+                      .split('\n', Qt::SkipEmptyParts);
+        for (QString &name : outList) {
+            name = name.trimmed();
+        }
+        outList.removeAll(QString());
+        return shell.exitCode() == 0;
+    };
+
+    auto addUserRemotes = []() {
+        Cmd addRemotes;
+        return runMxpiLib(addRemotes, QStringLiteral("flatpak_add_repos_user"));
+    };
+
+    QStringList list;
+    bool listOk = fetchRemotes(list);
+
+    // If user scope listing failed (common when user has never set up flatpak), attempt to set up defaults
+    if (!listOk && isUserScope) {
+        qDebug() << "User remote-list failed; attempting to set up user remotes";
+        if (addUserRemotes()) {
+            listOk = fetchRemotes(list);
+        }
+    }
+
+    // If no user remotes exist, set up the default ones
+    if (list.isEmpty() && isUserScope) {
+        qDebug() << "No flatpak remotes found for user, setting up default remotes";
+
+        if (addUserRemotes()) {
+            qDebug() << "Successfully set up flatpak remotes for user";
+
+            // Re-fetch the remote list after setup
+            listOk = fetchRemotes(list);
+        } else {
+            qDebug() << "Failed to set up flatpak remotes for user";
+        }
+    }
+
+    if (ok) {
+        *ok = listOk;
+    }
+    return list;
+}
 } // namespace
 
 MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
@@ -417,30 +472,52 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // task kicked off just above, so it's still empty at this exact point --
     // checkInstalled() would always say "not installed" and silently skip this.
     if (arch != QLatin1String("i386") && !QStandardPaths::findExecutable(QStringLiteral("flatpak")).isEmpty()) {
-        // The two subprocess calls loadFlatpakData() would make ("flatpak remote-ls"
-        // against the full remote catalog, then "flatpak list") measured ~600-700ms
-        // combined on a real machine -- enough to notice at boot, same as the pacman
-        // -Ss fetch. Both go through listFlatpaks()/a local Cmd instance, neither
-        // touching the shared cmd member, so it's safe to run them in the background
-        // and finish on the GUI thread once they're done, same treatment as
-        // installedPackages above. remote/scope are captured now (GUI thread) rather
-        // than read from ui-> / fpUser inside the background lambda.
-        setupFlatpakDisplay();
-        const QString remote = ui->comboRemote->currentText();
+        // Three subprocess calls happen before the Flatpak tab is ready: the remote
+        // list ("flatpak remote-list", ~30-150ms), then the remote catalog
+        // ("flatpak remote-ls", ~250-400ms) and installed-list ("flatpak list") for
+        // whichever remote that produces. All three go through a local Cmd instance
+        // (fetchFlatpakRemotes()/listFlatpaks()/the shell below), never the shared
+        // cmd member, so all are safe to run in the background -- same treatment as
+        // installedPackages above, just chained in two stages since stage 2 needs to
+        // know which remote stage 1 selected.
+        displayFlatpaksIsRunning = true;
         const QString scope = fpUser;
-        [[maybe_unused]] auto flatpakFuture = QtConcurrent::run([this, remote, scope] {
-            const QStringList remoteEntries = listFlatpaks(remote, scope);
-            Cmd shell;
-            const QString allInstalledCommand
-                = QStringLiteral("flatpak list ") + scope + QStringLiteral("2>/dev/null --columns=ref,size");
-            const QStringList allInstalled
-                = shell.getOut(allInstalledCommand, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+        [[maybe_unused]] auto remotesFuture = QtConcurrent::run([this, scope] {
+            bool remotesOk = false;
+            const QStringList remotes = fetchFlatpakRemotes(scope, &remotesOk);
             QMetaObject::invokeMethod(
                 this,
-                [this, remoteEntries, allInstalled, scope] {
-                    processFlatpakData(remoteEntries, allInstalled, scope);
-                    populateFlatpakTree();
-                    finalizeFlatpakDisplay();
+                [this, remotes, remotesOk, scope] {
+                    if (remotesOk) {
+                        // Warm the cache listFlatpakRemotes() checks first, so
+                        // setupFlatpakDisplay()'s call into it below is a fast,
+                        // synchronous cache hit instead of a second fetch.
+                        cachedFlatpakRemotes = remotes;
+                        cachedFlatpakRemotesScope = scope;
+                        cachedFlatpakRemotesFetched = true;
+                    }
+                    setupFlatpakDisplay();
+                    if (!remotesOk) {
+                        finalizeFlatpakDisplay();
+                        return;
+                    }
+                    const QString remote = ui->comboRemote->currentText();
+                    [[maybe_unused]] auto catalogFuture = QtConcurrent::run([this, remote, scope] {
+                        const QStringList remoteEntries = listFlatpaks(remote, scope);
+                        Cmd shell;
+                        const QString allInstalledCommand = QStringLiteral("flatpak list ") + scope
+                            + QStringLiteral("2>/dev/null --columns=ref,size");
+                        const QStringList allInstalled
+                            = shell.getOut(allInstalledCommand, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+                        QMetaObject::invokeMethod(
+                            this,
+                            [this, remoteEntries, allInstalled, scope] {
+                                processFlatpakData(remoteEntries, allInstalled, scope);
+                                populateFlatpakTree();
+                                finalizeFlatpakDisplay();
+                            },
+                            Qt::QueuedConnection);
+                    });
                 },
                 Qt::QueuedConnection);
         });
@@ -2141,7 +2218,6 @@ void MainWindow::listFlatpakRemotes() const
     QString currentRemote = ui->comboRemote->currentText();
     ui->comboRemote->blockSignals(true);
     ui->comboRemote->clear();
-    const bool isUserScope = fpUser.startsWith(QLatin1String("--user"));
 
     auto applyRemotes = [&](const QStringList &list) {
         ui->comboRemote->addItems(list);
@@ -2155,47 +2231,8 @@ void MainWindow::listFlatpakRemotes() const
         return;
     }
 
-    auto fetchRemotes = [this](QStringList &outList) {
-        Cmd shell;
-        outList = shell.getOut("flatpak", flatpakArgsWithScope(fpUser, {"remote-list", "--columns=name"}))
-                      .split('\n', Qt::SkipEmptyParts);
-        for (QString &name : outList) {
-            name = name.trimmed();
-        }
-        outList.removeAll(QString());
-        return shell.exitCode() == 0;
-    };
-
-    auto addUserRemotes = []() {
-        Cmd addRemotes;
-        return runMxpiLib(addRemotes, QStringLiteral("flatpak_add_repos_user"));
-    };
-
-    QStringList list;
-    bool listOk = fetchRemotes(list);
-
-    // If user scope listing failed (common when user has never set up flatpak), attempt to set up defaults
-    if (!listOk && isUserScope) {
-        qDebug() << "User remote-list failed; attempting to set up user remotes";
-        if (addUserRemotes()) {
-            listOk = fetchRemotes(list);
-        }
-    }
-
-    // If no user remotes exist, set up the default ones
-    if (list.isEmpty() && isUserScope) {
-        qDebug() << "No flatpak remotes found for user, setting up default remotes";
-
-        if (addUserRemotes()) {
-            qDebug() << "Successfully set up flatpak remotes for user";
-
-            // Re-fetch the remote list after setup
-            listOk = fetchRemotes(list);
-        } else {
-            qDebug() << "Failed to set up flatpak remotes for user";
-        }
-    }
-
+    bool listOk = false;
+    const QStringList list = fetchFlatpakRemotes(fpUser, &listOk);
     if (!listOk) {
         ui->comboRemote->blockSignals(false);
         return;
