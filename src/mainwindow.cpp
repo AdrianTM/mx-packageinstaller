@@ -5335,20 +5335,20 @@ void MainWindow::pushUpgradeFP_clicked()
 void MainWindow::pushRemotes_clicked()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    auto *dialog = new ManageRemotes(this, fpUser);
-    dialog->exec();
-    if (dialog->isChanged()) {
+    ManageRemotes dialog(this, fpUser);
+    dialog.exec();
+    if (dialog.isChanged()) {
         invalidateFlatpakRemoteCache();
         listFlatpakRemotes();
         displayFlatpaks(true);
     }
-    if (!dialog->getInstallRef().isEmpty()) {
+    if (!dialog.getInstallRef().isEmpty()) {
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
         QStringList args {"flatpak", "install", "-y"};
-        args << dialog->getUser().trimmed();
-        args << "--from" << dialog->getInstallRef();
+        args << dialog.getUser().trimmed();
+        args << "--from" << dialog.getInstallRef();
         if (cmd.run(flatpakPtyCommand(shellCommandFromArgs(args)))) {
             appendFlatpakStatusMessage(ui->outputBox, tr("Install complete."));
             invalidateFlatpakRemoteCache();

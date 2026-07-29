@@ -21,7 +21,7 @@
 5. - [x] **`pushForceUpdateFP_clicked()` silently ignores a failed flatpak appstream update** — `src/mainwindow.cpp:5165`
    `cmd.proc("flatpak", {"update", "--appstream"});` discards the return value and unconditionally proceeds to `displayFlatpaks(true)`. Every sibling "Force Update" handler for the APT tabs, and `pushUpgradeFP_clicked`/`pushRemoveUnused_clicked` for Flatpak, check success and show `QMessageBox::critical` on failure. A user clicking "Force Update" on the Flatpak tab while offline gets no error indication at all — just a silent re-display of the stale list. Add the same success check and error dialog used elsewhere.
 
-6. - [ ] **`ManageRemotes` dialog leaks on every "Manage Remotes" click** — `src/mainwindow.cpp:5325`
+6. - [x] **`ManageRemotes` dialog leaks on every "Manage Remotes" click** — `src/mainwindow.cpp:5325`
    `auto *dialog = new ManageRemotes(this, fpUser); dialog->exec();` — the dialog is never deleted (no `deleteLater()`, no `Qt::WA_DeleteOnClose`). Being parented to `this` only guarantees cleanup at `MainWindow` destruction, so each invocation during a session leaks one live `QDialog` and its child widgets until the app exits. Add `dialog->setAttribute(Qt::WA_DeleteOnClose)` or an explicit `delete dialog;`/`std::unique_ptr` after `exec()`.
 
 7. - [ ] **Non-CSI ANSI escape sequences are only partially stripped in the Output tab renderer** — `src/outputrender.h:156-158`
