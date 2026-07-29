@@ -65,7 +65,10 @@ class QNetworkReply;
 
 namespace Tab
 {
-enum { Popular, EnabledRepos, Test, Backports, Flatpak, Snap, Output };
+// AUR sits between EnabledRepos and Test to match its position in the shared
+// mainwindow.ui (inserted there to mirror the arch branch's original tab order).
+// It's hidden via setTabVisible() for the apt backend, which has no AUR tab logic.
+enum { Popular, EnabledRepos, AUR, Test, Backports, Flatpak, Snap, Output };
 }
 
 namespace Release
@@ -140,6 +143,9 @@ private slots:
     void pushForceUpdateEnabled_clicked();
     void pushForceUpdateMX_clicked();
     void pushForceUpdateFP_clicked();
+#ifdef PACKAGE_BACKEND_PACMAN
+    void pushForceUpdateAUR_clicked();
+#endif
     void pushHelp_clicked();
     void pushInstall_clicked();
     void pushRemotes_clicked();
@@ -241,6 +247,9 @@ private:
     FlatpakModel *flatpakModel {nullptr};
     SnapModel *snapModel {nullptr};
     PopularModel *popularModel {nullptr};
+#ifdef PACKAGE_BACKEND_PACMAN
+    PackageModel *aurModel {nullptr};
+#endif
 
     // Filter proxies
     PackageFilterProxy *enabledProxy {nullptr};
@@ -249,6 +258,18 @@ private:
     FlatpakFilterProxy *flatpakProxy {nullptr};
     SnapFilterProxy *snapProxy {nullptr};
     PopularFilterProxy *popularProxy {nullptr};
+#ifdef PACKAGE_BACKEND_PACMAN
+    PackageFilterProxy *aurProxy {nullptr};
+    CheckableHeaderView *headerAUR {nullptr};
+    QHash<QString, PackageInfo> aurList;
+    QString cachedParuPath;
+    bool cachedParuPathFetched {false};
+
+    [[nodiscard]] QString getParuPath();
+    [[nodiscard]] bool buildAurList(const QString &searchTerm);
+    void handleAurTab(const QString &searchStr);
+    void showAurPackageInfo(const QString &packageName);
+#endif
 
     QNetworkAccessManager manager;
     QNetworkReply *activeDownloadReply {nullptr};

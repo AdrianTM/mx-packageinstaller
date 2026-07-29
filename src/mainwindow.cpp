@@ -28,6 +28,7 @@
 #include "ui_mainwindow.h"
 
 #include <QDebug>
+#include <QDir>
 #include <QFileInfo>
 #include <QImageReader>
 #include <QMenu>
@@ -56,6 +57,7 @@
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
+#include <pwd.h>
 #include <unistd.h>
 
 using namespace std::chrono_literals;
@@ -81,6 +83,126 @@ QStringList packageArgs(const QString &names)
 {
     return names.split(' ', Qt::SkipEmptyParts);
 }
+
+#ifdef PACKAGE_BACKEND_PACMAN
+// All packages available in the sync DBs (not just installed), for the Enabled
+// Repos tab's package list. Apt's equivalent is AptCache::getCandidates(), parsed
+// from downloaded archive files; pacman has no local archive to parse, so this
+// queries "pacman -Ss" directly instead -- fed by the same repo cache updateApt()
+// (via PackageBackend::refreshRepositories) already refreshes for both backends.
+// Output shape, one entry per package: "repo/name version [installed]" then an
+// indented description line, e.g.:
+//   extra/firefox 130.0-1 [installed]
+//       Fast, Private and Safe Web Browser
+QHash<QString, PackageInfo> pacmanAvailablePackages(Cmd &cmd)
+{
+    QHash<QString, PackageInfo> packages;
+    const QString output = cmd.getOut("LANG=C pacman -Ss --color never");
+
+    QString pendingName;
+    QString pendingVersion;
+    for (const QString &line : output.split('\n')) {
+        if (line.isEmpty()) {
+            continue;
+        }
+        if (line.startsWith(' ') || line.startsWith('\t')) {
+            if (!pendingName.isEmpty()) {
+                packages.insert(pendingName, {pendingVersion, line.trimmed()});
+                pendingName.clear();
+            }
+            continue;
+        }
+        const QString repoAndName = line.section(' ', 0, 0);
+        const QString name = repoAndName.section('/', 1);
+        if (name.isEmpty()) {
+            continue;
+        }
+        pendingName = name;
+        pendingVersion = line.section(' ', 1, 1);
+    }
+    return packages;
+}
+
+[[nodiscard]] QString userNameForUid(uid_t uid)
+{
+    if (const struct passwd *pw = getpwuid(uid)) {
+        return QString::fromLocal8Bit(pw->pw_name);
+    }
+    return {};
+}
+
+[[nodiscard]] QString homeDirForUser(const QString &name)
+{
+    const QByteArray n = name.toLocal8Bit();
+    if (const struct passwd *pw = getpwnam(n.constData())) {
+        return QString::fromLocal8Bit(pw->pw_dir);
+    }
+    return {};
+}
+
+// When the app itself runs as root (e.g. WSL2 without a working pkexec), AUR helpers
+// refuse to build, so we need a normal user to build as. No single source is reliable
+// everywhere -- logname and SUDO_USER are often empty under WSL -- so try several in
+// order of confidence and fall back to scanning the user database.
+[[nodiscard]] QString loginUserForRoot()
+{
+    // 1. The user who elevated us, if recorded.
+    const QString sudoUser = qEnvironmentVariable("SUDO_USER");
+    if (!sudoUser.isEmpty() && sudoUser != QLatin1String("root")) {
+        return sudoUser;
+    }
+    bool ok = false;
+    const uint pkexecUid = qEnvironmentVariable("PKEXEC_UID").toUInt(&ok);
+    if (ok && pkexecUid != 0) {
+        const QString name = userNameForUid(static_cast<uid_t>(pkexecUid));
+        if (!name.isEmpty()) {
+            return name;
+        }
+    }
+
+    auto isRegularUid = [](uint uid) { return uid >= 1000 && uid < 65534; };
+
+    // 2. The owner of an active login session (systemd-logind runtime dir). Prefer the
+    //    lowest regular uid (conventionally 1000) when several sessions exist.
+    uid_t sessionUid = 0;
+    const QDir runUser(QStringLiteral("/run/user"));
+    const QStringList sessions = runUser.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+    for (const QString &entry : sessions) {
+        bool entryOk = false;
+        const uint uid = entry.toUInt(&entryOk);
+        if (entryOk && isRegularUid(uid) && (sessionUid == 0 || uid < sessionUid)) {
+            sessionUid = static_cast<uid_t>(uid);
+        }
+    }
+    if (sessionUid != 0) {
+        const QString name = userNameForUid(sessionUid);
+        if (!name.isEmpty()) {
+            return name;
+        }
+    }
+
+    // 3. Fall back to the lowest regular account in the user database that has a real
+    //    login shell (so daemon accounts that happen to sit at uid >= 1000 are skipped).
+    auto hasLoginShell = [](const char *shell) {
+        if (shell == nullptr || *shell == '\0') {
+            return false;
+        }
+        const QString s = QString::fromLocal8Bit(shell);
+        return !s.endsWith(QLatin1String("/nologin")) && !s.endsWith(QLatin1String("/false"));
+    };
+    QString best;
+    uid_t bestUid = 0;
+    setpwent();
+    while (const struct passwd *pw = getpwent()) {
+        if (isRegularUid(pw->pw_uid) && hasLoginShell(pw->pw_shell) && (best.isEmpty() || pw->pw_uid < bestUid)) {
+            best = QString::fromLocal8Bit(pw->pw_name);
+            bestUid = pw->pw_uid;
+        }
+    }
+    endpwent();
+    return best;
+}
+#endif
 
 QStringList flatpakArgsWithScope(const QString &scope, QStringList args)
 {
@@ -238,6 +360,10 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
 
     // Run package display in a separate thread
     // Run package preload in background
+    // (apt-only: pacmanAvailablePackages() shells out via the shared Cmd member,
+    // which isn't safe to touch off the GUI thread the way AptCache's pure file-IO
+    // read is; pacman's Enabled tab just loads lazily on first visit instead.)
+#ifndef PACKAGE_BACKEND_PACMAN
     [[maybe_unused]] auto future = QtConcurrent::run([this] {
         AptCache cache;
         auto loadedList = cache.getCandidates();
@@ -286,6 +412,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
             },
             Qt::QueuedConnection);
     });
+#endif
 
     // Preload the flatpak list so the tab is populated on first visit. Listing
     // needs no elevation; system remote setup, if defaults are missing, happens
@@ -321,18 +448,38 @@ void MainWindow::setup()
     ui->comboUser->setCurrentIndex(userScope ? 1 : 0);
     ui->comboUser->blockSignals(false);
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    // No Debian-release concept on this backend; these two only ever gate apt-only
+    // code paths (Test/Backports, which are unreachable here since those tabs are
+    // hidden). Arch doesn't rename architectures the way Debian's DEB_BUILD_ARCH
+    // does, so the raw CPU architecture string is already the right value.
+    arch = QSysInfo::currentCpuArchitecture();
+    debianVersion = Release::Trixie;
+    verName.clear();
+#else
     arch = AptCache::getArch();
     debianVersion = getDebianVerNum();
     verName = getDebianVerName(debianVersion);
+#endif
 
     ui->tabWidget->setTabVisible(Tab::Flatpak, arch != QLatin1String("i386"));
     // Snap is only meaningful on systemd systems (snapd requires systemd)
     ui->tabWidget->setTabVisible(Tab::Snap, isSystemdInit());
+#ifdef PACKAGE_BACKEND_PACMAN
+    ui->tabWidget->setTabVisible(Tab::Test, false);
+    ui->tabWidget->setTabVisible(Tab::Backports, false);
+    ui->tabWidget->setTabVisible(Tab::AUR, true);
+    // "Install recommends" has no pacman equivalent (installPackages() ignores
+    // extraArgs on this backend) -- showing a checkbox with no effect would mislead.
+    ui->checkBoxInstallRecommends->setVisible(false);
+#else
+    ui->tabWidget->setTabVisible(Tab::AUR, false);
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
 
     testInitiallyEnabled = cmd.run("apt-get update --print-uris | grep -m1 -qE "
                                    + shellSingleQuote("/mx/testrepo/dists/" + verName + "/test/"));
+#endif
 
     setWindowTitle(tr("MX Package Installer"));
 
@@ -406,6 +553,14 @@ void MainWindow::setup()
     headerBP->setTargetColumn(TreeCol::Check);
     headerBP->setMinimumSectionSize(22);
     ui->treeBackports->setHeader(headerBP);
+
+#ifdef PACKAGE_BACKEND_PACMAN
+    headerAUR = new CheckableHeaderView(Qt::Horizontal, ui->treeAUR);
+    headerAUR->setTargetColumn(TreeCol::Check);
+    headerAUR->setMinimumSectionSize(22);
+    ui->treeAUR->setHeader(headerAUR);
+#endif
+
     setConnections();
 
     ui->searchPopular->setFocus();
@@ -423,11 +578,13 @@ void MainWindow::setup()
             centerWindow();
         }
     }
+#ifndef PACKAGE_BACKEND_PACMAN
     const QString aptConfigOutput
         = cmd.getOut(QStringLiteral("apt-config"), {"shell", "APTOPT", "APT::Install-Recommends/b"}).trimmed();
     ui->checkBoxInstallRecommends->setChecked(aptConfigOutput == QLatin1String("APTOPT='true'"));
     ui->checkBoxInstallRecommendsMX->setChecked(aptConfigOutput == QLatin1String("APTOPT='true'"));
     ui->checkBoxInstallRecommendsBP->setChecked(aptConfigOutput == QLatin1String("APTOPT='true'"));
+#endif
 
     // Check/uncheck tree items spacebar press or double-click
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
@@ -436,6 +593,9 @@ void MainWindow::setup()
     // Connect tree views for double-click toggle
     QList<QTreeView *> listTree {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports,
                                   ui->treeFlatpak, ui->treeSnap};
+#ifdef PACKAGE_BACKEND_PACMAN
+    listTree.append(ui->treeAUR);
+#endif
     for (auto *tree : listTree) {
         if (tree != ui->treeFlatpak && tree != ui->treeSnap) {
             tree->setContextMenuPolicy(Qt::CustomContextMenu);
@@ -511,6 +671,17 @@ void MainWindow::setupModels()
     popularProxy = new PopularFilterProxy(this);
     popularProxy->setSourceModel(popularModel);
     ui->treePopularApps->setModel(popularProxy);
+
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Create AUR model and proxy
+    aurModel = new PackageModel(this);
+    aurProxy = new PackageFilterProxy(this);
+    aurProxy->setSourceModel(aurModel);
+    ui->treeAUR->setModel(aurProxy);
+    ui->treeAUR->setEditTriggers(QAbstractItemView::NoEditTriggers);
+    ui->treeAUR->setSortingEnabled(true);
+    ui->treeAUR->sortByColumn(1, Qt::AscendingOrder);
+#endif
     ui->treePopularApps->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
     // Set icons for all models
@@ -525,6 +696,9 @@ void MainWindow::setupModels()
     connect(enabledModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
     connect(mxtestModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
     connect(backportsModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
+#ifdef PACKAGE_BACKEND_PACMAN
+    connect(aurModel, &PackageModel::checkStateChanged, this, &MainWindow::onPackageCheckStateChanged);
+#endif
     connect(flatpakModel, &FlatpakModel::checkStateChanged, this, &MainWindow::onFlatpakCheckStateChanged);
     connect(snapModel, &SnapModel::checkStateChanged, this, &MainWindow::onSnapCheckStateChanged);
     // Use QStandardItemModel's built-in itemChanged signal for PopularModel
@@ -702,6 +876,12 @@ void MainWindow::updateInterface()
         updateLabelsAndFocus(ui->labelNumApps_3, ui->labelNumUpgrBP, ui->labelNumInstBP, ui->pushForceUpdateBP,
                              ui->searchBoxBP);
         break;
+#ifdef PACKAGE_BACKEND_PACMAN
+    case Tab::AUR:
+        updateLabelsAndFocus(ui->labelNumAppsAUR, ui->labelNumUpgrAUR, ui->labelNumInstAUR, ui->pushForceUpdateAUR,
+                             ui->searchBoxAUR);
+        break;
+#endif
     }
 }
 
@@ -1147,12 +1327,27 @@ void MainWindow::setConnections()
     connect(ui->searchBoxFlatpak, &QLineEdit::textChanged, this, &MainWindow::findPackage);
     connect(ui->searchBoxSnap, &QLineEdit::textChanged, this, &MainWindow::findPackage);
     connect(ui->searchBoxSnap, &QLineEdit::returnPressed, this, &MainWindow::searchSnapStore);
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Unlike the other search boxes (client-side filtering of an already-loaded
+    // list), AUR search re-queries paru, so it's Enter-triggered rather than
+    // live-as-you-type; textChanged only handles resetting to the installed list
+    // when the box is cleared.
+    connect(ui->searchBoxAUR, &QLineEdit::returnPressed, this, [this] { handleAurTab(ui->searchBoxAUR->text()); });
+    connect(ui->searchBoxAUR, &QLineEdit::textChanged, this, [this](const QString &text) {
+        if (text.trimmed().isEmpty() && currentTree == ui->treeAUR) {
+            handleAurTab(QString());
+        }
+    });
+#endif
     // Connect combo filters
     connect(ui->comboFilterEnabled, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterMX, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterBP, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterFlatpak, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
     connect(ui->comboFilterSnap, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
+#ifdef PACKAGE_BACKEND_PACMAN
+    connect(ui->comboFilterAUR, &QComboBox::currentTextChanged, this, &MainWindow::filterChanged);
+#endif
 
     // Connect other UI elements to their respective slots
     connect(ui->checkHideLibs, &QCheckBox::toggled, this, &MainWindow::checkHideLibs_toggled);
@@ -1171,6 +1366,9 @@ void MainWindow::setConnections()
     connect(ui->pushForceUpdateEnabled, &QPushButton::clicked, this, &MainWindow::pushForceUpdateEnabled_clicked);
     connect(ui->pushForceUpdateMX, &QPushButton::clicked, this, &MainWindow::pushForceUpdateMX_clicked);
     connect(ui->pushForceUpdateFP, &QPushButton::clicked, this, &MainWindow::pushForceUpdateFP_clicked);
+#ifdef PACKAGE_BACKEND_PACMAN
+    connect(ui->pushForceUpdateAUR, &QPushButton::clicked, this, &MainWindow::pushForceUpdateAUR_clicked);
+#endif
     connect(ui->pushHelp, &QPushButton::clicked, this, &MainWindow::pushHelp_clicked);
     connect(ui->pushInstall, &QPushButton::clicked, this, &MainWindow::pushInstall_clicked);
     connect(ui->pushRemotes, &QPushButton::clicked, this, &MainWindow::pushRemotes_clicked);
@@ -1188,6 +1386,9 @@ void MainWindow::setConnections()
     connect(headerEnabled, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(headerMX, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
     connect(headerBP, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
+#ifdef PACKAGE_BACKEND_PACMAN
+    connect(headerAUR, &CheckableHeaderView::toggled, this, &MainWindow::selectAllUpgradable_toggled);
+#endif
 
     // Connect popular apps tree view
     connect(ui->treePopularApps, &QTreeView::customContextMenuRequested, this,
@@ -1421,6 +1622,11 @@ MainWindow::AptTabContext MainWindow::currentAptTab()
     if (currentTree == ui->treeEnabled) {
         return {enabledModel, enabledProxy, &enabledList};
     }
+#ifdef PACKAGE_BACKEND_PACMAN
+    if (currentTree == ui->treeAUR) {
+        return {aurModel, aurProxy, &aurList};
+    }
+#endif
     return {};
 }
 
@@ -1872,6 +2078,27 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
     qDebug() << "names" << names << "and" << changeList;
+
+#ifdef PACKAGE_BACKEND_PACMAN
+    Q_UNUSED(action);
+    // No apt-get -s/aptitude dependency-simulation equivalent on this backend;
+    // pacman would need to actually resolve/download to preview what it'd do, so
+    // just confirm the explicit selection instead.
+    QMessageBox msgBox;
+    msgBox.setText("<b>" + tr("The following packages were selected. Click Show Details for list of changes.")
+                   + "</b>");
+    msgBox.setInformativeText('\n' + names);
+    msgBox.setDetailedText(changeList.join('\n'));
+    msgBox.addButton(QMessageBox::Ok);
+    msgBox.addButton(QMessageBox::Cancel);
+
+    constexpr int PacmanDialogMinWidth = 600;
+    auto *pacmanSpacer = new QSpacerItem(PacmanDialogMinWidth, 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+    if (auto *pacmanLayout = qobject_cast<QGridLayout *>(msgBox.layout())) {
+        pacmanLayout->addItem(pacmanSpacer, 0, 1);
+    }
+    return msgBox.exec() == QMessageBox::Ok;
+#else
     QString msg;
 
     QString detailedNames;
@@ -1991,6 +2218,7 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
         layout->addItem(horizontalSpacer, 0, 1);
     }
     return msgBox.exec() == QMessageBox::Ok;
+#endif
 }
 
 bool MainWindow::install(const QString &names)
@@ -2011,6 +2239,61 @@ bool MainWindow::install(const QString &names)
         return true;
     }
     enableOutput();
+
+#ifdef PACKAGE_BACKEND_PACMAN
+    if (currentTree == ui->treeAUR) {
+        // AUR packages are built unprivileged (makepkg/paru refuse to run as root),
+        // so this never goes through the privileged Cmd::procAsRoot path at all --
+        // no lock check either, since paru/pacman manage their own locking.
+        const QString paruPath = getParuPath();
+        if (paruPath.isEmpty()) {
+            QMessageBox::critical(this, tr("Error"),
+                                  tr("paru is not installed.\n\n"
+                                     "To install AUR packages, please install paru first:\n"
+                                     "pacman -S paru\n\n"
+                                     "Then try installing the AUR package again."));
+            return false;
+        }
+
+        const QString quotedNames = shellCommandFromArgs(packageArgs(names));
+        const QString paruInvocation = paruPath + " -S --needed " + quotedNames;
+        const bool hasScript = QFile::exists("/usr/bin/script");
+
+        QString command;
+        if (getuid() == 0) {
+            // If the app itself runs as root (e.g. WSL2 without a working pkexec),
+            // drop to a normal user for the build via `runuser -u` (no login shell),
+            // forcing a POSIX shell and that user's HOME so it doesn't depend on
+            // their login shell understanding inline VAR=val syntax. paru still
+            // elevates its own pacman step via sudo, prompting in the output box.
+            const QString buildUser = loginUserForRoot();
+            if (buildUser.isEmpty()) {
+                QMessageBox::critical(this, tr("Error"),
+                                      tr("AUR packages cannot be built as root, and no regular user could be "
+                                         "found to build as.\n\n"
+                                         "Install the package as your normal user instead."));
+                return false;
+            }
+            const QString home = homeDirForUser(buildUser);
+            QString env = QStringLiteral("env ");
+            if (!home.isEmpty()) {
+                env += "HOME=" + shellSingleQuote(home) + ' ';
+            }
+            env += QStringLiteral("SHELL=/bin/sh LANG=C PAGER=cat PARU_PAGER=cat ");
+            const QString payload = hasScript
+                                        ? "/usr/bin/script -qefc " + shellSingleQuote(paruInvocation) + " /dev/null"
+                                        : paruInvocation;
+            command = "runuser -u " + shellSingleQuote(buildUser) + " -- " + env + payload;
+        } else {
+            command = "LANG=C PAGER=cat PARU_PAGER=cat " + paruInvocation;
+            if (hasScript) {
+                command = "/usr/bin/script -qefc " + shellSingleQuote(command) + " /dev/null";
+            }
+        }
+        return cmd.run(command);
+    }
+#endif
+
     if (lockFile.isLockedGUI()) {
         return false;
     }
@@ -2437,6 +2720,22 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         return ok;
     };
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    // pacman has no local archive files to download/parse -- just (re-)query the
+    // sync DBs directly. Test/MX/Backports don't exist on this backend (those tabs
+    // are hidden), so there's nothing else for this function to do.
+    if (enabledList.isEmpty() || forceDownload) {
+        if (forceDownload && !runUpdateApt()) {
+            return false;
+        }
+        progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
+        }
+        enabledList = pacmanAvailablePackages(cmd);
+    }
+    return true;
+#else
     // Handle enabled list download/update
     if (enabledList.isEmpty() || forceDownload) {
         if (forceDownload && !runUpdateApt()) {
@@ -2527,6 +2826,7 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         }
     }
     return true;
+#endif
 }
 
 void MainWindow::enableTabs(bool enable)
@@ -2558,6 +2858,9 @@ void MainWindow::hideColumns()
     ui->treeFlatpak->hideColumn(FlatCol::FullName);
     ui->treeSnap->hideColumn(SnapCol::Status);
     ui->treeSnap->hideColumn(SnapCol::Classic);
+#ifdef PACKAGE_BACKEND_PACMAN
+    ui->treeAUR->hideColumn(TreeCol::Status);
+#endif
 }
 
 // Process downloaded *Packages.gz files
@@ -2924,8 +3227,12 @@ PackageData MainWindow::createPackageData(const QString &name, const QString &ve
 void MainWindow::setCurrentTree()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    const QList<QTreeView *> trees
-        = {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak, ui->treeSnap};
+    const QList<QTreeView *> trees = {
+        ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports, ui->treeFlatpak, ui->treeSnap,
+#ifdef PACKAGE_BACKEND_PACMAN
+        ui->treeAUR,
+#endif
+    };
 
     auto it = std::find_if(trees.cbegin(), trees.cend(), [](const QTreeView *tree) { return tree->isVisible(); });
 
@@ -3252,6 +3559,21 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
         return;
     }
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    if (currentTree == ui->treeAUR) {
+        showAurPackageInfo(packageName);
+        return;
+    }
+    // No aptitude/dependency-simulation equivalent on this backend; pacman's own
+    // info covers the same purpose for the Enabled Repos tab.
+    Cmd shell;
+    QString info = shell.getOut("LANG=C pacman -Si --color never " + shellSingleQuote(packageName));
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0 || info.trimmed().isEmpty()) {
+        info = shell.getOut("LANG=C pacman -Qi --color never " + shellSingleQuote(packageName));
+    }
+    QMessageBox::information(this, tr("Package info"),
+                             info.trimmed().isEmpty() ? tr("No information available.") : info.trimmed());
+#else
     QString msg;
     QString rawDetails;
     {
@@ -3298,6 +3620,7 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
         layout->addItem(horizontalSpacer, 0, 1);
     }
     info.exec();
+#endif
 }
 
 void MainWindow::findPopular()
@@ -3822,7 +4145,11 @@ void MainWindow::tabWidget_currentChanged(int index)
         }
 
         auto setTabsEnabled = [this](bool enable) {
-            for (auto tab : {Tab::Popular, Tab::EnabledRepos, Tab::Test, Tab::Backports, Tab::Flatpak, Tab::Snap}) {
+            for (auto tab : {Tab::Popular, Tab::EnabledRepos,
+#ifdef PACKAGE_BACKEND_PACMAN
+                             Tab::AUR,
+#endif
+                             Tab::Test, Tab::Backports, Tab::Flatpak, Tab::Snap}) {
                 if (tab != ui->tabWidget->currentIndex()) {
                     ui->tabWidget->setTabEnabled(tab, enable);
                 }
@@ -3837,6 +4164,11 @@ void MainWindow::tabWidget_currentChanged(int index)
         case Tab::EnabledRepos:
             handleEnabledReposTab(searchStr);
             break;
+#ifdef PACKAGE_BACKEND_PACMAN
+        case Tab::AUR:
+            handleAurTab(searchStr);
+            break;
+#endif
         case Tab::Test:
             handleTab(searchStr, ui->searchBoxMX, "test", dirtyTest);
             break;
@@ -3909,6 +4241,11 @@ void MainWindow::saveSearchText(QString &searchStr, int &filterIdx)
     } else if (currentTree == ui->treeBackports) {
         searchStr = ui->searchBoxBP->text();
         filterIdx = ui->comboFilterBP->currentIndex();
+#ifdef PACKAGE_BACKEND_PACMAN
+    } else if (currentTree == ui->treeAUR) {
+        searchStr = ui->searchBoxAUR->text();
+        filterIdx = ui->comboFilterAUR->currentIndex();
+#endif
     } else if (currentTree == ui->treeFlatpak) {
         searchStr = ui->searchBoxFlatpak->text();
     } else if (currentTree == ui->treeSnap) {
@@ -3986,6 +4323,186 @@ void MainWindow::handleEnabledReposTab(const QString &searchStr)
         currentTree->blockSignals(false);
     }
 }
+
+#ifdef PACKAGE_BACKEND_PACMAN
+QString MainWindow::getParuPath()
+{
+    if (cachedParuPathFetched) {
+        return cachedParuPath;
+    }
+    cachedParuPath = QStandardPaths::findExecutable("paru");
+    if (cachedParuPath.isEmpty()) {
+        const QStringList fallbackPaths = {"/usr/bin/paru", "/bin/paru", "/usr/local/bin/paru"};
+        for (const QString &path : fallbackPaths) {
+            if (QFile::exists(path)) {
+                cachedParuPath = path;
+                break;
+            }
+        }
+    }
+    cachedParuPathFetched = true;
+    return cachedParuPath;
+}
+
+// Populates aurList: with an empty search term, the AUR-origin ("foreign") installed
+// packages, showing an available-upgrade version where paru reports one; otherwise a
+// live AUR search via paru. No async caching (unlike the arch branch this was ported
+// from) -- this always re-queries, matching how every other list in this app already
+// works synchronously.
+bool MainWindow::buildAurList(const QString &searchTerm)
+{
+    aurList.clear();
+    const QString term = searchTerm.trimmed();
+    const QString paruPath = getParuPath();
+    if (paruPath.isEmpty()) {
+        return false;
+    }
+
+    Cmd shell;
+    if (term.isEmpty()) {
+        const QStringList installed = shell.getOut("LANG=C pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
+        if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+            return false;
+        }
+        if (installed.isEmpty()) {
+            return true;
+        }
+        if (installedPackages.isEmpty()) {
+            installedPackages = listInstalled();
+        }
+
+        QHash<QString, QString> aurUpdates;
+        const QStringList updates
+            = shell.getOut("LANG=C " + paruPath + " -Qua --color never").split('\n', Qt::SkipEmptyParts);
+        if (shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0) {
+            for (const QString &line : updates) {
+                const QString name = line.section(' ', 0, 0).trimmed();
+                const QString newVersion = line.section("->", 1).trimmed();
+                if (!name.isEmpty() && !newVersion.isEmpty()) {
+                    aurUpdates.insert(name, newVersion);
+                }
+            }
+        }
+
+        for (const QString &line : installed) {
+            const QStringList parts = line.split(' ', Qt::SkipEmptyParts);
+            if (parts.size() < 2) {
+                continue;
+            }
+            const QString repoVersion = aurUpdates.value(parts.at(0), parts.at(1));
+            const QString description = installedPackages.value(parts.at(0)).description;
+            aurList.insert(parts.at(0), {repoVersion, description});
+        }
+        return true;
+    }
+
+    if (!isOnline()) {
+        return false;
+    }
+    QStringList results
+        = shell.getOut("LANG=C " + paruPath + " -Ssq --color never " + shellSingleQuote(term)).split('\n', Qt::SkipEmptyParts);
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+        return false;
+    }
+    if (results.isEmpty()) {
+        return true;
+    }
+    constexpr int maxResults = 200;
+    if (results.size() > maxResults) {
+        results = results.mid(0, maxResults);
+    }
+
+    const QString infoOutput
+        = shell.getOut("LANG=C " + paruPath + " -Si --color never " + shellCommandFromArgs(results));
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0 || infoOutput.trimmed().isEmpty()) {
+        for (const QString &name : std::as_const(results)) {
+            aurList.insert(name, {QString(), QString()});
+        }
+        return true;
+    }
+
+    QString packageName;
+    QString version;
+    QString description;
+    auto flushPackage = [&]() {
+        if (!packageName.isEmpty()) {
+            aurList.insert(packageName, {version, description});
+        }
+        packageName.clear();
+        version.clear();
+        description.clear();
+    };
+    for (const QString &line : infoOutput.split('\n')) {
+        if (line.startsWith("Name")) {
+            flushPackage();
+            packageName = line.section(':', 1).trimmed();
+        } else if (line.startsWith("Version")) {
+            version = line.section(':', 1).trimmed();
+        } else if (line.startsWith("Description")) {
+            description = line.section(':', 1).trimmed();
+        }
+    }
+    flushPackage();
+    return true;
+}
+
+void MainWindow::showAurPackageInfo(const QString &packageName)
+{
+    const QString paruPath = getParuPath();
+    if (paruPath.isEmpty()) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("paru is not installed.\n\nInstall it with: pacman -S paru"));
+        return;
+    }
+    Cmd shell;
+    QString info = shell.getOut("LANG=C " + paruPath + " -Si --color never " + shellSingleQuote(packageName));
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0 || info.trimmed().isEmpty()) {
+        info = shell.getOut("LANG=C pacman -Qi --color never " + shellSingleQuote(packageName));
+    }
+    QMessageBox::information(this, packageName,
+                             info.trimmed().isEmpty() ? tr("No information available.") : info.trimmed());
+}
+
+// AUR's data isn't "downloaded once, rarely dirty" like the other apt tabs -- an
+// empty search means "installed AUR packages" and a non-empty one means "live AUR
+// search", so this always rebuilds rather than reusing buildPackageLists()'s
+// cache-until-dirty model.
+void MainWindow::handleAurTab(const QString &searchStr)
+{
+    ui->searchBoxAUR->setText(searchStr);
+    changeList.clear();
+    if (displayPackagesIsRunning) {
+        progress->show();
+        if (!timer.isActive()) {
+            timer.start(100ms);
+        }
+        connect(this, &MainWindow::displayPackagesFinished, this, &MainWindow::updateInterface,
+                Qt::SingleShotConnection);
+        return;
+    }
+    if (!buildAurList(searchStr)) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("Could not query AUR packages. Please check that paru is installed and you are "
+                                 "online."));
+        currentTree->blockSignals(false);
+        return;
+    }
+    displayPackages();
+    if (ui->comboFilterAUR->currentIndex() != savedComboIndex) {
+        ui->comboFilterAUR->setCurrentIndex(savedComboIndex);
+    }
+    filterChanged(ui->comboFilterAUR->currentText());
+    currentTree->blockSignals(false);
+}
+
+void MainWindow::pushForceUpdateAUR_clicked()
+{
+    beginOperation();
+    ui->searchBoxAUR->clear();
+    ui->comboFilterAUR->setCurrentIndex(0);
+    handleAurTab(QString());
+}
+#endif
 
 void MainWindow::handleTab(const QString &searchStr, QLineEdit *searchBox, const QString &warningMessage,
                            bool dirtyFlag)
@@ -4915,6 +5432,11 @@ void MainWindow::selectAllUpgradable_toggled(bool checked)
     } else if (s == headerBP) {
         tree = ui->treeBackports;
         model = backportsModel;
+#ifdef PACKAGE_BACKEND_PACMAN
+    } else if (s == headerAUR) {
+        tree = ui->treeAUR;
+        model = aurModel;
+#endif
     } else {
         return;
     }
