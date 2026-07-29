@@ -31,6 +31,7 @@ private slots:
 
     // Numeric components wider than INT_MAX must not overflow/compare equal
     void testLargeNumericComponents();
+    void testImplicitTrailingZero();
     
     // Sorting tests
     void testVersionSorting();
@@ -197,6 +198,20 @@ void TestVersionNumber::testLargeNumericComponents()
     VersionNumber padded("1.08");
     VersionNumber plain("1.8");
     QVERIFY(padded == plain);
+}
+
+void TestVersionNumber::testImplicitTrailingZero()
+{
+    const QList<QPair<QString, QString>> equivalentVersions {
+        {"1.", "1.0"},
+        {"1+", "1+0"},
+        {"1a", "1a0"},
+        {"1~", "1~0"},
+    };
+
+    for (const auto &[implicitZero, explicitZero] : equivalentVersions) {
+        QCOMPARE(VersionNumber(implicitZero), VersionNumber(explicitZero));
+    }
 }
 
 void TestVersionNumber::testVersionSorting()

@@ -105,6 +105,9 @@ QStringList VersionNumber::groupDigits(const QString &value)
             result.append(currentChar);
         }
     }
+    if (!value.isEmpty() && !value.back().isDigit()) {
+        result.append(QStringLiteral("0"));
+    }
 
     return result;
 }
