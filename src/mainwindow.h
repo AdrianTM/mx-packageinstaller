@@ -187,7 +187,7 @@ private:
     int savedComboIndex {0};
 
     Cmd cmd;
-    LockFile lockFile {"/var/lib/dpkg/lock"};
+    LockFile lockFile;
     QHash<QString, VersionNumber> listInstalledVersions();
     QIcon qiconInstalled;
     QIcon qiconUpgradable;

@@ -25,17 +25,10 @@
 #include "lockfile.h"
 
 #include <QDebug>
-#include <QFileInfo>
 #include <QMessageBox>
+#include <QRegularExpression>
 
 #include "cmd.h"
-
-#include <unistd.h>
-
-LockFile::LockFile(const QString &fileName)
-    : file(fileName)
-{
-}
 
 bool LockFile::isLocked()
 {
@@ -65,34 +58,29 @@ bool LockFile::isLockedGUI()
     return false;
 }
 
-bool LockFile::lock()
-{
-    file.close(); // if already opened by this process, this avoids messages that this process is locking the file
-    if (isLockedGUI()) {
-        return false;
-    }
-    const QString owner = qEnvironmentVariable("LOGNAME", qEnvironmentVariable("USER"));
-    if (!owner.isEmpty()) {
-        Cmd().procAsRoot("chown", {owner + ':', file.fileName()}, nullptr, nullptr, Cmd::QuietMode::Yes);
-    }
-    if (!file.open(QIODevice::WriteOnly)) {
-        qWarning() << "Unable to open lock file" << file.fileName() << "for writing:" << file.errorString();
-        return false;
-    }
-    return (lockf(file.handle(), F_LOCK, 0) == 0);
-}
-
-void LockFile::unlock()
-{
-    file.close();
-}
-
-QString LockFile::fileName() const
-{
-    return file.fileName();
-}
-
 QString LockFile::getLockingProcess() const
 {
-    return Cmd().lockingProcessAsRoot(fileName(), Cmd::QuietMode::Yes);
+    Cmd probe;
+    QString output;
+    const QHash<QString, QString> environment {
+        {QStringLiteral("LANG"), QStringLiteral("C")},
+        {QStringLiteral("LC_ALL"), QStringLiteral("C")},
+    };
+    if (probe.procAsRootWithEnv(environment, QStringLiteral("apt-get"), {QStringLiteral("check")}, &output, nullptr,
+                                Cmd::QuietMode::Yes)) {
+        return {};
+    }
+    if (Cmd::elevationDismissed()) {
+        return {};
+    }
+
+    static const QRegularExpression lockError(
+        QStringLiteral(R"((?:Unable to acquire|Could not get) the dpkg frontend lock)"));
+    if (!lockError.match(output).hasMatch()) {
+        return {};
+    }
+
+    static const QRegularExpression ownerPattern(QStringLiteral(R"(held by process \d+ \(([^)]+)\))"));
+    const QRegularExpressionMatch owner = ownerPattern.match(output);
+    return owner.hasMatch() ? owner.captured(1) : QObject::tr("another package manager");
 }

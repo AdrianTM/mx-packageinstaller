@@ -23,21 +23,14 @@
  **********************************************************************/
 #pragma once
 
-#include <QFile>
+#include <QString>
 
 class LockFile
 {
 public:
-    explicit LockFile(const QString &fileName);
+    LockFile() = default;
 
-    [[nodiscard]] QString fileName() const;
     [[nodiscard]] QString getLockingProcess() const;
     [[nodiscard]] bool isLocked();
     [[nodiscard]] bool isLockedGUI();
-
-    [[nodiscard]] bool lock();
-    void unlock();
-
-private:
-    QFile file;
 };
