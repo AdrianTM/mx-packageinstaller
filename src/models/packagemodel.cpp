@@ -196,16 +196,18 @@ QStringList PackageModel::checkedPackages() const
 
 void PackageModel::setAllChecked(bool checked)
 {
+    // beginResetModel()/endResetModel() instead of one dataChanged() over every row:
+    // same fix as updateInstalledVersions() (see its comment) -- a dynamicSortFilter
+    // proxy re-filters/re-sorts incrementally on a whole-range dataChanged, which is
+    // measurably slower than one clean resort on large lists.
+    beginResetModel();
     Qt::CheckState state = checked ? Qt::Checked : Qt::Unchecked;
     for (int i = 0; i < m_packages.size(); ++i) {
         if (m_packages[i].checkState != state) {
             m_packages[i].checkState = state;
         }
     }
-    if (!m_packages.isEmpty()) {
-        emit dataChanged(index(0, TreeCol::Check), index(m_packages.size() - 1, TreeCol::Check),
-                         {Qt::CheckStateRole});
-    }
+    endResetModel();
 }
 
 void PackageModel::setCheckedForVisible(const QVector<int> &visibleRows, bool checked)

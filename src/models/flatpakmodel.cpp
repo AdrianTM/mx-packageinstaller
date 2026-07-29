@@ -219,16 +219,18 @@ QStringList FlatpakModel::checkedPackages() const
 
 void FlatpakModel::setAllChecked(bool checked)
 {
+    // beginResetModel()/endResetModel() instead of one dataChanged() over every row --
+    // measured ~349ms on a real machine with FlatpakFilterProxy's dynamicSortFilter
+    // incrementally re-filtering/re-sorting the whole range. Same fix as
+    // PackageModel::updateInstalledVersions().
+    beginResetModel();
     Qt::CheckState state = checked ? Qt::Checked : Qt::Unchecked;
     for (int i = 0; i < m_flatpaks.size(); ++i) {
         if (m_flatpaks[i].checkState != state) {
             m_flatpaks[i].checkState = state;
         }
     }
-    if (!m_flatpaks.isEmpty()) {
-        emit dataChanged(index(0, FlatCol::Check), index(m_flatpaks.size() - 1, FlatCol::Check),
-                         {Qt::CheckStateRole});
-    }
+    endResetModel();
 }
 
 void FlatpakModel::setCheckedForVisible(const QVector<int> &visibleRows, bool checked)
