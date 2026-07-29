@@ -235,6 +235,17 @@ private:
     bool flatpakCancelHidden {false};
     bool flatpakUiBlocked {false};
     bool suppressCmdOutput {false};
+#ifdef PACKAGE_BACKEND_PACMAN
+    // AUR installs run paru unprivileged (see install()), which elevates the actual
+    // pacman step itself via sudo -- unlike apt-get/plain pacman, which always go
+    // through the privileged helper and pkexec's own native password dialog. That
+    // sudo prompt surfaces as plain text in this app's own Output tab, read back via
+    // ui->lineEdit, so it needs its own masking rather than relying on pkexec.
+    bool lineEditMasked {false};
+    QAction *lineEditToggleMaskAction {nullptr};
+    QAction *lineEditClearAction {nullptr};
+    void setLineEditMasked(bool masked);
+#endif
     QTemporaryDir tempDir;
     QTimer timer;
     QTreeView *currentTree {}; // current/calling tree

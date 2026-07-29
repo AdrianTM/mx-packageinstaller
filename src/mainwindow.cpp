@@ -42,6 +42,7 @@
 #include <QScopedValueRollback>
 #include <QScrollBar>
 #include <QShortcut>
+#include <QSignalBlocker>
 #include <QStandardPaths>
 #include <QTextBlock>
 #include <QTextStream>
@@ -483,6 +484,9 @@ void MainWindow::setup()
     // "Install recommends" has no pacman equivalent (installPackages() ignores
     // extraArgs on this backend) -- showing a checkbox with no effect would mislead.
     ui->checkBoxInstallRecommends->setVisible(false);
+    // isLibraryPackage() is a no-op on this backend (no Debian-style lib*/-dev/
+    // -dbg*/-libs split-package convention to filter on yet) -- same reasoning.
+    ui->checkHideLibs->setVisible(false);
 #else
     ui->tabWidget->setTabVisible(Tab::AUR, false);
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
@@ -1090,6 +1094,15 @@ void MainWindow::checkUncheckItem()
 
 void MainWindow::outputAvailable(const QString &output)
 {
+#ifdef PACKAGE_BACKEND_PACMAN
+    // AUR installs elevate via a raw `sudo` inside paru (see install()), so its
+    // password prompt shows up as plain text here rather than pkexec's own dialog.
+    // Mask ui->lineEdit before the user can type their password into it.
+    static const QRegularExpression sudoPrompt {R"(sudo.*password)", QRegularExpression::CaseInsensitiveOption};
+    if (sudoPrompt.match(output).hasMatch()) {
+        setLineEditMasked(true);
+    }
+#endif
     outputRenderer.append(output);
 }
 
@@ -1389,6 +1402,20 @@ void MainWindow::setConnections()
     connect(ui->comboUser, QOverload<int>::of(&QComboBox::currentIndexChanged), this,
             &MainWindow::comboUser_currentIndexChanged);
     connect(ui->lineEdit, &QLineEdit::returnPressed, this, &MainWindow::lineEdit_returnPressed);
+#ifdef PACKAGE_BACKEND_PACMAN
+    if (!lineEditToggleMaskAction) {
+        const QIcon hiddenIcon = QIcon::fromTheme("view-hidden", QIcon::fromTheme("view-visible"));
+        lineEditToggleMaskAction = ui->lineEdit->addAction(hiddenIcon, QLineEdit::TrailingPosition);
+        lineEditToggleMaskAction->setCheckable(true);
+        lineEditToggleMaskAction->setToolTip(tr("Show/hide input"));
+        connect(lineEditToggleMaskAction, &QAction::toggled, this, [this](bool checked) { setLineEditMasked(checked); });
+
+        const QIcon clearIcon = QIcon::fromTheme("edit-clear");
+        lineEditClearAction = ui->lineEdit->addAction(clearIcon, QLineEdit::TrailingPosition);
+        lineEditClearAction->setToolTip(tr("Clear input"));
+        connect(lineEditClearAction, &QAction::triggered, ui->lineEdit, &QLineEdit::clear);
+    }
+#endif
     connect(ui->pushAbout, &QPushButton::clicked, this, &MainWindow::pushAbout_clicked);
     connect(ui->pushCancel, &QPushButton::clicked, this, &MainWindow::pushCancel_clicked);
     connect(ui->pushEnter, &QPushButton::clicked, this, &MainWindow::pushEnter_clicked);
@@ -2784,10 +2811,9 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         if (forceDownload && !runUpdateApt()) {
             return false;
         }
-        progress->show();
-        if (!timer.isActive()) {
-            timer.start(100ms);
-        }
+        // No progress dialog here: "pacman -Ss" itself takes well under a second
+        // (measured ~0.2s for a full repo), so showing a modal progress dialog just
+        // for it to immediately hide again reads as extra jank, not less.
         // pacman -Ss's full repo listing is tens of thousands of lines; relaying it
         // through the Cmd::outputAvailable -> qDebug/sanitizeOutputForDisplay path
         // (the default for any Cmd output) is real, measurable overhead for a dump
@@ -5785,11 +5811,42 @@ void MainWindow::pushEnter_clicked()
 void MainWindow::lineEdit_returnPressed()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    cmd.write(ui->lineEdit->text().toUtf8() + '\n');
-    ui->outputBox->appendPlainText(ui->lineEdit->text() + '\n');
+    const QString input = ui->lineEdit->text();
+    cmd.write(input.toUtf8() + '\n');
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Never echo back what was typed while masked (a sudo password, per
+    // outputAvailable()'s detection below) -- echoing the raw text here would leak
+    // it into the Output tab regardless of the QLineEdit's own echo mode.
+    if (!lineEditMasked) {
+        ui->outputBox->appendPlainText(input + '\n');
+    }
+    setLineEditMasked(false);
+#else
+    ui->outputBox->appendPlainText(input + '\n');
+#endif
     ui->lineEdit->clear();
     ui->lineEdit->setFocus();
 }
+
+#ifdef PACKAGE_BACKEND_PACMAN
+void MainWindow::setLineEditMasked(bool masked)
+{
+    if (!ui || !ui->lineEdit) {
+        return;
+    }
+    lineEditMasked = masked;
+    ui->lineEdit->setEchoMode(masked ? QLineEdit::Password : QLineEdit::Normal);
+    if (lineEditToggleMaskAction) {
+        const QSignalBlocker blocker(lineEditToggleMaskAction);
+        lineEditToggleMaskAction->setChecked(masked);
+        const QIcon icon = QIcon::fromTheme(masked ? "view-hidden" : "view-visible", QIcon::fromTheme("view-visible"));
+        if (!icon.isNull()) {
+            lineEditToggleMaskAction->setIcon(icon);
+        }
+        lineEditToggleMaskAction->setToolTip(masked ? tr("Show input") : tr("Hide input"));
+    }
+}
+#endif
 
 void MainWindow::pushCancel_clicked()
 {
