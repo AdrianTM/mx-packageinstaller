@@ -416,6 +416,29 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     });
 #endif
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    // installedPackages ("pacman -Qi") is fetched in the background so it doesn't
+    // block startup -- PackageBackend::listInstalled() uses a local Cmd instance,
+    // safe to call off the GUI thread (matching how the arch branch originally
+    // loaded this via QtConcurrent, before the unification made it synchronous).
+    [[maybe_unused]] auto installedFuture = QtConcurrent::run([this] {
+        bool ok = false;
+        auto loaded = PackageBackend::listInstalled(&ok);
+        QMetaObject::invokeMethod(
+            this,
+            [this, ok, loaded = std::move(loaded)]() mutable {
+                if (!ok) {
+                    QMessageBox::critical(this, tr("Error"),
+                                          tr("The installed-package query returned an error. Please check the log "
+                                             "for details."));
+                    return;
+                }
+                installedPackages = std::move(loaded);
+            },
+            Qt::QueuedConnection);
+    });
+#endif
+
     // Preload the flatpak list so the tab is populated on first visit. Listing
     // needs no elevation; system remote setup, if defaults are missing, happens
     // on the first visit to the Flatpak tab where an auth prompt has context.
@@ -509,9 +532,9 @@ void MainWindow::setup()
     hideColumns();
 #ifdef PACKAGE_BACKEND_PACMAN
     // Popular Apps has no data on this backend (tab hidden above) -- skip
-    // scanning for .pm files and building/sorting an always-empty tree, but
-    // still need the installed-package snapshot other tabs rely on.
-    installedPackages = listInstalled();
+    // scanning for .pm files and building/sorting an always-empty tree.
+    // installedPackages is loaded in the background instead (see the
+    // constructor, right after setup() returns) rather than blocking here.
 #else
     loadPmFiles();
     refreshPopularApps();
@@ -1646,15 +1669,26 @@ void MainWindow::displayPackages()
     }
 
     // Build package data list and set on model
-    QVector<PackageData> packages = createPackageDataList(list);
-    model->setPackageData(packages);
+    QVector<PackageData> packages;
+    {
+        ScopedTimer t("displayPackages: createPackageDataList");
+        packages = createPackageDataList(list);
+    }
+    {
+        ScopedTimer t("displayPackages: setPackageData");
+        model->setPackageData(packages);
+    }
 
     // Update installed versions
-    updatePackageStatuses();
+    {
+        ScopedTimer t("displayPackages: updatePackageStatuses");
+        updatePackageStatuses();
+    }
 
     // Sort by Package Name (column 1) after data is loaded
     auto *proxy = getCurrentProxy();
     if (proxy) {
+        ScopedTimer t("displayPackages: sort");
         proxy->sort(1, Qt::AscendingOrder);
     }
 
@@ -1782,9 +1816,13 @@ void MainWindow::updatePackageStatuses()
         versionStrings.insert(name, version.toString());
     }
 
-    model->updateInstalledVersions(versionStrings);
+    {
+        ScopedTimer t("updatePackageStatuses: model->updateInstalledVersions");
+        model->updateInstalledVersions(versionStrings);
+    }
 
     // Resize columns after updating statuses
+    ScopedTimer resizeTimer("updatePackageStatuses: resizeColumnToContents loop");
     if (currentTree && currentTree != ui->treePopularApps && currentTree != ui->treeFlatpak) {
         for (int i = 0; i < model->columnCount(); ++i) {
             if (!currentTree->isColumnHidden(i)) {
