@@ -5493,13 +5493,16 @@ void MainWindow::filterChanged(const QString &arg1)
 
     // Helper functions
     auto resetTree = [this]() {
+        ScopedTimer t("filterChanged: resetTree");
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
         if (currentTree == ui->treeFlatpak) {
             if (flatpakModel) {
+                ScopedTimer t2("filterChanged: resetTree: flatpakModel->setAllChecked");
                 flatpakModel->setAllChecked(false);
             }
             if (flatpakProxy) {
+                ScopedTimer t2("filterChanged: resetTree: flatpakProxy resets");
                 flatpakProxy->setSearchText(QString());
                 flatpakProxy->setStatusFilter(0);
                 flatpakProxy->clearAllowedRefs();
@@ -5524,10 +5527,12 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     auto uncheckAllItems = [this]() {
+        ScopedTimer t("filterChanged: uncheckAllItems");
         // Optimization: Disable updates during bulk operations
         currentTree->setUpdatesEnabled(false);
         if (currentTree == ui->treeFlatpak) {
             if (flatpakModel) {
+                ScopedTimer t2("filterChanged: uncheckAllItems: flatpakModel->setAllChecked");
                 flatpakModel->setAllChecked(false);
             }
         } else {
@@ -5540,6 +5545,7 @@ void MainWindow::filterChanged(const QString &arg1)
     };
 
     auto handleFlatpakFilter = [this, uncheckAllItems](const QStringList &data, bool raw = true) {
+        ScopedTimer t("filterChanged: handleFlatpakFilter");
         uncheckAllItems();
         displayFilteredFP(data, raw);
     };
@@ -5563,22 +5569,26 @@ void MainWindow::filterChanged(const QString &arg1)
 
 
     // Hide and reset all header checkboxes by default
-    if (headerEnabled) {
-        headerEnabled->setCheckboxVisible(false);
-        headerEnabled->setChecked(false);
-    }
-    if (headerMX) {
-        headerMX->setCheckboxVisible(false);
-        headerMX->setChecked(false);
-    }
-    if (headerBP) {
-        headerBP->setCheckboxVisible(false);
-        headerBP->setChecked(false);
+    {
+        ScopedTimer t("filterChanged: header checkbox reset");
+        if (headerEnabled) {
+            headerEnabled->setCheckboxVisible(false);
+            headerEnabled->setChecked(false);
+        }
+        if (headerMX) {
+            headerMX->setCheckboxVisible(false);
+            headerMX->setChecked(false);
+        }
+        if (headerBP) {
+            headerBP->setCheckboxVisible(false);
+            headerBP->setChecked(false);
+        }
     }
 
     bool isAutoremovable = (arg1 == tr("Autoremovable"));
     bool shouldHideLibs = !isAutoremovable && hideLibsChecked;
 
+    ScopedTimer flatpakBranchTimer("filterChanged: Flatpak branch dispatch");
     // Handle Flatpak tree
     if (currentTree == ui->treeFlatpak) {
         if (arg1 == tr("Installed runtimes")) {
