@@ -52,6 +52,7 @@
 #include "aptcache.h"
 #include "checkableheaderview.h"
 #include "outputrender.h"
+#include "packagebackend.h"
 #include "versionnumber.h"
 #include <algorithm>
 #include <chrono>
@@ -597,7 +598,7 @@ bool MainWindow::updateApt()
     }
 
     enableOutput();
-    if (runMxpiMaintenanceAsRoot(cmd, QStringLiteral("apt_update"))) {
+    if (PackageBackend::refreshRepositories(cmd)) {
         qDebug() << "sources updated OK";
         updatedOnce = true;
         return true;
@@ -1402,16 +1403,7 @@ void MainWindow::displayPackages()
 
 void MainWindow::displayAutoremovable()
 {
-    const QString aptOut = cmd.getOut("LANG=C apt-get --dry-run autoremove");
-    QStringList names;
-    for (const QString &line : aptOut.split('\n', Qt::SkipEmptyParts)) {
-        if (line.startsWith("Remv ")) {
-            const QString pkg = line.section(' ', 1, 1, QString::SectionSkipEmpty);
-            if (!pkg.isEmpty()) {
-                names << pkg;
-            }
-        }
-    }
+    const QStringList names = PackageBackend::autoremovableCandidates(cmd);
 
     ui->pushRemoveAutoremovable->setVisible(!names.isEmpty());
     if (names.isEmpty()) {
@@ -2267,9 +2259,7 @@ bool MainWindow::markKeep()
     ui->tabWidget->setTabEnabled(Tab::Output, true);
     QString names = changeList.join(' ');
     enableOutput();
-    QStringList args {"manual"};
-    args += packageArgs(names);
-    return cmd.procAsRoot("apt-mark", args);
+    return PackageBackend::markManuallyInstalled(cmd, packageArgs(names));
 }
 
 bool MainWindow::isOnline()
@@ -2791,38 +2781,12 @@ bool MainWindow::checkUpgradable(const QStringList &nameList) const
 QHash<QString, PackageInfo> MainWindow::listInstalled()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    Cmd shell;
-    const QString list
-        = shell.getOut("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\\n'");
-
-    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+    bool ok = false;
+    QHash<QString, PackageInfo> installedPackagesMap = PackageBackend::listInstalled(&ok);
+    if (!ok) {
         QMessageBox::critical(this, tr("Error"),
-                              tr("dpkg-query command returned an error. Please run 'dpkg-query -W' in terminal "
-                                 "and check the output."));
-        exit(EXIT_FAILURE);
+                              tr("The installed-package query returned an error. Please check the log for details."));
     }
-
-    QHash<QString, PackageInfo> installedPackagesMap;
-    const QString statusPrefix = QStringLiteral("ii ");
-    const auto lines = list.split('\n', Qt::SkipEmptyParts);
-
-    for (const QString &line : lines) {
-        if (!line.startsWith(statusPrefix)) {
-            continue;
-        }
-
-        const QStringList parts = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
-        if (parts.size() < 2) {
-            continue;
-        }
-
-        const QString packageName = parts.at(0);
-        const QString version = parts.at(1);
-        const QString description = parts.size() > 2 ? parts.mid(2).join(' ') : QString();
-
-        installedPackagesMap.insert(packageName, {version, description});
-    }
-
     return installedPackagesMap;
 }
 
@@ -3041,26 +3005,11 @@ void MainWindow::setIcons()
 QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-    QHash<QString, VersionNumber> installedVersions;
-    Cmd shell;
-    const QString command = QStringLiteral("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'");
-    const QStringList packageList = shell.getOut(command, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
-
-    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
-        QMessageBox::critical(
-            this, tr("Error"),
-            tr("dpkg-query command returned an error, please run 'dpkg-query -W' in terminal and check the output."));
-        return installedVersions;
-    }
-    for (const QString &line : packageList) {
-        const QString statusPrefix = QStringLiteral("ii ");
-        if (!line.startsWith(statusPrefix)) {
-            continue;
-        }
-        const QStringList packageInfo = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
-        if (packageInfo.size() == 2) {
-            installedVersions.insert(packageInfo.at(0), VersionNumber(packageInfo.at(1)));
-        }
+    bool ok = false;
+    QHash<QString, VersionNumber> installedVersions = PackageBackend::listInstalledVersions(&ok);
+    if (!ok) {
+        QMessageBox::critical(this, tr("Error"),
+                              tr("The installed-package query returned an error. Please check the log for details."));
     }
     return installedVersions;
 }
@@ -5489,7 +5438,7 @@ QString MainWindow::getMXTestRepoUrl()
 void MainWindow::pushRemoveAutoremovable_clicked()
 {
     beginOperation();
-    QString names = cmd.getOut(R"(apt-get --dry-run autoremove |grep -Po '^Remv \K[^ ]+' |tr '\n' ' ')");
+    QString names = PackageBackend::autoremovableCandidates(cmd).join(' ');
     QMessageBox::warning(this, tr("Warning"),
                          tr("Potentially dangerous operation.\nPlease make sure you check "
                             "carefully the list of packages to be removed."));

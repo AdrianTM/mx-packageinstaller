@@ -198,6 +198,8 @@ set(HEADERS
     src/outputrender.h
     src/sizeutils.h
     src/packagestatus.h
+    src/packageinfo.h
+    src/packagebackend.h
     src/models/packagemodel.h
     src/models/packagefilterproxy.h
     src/models/flatpakmodel.h
@@ -208,13 +210,14 @@ set(HEADERS
     src/models/popularfilterproxy.h
 )
 
-# Backend-specific sources. lockfile.{h,cpp} share the header above; only one of the
-# two lock-detection implementations is compiled in, matching each package manager's
-# own lock semantics (apt: dpkg frontend + raw lock check; pacman: direct lockf() probe).
+# Backend-specific sources. lockfile.{h,cpp} and packagebackend.h share their headers
+# above; only one implementation of each is compiled in, matching each package
+# manager's own semantics (apt: dpkg frontend + raw lock check, dpkg-query/apt-mark/
+# apt-get; pacman: direct lockf() probe, pacman -Qi/-D/-Qtdq).
 if(PACKAGE_BACKEND STREQUAL "pacman")
-    list(APPEND SOURCES src/lockfile_pacman.cpp)
+    list(APPEND SOURCES src/lockfile_pacman.cpp src/packagebackend_pacman.cpp)
 else()
-    list(APPEND SOURCES src/lockfile_apt.cpp)
+    list(APPEND SOURCES src/lockfile_apt.cpp src/packagebackend_apt.cpp)
     # Hand-parses raw Debian archive Packages files -- no pacman equivalent.
     list(APPEND SOURCES src/aptcache.cpp)
     list(APPEND HEADERS src/aptcache.h)

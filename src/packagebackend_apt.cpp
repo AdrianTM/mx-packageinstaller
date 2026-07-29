@@ -1,0 +1,119 @@
+/**********************************************************************
+ *  packagebackend_apt.cpp
+ **********************************************************************
+ * Copyright (C) 2026-2026 MX Authors
+ *
+ * Authors: Adrian
+ *          MX Linux <http://mxlinux.org>
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this package. If not, see <http://www.gnu.org/licenses/>.
+ **********************************************************************/
+
+#include "packagebackend.h"
+
+#include <QProcess>
+
+#include "cmd.h"
+
+bool PackageBackend::refreshRepositories(Cmd &cmd)
+{
+    return cmd.procScriptAsRoot(QStringLiteral("/usr/lib/mx-packageinstaller/mxpi-maintenance"),
+                                {QStringLiteral("apt_update")}, nullptr, nullptr, Cmd::QuietMode::Yes);
+}
+
+QHash<QString, PackageInfo> PackageBackend::listInstalled(bool *ok)
+{
+    Cmd shell;
+    const QString list
+        = shell.getOut("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\\n'");
+
+    if (ok) {
+        *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
+    }
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+        return {};
+    }
+
+    QHash<QString, PackageInfo> installedPackagesMap;
+    const QString statusPrefix = QStringLiteral("ii ");
+    const auto lines = list.split('\n', Qt::SkipEmptyParts);
+
+    for (const QString &line : lines) {
+        if (!line.startsWith(statusPrefix)) {
+            continue;
+        }
+
+        const QStringList parts = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
+        if (parts.size() < 2) {
+            continue;
+        }
+
+        const QString packageName = parts.at(0);
+        const QString version = parts.at(1);
+        const QString description = parts.size() > 2 ? parts.mid(2).join(' ') : QString();
+
+        installedPackagesMap.insert(packageName, {version, description});
+    }
+
+    return installedPackagesMap;
+}
+
+QHash<QString, VersionNumber> PackageBackend::listInstalledVersions(bool *ok)
+{
+    QHash<QString, VersionNumber> installedVersions;
+    Cmd shell;
+    const QString command = QStringLiteral("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'");
+    const QStringList packageList = shell.getOut(command, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+
+    if (ok) {
+        *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
+    }
+    if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
+        return installedVersions;
+    }
+
+    for (const QString &line : packageList) {
+        const QString statusPrefix = QStringLiteral("ii ");
+        if (!line.startsWith(statusPrefix)) {
+            continue;
+        }
+        const QStringList packageInfo = line.mid(statusPrefix.length()).split(' ', Qt::SkipEmptyParts);
+        if (packageInfo.size() == 2) {
+            installedVersions.insert(packageInfo.at(0), VersionNumber(packageInfo.at(1)));
+        }
+    }
+    return installedVersions;
+}
+
+bool PackageBackend::markManuallyInstalled(Cmd &cmd, const QStringList &names)
+{
+    QStringList args {"manual"};
+    args += names;
+    return cmd.procAsRoot("apt-mark", args);
+}
+
+QStringList PackageBackend::autoremovableCandidates(Cmd &cmd)
+{
+    QStringList names;
+    const QString aptOut = cmd.getOut("LANG=C apt-get --dry-run autoremove");
+    for (const QString &line : aptOut.split('\n', Qt::SkipEmptyParts)) {
+        if (line.startsWith("Remv ")) {
+            const QString pkg = line.section(' ', 1, 1, QString::SectionSkipEmpty);
+            if (!pkg.isEmpty()) {
+                names << pkg;
+            }
+        }
+    }
+    return names;
+}
