@@ -3979,8 +3979,11 @@ void MainWindow::displayPackageInfo(QTreeView *tree, QPoint pos)
 
     // treePopularApps is handled by treePopularApps_customContextMenuRequested; this
     // path only serves the APT trees (Enabled repos, MX Test, Backports).
-    auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
     QMenu menu(this);
+    // Parented to &menu (not this) so it's destroyed along with the menu below --
+    // QMenu::addAction(QAction*) doesn't take ownership, so parenting to the
+    // long-lived MainWindow would leak one QAction per invocation.
+    auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), &menu);
     menu.addAction(action);
     if (tree == ui->treeEnabled) {
         connect(action, &QAction::triggered, this, [this, currentIdx] { displayPackageInfo(currentIdx); });
@@ -6452,8 +6455,11 @@ void MainWindow::treePopularApps_customContextMenuRequested(QPoint pos)
     if (!index.isValid() || !index.parent().isValid()) { // skip invalid and categories
         return;
     }
-    auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), this);
     QMenu menu(this);
+    // Parented to &menu (not this) so it's destroyed along with the menu below --
+    // QMenu::addAction(QAction*) doesn't take ownership, so parenting to the
+    // long-lived MainWindow would leak one QAction per invocation.
+    auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), &menu);
     menu.addAction(action);
     connect(action, &QAction::triggered, this, [this, index] { displayPopularInfo(index); });
     menu.exec(ui->treePopularApps->mapToGlobal(pos));
