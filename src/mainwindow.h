@@ -250,6 +250,10 @@ private:
     QAction *lineEditToggleMaskAction {nullptr};
     QAction *lineEditClearAction {nullptr};
     void setLineEditMasked(bool masked);
+    // Bounded carry-over from the previous outputAvailable() chunk, so the sudo-prompt
+    // regex can match text straddling a readyReadStandardOutput chunk boundary instead
+    // of only ever seeing one chunk in isolation.
+    QString sudoPromptTail;
 #endif
     QTemporaryDir tempDir;
     QTimer timer;

@@ -1206,9 +1206,23 @@ void MainWindow::outputAvailable(const QString &output)
     // AUR installs elevate via a raw `sudo` inside paru (see install()), so its
     // password prompt shows up as plain text here rather than pkexec's own dialog.
     // Mask ui->lineEdit before the user can type their password into it.
+    //
+    // readyReadStandardOutput chunk boundaries are arbitrary, so "sudo ... password"
+    // can straddle two calls to this function -- match against a small carry-over
+    // tail plus the new text rather than the new chunk alone, so a split prompt (or a
+    // wrong-password re-prompt arriving right after unmasking on Enter) still gets
+    // caught. The tail is bounded and doesn't include already-matched text, so it
+    // can't keep re-triggering on stale output once the buffer moves past a prompt.
     static const QRegularExpression sudoPrompt {R"(sudo.*password)", QRegularExpression::CaseInsensitiveOption};
-    if (sudoPrompt.match(output).hasMatch()) {
+    constexpr qsizetype maxSudoPromptTail = 64;
+    const QString combined = sudoPromptTail + output;
+    if (sudoPrompt.match(combined).hasMatch()) {
         setLineEditMasked(true);
+        // Drop the tail so this same (now-handled) match can't keep re-triggering
+        // on later, unrelated output that happens to still carry it forward.
+        sudoPromptTail.clear();
+    } else {
+        sudoPromptTail = combined.right(qMin(combined.size(), maxSudoPromptTail));
     }
 #endif
     outputRenderer.append(output);
