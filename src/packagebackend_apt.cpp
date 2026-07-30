@@ -153,3 +153,15 @@ bool PackageBackend::removePackages(Cmd &cmd, const QStringList &names)
     args += names;
     return cmd.procAsRootWithEnv(debconfEnvironment(), "apt-get", args);
 }
+
+int PackageBackend::compareVersions(const QString &a, const QString &b)
+{
+    const std::strong_ordering cmp = VersionNumber(a) <=> VersionNumber(b);
+    if (cmp < 0) {
+        return -1;
+    }
+    if (cmp > 0) {
+        return 1;
+    }
+    return 0;
+}

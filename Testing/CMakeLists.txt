@@ -53,6 +53,51 @@ endif()
 
 add_test(NAME VersionNumberTest COMMAND test_versionnumber)
 
+# Test for PackageBackend::compareVersions() on the pacman backend (pacman-only:
+# it resolves libalpm's alpm_pkg_vercmp() via dlopen/dlsym at runtime rather
+# than shelling out to `vercmp` per comparison -- see packagebackend_pacman.cpp's
+# doc comment for why: a subprocess per comparison is far too slow for a
+# full-repo sort. There is no bundled reimplementation to unit-test in
+# isolation, by design, since a hand-rolled port of libalpm's rules risks
+# subtly disagreeing with the real thing). Skips gracefully (not a failure) if
+# libalpm can't be resolved, since this sandbox/CI environment may not have it.
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    add_executable(test_packagebackend_pacman
+        test_packagebackend_pacman.cpp
+        ../src/packagebackend_pacman.cpp
+        ../src/cmd.cpp
+        ../src/cmd.h
+        ../src/versionnumber.cpp
+    )
+
+    target_link_libraries(test_packagebackend_pacman
+        Qt6::Core
+        Qt6::Test
+        Qt6::Widgets
+        ${CMAKE_DL_LIBS}
+    )
+
+    target_compile_definitions(test_packagebackend_pacman PRIVATE
+        HELPER_PATH="${HELPER_PATH}"
+    )
+
+    target_compile_options(test_packagebackend_pacman PRIVATE
+        -Wpedantic
+        -pedantic
+        -Werror=return-type
+        -Werror=switch
+        -Werror=uninitialized
+    )
+
+    if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+        target_compile_options(test_packagebackend_pacman PRIVATE -Werror=return-stack-address)
+    else()
+        target_compile_options(test_packagebackend_pacman PRIVATE -Werror=return-local-addr)
+    endif()
+
+    add_test(NAME PackageBackendPacmanTest COMMAND test_packagebackend_pacman)
+endif()
+
 # Test for AptCache class (apt-only: hand-parses raw Debian archive Packages files,
 # no pacman equivalent)
 if(NOT PACKAGE_BACKEND STREQUAL "pacman")
@@ -85,18 +130,41 @@ if(NOT PACKAGE_BACKEND STREQUAL "pacman")
     add_test(NAME AptCacheTest COMMAND test_aptcache)
 endif()
 
-# Test for PackageModel class
-add_executable(test_packagemodel
+# Test for PackageModel class. On the pacman backend, updateInstalledVersions()
+# calls PackageBackend::compareVersions(), which resolves libalpm's
+# alpm_pkg_vercmp() via dlopen/dlsym -- so packagebackend_pacman.cpp and cmd.cpp
+# must be linked in too (mirroring test_cmd's HELPER_PATH below).
+# testUpdateInstalledVersions() only exercises plain numeric versions, which
+# libalpm and dpkg's VersionNumber agree on, so this doesn't need libalpm's
+# availability to be skip-guarded the way test_packagebackend_pacman's
+# dedicated tilde/suffix cases are.
+set(PACKAGEMODEL_TEST_SOURCES
     test_packagemodel.cpp
     ../src/models/packagemodel.cpp
     ../src/versionnumber.cpp
 )
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    list(APPEND PACKAGEMODEL_TEST_SOURCES
+        ../src/packagebackend_pacman.cpp
+        ../src/cmd.cpp
+        ../src/cmd.h
+    )
+endif()
+
+add_executable(test_packagemodel ${PACKAGEMODEL_TEST_SOURCES})
 
 target_link_libraries(test_packagemodel
     Qt6::Core
     Qt6::Test
     Qt6::Widgets
 )
+
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    target_link_libraries(test_packagemodel ${CMAKE_DL_LIBS})
+    target_compile_definitions(test_packagemodel PRIVATE
+        HELPER_PATH="${HELPER_PATH}"
+    )
+endif()
 
 target_compile_options(test_packagemodel PRIVATE
     -Wpedantic
@@ -142,19 +210,39 @@ endif()
 
 add_test(NAME FlatpakModelTest COMMAND test_flatpakmodel)
 
-# Test for PackageFilterProxy class
-add_executable(test_packagefilterproxy
+# Test for PackageFilterProxy class. Same PACKAGE_BACKEND_PACMAN reasoning as
+# test_packagemodel above: PackageFilterProxy::lessThan() also calls
+# PackageBackend::compareVersions() on the pacman backend, so packagebackend_pacman.cpp
+# and cmd.cpp must be linked in for that build too -- though no test here actually
+# sorts by the version columns, so this is purely to satisfy the linker.
+set(PACKAGEFILTERPROXY_TEST_SOURCES
     test_packagefilterproxy.cpp
     ../src/models/packagemodel.cpp
     ../src/models/packagefilterproxy.cpp
     ../src/versionnumber.cpp
 )
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    list(APPEND PACKAGEFILTERPROXY_TEST_SOURCES
+        ../src/packagebackend_pacman.cpp
+        ../src/cmd.cpp
+        ../src/cmd.h
+    )
+endif()
+
+add_executable(test_packagefilterproxy ${PACKAGEFILTERPROXY_TEST_SOURCES})
 
 target_link_libraries(test_packagefilterproxy
     Qt6::Core
     Qt6::Test
     Qt6::Widgets
 )
+
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    target_link_libraries(test_packagefilterproxy ${CMAKE_DL_LIBS})
+    target_compile_definitions(test_packagefilterproxy PRIVATE
+        HELPER_PATH="${HELPER_PATH}"
+    )
+endif()
 
 target_compile_options(test_packagefilterproxy PRIVATE
     -Wpedantic
@@ -425,6 +513,10 @@ set(ALL_TEST_TARGETS
 if(NOT PACKAGE_BACKEND STREQUAL "pacman")
     list(APPEND ALL_TEST_NAMES AptCacheTest)
     list(APPEND ALL_TEST_TARGETS test_aptcache)
+endif()
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    list(APPEND ALL_TEST_NAMES PackageBackendPacmanTest)
+    list(APPEND ALL_TEST_TARGETS test_packagebackend_pacman)
 endif()
 
 set_tests_properties(

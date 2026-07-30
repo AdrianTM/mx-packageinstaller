@@ -69,4 +69,17 @@ namespace PackageBackend
 [[nodiscard]] bool installPackages(Cmd &cmd, const QStringList &names, const QStringList &extraArgs);
 [[nodiscard]] bool removePackages(Cmd &cmd, const QStringList &names);
 
+// Compare two version strings using the running backend's real ordering rules:
+// apt delegates to the existing dpkg-style VersionNumber; pacman shells out to
+// the real `vercmp` (it ships with pacman itself, so it's always available
+// wherever this backend runs -- there is no libalpm-dev to link against
+// directly here, and a bundled reimplementation risks subtly disagreeing with
+// the real thing). The two backends' rules genuinely disagree in common cases
+// -- e.g. dpkg treats "~" as always sorting before everything, while pacman's
+// vercmp does not -- so PackageModel and PackageFilterProxy must go through
+// this instead of constructing a VersionNumber directly whenever the version
+// strings being compared could be pacman's. Returns <0 if a is older than b,
+// >0 if a is newer, 0 if equal -- the same convention as the real `vercmp` CLI.
+[[nodiscard]] int compareVersions(const QString &a, const QString &b);
+
 } // namespace PackageBackend

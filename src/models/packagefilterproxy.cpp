@@ -24,6 +24,9 @@
 #include <QRegularExpression>
 
 #include "../versionnumber.h"
+#ifdef PACKAGE_BACKEND_PACMAN
+#include "../packagebackend.h"
+#endif
 
 PackageFilterProxy::PackageFilterProxy(QObject *parent)
     : QSortFilterProxyModel(parent)
@@ -121,9 +124,17 @@ bool PackageFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 bool PackageFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
     if (left.column() == TreeCol::RepoVersion || left.column() == TreeCol::InstalledVersion) {
-        const VersionNumber leftVersion(left.data(Qt::DisplayRole).toString());
-        const VersionNumber rightVersion(right.data(Qt::DisplayRole).toString());
+        const QString leftStr = left.data(Qt::DisplayRole).toString();
+        const QString rightStr = right.data(Qt::DisplayRole).toString();
+#ifdef PACKAGE_BACKEND_PACMAN
+        // See PackageModel::updateInstalledVersions() -- same reasoning: pacman
+        // version strings must not be ordered with dpkg's VersionNumber rules.
+        return PackageBackend::compareVersions(leftStr, rightStr) < 0;
+#else
+        const VersionNumber leftVersion(leftStr);
+        const VersionNumber rightVersion(rightStr);
         return leftVersion < rightVersion;
+#endif
     }
     return QSortFilterProxyModel::lessThan(left, right);
 }

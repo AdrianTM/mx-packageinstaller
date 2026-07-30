@@ -22,7 +22,10 @@
 
 #include "packagebackend.h"
 
+#include <QDebug>
 #include <QProcess>
+
+#include <dlfcn.h>
 
 #include "cmd.h"
 
@@ -137,6 +140,13 @@ QHash<QString, VersionNumber> PackageBackend::listInstalledVersions(bool *ok)
     for (const QString &line : list.split('\n', Qt::SkipEmptyParts)) {
         const QStringList parts = line.split(' ', Qt::SkipEmptyParts);
         if (parts.size() == 2) {
+            // VersionNumber is only used here as this shared function's return-type
+            // container for the raw version string -- every caller round-trips it
+            // straight back through toString() before comparing anything (see
+            // MainWindow::listInstalledVersions()), so no dpkg-style ordering is
+            // ever applied to it. Actual pacman version comparisons go through
+            // PackageBackend::compareVersions() below (which shells out to the
+            // real vercmp), not this type.
             installedVersions.insert(parts.at(0), VersionNumber(parts.at(1)));
         }
     }
@@ -168,4 +178,62 @@ bool PackageBackend::removePackages(Cmd &cmd, const QStringList &names)
     QStringList args {"-Rns"};
     args += names;
     return cmd.procAsRoot("pacman", args);
+}
+
+namespace {
+
+using AlpmPkgVercmpFn = int (*)(const char *, const char *);
+
+// Resolves libalpm's alpm_pkg_vercmp() via dlopen/dlsym rather than linking
+// against it at build time: there is no libalpm-dev package (headers +
+// pkg-config file) to build against in every environment this project is
+// built in, but the shared library itself is always present at runtime --
+// pacman is dynamically linked against it, so anywhere PACKAGE_BACKEND=pacman
+// actually runs, libalpm.so is already loaded into the process or trivially
+// loadable. This gets the real, exact libalpm ordering rules (including its
+// "~" and unmarked-trailing-suffix behavior, which genuinely differs from
+// dpkg's VersionNumber) as a single fast in-process call, with no subprocess
+// spawned per comparison -- callers (PackageModel::updateInstalledVersions(),
+// PackageFilterProxy::lessThan()) can be called once per package or
+// O(n log n) times while sorting a full repo listing, so shelling out to the
+// `vercmp` CLI per call (an earlier version of this fix did) would spawn
+// thousands to hundreds of thousands of processes on the GUI thread.
+AlpmPkgVercmpFn resolveAlpmPkgVercmp()
+{
+    // RTLD_NOLOAD first: if something else in the process already dlopen'd (or
+    // linked) libalpm, reuse that handle instead of loading a second copy.
+    void *handle = dlopen("libalpm.so", RTLD_NOW | RTLD_NOLOAD);
+    if (!handle) {
+        handle = dlopen("libalpm.so", RTLD_NOW);
+    }
+    if (!handle) {
+        // Sonames are versioned (e.g. libalpm.so.15); try the unversioned name
+        // first since it's what a `-dev`-style symlink would provide, then
+        // fall back to the versioned name pacman's own package installs.
+        handle = dlopen("libalpm.so.15", RTLD_NOW);
+    }
+    if (!handle) {
+        qWarning() << "Could not dlopen libalpm to compare pacman package versions:" << dlerror();
+        return nullptr;
+    }
+    auto fn = reinterpret_cast<AlpmPkgVercmpFn>(dlsym(handle, "alpm_pkg_vercmp"));
+    if (!fn) {
+        qWarning() << "libalpm loaded but alpm_pkg_vercmp symbol not found:" << dlerror();
+    }
+    return fn;
+}
+
+} // namespace
+
+int PackageBackend::compareVersions(const QString &a, const QString &b)
+{
+    // Resolved once and cached (function-local static init is thread-safe, and
+    // a nullptr result -- libalpm somehow unavailable -- is itself cached so a
+    // broken environment doesn't retry a dlopen() on every single comparison).
+    static const AlpmPkgVercmpFn alpmPkgVercmp = resolveAlpmPkgVercmp();
+    if (!alpmPkgVercmp) {
+        qWarning() << "Cannot compare pacman versions" << a << "and" << b << "-- treating as equal";
+        return 0;
+    }
+    return alpmPkgVercmp(a.toUtf8().constData(), b.toUtf8().constData());
 }

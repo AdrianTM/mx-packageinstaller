@@ -22,6 +22,9 @@
 #include "packagemodel.h"
 
 #include "../versionnumber.h"
+#ifdef PACKAGE_BACKEND_PACMAN
+#include "../packagebackend.h"
+#endif
 
 PackageModel::PackageModel(QObject *parent)
     : QAbstractTableModel(parent)
@@ -270,9 +273,19 @@ void PackageModel::updateInstalledVersions(const QHash<QString, QString> &versio
         if (it != versions.end()) {
             pkg.installedVersion = it.value();
             if (!pkg.repoVersion.isEmpty()) {
+#ifdef PACKAGE_BACKEND_PACMAN
+                // pacman's version-ordering rules (tilde, unmarked suffixes, ...)
+                // genuinely disagree with dpkg's in places -- see
+                // PackageBackend::compareVersions()'s doc comment -- so this
+                // must not go through VersionNumber.
+                pkg.status = (PackageBackend::compareVersions(pkg.repoVersion, pkg.installedVersion) > 0)
+                                 ? Status::Upgradable
+                                 : Status::Installed;
+#else
                 const VersionNumber repoVersion(pkg.repoVersion);
                 const VersionNumber installedVersion(pkg.installedVersion);
                 pkg.status = (repoVersion > installedVersion) ? Status::Upgradable : Status::Installed;
+#endif
             } else {
                 pkg.status = Status::Installed;
             }

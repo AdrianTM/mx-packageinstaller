@@ -256,6 +256,15 @@ target_link_libraries(mx-packageinstaller
     Qt6::Xml
 )
 
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    # packagebackend_pacman.cpp dlopen()s libalpm at runtime (see its
+    # compareVersions() for why: it wants alpm_pkg_vercmp() without requiring
+    # libalpm-dev's headers/pkg-config file at build time). dlopen/dlsym
+    # themselves come from libdl pre-glibc-2.34 and from libc itself after;
+    # CMAKE_DL_LIBS resolves to whichever is correct for the toolchain.
+    target_link_libraries(mx-packageinstaller ${CMAKE_DL_LIBS})
+endif()
+
 target_link_libraries(helper
     Qt6::Core
     Qt6::Xml
