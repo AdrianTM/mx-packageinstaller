@@ -71,7 +71,16 @@ bool LockFile::isLocked()
 // Check if the file is locked and pop up a message
 bool LockFile::isLockedGUI()
 {
+    if (Cmd::elevationDismissed()) {
+        return true;
+    }
     const QString proc = getLockingProcess();
+    if (Cmd::elevationDismissed()) {
+        // The lock check itself required elevation and the user dismissed it.
+        // Cmd already showed the "Administrator Access Required" message; block
+        // the operation without adding a misleading lock warning.
+        return true;
+    }
     if (!proc.isEmpty()) {
         QMessageBox::warning(nullptr, QObject::tr("Warning"),
                              QObject::tr("Pacman database is locked by another program: %1"
