@@ -39,6 +39,7 @@
 #include <cstdio>
 #include <cstring>
 #include <cstdlib>
+#include <optional>
 #include <vector>
 
 #include <fcntl.h>
@@ -192,22 +193,27 @@ void terminateProcessGroup(QProcess &process)
         process.closeWriteChannel();
     }
 
-    QSocketNotifier stdinNotifier(stdinFile.handle(), QSocketNotifier::Read);
-    stdinNotifier.setEnabled(stdinOpen);
-    QObject::connect(&stdinNotifier, &QSocketNotifier::activated, [&](QSocketDescriptor) {
-        const QByteArray data = stdinFile.read(4096);
-        if (data.isEmpty()) {
-            stdinNotifier.setEnabled(false);
-            if (cancelOnStdinEof) {
-                result.cancelled = true;
-                terminateProcessGroup(process);
+    // QSocketNotifier requires a valid descriptor; stdinFile.handle() returns -1
+    // when stdinOpen is false, so only construct it when there's a real fd to watch
+    // instead of building one with an invalid descriptor and immediately disabling it.
+    std::optional<QSocketNotifier> stdinNotifier;
+    if (stdinOpen) {
+        stdinNotifier.emplace(stdinFile.handle(), QSocketNotifier::Read);
+        QObject::connect(&*stdinNotifier, &QSocketNotifier::activated, [&](QSocketDescriptor) {
+            const QByteArray data = stdinFile.read(4096);
+            if (data.isEmpty()) {
+                stdinNotifier->setEnabled(false);
+                if (cancelOnStdinEof) {
+                    result.cancelled = true;
+                    terminateProcessGroup(process);
+                } else {
+                    process.closeWriteChannel();
+                }
             } else {
-                process.closeWriteChannel();
+                process.write(data);
             }
-        } else {
-            process.write(data);
-        }
-    });
+        });
+    }
 
     while (process.state() != QProcess::NotRunning) {
         process.waitForFinished(50);
