@@ -136,6 +136,15 @@ void TestVersionNumber::testDebianRevisionComparisons()
     compareVersions("1.0", "1.0-1", true); // no revision < with revision
     compareVersions("1.0-2", "1.0-1", false);
     compareVersions("1.0-1ubuntu1", "1.0-1ubuntu2", true);
+
+    // dpkg treats a missing debian_revision as equivalent to an explicit "-0"
+    // (verified against real `dpkg --compare-versions 1.0 eq 1.0-0`); real
+    // Debian packages do ship an explicit "-0" (e.g. toot 0.48.1-0), so a
+    // bare upstream version must compare equal to it, not older.
+    QCOMPARE(VersionNumber("1.0"), VersionNumber("1.0-0"));
+    QVERIFY(VersionNumber("1.0") == VersionNumber("1.0-0"));
+    QVERIFY(!(VersionNumber("1.0") < VersionNumber("1.0-0")));
+    QVERIFY(!(VersionNumber("1.0-0") < VersionNumber("1.0")));
 }
 
 void TestVersionNumber::testComplexVersions()
