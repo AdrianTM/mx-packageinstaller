@@ -4,4 +4,4 @@
 # dpkg's status/available database files. Probing this exact lock path is
 # the technique dpkg itself expects other tools to use to detect that it is
 # running; there is no dpkg-query equivalent for lock ownership.
-uses-dpkg-database-directly usr/libexec/mx-packageinstaller/helper
+uses-dpkg-database-directly [usr/libexec/mx-packageinstaller/helper]
