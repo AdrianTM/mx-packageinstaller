@@ -11,6 +11,7 @@ private slots:
     void testStatusFilter();
     void testSearchText();
     void testVisibleSourceRows();
+    void testSortByCheckColumn();
 
 private:
     QVector<PackageData> createPackages() const;
@@ -131,6 +132,29 @@ void TestPackageFilterProxy::testVisibleSourceRows()
     QCOMPARE(rows.at(1), 3);
     QCOMPARE(rows.at(2), 4);
 #endif
+}
+
+void TestPackageFilterProxy::testSortByCheckColumn()
+{
+    PackageModel model;
+    model.setPackageData(createPackages());
+
+    PackageFilterProxy proxy;
+    proxy.setSourceModel(&model);
+    proxy.setHideLibraries(false);
+    proxy.sort(TreeCol::Check, Qt::AscendingOrder);
+
+    // Status enum order is Installed(1) < Upgradable(2) < NotInstalled(3) < Autoremovable(4);
+    // sorting the icon column should group rows by that status, not leave them unordered.
+    QCOMPARE(proxy.rowCount(), 6);
+    for (int i = 0; i < proxy.rowCount() - 1; ++i) {
+        const int leftStatus = model.packageAt(proxy.mapToSource(proxy.index(i, TreeCol::Check)).row())->status;
+        const int rightStatus = model.packageAt(proxy.mapToSource(proxy.index(i + 1, TreeCol::Check)).row())->status;
+        QVERIFY(leftStatus <= rightStatus);
+    }
+    QCOMPARE(proxy.index(0, TreeCol::Name).data().toString(), QString("libfoo"));
+    QCOMPARE(proxy.index(1, TreeCol::Name).data().toString(), QString("firefox"));
+    QCOMPARE(proxy.index(2, TreeCol::Name).data().toString(), QString("vim"));
 }
 
 QTEST_MAIN(TestPackageFilterProxy)

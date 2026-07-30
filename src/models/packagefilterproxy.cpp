@@ -123,6 +123,20 @@ bool PackageFilterProxy::filterAcceptsRow(int sourceRow, const QModelIndex &sour
 
 bool PackageFilterProxy::lessThan(const QModelIndex &left, const QModelIndex &right) const
 {
+    if (left.column() == TreeCol::Check) {
+        // The Check column only exposes a checkbox state (Qt::CheckStateRole) and a
+        // status icon (Qt::DecorationRole), neither of which QSortFilterProxyModel's
+        // default Qt::DisplayRole-based lessThan() can compare -- so clicking this
+        // header would otherwise leave every row "equal" and never reorder. Sort by
+        // the underlying package status instead, matching what the icon represents.
+        auto *model = qobject_cast<PackageModel *>(sourceModel());
+        const PackageData *leftPkg = model ? model->packageAt(left.row()) : nullptr;
+        const PackageData *rightPkg = model ? model->packageAt(right.row()) : nullptr;
+        if (leftPkg && rightPkg) {
+            return leftPkg->status < rightPkg->status;
+        }
+        return false;
+    }
     if (left.column() == TreeCol::RepoVersion || left.column() == TreeCol::InstalledVersion) {
         const QString leftStr = left.data(Qt::DisplayRole).toString();
         const QString rightStr = right.data(Qt::DisplayRole).toString();
