@@ -357,7 +357,7 @@ private:
                                  const QStringList &postUninstall = {});
     bool updateApt();
     [[nodiscard]] static QString convert(quint64 bytes);
-    [[nodiscard]] static quint64 convert(const QString &size);
+    [[nodiscard]] static quint64 convert(const QString &size, bool *ok = nullptr);
     void blockInterfaceFP();
     void buildChangeList(const QString &packageName, Qt::CheckState state);
     void buildFlatpakChangeList(const QString &fullName, Qt::CheckState state, int status);

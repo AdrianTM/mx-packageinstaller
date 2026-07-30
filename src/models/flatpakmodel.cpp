@@ -24,6 +24,7 @@
 #include "../packagestatus.h"
 #include "../sizeutils.h"
 
+#include <QDebug>
 #include <QSet>
 
 FlatpakModel::FlatpakModel(QObject *parent)
@@ -181,7 +182,12 @@ void FlatpakModel::setFlatpakData(const QVector<FlatpakData> &flatpaks)
     m_refToRow.clear();
     m_refToRow.reserve(m_flatpaks.size());
     for (int i = 0; i < m_flatpaks.size(); ++i) {
-        m_flatpaks[i].sizeBytes = sizeStringToBytes(m_flatpaks.at(i).size);
+        bool ok = false;
+        m_flatpaks[i].sizeBytes = sizeStringToBytes(m_flatpaks.at(i).size, &ok);
+        if (!ok && !m_flatpaks.at(i).size.isEmpty()) {
+            qWarning() << "FlatpakModel: could not parse size" << m_flatpaks.at(i).size
+                       << "for" << m_flatpaks.at(i).canonicalRef;
+        }
         m_refToRow.insert(m_flatpaks.at(i).canonicalRef, i);
     }
     endResetModel();
@@ -191,7 +197,11 @@ void FlatpakModel::addFlatpak(const FlatpakData &flatpak)
 {
     int row = static_cast<int>(m_flatpaks.size());
     FlatpakData data = flatpak;
-    data.sizeBytes = sizeStringToBytes(data.size);
+    bool ok = false;
+    data.sizeBytes = sizeStringToBytes(data.size, &ok);
+    if (!ok && !data.size.isEmpty()) {
+        qWarning() << "FlatpakModel: could not parse size" << data.size << "for" << data.canonicalRef;
+    }
     beginInsertRows(QModelIndex(), row, row);
     m_flatpaks.append(data);
     m_refToRow.insert(data.canonicalRef, row);
@@ -308,7 +318,12 @@ void FlatpakModel::setInstalledSizes(const QHash<QString, QString> &sizeMap)
         auto it = sizeMap.find(m_flatpaks[i].canonicalRef);
         if (it != sizeMap.end() && m_flatpaks[i].size != it.value()) {
             m_flatpaks[i].size = it.value();
-            m_flatpaks[i].sizeBytes = sizeStringToBytes(it.value());
+            bool ok = false;
+            m_flatpaks[i].sizeBytes = sizeStringToBytes(it.value(), &ok);
+            if (!ok && !it.value().isEmpty()) {
+                qWarning() << "FlatpakModel: could not parse size" << it.value() << "for"
+                           << m_flatpaks.at(i).canonicalRef;
+            }
             emit dataChanged(index(i, FlatCol::Size), index(i, FlatCol::Size));
         }
     }
@@ -319,7 +334,7 @@ void FlatpakModel::setIcons(const QIcon &installed)
     m_iconInstalled = installed;
 }
 
-quint64 FlatpakModel::sizeStringToBytes(const QString &size)
+quint64 FlatpakModel::sizeStringToBytes(const QString &size, bool *ok)
 {
-    return SizeUtils::sizeStringToBytes(size);
+    return SizeUtils::sizeStringToBytes(size, ok);
 }

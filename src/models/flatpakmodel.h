@@ -79,7 +79,7 @@ public:
 
     void setIcons(const QIcon &installed);
 
-    [[nodiscard]] static quint64 sizeStringToBytes(const QString &size);
+    [[nodiscard]] static quint64 sizeStringToBytes(const QString &size, bool *ok = nullptr);
 
 signals:
     void checkStateChanged(const QString &fullName, Qt::CheckState state, int status);

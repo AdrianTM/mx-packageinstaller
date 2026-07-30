@@ -26,6 +26,9 @@
 #include <QString>
 #include <QtGlobal>
 
+#include <cmath>
+#include <limits>
+
 namespace SizeUtils
 {
 
@@ -50,8 +53,18 @@ inline QString normalizeNumber(QString number)
 }
 } // namespace detail
 
-inline quint64 sizeStringToBytes(const QString &size)
+// Parses a human-readable size string (as emitted by flatpak/pacman/apt output)
+// into a byte count. Returns 0 and sets *ok to false (when ok is non-null) if
+// the string cannot be parsed, uses a unit this function doesn't recognize, or
+// the computed byte count doesn't fit in a quint64. On success *ok is set to
+// true. Callers that don't care about distinguishing failure from a genuine
+// zero-byte size may pass ok == nullptr (the default).
+inline quint64 sizeStringToBytes(const QString &size, bool *ok = nullptr)
 {
+    if (ok) {
+        *ok = false;
+    }
+
     QString normalized = size.trimmed();
     normalized.replace(QChar(0x00a0), QLatin1Char(' '));
     normalized.replace(QChar(0x202f), QLatin1Char(' '));
@@ -63,16 +76,19 @@ inline quint64 sizeStringToBytes(const QString &size)
         return 0;
     }
 
-    bool ok = false;
-    const double value = detail::normalizeNumber(match.captured(1)).toDouble(&ok);
-    if (!ok || value < 0.0) {
+    bool numberOk = false;
+    const double value = detail::normalizeNumber(match.captured(1)).toDouble(&numberOk);
+    if (!numberOk || !std::isfinite(value) || value < 0.0) {
         return 0;
     }
 
     // Flatpak formats sizes with SI decimal units (1 kB = 1000 bytes)
     const QString unit = match.captured(2).toUpper();
     quint64 multiplier = 1;
-    if (unit == QLatin1String("KB")) {
+    if (unit.isEmpty() || unit == QLatin1String("B") || unit == QLatin1String("BYTE")
+        || unit == QLatin1String("BYTES")) {
+        multiplier = 1ULL;
+    } else if (unit == QLatin1String("KB")) {
         multiplier = 1000ULL;
     } else if (unit == QLatin1String("KIB")) {
         multiplier = 1024ULL;
@@ -88,9 +104,25 @@ inline quint64 sizeStringToBytes(const QString &size)
         multiplier = 1000ULL * 1000ULL * 1000ULL * 1000ULL;
     } else if (unit == QLatin1String("TIB")) {
         multiplier = 1024ULL * 1024ULL * 1024ULL * 1024ULL;
+    } else {
+        // Unrecognized unit -- don't silently pretend it's a byte count.
+        return 0;
     }
 
-    return static_cast<quint64>(value * static_cast<double>(multiplier));
+    const double bytes = value * static_cast<double>(multiplier);
+    // numeric_limits<quint64>::max() (2^64 - 1) isn't exactly representable as a
+    // double -- it rounds up to 2^64 -- so compare with >= rather than > to make
+    // sure a value that rounds to exactly 2^64 (which is not a valid quint64) is
+    // still rejected instead of hitting UB in the cast below.
+    constexpr double maxBytes = static_cast<double>(std::numeric_limits<quint64>::max());
+    if (!std::isfinite(bytes) || bytes < 0.0 || bytes >= maxBytes) {
+        return 0;
+    }
+
+    if (ok) {
+        *ok = true;
+    }
+    return static_cast<quint64>(bytes);
 }
 
 } // namespace SizeUtils

@@ -921,9 +921,9 @@ bool MainWindow::updateApt()
 }
 
 // Convert different size units to bytes
-quint64 MainWindow::convert(const QString &size)
+quint64 MainWindow::convert(const QString &size, bool *ok)
 {
-    return FlatpakModel::sizeStringToBytes(size);
+    return FlatpakModel::sizeStringToBytes(size, ok);
 }
 
 // Convert to string (#bytes, KiB, MiB, and GiB)
@@ -947,7 +947,16 @@ void MainWindow::listSizeInstalledFP()
 
     auto sumSizes = [](const QList<QString> &sizes) {
         return std::accumulate(sizes.cbegin(), sizes.cend(), quint64(0),
-                               [](quint64 acc, const QString &item) { return acc + convert(item); });
+                               [](quint64 acc, const QString &item) {
+                                   bool ok = false;
+                                   const quint64 bytes = convert(item, &ok);
+                                   if (!ok && !item.isEmpty()) {
+                                       qWarning() << "MainWindow: could not parse installed Flatpak size" << item;
+                                   }
+                                   // Skip sizes that failed to parse rather than folding a bogus
+                                   // value (or a silently-wrong small one) into the running total.
+                                   return ok ? acc + bytes : acc;
+                               });
     };
 
     quint64 total = 0;
@@ -958,7 +967,15 @@ void MainWindow::listSizeInstalledFP()
         QStringList list = cmd.getOut("flatpak", flatpakArgsWithScope(fpUser, {"list", "--columns", "app,size"}),
                                       Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
         total = std::accumulate(list.cbegin(), list.cend(), quint64(0),
-                                [](quint64 acc, const QString &item) { return acc + convert(item.section('\t', 1)); });
+                                [](quint64 acc, const QString &item) {
+                                    const QString sizeField = item.section('\t', 1);
+                                    bool ok = false;
+                                    const quint64 bytes = convert(sizeField, &ok);
+                                    if (!ok && !sizeField.isEmpty()) {
+                                        qWarning() << "MainWindow: could not parse installed Flatpak size" << sizeField;
+                                    }
+                                    return ok ? acc + bytes : acc;
+                                });
     }
     ui->labelNumSize->setText(convert(total));
 }
