@@ -184,6 +184,7 @@ set(SOURCES
 
 set(HELPER_SOURCES
     src/helper.cpp
+    src/helperengine.cpp
 )
 
 set(HEADERS

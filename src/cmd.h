@@ -44,6 +44,16 @@ public:
     [[nodiscard]] static bool elevationDismissed();
     static void resetElevationDismissed();
 
+    // Pure classification logic behind isAuthenticationDismissed(), pulled out so
+    // it can be unit-tested without actually spawning pkexec: pkexec returns 126
+    // or 127 when auth is dismissed (varies by version), but a real command
+    // failure can produce the same exit code. The helper atomically creates the
+    // marker file the instant it starts running as root, so its absence
+    // alongside one of those exit codes is what actually distinguishes "auth was
+    // dismissed" from "the elevated command itself exited 126/127."
+    [[nodiscard]] static bool classifyAuthDismissed(QProcess::ExitStatus exitStatus, int exitCode,
+                                                    bool markerPathEmpty, bool markerExists);
+
 signals:
     void done();
     void errorAvailable(const QString &err);

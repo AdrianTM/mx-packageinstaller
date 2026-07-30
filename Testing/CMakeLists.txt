@@ -465,6 +465,74 @@ endif()
 
 add_test(NAME CmdTest COMMAND test_cmd)
 
+# Test for the backend-agnostic scaffolding behind src/helper.cpp (process
+# spawning, stdin/EOF cancellation semantics, process-group termination, and
+# the auth-success marker mechanics), extracted into src/helperengine.{h,cpp}
+# so it can be exercised directly -- unprivileged -- without going through
+# pkexec. See src/helperengine.h for what's covered.
+add_executable(test_helperengine
+    test_helperengine.cpp
+    ../src/helperengine.cpp
+)
+
+target_link_libraries(test_helperengine
+    Qt6::Core
+    Qt6::Test
+    util
+)
+
+target_compile_options(test_helperengine PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_helperengine PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_helperengine PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME HelperEngineTest COMMAND test_helperengine)
+
+# Test that drives the actual, fully-linked `helper` binary as a subprocess
+# (never through pkexec -- see test_helper.cpp for why that's still a
+# meaningful, unprivileged test of its argv/marker/allow-list contract).
+add_executable(test_helper
+    test_helper.cpp
+)
+
+target_link_libraries(test_helper
+    Qt6::Core
+    Qt6::Test
+)
+
+# Depend on the real `helper` binary and point at wherever it actually landed
+# in the build tree (HELPER_PATH, used by test_cmd above, is the *install*
+# path instead, which need not exist yet in a fresh build directory).
+add_dependencies(test_helper helper)
+target_compile_definitions(test_helper PRIVATE
+    HELPER_BINARY_PATH="$<TARGET_FILE:helper>"
+)
+
+target_compile_options(test_helper PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_helper PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_helper PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME HelperTest COMMAND test_helper)
+
 add_executable(test_packagelistparser
     test_packagelistparser.cpp
 )
@@ -501,13 +569,13 @@ add_test(NAME SizeUtilsTest COMMAND test_sizeutils)
 set(ALL_TEST_NAMES
     VersionNumberTest PackageModelTest FlatpakModelTest
     PackageFilterProxyTest FlatpakFilterProxyTest SnapModelTest SnapFilterProxyTest
-    PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest PackageListParserTest
-    SizeUtilsTest
+    PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest HelperEngineTest HelperTest
+    PackageListParserTest SizeUtilsTest
 )
 set(ALL_TEST_TARGETS
     test_versionnumber test_packagemodel test_flatpakmodel
     test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
-    test_popularmodel test_popularfilterproxy test_outputrender test_cmd
+    test_popularmodel test_popularfilterproxy test_outputrender test_cmd test_helperengine test_helper
     test_packagelistparser test_sizeutils
 )
 if(NOT PACKAGE_BACKEND STREQUAL "pacman")

@@ -281,17 +281,23 @@ QString Cmd::readAllOutput() const
 
 bool Cmd::isAuthenticationDismissed() const
 {
-    if (exitStatus() != QProcess::NormalExit || helperMarkerPath.isEmpty()) {
+    return classifyAuthDismissed(exitStatus(), exitCode(), helperMarkerPath.isEmpty(),
+                                 QFile::exists(helperMarkerPath));
+}
+
+bool Cmd::classifyAuthDismissed(QProcess::ExitStatus exitStatus, int exitCode, bool markerPathEmpty,
+                                bool markerExists)
+{
+    if (exitStatus != QProcess::NormalExit || markerPathEmpty) {
         return false;
     }
     // pkexec returns 126 or 127 when auth is dismissed (varies by version).
-    const int code = exitCode();
-    if (code != 126 && code != 127) {
+    if (exitCode != 126 && exitCode != 127) {
         return false;
     }
     // The helper creates a marker file when it starts. If the file exists, auth succeeded
     // (helper ran). If it doesn't exist with exit code 126/127, auth was dismissed.
-    return !QFile::exists(helperMarkerPath);
+    return !markerExists;
 }
 
 void Cmd::handleElevationError()
