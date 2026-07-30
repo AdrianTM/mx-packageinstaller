@@ -440,12 +440,23 @@ QStringList listFlatpaksImpl(const QString &remote, const QString &fpUserScope, 
 }
 } // namespace
 
+#ifdef MXPI_TESTING
+MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent,
+                       BackgroundWorkerTestHooks testHooks, bool testSkipFlatpakPreload)
+    : QDialog(parent),
+      ui(new Ui::MainWindow),
+      dictionary("/usr/share/mx-packageinstaller-pkglist/category.dict", QSettings::IniFormat),
+      args {argParser},
+      testSkipFlatpakPreload {testSkipFlatpakPreload}
+{
+#else
 MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     : QDialog(parent),
       ui(new Ui::MainWindow),
       dictionary("/usr/share/mx-packageinstaller-pkglist/category.dict", QSettings::IniFormat),
       args {argParser}
 {
+#endif
     qDebug().noquote() << QCoreApplication::applicationName() << "version:" << QCoreApplication::applicationVersion();
     ui->setupUi(this);
     outputRenderer.setOutputBox(ui->outputBox);
@@ -490,16 +501,38 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // read is; pacman's Enabled tab just loads lazily on first visit instead.)
 #ifndef PACKAGE_BACKEND_PACMAN
     [[maybe_unused]] auto future = QtConcurrent::run(
-        [this, guardMutex = destructionGuardMutex, destructingFlag = destructing] {
+        [this, guardMutex = destructionGuardMutex, destructingFlag = destructing
+#ifdef MXPI_TESTING
+        , testHooks
+#endif
+        ] {
         AptCache cache;
         auto loadedList = cache.getCandidates();
 
+#ifdef MXPI_TESTING
+        if (testHooks.beforeGuardCheck) {
+            testHooks.beforeGuardCheck();
+        }
+        // Fires on every exit from here on, regardless of which branch below is
+        // taken -- lets a test wait for a real "the guarded section is done"
+        // signal instead of assuming it completed within some time budget.
+        auto workerFinishedGuard = qScopeGuard([&testHooks] {
+            if (testHooks.workerFinished) {
+                testHooks.workerFinished();
+            }
+        });
+#endif
         // See destructionGuardMutex's declaration: this must be the worker's one and
         // only touch of `this`, immediately preceded by the check below.
         QMutexLocker locker(guardMutex.get());
         if (*destructingFlag) {
             return;
         }
+#ifdef MXPI_TESTING
+        if (testHooks.afterGuardPassed) {
+            testHooks.afterGuardPassed();
+        }
+#endif
         // Set the model on main thread after preload — all member access happens on the GUI thread
         QMetaObject::invokeMethod(
             this,
@@ -552,13 +585,33 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // safe to call off the GUI thread (matching how the arch branch originally
     // loaded this via QtConcurrent, before the unification made it synchronous).
     [[maybe_unused]] auto installedFuture = QtConcurrent::run(
-        [this, guardMutex = destructionGuardMutex, destructingFlag = destructing] {
+        [this, guardMutex = destructionGuardMutex, destructingFlag = destructing
+#ifdef MXPI_TESTING
+        , testHooks
+#endif
+        ] {
         bool ok = false;
         auto loaded = PackageBackend::listInstalled(&ok);
+#ifdef MXPI_TESTING
+        if (testHooks.beforeGuardCheck) {
+            testHooks.beforeGuardCheck();
+        }
+        // See the AptCache worker's matching comment above.
+        auto workerFinishedGuard = qScopeGuard([&testHooks] {
+            if (testHooks.workerFinished) {
+                testHooks.workerFinished();
+            }
+        });
+#endif
         QMutexLocker locker(guardMutex.get());
         if (*destructingFlag) {
             return;
         }
+#ifdef MXPI_TESTING
+        if (testHooks.afterGuardPassed) {
+            testHooks.afterGuardPassed();
+        }
+#endif
         QMetaObject::invokeMethod(
             this,
             [this, ok, loaded = std::move(loaded)]() mutable {
@@ -569,21 +622,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                     return;
                 }
                 installedPackages = std::move(loaded);
-                if (enabledReposRenderedWithoutInstalled) {
-                    // The Enabled Repos view already rendered once (see displayPackages())
-                    // while this fetch was still in flight, so createPackageDataList()'s
-                    // merge of installed-but-not-in-repo packages silently found nothing to
-                    // add. Force the next render of that tab to redo the merge now that the
-                    // data is here -- dirtyEnabledRepos makes handleEnabledReposTab() go back
-                    // through buildPackageLists()/displayPackages() instead of taking the
-                    // "nothing changed" fast path, whether that happens right now (still on
-                    // the tab) or on a later visit (dirtyEnabledRepos persists until then).
-                    enabledReposRenderedWithoutInstalled = false;
-                    dirtyEnabledRepos = true;
-                    if (currentTree == ui->treeEnabled) {
-                        handleEnabledReposTab(ui->searchBoxEnabled->text());
-                    }
-                }
+                handleInstalledPackagesArrived();
             },
             Qt::QueuedConnection);
     });
@@ -596,7 +635,16 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // on pacman, installedPackages is now filled in by a background QtConcurrent
     // task kicked off just above, so it's still empty at this exact point --
     // checkInstalled() would always say "not installed" and silently skip this.
-    if (arch != QLatin1String("i386") && !QStandardPaths::findExecutable(QStringLiteral("flatpak")).isEmpty()) {
+    // testSkipFlatpakPreload (test-only, see the MXPI_TESTING constructor overload)
+    // lets Testing/test_mainwindow.cpp construct a MainWindow without this preload
+    // chain reaching real flatpak remotes -- listFlatpaksImpl()'s "flatpak update
+    // --appstream <remote>" fallback can genuinely touch the network if a remote's
+    // local appstream cache is stale, which a test run must not do.
+    if (arch != QLatin1String("i386") && !QStandardPaths::findExecutable(QStringLiteral("flatpak")).isEmpty()
+#ifdef MXPI_TESTING
+        && !testSkipFlatpakPreload
+#endif
+        ) {
         // Three subprocess calls happen before the Flatpak tab is ready: the remote
         // list ("flatpak remote-list", ~30-150ms), then the remote catalog
         // ("flatpak remote-ls", ~250-400ms) and installed-list ("flatpak list") for
@@ -626,7 +674,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
             QMetaObject::invokeMethod(
                 this,
                 [this, remotes, remotesOk, scope, myGeneration, guardMutex, destructingFlag] {
-                    if (myGeneration != flatpakRequestGeneration) {
+                    if (isFlatpakGenerationStale(myGeneration)) {
                         // Superseded by a newer Flatpak load that started (and, being
                         // synchronous, already finished) while this fetch was in flight.
                         // Its result is current; publishing this stale one would clobber
@@ -667,7 +715,7 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                         QMetaObject::invokeMethod(
                             this,
                             [this, remoteEntries, allInstalled, scope, myGeneration] {
-                                if (myGeneration != flatpakRequestGeneration) {
+                                if (isFlatpakGenerationStale(myGeneration)) {
                                     // See the remotesFuture completion above -- a newer,
                                     // synchronous load has already published its own
                                     // (correct) data and reset the busy flag; don't stomp
@@ -1980,6 +2028,29 @@ void MainWindow::displayPackages()
     emit displayPackagesFinished();
 }
 
+#ifdef PACKAGE_BACKEND_PACMAN
+// See enabledReposRenderedWithoutInstalled's declaration: called once installedPackages
+// ("pacman -Qi") actually lands, from the constructor's fetch completion.
+void MainWindow::handleInstalledPackagesArrived()
+{
+    if (!enabledReposRenderedWithoutInstalled) {
+        return;
+    }
+    // The Enabled Repos view already rendered once (see displayPackages()) while this
+    // fetch was still in flight, so createPackageDataList()'s merge of
+    // installed-but-not-in-repo packages silently found nothing to add. Force the next
+    // render of that tab to redo the merge now that the data is here -- dirtyEnabledRepos
+    // makes handleEnabledReposTab() go back through buildPackageLists()/displayPackages()
+    // instead of taking the "nothing changed" fast path, whether that happens right now
+    // (still on the tab) or on a later visit (dirtyEnabledRepos persists until then).
+    enabledReposRenderedWithoutInstalled = false;
+    dirtyEnabledRepos = true;
+    if (currentTree == ui->treeEnabled) {
+        handleEnabledReposTab(ui->searchBoxEnabled->text());
+    }
+}
+#endif
+
 void MainWindow::displayAutoremovable()
 {
 #ifdef PACKAGE_BACKEND_PACMAN
@@ -2117,6 +2188,17 @@ void MainWindow::displayFlatpaks(bool forceUpdate)
     // on this path; it just needs to invalidate any older async completion still in
     // flight from the constructor's Flatpak startup preload (see there).
     ++flatpakRequestGeneration;
+
+#ifdef MXPI_TESTING
+    // testSkipFlatpakPreload (see the MXPI_TESTING constructor overload):
+    // Testing/test_mainwindow.cpp needs to verify this function bumps the
+    // generation as its first action without going on to touch real flatpak
+    // remotes -- loadFlatpakData()'s "flatpak update --appstream" fallback can
+    // genuinely reach the network, which a test run must not do.
+    if (testSkipFlatpakPreload) {
+        return;
+    }
+#endif
 
     setupFlatpakDisplay();
     loadFlatpakData();

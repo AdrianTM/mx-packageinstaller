@@ -6,8 +6,10 @@ project(mx-packageinstaller-tests)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-# Find Qt6 Test module
-find_package(Qt6 REQUIRED COMPONENTS Test Core Widgets)
+# Find Qt6 Test module. Network/Xml/Concurrent are only needed by test_mainwindow
+# (mainwindow.cpp itself uses all three), but are found once here alongside the
+# rest rather than in a second find_package call.
+find_package(Qt6 REQUIRED COMPONENTS Test Core Widgets Network Xml Concurrent)
 
 # Enable testing
 enable_testing()
@@ -15,6 +17,10 @@ enable_testing()
 # Set up test include directories
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/..)
 set(CMAKE_AUTOMOC ON)
+# Only test_mainwindow has a .ui file (src/mainwindow.ui, via mainwindow.cpp's
+# #include "ui_mainwindow.h") among this directory's sources; harmless to enable
+# globally since AUTOUIC only acts on targets whose SOURCES actually list a .ui file.
+set(CMAKE_AUTOUIC ON)
 
 # PACKAGE_BACKEND is inherited from the top-level CMakeLists.txt; propagate it to every
 # test target so backend-conditional code (e.g. PackageFilterProxy::isLibraryPackage())
@@ -565,18 +571,107 @@ endif()
 
 add_test(NAME SizeUtilsTest COMMAND test_sizeutils)
 
+# Test for MainWindow's asynchronous orchestration -- the destruction-safety guard
+# (destructionGuardMutex/destructing), the Flatpak generation staleness guard
+# (flatpakRequestGeneration/isFlatpakGenerationStale()), and, pacman-only, the
+# enabledReposRenderedWithoutInstalled/handleInstalledPackagesArrived() interaction.
+# The only test target that actually links and instantiates mainwindow.cpp, so it
+# needs (transitively) everything the real executable's SOURCES list does, plus the
+# Network/Xml/Concurrent Qt modules mainwindow.cpp itself uses directly. See
+# test_mainwindow.cpp's header comment for the MXPI_TESTING friend-access seam this
+# relies on.
+set(MAINWINDOW_TEST_SOURCES
+    test_mainwindow.cpp
+    ../src/mainwindow.cpp
+    ../src/mainwindow.ui
+    ../src/checkableheaderview.cpp
+    ../src/versionnumber.cpp
+    ../src/remotes.cpp
+    ../src/about.cpp
+    ../src/cmd.cpp
+    ../src/models/packagemodel.cpp
+    ../src/models/packagefilterproxy.cpp
+    ../src/models/flatpakmodel.cpp
+    ../src/models/flatpakfilterproxy.cpp
+    ../src/models/snapmodel.cpp
+    ../src/models/snapfilterproxy.cpp
+    ../src/models/popularmodel.cpp
+    ../src/models/popularfilterproxy.cpp
+)
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    list(APPEND MAINWINDOW_TEST_SOURCES
+        ../src/lockfile_pacman.cpp
+        ../src/packagebackend_pacman.cpp
+    )
+else()
+    list(APPEND MAINWINDOW_TEST_SOURCES
+        ../src/lockfile_apt.cpp
+        ../src/packagebackend_apt.cpp
+        ../src/aptcache.cpp
+    )
+endif()
+
+add_executable(test_mainwindow ${MAINWINDOW_TEST_SOURCES})
+
+# AUTOUIC resolves the "ui_mainwindow.h" that test_mainwindow.cpp includes by
+# searching for mainwindow.ui relative to this directory (Testing/), not the
+# directory the .ui SOURCES entry above actually lives in -- point it there
+# explicitly rather than relying on the implicit search picking up "../src".
+set_target_properties(test_mainwindow PROPERTIES
+    AUTOUIC_SEARCH_PATHS "${CMAKE_CURRENT_SOURCE_DIR}/../src"
+)
+
+target_link_libraries(test_mainwindow
+    Qt6::Core
+    Qt6::Test
+    Qt6::Widgets
+    Qt6::Network
+    Qt6::Xml
+    Qt6::Concurrent
+)
+
+if(PACKAGE_BACKEND STREQUAL "pacman")
+    target_link_libraries(test_mainwindow ${CMAKE_DL_LIBS})
+endif()
+
+target_compile_definitions(test_mainwindow PRIVATE
+    HELPER_PATH="${HELPER_PATH}"
+    MXPI_TESTING
+)
+
+target_compile_options(test_mainwindow PRIVATE
+    -Wpedantic
+    -pedantic
+    -Werror=return-type
+    -Werror=switch
+    -Werror=uninitialized
+)
+
+if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR USE_CLANG)
+    target_compile_options(test_mainwindow PRIVATE -Werror=return-stack-address)
+else()
+    target_compile_options(test_mainwindow PRIVATE -Werror=return-local-addr)
+endif()
+
+add_test(NAME MainWindowAsyncTest COMMAND test_mainwindow)
+# Safety net, not an expected runtime: this test's whole point is racing background
+# QtConcurrent workers against window destruction, so a regression could plausibly
+# hang (e.g. a modal error dialog with nothing to dismiss it) rather than crash
+# outright. Bound that instead of letting it stall the rest of the suite.
+set_tests_properties(MainWindowAsyncTest PROPERTIES TIMEOUT 180)
+
 # Keep the default CTest invocation usable on headless CI and local consoles.
 set(ALL_TEST_NAMES
     VersionNumberTest PackageModelTest FlatpakModelTest
     PackageFilterProxyTest FlatpakFilterProxyTest SnapModelTest SnapFilterProxyTest
     PopularModelTest PopularFilterProxyTest OutputRenderTest CmdTest HelperEngineTest HelperTest
-    PackageListParserTest SizeUtilsTest
+    PackageListParserTest SizeUtilsTest MainWindowAsyncTest
 )
 set(ALL_TEST_TARGETS
     test_versionnumber test_packagemodel test_flatpakmodel
     test_packagefilterproxy test_flatpakfilterproxy test_snapmodel test_snapfilterproxy
     test_popularmodel test_popularfilterproxy test_outputrender test_cmd test_helperengine test_helper
-    test_packagelistparser test_sizeutils
+    test_packagelistparser test_sizeutils test_mainwindow
 )
 if(NOT PACKAGE_BACKEND STREQUAL "pacman")
     list(APPEND ALL_TEST_NAMES AptCacheTest)
