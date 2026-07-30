@@ -51,7 +51,7 @@ bool PackageBackend::refreshRepositories(Cmd &cmd)
 QHash<QString, PackageInfo> pacmanAvailablePackages(bool *ok)
 {
     Cmd shell;
-    const QString output = shell.getOut("LANG=C pacman -Ss --color never");
+    const QString output = shell.getOut({{"LANG", "C"}}, "pacman", {"-Ss", "--color", "never"});
 
     if (ok) {
         *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
@@ -85,7 +85,7 @@ QHash<QString, PackageInfo> pacmanAvailablePackages(bool *ok)
 QHash<QString, PackageInfo> PackageBackend::listInstalled(bool *ok)
 {
     Cmd shell;
-    const QString list = shell.getOut("LANG=C pacman -Qi");
+    const QString list = shell.getOut({{"LANG", "C"}}, "pacman", {"-Qi"});
 
     if (ok) {
         *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
@@ -128,7 +128,7 @@ QHash<QString, VersionNumber> PackageBackend::listInstalledVersions(bool *ok)
 {
     QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
-    const QString list = shell.getOut("LANG=C pacman -Q", Cmd::QuietMode::Yes);
+    const QString list = shell.getOut({{"LANG", "C"}}, "pacman", {"-Q"}, Cmd::QuietMode::Yes);
 
     if (ok) {
         *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
@@ -162,7 +162,7 @@ bool PackageBackend::markManuallyInstalled(Cmd &cmd, const QStringList &names)
 
 QStringList PackageBackend::autoremovableCandidates(Cmd &cmd)
 {
-    return cmd.getOut("LANG=C pacman -Qtdq").split('\n', Qt::SkipEmptyParts);
+    return cmd.getOut({{"LANG", "C"}}, "pacman", {"-Qtdq"}).split('\n', Qt::SkipEmptyParts);
 }
 
 bool PackageBackend::installPackages(Cmd &cmd, const QStringList &names, const QStringList &extraArgs)

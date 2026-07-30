@@ -56,8 +56,9 @@ bool PackageBackend::refreshRepositories(Cmd &cmd)
 QHash<QString, PackageInfo> PackageBackend::listInstalled(bool *ok)
 {
     Cmd shell;
-    const QString list
-        = shell.getOut("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\\n'");
+    const QString list = shell.getOut(
+        {{"LANG", "C"}}, "dpkg-query",
+        {"-W", "-f=${db:Status-Abbrev} ${Package} ${Version} ${binary:Synopsis}\\n"});
 
     if (ok) {
         *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
@@ -94,8 +95,10 @@ QHash<QString, VersionNumber> PackageBackend::listInstalledVersions(bool *ok)
 {
     QHash<QString, VersionNumber> installedVersions;
     Cmd shell;
-    const QString command = QStringLiteral("LANG=C dpkg-query -W -f='${db:Status-Abbrev} ${Package} ${Version}\\n'");
-    const QStringList packageList = shell.getOut(command, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+    const QStringList packageList
+        = shell.getOut({{"LANG", "C"}}, "dpkg-query", {"-W", "-f=${db:Status-Abbrev} ${Package} ${Version}\\n"},
+                       Cmd::QuietMode::Yes)
+              .split('\n', Qt::SkipEmptyParts);
 
     if (ok) {
         *ok = shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0;
@@ -127,7 +130,7 @@ bool PackageBackend::markManuallyInstalled(Cmd &cmd, const QStringList &names)
 QStringList PackageBackend::autoremovableCandidates(Cmd &cmd)
 {
     QStringList names;
-    const QString aptOut = cmd.getOut("LANG=C apt-get --dry-run autoremove");
+    const QString aptOut = cmd.getOut({{"LANG", "C"}}, "apt-get", {"--dry-run", "autoremove"});
     for (const QString &line : aptOut.split('\n', Qt::SkipEmptyParts)) {
         if (line.startsWith("Remv ")) {
             const QString pkg = line.section(' ', 1, 1, QString::SectionSkipEmpty);

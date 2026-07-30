@@ -230,11 +230,6 @@ QString shellCommandFromArgs(const QStringList &args)
     return quoted.join(QLatin1Char(' '));
 }
 
-QString flatpakPtyCommand(const QString &command)
-{
-    return QStringLiteral("script -qefc %1 /dev/null").arg(shellSingleQuote(command));
-}
-
 void appendFlatpakStatusMessage(QPlainTextEdit *outputBox, const QString &message)
 {
     if (!outputBox) {
@@ -704,10 +699,10 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                         [this, remote, scope, archOption, myGeneration, guardMutex, destructingFlag] {
                         const QStringList remoteEntries = listFlatpaksImpl(remote, scope, archOption);
                         Cmd shell;
-                        const QString allInstalledCommand = QStringLiteral("flatpak list ") + scope
-                            + QStringLiteral("2>/dev/null --columns=ref,size");
                         const QStringList allInstalled
-                            = shell.getOut(allInstalledCommand, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+                            = shell.getOut("flatpak", flatpakArgsWithScope(scope, {"list", "--columns=ref,size"}),
+                                          Cmd::QuietMode::Yes, /*discardStderr=*/true)
+                                  .split('\n', Qt::SkipEmptyParts);
                         QMutexLocker locker(guardMutex.get());
                         if (*destructingFlag) {
                             return;
@@ -818,8 +813,10 @@ void MainWindow::setup()
     ui->tabWidget->setTabVisible(Tab::Test, QFile::exists("/etc/apt/sources.list.d/mx.list")
                                                 || QFile::exists("/etc/apt/sources.list.d/mx.sources"));
 
-    testInitiallyEnabled = cmd.run("apt-get update --print-uris | grep -m1 -qE "
-                                   + shellSingleQuote("/mx/testrepo/dists/" + verName + "/test/"));
+    testInitiallyEnabled = cmd.pipeline({
+        {"apt-get", {"update", "--print-uris"}},
+        {"grep", {"-m1", "-qE", "/mx/testrepo/dists/" + verName + "/test/"}},
+    });
 #endif
 
     setWindowTitle(tr("MX Package Installer"));
@@ -2249,9 +2246,11 @@ void MainWindow::loadFlatpakData()
     const QStringList remoteEntries = listFlatpaks(ui->comboRemote->currentText(), fpUser);
 
     // Optimize: Get all installed packages with one command (ref + size), then split by type
-    const QString allInstalledCommand = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("2>/dev/null --columns=ref,size");
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
-    const QStringList allInstalled = cmd.getOut(allInstalledCommand, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
+    const QStringList allInstalled
+        = cmd.getOut("flatpak", flatpakArgsWithScope(fpUser, {"list", "--columns=ref,size"}), Cmd::QuietMode::No,
+                     /*discardStderr=*/true)
+              .split('\n', Qt::SkipEmptyParts);
 
     processFlatpakData(remoteEntries, allInstalled, fpUser);
 }
@@ -2586,40 +2585,59 @@ bool MainWindow::confirmActions(const QString &names, const QString &action)
     QStringList detailedInstalledNames;
     QString detailedToInstall;
     QString detailedRemovedNames;
-    QString recommends;
-    QString recommendsAptitude;
     QString aptitudeInfo;
 
-    const QString frontend {QStringLiteral("DEBIAN_FRONTEND=%1 LANG=C ").arg(debconfFrontend())};
-    const QString aptget {QStringLiteral("apt-get -s -V -o=Dpkg::Use-Pty=0 ")};
-    const QString aptitude {QStringLiteral("aptitude -sy -V -o=Dpkg::Use-Pty=0 ")};
+    // DEBIAN_FRONTEND/LANG only matter to apt-get/aptitude themselves, so they're
+    // scoped to just those pipeline stages below, not the grep/awk stages.
+    const QHash<QString, QString> debconfAndLangEnv {{"DEBIAN_FRONTEND", debconfFrontend()}, {"LANG", "C"}};
     if (currentTree == ui->treeFlatpak && names != QLatin1String("flatpak")) {
         detailedInstalledNames = changeList;
     } else {
         // Determine recommends flags and target based on current tab
         QCheckBox *recommendsCheck = ui->checkBoxInstallRecommends;
-        QString target;
-        QString reinstall = QStringLiteral("--reinstall ");
+        QStringList target;
+        bool reinstall = true;
         if (currentTree == ui->treeBackports) {
             recommendsCheck = ui->checkBoxInstallRecommendsBP;
-            target = "-t " + verName + "-backports ";
+            target = {"-t", verName + "-backports"};
         } else if (currentTree == ui->treeMXtest) {
             recommendsCheck = ui->checkBoxInstallRecommendsMX;
-            target = QStringLiteral("-t mx ");
-            reinstall.clear();
+            target = {"-t", "mx"};
+            reinstall = false;
         }
-        recommends = recommendsCheck->isChecked() ? "--install-recommends " : "--no-install-recommends ";
-        recommendsAptitude = recommendsCheck->isChecked() ? "--with-recommends " : "--without-recommends ";
-        const QString quotedNames = shellCommandFromArgs(names.split(QLatin1Char(' '), Qt::SkipEmptyParts));
+        const QString recommends = recommendsCheck->isChecked() ? QStringLiteral("--install-recommends")
+                                                                 : QStringLiteral("--no-install-recommends");
+        const QString recommendsAptitude = recommendsCheck->isChecked() ? QStringLiteral("--with-recommends")
+                                                                         : QStringLiteral("--without-recommends");
+        const QStringList packageNames = names.split(QLatin1Char(' '), Qt::SkipEmptyParts);
 
-        const QString awkFilter =
-            R"lit(|grep 'Inst\|Remv' | awk '{V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1}')lit";
-        detailedNames = cmd.getOut(
-            frontend + aptget + action + ' ' + recommends + target + reinstall + quotedNames + awkFilter);
+        // The AWK script below isolates the three fields the confirmation dialog
+        // needs (package name, version/parenthetical, install-or-remove marker)
+        // out of apt-get's -s simulation output; kept as a single literal argv
+        // element, exactly as it was a single shell-quoted argument before.
+        static const QString awkFilter =
+            QStringLiteral(R"awk({V=""; P="";}; $3 ~ /^\[/ { V=$3 }; $3 ~ /^\(/ { P=$3 ")"}; $4 ~ /^\(/ {P=" => " $4 ")"};  {print $2 ";" V  P ";" $1})awk");
+
+        QStringList aptArgs {"-s", "-V", "-o=Dpkg::Use-Pty=0", action, recommends};
+        aptArgs += target;
+        if (reinstall) {
+            aptArgs << QStringLiteral("--reinstall");
+        }
+        aptArgs += packageNames;
+
+        QString pipelineOutput;
+        cmd.pipeline({
+            {"apt-get", aptArgs, debconfAndLangEnv},
+            {"grep", {QStringLiteral("Inst\\|Remv")}},
+            {"awk", {awkFilter}},
+        }, &pipelineOutput);
+        detailedNames = pipelineOutput;
         {
-            const QStringList aptLines
-                = cmd.getOut(frontend + aptitude + action + ' ' + recommendsAptitude + target + quotedNames)
-                      .split('\n', Qt::KeepEmptyParts);
+            QStringList aptitudeArgs {"-sy", "-V", "-o=Dpkg::Use-Pty=0", action, recommendsAptitude};
+            aptitudeArgs += target;
+            aptitudeArgs += packageNames;
+            const QStringList aptLines = cmd.getOut(debconfAndLangEnv, QStringLiteral("aptitude"), aptitudeArgs)
+                                              .split('\n', Qt::KeepEmptyParts);
             if (aptLines.isEmpty()) {
                 aptitudeInfo.clear();
             } else if (aptLines.size() >= 2) {
@@ -2736,11 +2754,10 @@ bool MainWindow::install(const QString &names)
             return false;
         }
 
-        const QString quotedNames = shellCommandFromArgs(packageArgs(names));
-        const QString paruInvocation = paruPath + " -S --needed " + quotedNames;
+        QStringList paruArgs {"-S", "--needed"};
+        paruArgs += packageArgs(names);
         const bool hasScript = QFile::exists("/usr/bin/script");
 
-        QString command;
         if (getuid() == 0) {
             // If the app itself runs as root (e.g. WSL2 without a working pkexec),
             // drop to a normal user for the build via `runuser -u` (no login shell),
@@ -2756,22 +2773,37 @@ bool MainWindow::install(const QString &names)
                 return false;
             }
             const QString home = homeDirForUser(buildUser);
-            QString env = QStringLiteral("env ");
+            QStringList envArgs;
             if (!home.isEmpty()) {
-                env += "HOME=" + shellSingleQuote(home) + ' ';
+                envArgs << ("HOME=" + home);
             }
-            env += QStringLiteral("SHELL=/bin/sh LANG=C PAGER=cat PARU_PAGER=cat ");
-            const QString payload = hasScript
-                                        ? "/usr/bin/script -qefc " + shellSingleQuote(paruInvocation) + " /dev/null"
-                                        : paruInvocation;
-            command = "runuser -u " + shellSingleQuote(buildUser) + " -- " + env + payload;
-        } else {
-            command = "LANG=C PAGER=cat PARU_PAGER=cat " + paruInvocation;
+            envArgs << QStringLiteral("SHELL=/bin/sh") << QStringLiteral("LANG=C") << QStringLiteral("PAGER=cat")
+                    << QStringLiteral("PARU_PAGER=cat");
+
+            // runuser/env are both plain argv-vector execs (no shell involved), so this
+            // whole chain needs no quoting of its own -- except the innermost `script
+            // -qefc` argument, which is unavoidably a single string (see procOnPty()'s
+            // doc comment in cmd.h for why `script` itself has no argv-vector mode).
+            QStringList runuserArgs {"-u", buildUser, "--", "env"};
+            runuserArgs += envArgs;
             if (hasScript) {
-                command = "/usr/bin/script -qefc " + shellSingleQuote(command) + " /dev/null";
+                QStringList paruInvocation {paruPath};
+                paruInvocation += paruArgs;
+                runuserArgs << QStringLiteral("/usr/bin/script") << QStringLiteral("-qefc")
+                            << shellCommandFromArgs(paruInvocation) << QStringLiteral("/dev/null");
+            } else {
+                runuserArgs << paruPath;
+                runuserArgs += paruArgs;
             }
+            return cmd.proc(QStringLiteral("runuser"), runuserArgs);
         }
-        return cmd.run(command);
+
+        if (hasScript) {
+            QStringList envArgs {"LANG=C", "PAGER=cat", "PARU_PAGER=cat", paruPath};
+            envArgs += paruArgs;
+            return cmd.procOnPty(QStringLiteral("env"), envArgs);
+        }
+        return cmd.procWithEnv({{"LANG", "C"}, {"PAGER", "cat"}, {"PARU_PAGER", "cat"}}, paruPath, paruArgs);
     }
 #endif
 
@@ -3133,9 +3165,9 @@ bool MainWindow::downloadAndUnzip(const QString &url, QFile &file)
 
     // Determine and execute unzip command based on file extension
     const QString fileExt = QFileInfo(file).suffix();
-    const QString unzipCommand = (fileExt == QLatin1String("gz")) ? QStringLiteral("gunzip -f ") : QStringLiteral("unxz -f ");
+    const QString unzipProgram = (fileExt == QLatin1String("gz")) ? QStringLiteral("gunzip") : QStringLiteral("unxz");
 
-    if (!cmd.run(unzipCommand + shellSingleQuote(file.fileName()))) {
+    if (!cmd.proc(unzipProgram, {"-f", file.fileName()})) {
         qDebug() << "Could not unzip file:" << file.fileName();
         file.remove();
         return false;
@@ -3539,7 +3571,7 @@ void MainWindow::cleanup()
 
 QString MainWindow::getVersion(const QString &name) const
 {
-    return Cmd().getOut("LANG=C dpkg-query -f '${Version}' -W " + shellSingleQuote(name));
+    return Cmd().getOut({{"LANG", "C"}}, "dpkg-query", {"-f", "${Version}", "-W", name});
 }
 
 // Return true if all the packages listed are installed
@@ -3648,9 +3680,13 @@ QStringList MainWindow::listInstalledFlatpaks(const QString &type)
     if (cachedInstalledScope == fpUser && cachedInstalledFetched) {
         lines = cachedInstalledFlatpaks;
     } else {
-        const QString command = QStringLiteral("flatpak list ") + fpUser + QStringLiteral("2>/dev/null ") + type + QStringLiteral(" --columns=ref");
+        QStringList args = flatpakArgsWithScope(fpUser, {"list"});
+        if (!type.isEmpty()) {
+            args << type;
+        }
+        args << QStringLiteral("--columns=ref");
         QScopedValueRollback<bool> guard(suppressCmdOutput, true);
-        lines = cmd.getOut(command, Cmd::QuietMode::No).split('\n', Qt::SkipEmptyParts);
+        lines = cmd.getOut("flatpak", args, Cmd::QuietMode::No, /*discardStderr=*/true).split('\n', Qt::SkipEmptyParts);
 
         if (type.isEmpty()) {
             cachedInstalledFlatpaks = lines;
@@ -4054,9 +4090,9 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
     // No aptitude/dependency-simulation equivalent on this backend; pacman's own
     // info covers the same purpose for the Enabled Repos tab.
     Cmd shell;
-    QString info = shell.getOut("LANG=C pacman -Si --color never " + shellSingleQuote(packageName));
+    QString info = shell.getOut({{"LANG", "C"}}, "pacman", {"-Si", "--color", "never", packageName});
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0 || info.trimmed().isEmpty()) {
-        info = shell.getOut("LANG=C pacman -Qi --color never " + shellSingleQuote(packageName));
+        info = shell.getOut({{"LANG", "C"}}, "pacman", {"-Qi", "--color", "never", packageName});
     }
     QMessageBox::information(this, tr("Package info"),
                              info.trimmed().isEmpty() ? tr("No information available.") : info.trimmed());
@@ -4074,8 +4110,13 @@ void MainWindow::displayPackageInfo(const QModelIndex &index)
             QApplication::restoreOverrideCursor();
             setEnabled(true);
         });
-        msg = cmd.getOut("aptitude show " + shellSingleQuote(packageName));
-        // Keep last 5 lines from aptitude output
+        msg = cmd.getOut(QStringLiteral("aptitude"), {"show", packageName});
+        // Keep last 5 lines from aptitude output. DEBIAN_FRONTEND here is picked by a
+        // small conditional pipeline (dpkg -l | grep -sq, twice, with || fallback) that
+        // runs *inside* the target environment being queried -- faithfully replicating
+        // that command-substitution-plus-branching in C++ would mean reimplementing
+        // non-trivial shell semantics for no real benefit, so this one is deliberately
+        // left as a shell string rather than converted to argv-vector calls.
         rawDetails = cmd.getOut("DEBIAN_FRONTEND=$(dpkg -l debconf-kde-helper 2>/dev/null | grep -sq ^i && echo kde "
                                 "|| dpkg -l debconf-gnome 2>/dev/null | grep -sq ^i && echo gnome "
                                 "|| echo noninteractive) aptitude -sy -V -o=Dpkg::Use-Pty=0 install "
@@ -4279,11 +4320,11 @@ void MainWindow::pushInstall_clicked()
         }
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        QStringList args {"flatpak", "install", "-y"};
+        QStringList args {"install", "-y"};
         args << fpUser.trimmed();
         args << ui->comboRemote->currentText();
         args += changeList;
-        if (cmd.run(flatpakPtyCommand(shellCommandFromArgs(args)))) {
+        if (cmd.procOnPty(QStringLiteral("flatpak"), args)) {
             appendFlatpakStatusMessage(ui->outputBox, tr("Install complete."));
             displayFlatpaks(true);
             indexFilterFP.clear();
@@ -4515,11 +4556,11 @@ void MainWindow::pushUninstall_clicked()
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
         showFlatpakProgress(tr("Uninstalling flatpaks..."));
-        QStringList uninstallArgs {"flatpak", "uninstall"};
+        QStringList uninstallArgs {"uninstall"};
         uninstallArgs << fpUser.trimmed();
         uninstallArgs << "-y";
         uninstallArgs += changeList;
-        if (!cmd.run(flatpakPtyCommand(shellCommandFromArgs(uninstallArgs)))) {
+        if (!cmd.procOnPty(QStringLiteral("flatpak"), uninstallArgs)) {
             success = false;
         }
         if (success) { // Success if all processed successfuly, failure if one failed
@@ -4853,7 +4894,8 @@ bool MainWindow::buildAurList(const QString &searchTerm)
     Cmd shell;
     QScopedValueRollback<bool> guard(suppressCmdOutput, true);
     if (term.isEmpty()) {
-        const QStringList installed = shell.getOut("LANG=C pacman -Qm --color never").split('\n', Qt::SkipEmptyParts);
+        const QStringList installed
+            = shell.getOut({{"LANG", "C"}}, "pacman", {"-Qm", "--color", "never"}).split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
             return false;
         }
@@ -4866,7 +4908,7 @@ bool MainWindow::buildAurList(const QString &searchTerm)
 
         QHash<QString, QString> aurUpdates;
         const QStringList updates
-            = shell.getOut("LANG=C " + paruPath + " -Qua --color never").split('\n', Qt::SkipEmptyParts);
+            = shell.getOut({{"LANG", "C"}}, paruPath, {"-Qua", "--color", "never"}).split('\n', Qt::SkipEmptyParts);
         if (shell.exitStatus() == QProcess::NormalExit && shell.exitCode() == 0) {
             for (const QString &line : updates) {
                 const QString name = line.section(' ', 0, 0).trimmed();
@@ -4892,8 +4934,8 @@ bool MainWindow::buildAurList(const QString &searchTerm)
     if (!isOnline()) {
         return false;
     }
-    QStringList results
-        = shell.getOut("LANG=C " + paruPath + " -Ssq --color never " + shellSingleQuote(term)).split('\n', Qt::SkipEmptyParts);
+    QStringList results = shell.getOut({{"LANG", "C"}}, paruPath, {"-Ssq", "--color", "never", term})
+                              .split('\n', Qt::SkipEmptyParts);
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0) {
         return false;
     }
@@ -4905,8 +4947,9 @@ bool MainWindow::buildAurList(const QString &searchTerm)
         results = results.mid(0, maxResults);
     }
 
-    const QString infoOutput
-        = shell.getOut("LANG=C " + paruPath + " -Si --color never " + shellCommandFromArgs(results));
+    QStringList infoArgs {"-Si", "--color", "never"};
+    infoArgs += results;
+    const QString infoOutput = shell.getOut({{"LANG", "C"}}, paruPath, infoArgs);
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0 || infoOutput.trimmed().isEmpty()) {
         for (const QString &name : std::as_const(results)) {
             aurList.insert(name, {QString(), QString()});
@@ -4948,9 +4991,9 @@ void MainWindow::showAurPackageInfo(const QString &packageName)
         return;
     }
     Cmd shell;
-    QString info = shell.getOut("LANG=C " + paruPath + " -Si --color never " + shellSingleQuote(packageName));
+    QString info = shell.getOut({{"LANG", "C"}}, paruPath, {"-Si", "--color", "never", packageName});
     if (shell.exitStatus() != QProcess::NormalExit || shell.exitCode() != 0 || info.trimmed().isEmpty()) {
-        info = shell.getOut("LANG=C pacman -Qi --color never " + shellSingleQuote(packageName));
+        info = shell.getOut({{"LANG", "C"}}, "pacman", {"-Qi", "--color", "never", packageName});
     }
     QMessageBox::information(this, packageName,
                              info.trimmed().isEmpty() ? tr("No information available.") : info.trimmed());
@@ -5232,7 +5275,7 @@ bool MainWindow::isSnapdReady() const
 QStringList MainWindow::listInstalledSnaps() const
 {
     Cmd shell;
-    const QString out = shell.getOut(QStringLiteral("LANG=C snap list 2>/dev/null"), Cmd::QuietMode::Yes);
+    const QString out = shell.getOut({{"LANG", "C"}}, "snap", {"list"}, Cmd::QuietMode::Yes, /*discardStderr=*/true);
     QStringList names;
     static const QRegularExpression ws {QStringLiteral("\\s+")};
     const QStringList lines = out.split('\n', Qt::SkipEmptyParts);
@@ -5357,7 +5400,7 @@ void MainWindow::displaySnaps(bool /*forceUpdate*/)
 void MainWindow::loadSnapData()
 {
     Cmd shell;
-    const QString out = shell.getOut(QStringLiteral("LANG=C snap list 2>/dev/null"), Cmd::QuietMode::Yes);
+    const QString out = shell.getOut({{"LANG", "C"}}, "snap", {"list"}, Cmd::QuietMode::Yes, /*discardStderr=*/true);
     const QVector<SnapData> data = parseSnapList(out, true);
     snapModel->setSnapData(data);
     snapModel->updateInstalledStatus(listInstalledSnaps());
@@ -5414,8 +5457,7 @@ void MainWindow::searchSnapStore()
     setCursor(QCursor(Qt::BusyCursor));
     Cmd shell;
     const QString out
-        = shell.getOut(QStringLiteral("LANG=C snap find ") + shellSingleQuote(query) + QStringLiteral(" 2>/dev/null"),
-                       Cmd::QuietMode::Yes);
+        = shell.getOut({{"LANG", "C"}}, "snap", {"find", query}, Cmd::QuietMode::Yes, /*discardStderr=*/true);
     QVector<SnapData> data = parseSnapList(out, false);
     snapModel->setSnapData(data);
     snapModel->updateInstalledStatus(listInstalledSnaps());
@@ -5519,7 +5561,8 @@ void MainWindow::setupSnapd()
             // Bounded, read-only wait for seeding (needs no elevation). A stale helper
             // skips its own wait, hence doing it here too.
             Cmd waitCmd;
-            waitCmd.run(QStringLiteral("timeout 120 snap wait system seed.loaded"), Cmd::QuietMode::Yes);
+            waitCmd.proc(QStringLiteral("timeout"), {"120", "snap", "wait", "system", "seed.loaded"}, nullptr,
+                        nullptr, Cmd::QuietMode::Yes);
             if (attempt > 1) {
                 // Give snapd a moment to finish coming up before trying again,
                 // without blocking the event loop.
@@ -6330,7 +6373,7 @@ void MainWindow::pushUpgradeFP_clicked()
     showOutput();
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
-    if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak update ") + fpUser))) {
+    if (cmd.procOnPty(QStringLiteral("flatpak"), {"update", fpUser.trimmed()})) {
         appendFlatpakStatusMessage(ui->outputBox, tr("Update complete."));
         displayFlatpaks(true);
         setCursor(QCursor(Qt::ArrowCursor));
@@ -6358,10 +6401,10 @@ void MainWindow::pushRemotes_clicked()
         showOutput();
         setCursor(QCursor(Qt::BusyCursor));
         enableOutput();
-        QStringList args {"flatpak", "install", "-y"};
+        QStringList args {"install", "-y"};
         args << dialog.getUser().trimmed();
         args << "--from" << dialog.getInstallRef();
-        if (cmd.run(flatpakPtyCommand(shellCommandFromArgs(args)))) {
+        if (cmd.procOnPty(QStringLiteral("flatpak"), args)) {
             appendFlatpakStatusMessage(ui->outputBox, tr("Install complete."));
             invalidateFlatpakRemoteCache();
             listFlatpakRemotes();
@@ -6466,7 +6509,7 @@ void MainWindow::pushRemoveUnused_clicked()
     setCursor(QCursor(Qt::BusyCursor));
     enableOutput();
     showFlatpakProgress(tr("Uninstalling flatpaks..."));
-    if (cmd.run(flatpakPtyCommand(QStringLiteral("flatpak uninstall --unused -y")))) {
+    if (cmd.procOnPty(QStringLiteral("flatpak"), {"uninstall", "--unused", "-y"})) {
         appendFlatpakStatusMessage(ui->outputBox, tr("Uninstall complete."));
         showFlatpakProgress(tr("Refreshing flatpaks..."));
         displayFlatpaks(true);
@@ -6485,17 +6528,26 @@ void MainWindow::pushRemoveUnused_clicked()
 QString MainWindow::getMXTestRepoUrl()
 {
     // Try to get test repo URL directly
-    if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oP "
-                + shellSingleQuote("https?://.*/mx/testrepo/dists/(?=" + verName + "/test/)"))) {
-        return cmd.readAllOutput();
+    QString output;
+    if (cmd.pipeline({
+            {"apt-get", {"update", "--print-uris"}},
+            {"tac", {}},
+            {"grep", {"-m1", "-oP", "https?://.*/mx/testrepo/dists/(?=" + verName + "/test/)"}},
+        },
+        &output)) {
+        return output;
     }
 
     // Fall back to deriving from main repo URL
-    if (cmd.run("apt-get update --print-uris | tac | grep -m1 -oE "
-                + shellSingleQuote("https?://.*/mx/repo/dists/" + verName + "/main/") + " | sed -e "
-                + shellSingleQuote("s:/mx/repo/dists/" + verName + "/main/:/mx/testrepo/dists/:")
-                + " | grep -oE 'https?://.*/mx/testrepo/dists/'")) {
-        return cmd.readAllOutput();
+    if (cmd.pipeline({
+            {"apt-get", {"update", "--print-uris"}},
+            {"tac", {}},
+            {"grep", {"-m1", "-oE", "https?://.*/mx/repo/dists/" + verName + "/main/"}},
+            {"sed", {"-e", "s:/mx/repo/dists/" + verName + "/main/:/mx/testrepo/dists/:"}},
+            {"grep", {"-oE", "https?://.*/mx/testrepo/dists/"}},
+        },
+        &output)) {
+        return output;
     }
 
     // Return default URL if nothing else works
