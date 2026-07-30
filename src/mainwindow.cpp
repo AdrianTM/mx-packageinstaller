@@ -27,6 +27,7 @@
 #include "packagelistparser.h"
 #include "ui_mainwindow.h"
 
+#include <QCoreApplication>
 #include <QDebug>
 #include <QDir>
 #include <QFileInfo>
@@ -340,6 +341,103 @@ QStringList fetchFlatpakRemotes(const QString &scope, bool *ok)
     }
     return list;
 }
+
+// The actual implementation behind MainWindow::listFlatpaks(), extracted to a free
+// function taking the arch option explicitly (rather than calling getArchOption(),
+// which reads the this->arch member) so the constructor's Flatpak catalog preload can
+// call it directly from a QtConcurrent worker thread without touching `this` at all --
+// the caller computes archOption on the GUI thread beforehand and passes it in by
+// value. Every subprocess call here goes through a local Cmd instance, so it's safe to
+// run in the background the same way fetchFlatpakRemotes() above is.
+QStringList listFlatpaksImpl(const QString &remote, const QString &fpUserScope, const QString &archOption,
+                             const QString &type = QString())
+{
+    QString archFp = archOption;
+    if (archFp.isEmpty()) {
+        return {};
+    }
+
+    // Check if remote parameter is empty (which would happen if no remotes are configured)
+    if (remote.isEmpty()) {
+        qDebug() << "Remote parameter is empty - no flatpak remotes configured for user";
+        return {};
+    }
+
+    const bool isUserScope = fpUserScope.startsWith(QLatin1String("--user"));
+
+    auto buildRemoteLsArgs = [&](const QString &scope) {
+        QStringList args {"remote-ls"};
+        args += flatpakArgsWithScope(scope, {});
+        args << remote;
+        const QString archOptionTrimmed = archFp.trimmed();
+        if (!archOptionTrimmed.isEmpty()) {
+            args << archOptionTrimmed;
+        }
+        args << "--columns=ver,branch,ref,installed-size";
+        return args;
+    };
+
+    QString typeFlag;
+    if (type == QLatin1String("--app")) {
+        typeFlag = QStringLiteral("--app");
+    } else if (type == QLatin1String("--runtime")) {
+        typeFlag = QStringLiteral("--runtime");
+    }
+    auto runRemoteLs = [&typeFlag](QStringList args) {
+        if (!typeFlag.isEmpty()) {
+            args << typeFlag;
+        }
+        QString output;
+        Cmd command;
+        if (!command.proc("flatpak", args, &output, nullptr, Cmd::QuietMode::Yes)) {
+            return QStringList {};
+        }
+        QStringList rows;
+        for (const QString &line : output.split('\n', Qt::SkipEmptyParts)) {
+            if (line.contains('\t')) {
+                rows << line;
+            }
+        }
+        return rows;
+    };
+
+    // Execute the command and process the output
+    QStringList list = runRemoteLs(buildRemoteLsArgs(fpUserScope));
+
+    if (list.isEmpty()) {
+        qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
+
+        // Try to update the remote if it's empty
+        QStringList updateArgs {"update"};
+        updateArgs += flatpakArgsWithScope(fpUserScope, {});
+        updateArgs << "--appstream" << remote;
+        qDebug() << "Running remote update command:" << updateArgs;
+
+        Cmd updateCommand;
+        if (updateCommand.proc("flatpak", updateArgs, nullptr, nullptr, Cmd::QuietMode::Yes)) {
+            qDebug() << "Remote update completed, retrying package list";
+
+            // Retry the original command after update
+            list = runRemoteLs(buildRemoteLsArgs(fpUserScope));
+            if (!list.isEmpty()) {
+                qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
+            } else {
+                qDebug() << QString("Remote %1 still empty after update").arg(remote);
+            }
+        } else {
+            qDebug() << "Failed to update remote" << remote;
+        }
+    }
+
+    // If user scope returned nothing (e.g. only system remotes exist), fall back to system remotes for listing
+    if (list.isEmpty() && isUserScope) {
+        const QStringList systemArgs = buildRemoteLsArgs(QStringLiteral("--system "));
+        qDebug() << "User remotes empty; retrying flatpak listing using system remotes:" << systemArgs;
+        list = runRemoteLs(systemArgs);
+    }
+
+    return list;
+}
 } // namespace
 
 MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
@@ -391,10 +489,17 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // which isn't safe to touch off the GUI thread the way AptCache's pure file-IO
     // read is; pacman's Enabled tab just loads lazily on first visit instead.)
 #ifndef PACKAGE_BACKEND_PACMAN
-    [[maybe_unused]] auto future = QtConcurrent::run([this] {
+    [[maybe_unused]] auto future = QtConcurrent::run(
+        [this, guardMutex = destructionGuardMutex, destructingFlag = destructing] {
         AptCache cache;
         auto loadedList = cache.getCandidates();
 
+        // See destructionGuardMutex's declaration: this must be the worker's one and
+        // only touch of `this`, immediately preceded by the check below.
+        QMutexLocker locker(guardMutex.get());
+        if (*destructingFlag) {
+            return;
+        }
         // Set the model on main thread after preload — all member access happens on the GUI thread
         QMetaObject::invokeMethod(
             this,
@@ -446,9 +551,14 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
     // block startup -- PackageBackend::listInstalled() uses a local Cmd instance,
     // safe to call off the GUI thread (matching how the arch branch originally
     // loaded this via QtConcurrent, before the unification made it synchronous).
-    [[maybe_unused]] auto installedFuture = QtConcurrent::run([this] {
+    [[maybe_unused]] auto installedFuture = QtConcurrent::run(
+        [this, guardMutex = destructionGuardMutex, destructingFlag = destructing] {
         bool ok = false;
         auto loaded = PackageBackend::listInstalled(&ok);
+        QMutexLocker locker(guardMutex.get());
+        if (*destructingFlag) {
+            return;
+        }
         QMetaObject::invokeMethod(
             this,
             [this, ok, loaded = std::move(loaded)]() mutable {
@@ -459,6 +569,21 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                     return;
                 }
                 installedPackages = std::move(loaded);
+                if (enabledReposRenderedWithoutInstalled) {
+                    // The Enabled Repos view already rendered once (see displayPackages())
+                    // while this fetch was still in flight, so createPackageDataList()'s
+                    // merge of installed-but-not-in-repo packages silently found nothing to
+                    // add. Force the next render of that tab to redo the merge now that the
+                    // data is here -- dirtyEnabledRepos makes handleEnabledReposTab() go back
+                    // through buildPackageLists()/displayPackages() instead of taking the
+                    // "nothing changed" fast path, whether that happens right now (still on
+                    // the tab) or on a later visit (dirtyEnabledRepos persists until then).
+                    enabledReposRenderedWithoutInstalled = false;
+                    dirtyEnabledRepos = true;
+                    if (currentTree == ui->treeEnabled) {
+                        handleEnabledReposTab(ui->searchBoxEnabled->text());
+                    }
+                }
             },
             Qt::QueuedConnection);
     });
@@ -476,18 +601,40 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
         // list ("flatpak remote-list", ~30-150ms), then the remote catalog
         // ("flatpak remote-ls", ~250-400ms) and installed-list ("flatpak list") for
         // whichever remote that produces. All three go through a local Cmd instance
-        // (fetchFlatpakRemotes()/listFlatpaks()/the shell below), never the shared
+        // (fetchFlatpakRemotes()/listFlatpaksImpl()/the shell below), never the shared
         // cmd member, so all are safe to run in the background -- same treatment as
         // installedPackages above, just chained in two stages since stage 2 needs to
-        // know which remote stage 1 selected.
+        // know which remote stage 1 selected. None of the three ever calls a
+        // MainWindow:: member function from the worker thread (listFlatpaksImpl() is a
+        // free function taking the arch option explicitly, rather than this->listFlatpaks()
+        // calling getArchOption() to read this->arch) -- so this stays safe even if the
+        // window is destroyed while a fetch is still running.
         displayFlatpaksIsRunning = true;
         const QString scope = fpUser;
-        [[maybe_unused]] auto remotesFuture = QtConcurrent::run([this, scope] {
+        // See flatpakRequestGeneration's declaration: bumped and captured now so this
+        // preload's eventual completions can tell whether a newer Flatpak load (e.g.
+        // the user switching remote/scope) has since superseded them.
+        const int myGeneration = ++flatpakRequestGeneration;
+        [[maybe_unused]] auto remotesFuture = QtConcurrent::run(
+            [this, scope, myGeneration, guardMutex = destructionGuardMutex, destructingFlag = destructing] {
             bool remotesOk = false;
             const QStringList remotes = fetchFlatpakRemotes(scope, &remotesOk);
+            QMutexLocker locker(guardMutex.get());
+            if (*destructingFlag) {
+                return;
+            }
             QMetaObject::invokeMethod(
                 this,
-                [this, remotes, remotesOk, scope] {
+                [this, remotes, remotesOk, scope, myGeneration, guardMutex, destructingFlag] {
+                    if (myGeneration != flatpakRequestGeneration) {
+                        // Superseded by a newer Flatpak load that started (and, being
+                        // synchronous, already finished) while this fetch was in flight.
+                        // Its result is current; publishing this stale one would clobber
+                        // it. Only clear the busy flag if it's still plausibly ours --
+                        // a newer synchronous load always resets it back to false itself.
+                        displayFlatpaksIsRunning = false;
+                        return;
+                    }
                     if (remotesOk) {
                         // Warm the cache listFlatpakRemotes() checks first, so
                         // setupFlatpakDisplay()'s call into it below is a fast,
@@ -502,16 +649,32 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
                         return;
                     }
                     const QString remote = ui->comboRemote->currentText();
-                    [[maybe_unused]] auto catalogFuture = QtConcurrent::run([this, remote, scope] {
-                        const QStringList remoteEntries = listFlatpaks(remote, scope);
+                    // Computed here on the GUI thread (reads this->arch) and passed by
+                    // value into the worker below, which must not touch `this` at all.
+                    const QString archOption = getArchOption();
+                    [[maybe_unused]] auto catalogFuture = QtConcurrent::run(
+                        [this, remote, scope, archOption, myGeneration, guardMutex, destructingFlag] {
+                        const QStringList remoteEntries = listFlatpaksImpl(remote, scope, archOption);
                         Cmd shell;
                         const QString allInstalledCommand = QStringLiteral("flatpak list ") + scope
                             + QStringLiteral("2>/dev/null --columns=ref,size");
                         const QStringList allInstalled
                             = shell.getOut(allInstalledCommand, Cmd::QuietMode::Yes).split('\n', Qt::SkipEmptyParts);
+                        QMutexLocker locker(guardMutex.get());
+                        if (*destructingFlag) {
+                            return;
+                        }
                         QMetaObject::invokeMethod(
                             this,
-                            [this, remoteEntries, allInstalled, scope] {
+                            [this, remoteEntries, allInstalled, scope, myGeneration] {
+                                if (myGeneration != flatpakRequestGeneration) {
+                                    // See the remotesFuture completion above -- a newer,
+                                    // synchronous load has already published its own
+                                    // (correct) data and reset the busy flag; don't stomp
+                                    // on either.
+                                    displayFlatpaksIsRunning = false;
+                                    return;
+                                }
                                 processFlatpakData(remoteEntries, allInstalled, scope);
                                 populateFlatpakTree();
                                 finalizeFlatpakDisplay();
@@ -526,6 +689,20 @@ MainWindow::MainWindow(const QCommandLineParser &argParser, QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    // See destructionGuardMutex's declaration: this must run before anything else so
+    // that any QtConcurrent::run() worker still in flight (installedPackages, the
+    // Flatpak preload chain, the pacman -Ss repo fetch) is guaranteed to either see
+    // *destructing == true and skip touching `this` entirely, or have already made its
+    // one and only touch of `this` (a QMetaObject::invokeMethod(this, ...,
+    // Qt::QueuedConnection) call, safe as long as `this` hasn't started destructing
+    // yet) before this can acquire the lock. No wait is needed: those workers don't
+    // need to finish before the window closes, they just need to never touch a `this`
+    // that might already be gone -- which this ordering, not a wait, is what
+    // guarantees.
+    {
+        QMutexLocker locker(destructionGuardMutex.get());
+        *destructing = true;
+    }
     delete ui;
 }
 
@@ -1765,6 +1942,18 @@ void MainWindow::displayPackages()
         currentTree->setUpdatesEnabled(false);
     }
 
+#ifdef PACKAGE_BACKEND_PACMAN
+    if (currentTree == ui->treeEnabled && installedPackages.isEmpty()) {
+        // installedPackages ("pacman -Qi") may still be in flight from the startup
+        // preload (see the constructor) -- if so, createPackageDataList()'s merge of
+        // installed-but-not-in-repo packages below silently finds nothing to add.
+        // Remember that so the installedPackages fetch's own completion can redo this
+        // render once the data it was missing has actually arrived (see
+        // enabledReposRenderedWithoutInstalled's declaration).
+        enabledReposRenderedWithoutInstalled = true;
+    }
+#endif
+
     // Build package data list and set on model
     QVector<PackageData> packages = createPackageDataList(list);
     model->setPackageData(packages);
@@ -1920,6 +2109,14 @@ void MainWindow::displayFlatpaks(bool forceUpdate)
     if (!flatpaks.isEmpty() && !forceUpdate) {
         return;
     }
+
+    // Every synchronous Flatpak (re)load -- comboRemote_activated(), comboUser_
+    // currentIndexChanged(), etc. -- goes through here, so bumping the generation
+    // here covers all of them uniformly. This runs to completion before returning
+    // control to the event loop, so no comparison against the old value is needed
+    // on this path; it just needs to invalidate any older async completion still in
+    // flight from the constructor's Flatpak startup preload (see there).
+    ++flatpakRequestGeneration;
 
     setupFlatpakDisplay();
     loadFlatpakData();
@@ -2955,9 +3152,14 @@ bool MainWindow::downloadPackageList(bool forceDownload)
         // uses) so it targets Enabled Repos regardless of which tab is current by
         // the time the fetch finishes.
         displayPackagesIsRunning = true;
-        [[maybe_unused]] auto future = QtConcurrent::run([this, forceDownload] {
+        [[maybe_unused]] auto future = QtConcurrent::run(
+            [this, forceDownload, guardMutex = destructionGuardMutex, destructingFlag = destructing] {
             bool ok = false;
             auto loaded = pacmanAvailablePackages(&ok);
+            QMutexLocker locker(guardMutex.get());
+            if (*destructingFlag) {
+                return;
+            }
             QMetaObject::invokeMethod(
                 this,
                 [this, ok, forceDownload, loaded = std::move(loaded)]() mutable {
@@ -3345,97 +3547,16 @@ QHash<QString, PackageInfo> MainWindow::listInstalled()
 }
 
 // scope is taken explicitly (not read from the fpUser member) so this can be called
-// safely from a background thread (the startup preload does) without racing a
-// concurrent write to fpUser from the GUI thread.
+// safely from a background thread without racing a concurrent write to fpUser from the
+// GUI thread. The actual work lives in the free function listFlatpaksImpl() above --
+// this member function only exists to supply the arch option via getArchOption(),
+// which reads this->arch and so must run on the GUI thread; the constructor's Flatpak
+// catalog preload calls listFlatpaksImpl() directly from its worker thread instead,
+// with the arch option precomputed on the GUI thread and passed in by value.
 QStringList MainWindow::listFlatpaks(const QString &remote, const QString &fpUserScope, const QString &type) const
 {
     qDebug() << "+++" << __PRETTY_FUNCTION__ << "+++";
-
-    QString archFp = getArchOption();
-    if (archFp.isEmpty()) {
-        return {};
-    }
-
-    // Check if remote parameter is empty (which would happen if no remotes are configured)
-    if (remote.isEmpty()) {
-        qDebug() << "Remote parameter is empty - no flatpak remotes configured for user";
-        return {};
-    }
-
-    const bool isUserScope = fpUserScope.startsWith(QLatin1String("--user"));
-
-    auto buildRemoteLsArgs = [&](const QString &scope) {
-        QStringList args {"remote-ls"};
-        args += flatpakArgsWithScope(scope, {});
-        args << remote;
-        const QString archOption = archFp.trimmed();
-        if (!archOption.isEmpty()) {
-            args << archOption;
-        }
-        args << "--columns=ver,branch,ref,installed-size";
-        return args;
-    };
-
-    QString typeFlag;
-    if (type == QLatin1String("--app")) {
-        typeFlag = QStringLiteral("--app");
-    } else if (type == QLatin1String("--runtime")) {
-        typeFlag = QStringLiteral("--runtime");
-    }
-    auto runRemoteLs = [&typeFlag](QStringList args) {
-        if (!typeFlag.isEmpty()) {
-            args << typeFlag;
-        }
-        QString output;
-        Cmd command;
-        if (!command.proc("flatpak", args, &output, nullptr, Cmd::QuietMode::Yes)) {
-            return QStringList {};
-        }
-        QStringList rows;
-        for (const QString &line : output.split('\n', Qt::SkipEmptyParts)) {
-            if (line.contains('\t')) {
-                rows << line;
-            }
-        }
-        return rows;
-    };
-
-    // Execute the command and process the output
-    QStringList list = runRemoteLs(buildRemoteLsArgs(fpUserScope));
-
-    if (list.isEmpty()) {
-        qDebug() << QString("Could not list packages from %1 remote, attempting to update remote").arg(remote);
-
-        // Try to update the remote if it's empty
-        QStringList updateArgs {"update"};
-        updateArgs += flatpakArgsWithScope(fpUserScope, {});
-        updateArgs << "--appstream" << remote;
-        qDebug() << "Running remote update command:" << updateArgs;
-
-        Cmd updateCommand;
-        if (updateCommand.proc("flatpak", updateArgs, nullptr, nullptr, Cmd::QuietMode::Yes)) {
-            qDebug() << "Remote update completed, retrying package list";
-
-            // Retry the original command after update
-            list = runRemoteLs(buildRemoteLsArgs(fpUserScope));
-            if (!list.isEmpty()) {
-                qDebug() << QString("Successfully retrieved %1 packages after remote update").arg(list.size());
-            } else {
-                qDebug() << QString("Remote %1 still empty after update").arg(remote);
-            }
-        } else {
-            qDebug() << "Failed to update remote" << remote;
-        }
-    }
-
-    // If user scope returned nothing (e.g. only system remotes exist), fall back to system remotes for listing
-    if (list.isEmpty() && isUserScope) {
-        const QStringList systemArgs = buildRemoteLsArgs(QStringLiteral("--system "));
-        qDebug() << "User remotes empty; retrying flatpak listing using system remotes:" << systemArgs;
-        list = runRemoteLs(systemArgs);
-    }
-
-    return list;
+    return listFlatpaksImpl(remote, fpUserScope, getArchOption(), type);
 }
 
 // List installed flatpaks by type: apps, runtimes, or all (if no type is provided)

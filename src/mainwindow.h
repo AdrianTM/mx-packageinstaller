@@ -31,6 +31,7 @@
 #include <QHash>
 #include <QMessageBox>
 #include <QModelIndex>
+#include <QMutex>
 #include <QNetworkAccessManager>
 #include <QProcess>
 #include <QProgressDialog>
@@ -39,6 +40,8 @@
 #include <QTemporaryDir>
 #include <QTimer>
 #include <QTreeView>
+
+#include <memory>
 
 #include "aptcache.h"
 #include "cmd.h"
@@ -197,11 +200,44 @@ private:
     // round-trip to boot. Skip just that first automatic check; later ones
     // (after an install/uninstall or manual refresh) run normally.
     bool skipInitialAutoremovableCheck {true};
+    // installedPackages ("pacman -Qi") and the Enabled Repos list ("pacman -Ss")
+    // are two independent background fetches kicked off from the constructor with
+    // no join between them (see MainWindow::MainWindow). If the Enabled Repos view
+    // renders (displayPackages()) before installedPackages is ready,
+    // createPackageDataList()'s merge of installed-but-not-in-repo packages
+    // silently finds nothing to add. Set when that happens; the installedPackages
+    // fetch's own completion checks this and re-triggers the view once the data
+    // it was missing has actually arrived.
+    bool enabledReposRenderedWithoutInstalled {false};
 #endif
     int savedComboIndex {0};
+    // Bumped every time a new Flatpak load (the constructor's startup preload, or a
+    // synchronous displayFlatpaks(true) from comboRemote_activated()/
+    // comboUser_currentIndexChanged()/etc.) starts. Background completions capture
+    // the value current at their own start and compare it before publishing results,
+    // so a slow, now-superseded preload can't overwrite a newer selection's data
+    // (see setupFlatpakDisplay() and the constructor's Flatpak preload chain).
+    int flatpakRequestGeneration {0};
 
     Cmd cmd;
     LockFile lockFile;
+    // Every QtConcurrent::run() worker the constructor and downloadPackageList() kick
+    // off (installedPackages, the Flatpak remote/catalog preload chain, the pacman -Ss
+    // repo fetch) captures its own copy of these two by value -- never `this->...` --
+    // specifically so it stays valid even if `this` doesn't. A worker locks the mutex
+    // and checks the flag immediately before its one and only touch of `this`
+    // (QMetaObject::invokeMethod(this, ..., Qt::QueuedConnection)); ~MainWindow() locks
+    // the same mutex and sets the flag first thing, before anything else runs. That
+    // ordering makes the two mutually exclusive: either the destructor's lock acquire
+    // happens first and every worker that checks afterward sees the flag set and skips
+    // touching `this` entirely, or a worker's lock acquire happens first, and the
+    // destructor can't proceed until that worker's (still-valid, since `this` can't
+    // have started destructing yet) invokeMethod call has already returned. Plain
+    // reliance on Qt's "queued calls to a destroyed receiver are dropped" guarantee
+    // isn't enough here, since that only covers a call *already delivered* to the
+    // queue before destruction -- not one still racing to be issued.
+    std::shared_ptr<QMutex> destructionGuardMutex {std::make_shared<QMutex>()};
+    std::shared_ptr<bool> destructing {std::make_shared<bool>(false)};
     QHash<QString, VersionNumber> listInstalledVersions();
     QIcon qiconInstalled;
     QIcon qiconUpgradable;
