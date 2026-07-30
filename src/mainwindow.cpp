@@ -3612,6 +3612,13 @@ void MainWindow::cmdDone()
     timer.stop();
     setCursor(QCursor(Qt::ArrowCursor));
     disableOutput();
+#ifdef PACKAGE_BACKEND_PACMAN
+    // Reset any pending partial-match carry-over so leftover text from this
+    // command's last chunk (e.g. an unmatched trailing "...sudo") can't combine
+    // with an unrelated later command's output and produce a false sudo-prompt
+    // match in outputAvailable().
+    sudoPromptTail.clear();
+#endif
     if (!holdProgressForFlatpakRefresh && !holdProgressForAptRefresh) {
         progress->hide();
     }
