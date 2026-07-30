@@ -1,3 +1,14 @@
+mx-packageinstaller (26.07.4) mx; urgency=medium
+
+  * Various code improvements and fixes
+  * Use each package manager's version-ordering rules when deciding whether
+    packages can be upgraded, and sort package rows by their status icon
+  * Show architecture-independent APT packages and correctly handle package
+    versions whose Debian revision is explicitly zero
+  * Add backend-specific Help content and clearer package-management guidance
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 30 Jul 2026 13:16:41 -0400
+
 mx-packageinstaller (26.07.3) mx; urgency=medium
 
   * Prevent package names from being interpreted as commands when showing
