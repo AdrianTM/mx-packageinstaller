@@ -3567,11 +3567,19 @@ QUrl MainWindow::getScreenshotUrl(const QString &name)
         manager.setProxy(proxies.first());
     }
 
-    QNetworkReply *screenshotReply = manager.get(QNetworkRequest(url));
+    QNetworkRequest request(url);
+    // Bounds the request (Qt aborts it and emits finished() with
+    // QNetworkReply::TimeoutError if it fires), so the error() check below
+    // correctly distinguishes a timeout from a genuine successful reply --
+    // unlike a bare QTimer::singleShot() that only quits the event loop
+    // without touching the still in-flight reply. Use the int-milliseconds
+    // overload: the std::chrono one needs Qt 6.7+, and this project doesn't
+    // pin a Qt minimum above 6.4.
+    request.setTransferTimeout(5000);
+    QNetworkReply *screenshotReply = manager.get(request);
 
     QEventLoop loop;
     connect(screenshotReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    QTimer::singleShot(5s, &loop, &QEventLoop::quit);
     loop.exec();
 
     if (screenshotReply->error() != QNetworkReply::NoError) {
@@ -3757,11 +3765,17 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
         if (!proxies.isEmpty()) {
             manager.setProxy(proxies.first());
         }
-        QNetworkReply *imgReply = manager.get(QNetworkRequest(url));
+        QNetworkRequest imgRequest(url);
+        // See getScreenshotUrl(): setTransferTimeout() makes Qt abort the
+        // reply itself and surface QNetworkReply::TimeoutError if the timer
+        // fires, so the error() check below (and thus the retry path)
+        // correctly treats a timeout the same as any other failed fetch,
+        // instead of reading/decoding a reply that may still be in flight.
+        imgRequest.setTransferTimeout(5000);
+        QNetworkReply *imgReply = manager.get(imgRequest);
 
         QEventLoop loop;
         connect(imgReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-        QTimer::singleShot(5s, &loop, &QEventLoop::quit);
         ui->treePopularApps->blockSignals(true);
         loop.exec();
         ui->treePopularApps->blockSignals(false);
@@ -3772,9 +3786,10 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
             imgReply = nullptr;
             url = getScreenshotUrl(installNames.split(' ').first());
             if (url.isValid() && !url.isEmpty() && url.url() != QLatin1String("none")) {
-                imgReply = manager.get(QNetworkRequest(url));
+                QNetworkRequest retryRequest(url);
+                retryRequest.setTransferTimeout(5000);
+                imgReply = manager.get(retryRequest);
                 connect(imgReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-                QTimer::singleShot(5s, &loop, &QEventLoop::quit);
                 ui->treePopularApps->blockSignals(true);
                 loop.exec();
                 ui->treePopularApps->blockSignals(false);
