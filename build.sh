@@ -25,6 +25,20 @@
 
 set -e
 
+# Derive this package's own name/version (matching the artifact filenames
+# dpkg-buildpackage drops in the parent directory, e.g.
+# mx-packageinstaller_26.07.3_amd64.deb) from debian/changelog. Used to scope
+# the debs/ move and cleanup globs so they can never touch unrelated files
+# that merely happen to contain "build" in their name.
+package_artifact_prefix() {
+    local pkg version
+    pkg=$(dpkg-parsechangelog -S Source)
+    version=$(dpkg-parsechangelog -S Version)
+    # Debian policy: artifact filenames never include the epoch.
+    version="${version#*:}"
+    echo "${pkg}_${version}"
+}
+
 # Default values
 BUILD_DIR="build"
 BUILD_TYPE="Release"
@@ -104,19 +118,20 @@ if [ "$DEBIAN_BUILD" = true ]; then
 
     echo "Creating debs directory and moving debian artifacts..."
     mkdir -p debs
-    mv ../*.deb debs/ 2>/dev/null || true
-    mv ../*.changes debs/ 2>/dev/null || true  
-    mv ../*.dsc debs/ 2>/dev/null || true
-    mv ../*.tar.* debs/ 2>/dev/null || true
-    mv ../*.buildinfo debs/ 2>/dev/null || true
-    mv ../*build* debs/ 2>/dev/null || true
+    ARTIFACT_PREFIX=$(package_artifact_prefix)
+    mv ../"${ARTIFACT_PREFIX}"*.deb debs/ 2>/dev/null || true
+    mv ../"${ARTIFACT_PREFIX}"*.changes debs/ 2>/dev/null || true
+    mv ../"${ARTIFACT_PREFIX}"*.dsc debs/ 2>/dev/null || true
+    mv ../"${ARTIFACT_PREFIX}"*.tar.* debs/ 2>/dev/null || true
+    mv ../"${ARTIFACT_PREFIX}"*.buildinfo debs/ 2>/dev/null || true
+    mv ../"${ARTIFACT_PREFIX}"*.build debs/ 2>/dev/null || true
 
     echo "Cleaning build directory and debian artifacts..."
     rm -rf "$BUILD_DIR"
     rm -f debian/*.debhelper.log debian/*.substvars debian/files
     rm -rf debian/.debhelper/ debian/mx-packageinstaller/ obj-*/
     rm -f translations/*.qm version.h
-    rm -f ../*build* ../*.buildinfo 2>/dev/null || true
+    rm -f ../"${ARTIFACT_PREFIX}"*.build ../"${ARTIFACT_PREFIX}"*.buildinfo 2>/dev/null || true
 
     echo "Debian package build completed!"
     echo "Debian artifacts moved to debs/ directory"
@@ -180,7 +195,10 @@ if [ "$CLEAN" = true ]; then
     rm -f debian/*.debhelper.log debian/*.substvars debian/files
     rm -rf debian/.debhelper/ debian/mx-packageinstaller/ obj-*/
     rm -f translations/*.qm version.h
-    rm -f ../*build* ../*.buildinfo 2>/dev/null || true
+    if command -v dpkg-parsechangelog >/dev/null 2>&1; then
+        ARTIFACT_PREFIX=$(package_artifact_prefix)
+        rm -f ../"${ARTIFACT_PREFIX}"*.build ../"${ARTIFACT_PREFIX}"*.buildinfo 2>/dev/null || true
+    fi
 fi
 
 # Create build directory
