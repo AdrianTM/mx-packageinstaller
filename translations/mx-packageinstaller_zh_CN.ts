@@ -2,12 +2,12 @@
 <context>
     <name>Cmd</name>
     <message>
-        <location filename="../src/cmd.cpp" line="300"/>
+        <location filename="../src/cmd.cpp" line="530"/>
         <source>Administrator Access Required</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/cmd.cpp" line="301"/>
+        <location filename="../src/cmd.cpp" line="531"/>
         <source>This operation requires administrator privileges. Try the action again and enter your password when prompted.</source>
         <translation type="unfinished"/>
     </message>
@@ -15,27 +15,27 @@
 <context>
     <name>FlatpakModel</name>
     <message>
-        <location filename="../src/models/flatpakmodel.cpp" line="177"/>
+        <location filename="../src/models/flatpakmodel.cpp" line="158"/>
         <source>Package</source>
         <translation>软件包名</translation>
     </message>
     <message>
-        <location filename="../src/models/flatpakmodel.cpp" line="179"/>
+        <location filename="../src/models/flatpakmodel.cpp" line="160"/>
         <source>Full Name</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/models/flatpakmodel.cpp" line="181"/>
+        <location filename="../src/models/flatpakmodel.cpp" line="162"/>
         <source>Version</source>
         <translation>版本</translation>
     </message>
     <message>
-        <location filename="../src/models/flatpakmodel.cpp" line="183"/>
+        <location filename="../src/models/flatpakmodel.cpp" line="164"/>
         <source>Branch</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/models/flatpakmodel.cpp" line="185"/>
+        <location filename="../src/models/flatpakmodel.cpp" line="166"/>
         <source>Size</source>
         <translation>大小</translation>
     </message>
@@ -44,7 +44,7 @@
     <name>MainWindow</name>
     <message>
         <location filename="../src/mainwindow.ui" line="20"/>
-        <location filename="../src/mainwindow.cpp" line="341"/>
+        <location filename="../src/mainwindow.cpp" line="822"/>
         <source>MX Package Installer</source>
         <translation>MX 软件包安装器</translation>
     </message>
@@ -61,19 +61,20 @@
     <message>
         <location filename="../src/mainwindow.ui" line="95"/>
         <location filename="../src/mainwindow.ui" line="177"/>
-        <location filename="../src/mainwindow.ui" line="680"/>
-        <location filename="../src/mainwindow.ui" line="1071"/>
-        <location filename="../src/mainwindow.ui" line="1192"/>
-        <location filename="../src/mainwindow.ui" line="1580"/>
+        <location filename="../src/mainwindow.ui" line="964"/>
+        <location filename="../src/mainwindow.ui" line="1355"/>
+        <location filename="../src/mainwindow.ui" line="1476"/>
+        <location filename="../src/mainwindow.ui" line="1864"/>
         <source>search</source>
         <translation>搜索</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="136"/>
         <location filename="../src/mainwindow.ui" line="202"/>
-        <location filename="../src/mainwindow.ui" line="705"/>
-        <location filename="../src/mainwindow.ui" line="1151"/>
-        <location filename="../src/mainwindow.ui" line="1387"/>
+        <location filename="../src/mainwindow.ui" line="669"/>
+        <location filename="../src/mainwindow.ui" line="989"/>
+        <location filename="../src/mainwindow.ui" line="1435"/>
+        <location filename="../src/mainwindow.ui" line="1671"/>
         <source>= Installed packages</source>
         <translation>= 已安装软件包</translation>
     </message>
@@ -94,835 +95,930 @@
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="350"/>
-        <location filename="../src/mainwindow.ui" line="1268"/>
+        <location filename="../src/mainwindow.ui" line="1552"/>
         <source>Upgrade All</source>
         <translation>升级所有</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="293"/>
         <location filename="../src/mainwindow.ui" line="524"/>
-        <location filename="../src/mainwindow.ui" line="908"/>
+        <location filename="../src/mainwindow.ui" line="808"/>
+        <location filename="../src/mainwindow.ui" line="1192"/>
         <source>Installed:</source>
         <translation>已安装：</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="377"/>
         <location filename="../src/mainwindow.ui" line="517"/>
-        <location filename="../src/mainwindow.ui" line="929"/>
+        <location filename="../src/mainwindow.ui" line="801"/>
+        <location filename="../src/mainwindow.ui" line="1213"/>
         <source>Total packages:</source>
         <translation>软件包总数：</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="363"/>
-        <location filename="../src/mainwindow.ui" line="656"/>
-        <location filename="../src/mainwindow.ui" line="976"/>
+        <location filename="../src/mainwindow.ui" line="940"/>
+        <location filename="../src/mainwindow.ui" line="1260"/>
         <source>Also Install &quot;Recommended&quot; Packages</source>
         <translation>同时安装“推荐”包</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="323"/>
         <location filename="../src/mainwindow.ui" line="554"/>
-        <location filename="../src/mainwindow.ui" line="901"/>
+        <location filename="../src/mainwindow.ui" line="838"/>
+        <location filename="../src/mainwindow.ui" line="1185"/>
         <source>Upgradable:</source>
         <translation>可升级：</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="242"/>
-        <location filename="../src/mainwindow.ui" line="561"/>
-        <location filename="../src/mainwindow.ui" line="936"/>
+        <location filename="../src/mainwindow.ui" line="845"/>
+        <location filename="../src/mainwindow.ui" line="1220"/>
         <source>Hide library and developer packages</source>
         <translation>隐藏库与开发软件包</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="264"/>
-        <location filename="../src/mainwindow.ui" line="617"/>
-        <location filename="../src/mainwindow.ui" line="995"/>
-        <location filename="../src/mainwindow.ui" line="1480"/>
-        <location filename="../src/mainwindow.ui" line="1590"/>
+        <location filename="../src/mainwindow.ui" line="600"/>
+        <location filename="../src/mainwindow.ui" line="901"/>
+        <location filename="../src/mainwindow.ui" line="1279"/>
+        <location filename="../src/mainwindow.ui" line="1764"/>
+        <location filename="../src/mainwindow.ui" line="1874"/>
         <source>Refresh list</source>
         <translation>刷新列表</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="458"/>
-        <location filename="../src/mainwindow.ui" line="767"/>
-        <location filename="../src/mainwindow.ui" line="1101"/>
-        <location filename="../src/mainwindow.ui" line="1435"/>
-        <location filename="../src/mainwindow.ui" line="1532"/>
+        <location filename="../src/mainwindow.ui" line="728"/>
+        <location filename="../src/mainwindow.ui" line="1051"/>
+        <location filename="../src/mainwindow.ui" line="1385"/>
+        <location filename="../src/mainwindow.ui" line="1719"/>
+        <location filename="../src/mainwindow.ui" line="1816"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Filter packages according to their status.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;根据软件包的状态过滤。&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="461"/>
         <location filename="../src/mainwindow.ui" line="465"/>
-        <location filename="../src/mainwindow.ui" line="770"/>
-        <location filename="../src/mainwindow.ui" line="774"/>
-        <location filename="../src/mainwindow.ui" line="1104"/>
-        <location filename="../src/mainwindow.ui" line="1108"/>
-        <location filename="../src/mainwindow.cpp" line="4887"/>
+        <location filename="../src/mainwindow.ui" line="731"/>
+        <location filename="../src/mainwindow.ui" line="735"/>
+        <location filename="../src/mainwindow.ui" line="1054"/>
+        <location filename="../src/mainwindow.ui" line="1058"/>
+        <location filename="../src/mainwindow.ui" line="1388"/>
+        <location filename="../src/mainwindow.ui" line="1392"/>
+        <location filename="../src/mainwindow.cpp" line="5901"/>
         <source>All packages</source>
         <translation>所有软件包</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="470"/>
-        <location filename="../src/mainwindow.ui" line="779"/>
-        <location filename="../src/mainwindow.ui" line="1113"/>
-        <location filename="../src/mainwindow.cpp" line="4913"/>
+        <location filename="../src/mainwindow.ui" line="740"/>
+        <location filename="../src/mainwindow.ui" line="1063"/>
+        <location filename="../src/mainwindow.ui" line="1397"/>
+        <location filename="../src/mainwindow.cpp" line="5927"/>
         <source>Installed</source>
         <translation>已安装软件包</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="475"/>
-        <location filename="../src/mainwindow.ui" line="784"/>
-        <location filename="../src/mainwindow.ui" line="1118"/>
-        <location filename="../src/mainwindow.cpp" line="4914"/>
+        <location filename="../src/mainwindow.ui" line="745"/>
+        <location filename="../src/mainwindow.ui" line="1068"/>
+        <location filename="../src/mainwindow.ui" line="1402"/>
+        <location filename="../src/mainwindow.cpp" line="5928"/>
         <source>Upgradable</source>
         <translation>可升级软件包</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="480"/>
-        <location filename="../src/mainwindow.ui" line="789"/>
-        <location filename="../src/mainwindow.ui" line="1123"/>
-        <location filename="../src/mainwindow.ui" line="1472"/>
-        <location filename="../src/mainwindow.cpp" line="4880"/>
-        <location filename="../src/mainwindow.cpp" line="4915"/>
+        <location filename="../src/mainwindow.ui" line="750"/>
+        <location filename="../src/mainwindow.ui" line="1073"/>
+        <location filename="../src/mainwindow.ui" line="1407"/>
+        <location filename="../src/mainwindow.ui" line="1756"/>
+        <location filename="../src/mainwindow.cpp" line="5894"/>
+        <location filename="../src/mainwindow.cpp" line="5929"/>
         <source>Not installed</source>
         <translation>未安装软件包</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="485"/>
-        <location filename="../src/mainwindow.ui" line="794"/>
-        <location filename="../src/mainwindow.ui" line="1128"/>
-        <location filename="../src/mainwindow.cpp" line="3613"/>
-        <location filename="../src/mainwindow.cpp" line="4851"/>
-        <location filename="../src/mainwindow.cpp" line="4916"/>
-        <location filename="../src/mainwindow.cpp" line="4994"/>
-        <location filename="../src/mainwindow.cpp" line="5085"/>
+        <location filename="../src/mainwindow.ui" line="755"/>
+        <location filename="../src/mainwindow.ui" line="1078"/>
+        <location filename="../src/mainwindow.ui" line="1412"/>
+        <location filename="../src/mainwindow.cpp" line="4408"/>
+        <location filename="../src/mainwindow.cpp" line="5865"/>
+        <location filename="../src/mainwindow.cpp" line="5930"/>
+        <location filename="../src/mainwindow.cpp" line="6013"/>
+        <location filename="../src/mainwindow.cpp" line="6104"/>
         <source>Autoremovable</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="427"/>
-        <location filename="../src/mainwindow.ui" line="736"/>
-        <location filename="../src/mainwindow.ui" line="837"/>
+        <location filename="../src/mainwindow.ui" line="697"/>
+        <location filename="../src/mainwindow.ui" line="1020"/>
+        <location filename="../src/mainwindow.ui" line="1121"/>
         <source>= Upgradable package. Newer version available in selected repository.</source>
         <translation>= 可升级软件包。所选仓库中有新版本可用。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="500"/>
+        <location filename="../src/mainwindow.ui" line="784"/>
         <source>MX Test Repo</source>
         <translation>MX 测试仓库</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="816"/>
+        <location filename="../src/mainwindow.ui" line="1100"/>
         <source>Debian Backports</source>
         <translation>Debian Backports</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1174"/>
+        <location filename="../src/mainwindow.ui" line="1458"/>
         <source>Flatpaks</source>
         <translation>Flatpaks</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1403"/>
-        <location filename="../src/mainwindow.ui" line="1407"/>
+        <location filename="../src/mainwindow.ui" line="1687"/>
+        <location filename="../src/mainwindow.ui" line="1691"/>
         <source>For all users</source>
         <translation>为所有用户</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1412"/>
+        <location filename="../src/mainwindow.ui" line="1696"/>
         <source>For current user</source>
         <translation>为当前用户</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1497"/>
+        <location filename="../src/mainwindow.ui" line="1781"/>
         <source>Remote (repo):</source>
         <translation>远程（仓库）：</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1438"/>
-        <location filename="../src/mainwindow.ui" line="1442"/>
-        <location filename="../src/mainwindow.cpp" line="4862"/>
+        <location filename="../src/mainwindow.ui" line="1722"/>
+        <location filename="../src/mainwindow.ui" line="1726"/>
+        <location filename="../src/mainwindow.cpp" line="5876"/>
         <source>All apps</source>
         <translation>所有程序</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1447"/>
-        <location filename="../src/mainwindow.cpp" line="4868"/>
+        <location filename="../src/mainwindow.ui" line="1731"/>
+        <location filename="../src/mainwindow.cpp" line="5882"/>
         <source>All runtimes</source>
         <translation>所有运行库</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1452"/>
-        <location filename="../src/mainwindow.cpp" line="4874"/>
+        <location filename="../src/mainwindow.ui" line="1736"/>
+        <location filename="../src/mainwindow.cpp" line="5888"/>
         <source>All available</source>
         <translation>所有可用程序</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1457"/>
-        <location filename="../src/mainwindow.cpp" line="4859"/>
+        <location filename="../src/mainwindow.ui" line="1741"/>
+        <location filename="../src/mainwindow.cpp" line="5873"/>
         <source>Installed apps</source>
         <translation>已安装软件</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1462"/>
-        <location filename="../src/mainwindow.cpp" line="4856"/>
+        <location filename="../src/mainwindow.ui" line="1746"/>
+        <location filename="../src/mainwindow.cpp" line="5870"/>
         <source>Installed runtimes</source>
         <translation>已安装运行库</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1467"/>
-        <location filename="../src/mainwindow.cpp" line="4878"/>
+        <location filename="../src/mainwindow.ui" line="1751"/>
+        <location filename="../src/mainwindow.cpp" line="5892"/>
         <source>All installed</source>
         <translation>已全部安装</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1247"/>
-        <location filename="../src/mainwindow.ui" line="1657"/>
+        <location filename="../src/mainwindow.ui" line="1531"/>
+        <location filename="../src/mainwindow.ui" line="1941"/>
         <source>Total items </source>
         <translation>总数</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1261"/>
+        <location filename="../src/mainwindow.ui" line="1545"/>
         <source>Installed apps:</source>
         <translation>已安装软件：</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1313"/>
+        <location filename="../src/mainwindow.ui" line="1597"/>
         <source>Advanced</source>
         <translation>高级</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1342"/>
+        <location filename="../src/mainwindow.ui" line="1626"/>
         <source>Total installed size:</source>
         <translation>软件包总大小：</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1356"/>
+        <location filename="../src/mainwindow.ui" line="1640"/>
         <source>Remove unused runtimes</source>
         <translation>移除未使用的运行时</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="277"/>
-        <location filename="../src/mainwindow.ui" line="630"/>
-        <location filename="../src/mainwindow.ui" line="1008"/>
+        <location filename="../src/mainwindow.ui" line="613"/>
+        <location filename="../src/mainwindow.ui" line="914"/>
+        <location filename="../src/mainwindow.ui" line="1292"/>
         <source>Select all</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="571"/>
-        <location filename="../src/mainwindow.ui" line="946"/>
+        <location filename="../src/mainwindow.ui" line="500"/>
+        <source>AUR</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="656"/>
+        <source>search AUR (type to find more)</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="763"/>
+        <source>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.ui" line="855"/>
+        <location filename="../src/mainwindow.ui" line="1230"/>
         <source>Only repo packages</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1514"/>
+        <location filename="../src/mainwindow.ui" line="1798"/>
         <source>Snaps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1535"/>
-        <location filename="../src/mainwindow.ui" line="1539"/>
-        <location filename="../src/mainwindow.cpp" line="4443"/>
-        <location filename="../src/mainwindow.cpp" line="4667"/>
+        <location filename="../src/mainwindow.ui" line="1819"/>
+        <location filename="../src/mainwindow.ui" line="1823"/>
+        <location filename="../src/mainwindow.cpp" line="5451"/>
+        <location filename="../src/mainwindow.cpp" line="5681"/>
         <source>Installed snaps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1544"/>
-        <location filename="../src/mainwindow.cpp" line="4358"/>
-        <location filename="../src/mainwindow.cpp" line="4446"/>
-        <location filename="../src/mainwindow.cpp" line="4448"/>
-        <location filename="../src/mainwindow.cpp" line="4737"/>
+        <location filename="../src/mainwindow.ui" line="1828"/>
+        <location filename="../src/mainwindow.cpp" line="5366"/>
+        <location filename="../src/mainwindow.cpp" line="5454"/>
+        <location filename="../src/mainwindow.cpp" line="5456"/>
+        <location filename="../src/mainwindow.cpp" line="5751"/>
         <source>Search store</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1577"/>
+        <location filename="../src/mainwindow.ui" line="1861"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type a term and press Enter to search the snap store.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1609"/>
+        <location filename="../src/mainwindow.ui" line="1893"/>
         <source>Snap support is not set up on this system. Click the button to install snapd and enable the Snap service.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1619"/>
+        <location filename="../src/mainwindow.ui" line="1903"/>
         <source>Set up Snap support</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1671"/>
+        <location filename="../src/mainwindow.ui" line="1955"/>
         <source>Installed snaps:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1698"/>
+        <location filename="../src/mainwindow.ui" line="1982"/>
         <source>Update All</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1721"/>
-        <location filename="../src/mainwindow.cpp" line="3857"/>
-        <location filename="../src/mainwindow.cpp" line="4223"/>
+        <location filename="../src/mainwindow.ui" line="2005"/>
+        <location filename="../src/mainwindow.cpp" line="4657"/>
+        <location filename="../src/mainwindow.cpp" line="5231"/>
         <source>Console Output</source>
         <translation>控制台输出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1727"/>
+        <location filename="../src/mainwindow.ui" line="2011"/>
         <source>Enter</source>
         <translation>回车</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1737"/>
+        <location filename="../src/mainwindow.ui" line="2021"/>
         <source>Respond here, or just press Enter</source>
         <translation>再次进行回应，或按回车</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1796"/>
-        <location filename="../src/mainwindow.cpp" line="1964"/>
-        <location filename="../src/mainwindow.cpp" line="4652"/>
-        <location filename="../src/mainwindow.cpp" line="4900"/>
-        <location filename="../src/mainwindow.cpp" line="4911"/>
-        <location filename="../src/mainwindow.cpp" line="5024"/>
-        <location filename="../src/mainwindow.cpp" line="5064"/>
-        <location filename="../src/mainwindow.cpp" line="5084"/>
-        <location filename="../src/mainwindow.cpp" line="5125"/>
+        <location filename="../src/mainwindow.ui" line="2080"/>
+        <location filename="../src/mainwindow.cpp" line="2675"/>
+        <location filename="../src/mainwindow.cpp" line="5666"/>
+        <location filename="../src/mainwindow.cpp" line="5914"/>
+        <location filename="../src/mainwindow.cpp" line="5925"/>
+        <location filename="../src/mainwindow.cpp" line="6043"/>
+        <location filename="../src/mainwindow.cpp" line="6083"/>
+        <location filename="../src/mainwindow.cpp" line="6103"/>
+        <location filename="../src/mainwindow.cpp" line="6144"/>
         <source>Install</source>
         <translation>安装</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1802"/>
+        <location filename="../src/mainwindow.ui" line="2086"/>
         <source>Alt+I</source>
         <translation>Alt+I</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1821"/>
+        <location filename="../src/mainwindow.ui" line="2105"/>
         <source>Quit application</source>
         <translation>退出应用程序</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1824"/>
+        <location filename="../src/mainwindow.ui" line="2108"/>
         <source>Close</source>
         <translation>关闭</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1830"/>
+        <location filename="../src/mainwindow.ui" line="2114"/>
         <source>Alt+C</source>
         <translation>Alt+C</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1862"/>
+        <location filename="../src/mainwindow.ui" line="2146"/>
         <source>About this application</source>
         <translation>关于此软件</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1865"/>
+        <location filename="../src/mainwindow.ui" line="2149"/>
         <source>About...</source>
         <translation>关于…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1871"/>
+        <location filename="../src/mainwindow.ui" line="2155"/>
         <source>Alt+B</source>
         <translation>Alt+B</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1909"/>
+        <location filename="../src/mainwindow.ui" line="2193"/>
         <source>Display help </source>
         <translation>显示帮助</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1912"/>
+        <location filename="../src/mainwindow.ui" line="2196"/>
         <source>Help</source>
         <translation>帮助</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1918"/>
+        <location filename="../src/mainwindow.ui" line="2202"/>
         <source>Alt+H</source>
         <translation>Alt+H</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1934"/>
+        <location filename="../src/mainwindow.ui" line="2218"/>
         <source>Uninstall</source>
         <translation>卸载</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.ui" line="1940"/>
+        <location filename="../src/mainwindow.ui" line="2224"/>
         <source>Alt+U</source>
         <translation>Alt+U</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="551"/>
+        <location filename="../src/mainwindow.cpp" line="1085"/>
         <source>Uninstalling packages...</source>
         <translation>卸载软件包中…</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="556"/>
+        <location filename="../src/mainwindow.cpp" line="1090"/>
         <source>Running pre-uninstall operations...</source>
         <translation>正在运行卸载前操作...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="576"/>
+        <location filename="../src/mainwindow.cpp" line="1108"/>
         <source>Running post-uninstall operations...</source>
         <translation>正在运行卸载后操作……</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="593"/>
+        <location filename="../src/mainwindow.cpp" line="1125"/>
         <source>Refreshing sources...</source>
         <translation>刷新软件源中……</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="606"/>
-        <location filename="../src/mainwindow.cpp" line="2016"/>
-        <location filename="../src/mainwindow.cpp" line="2163"/>
-        <location filename="../src/mainwindow.cpp" line="2366"/>
-        <location filename="../src/mainwindow.cpp" line="2441"/>
-        <location filename="../src/mainwindow.cpp" line="2799"/>
-        <location filename="../src/mainwindow.cpp" line="3051"/>
-        <location filename="../src/mainwindow.cpp" line="3545"/>
-        <location filename="../src/mainwindow.cpp" line="3623"/>
-        <location filename="../src/mainwindow.cpp" line="3784"/>
-        <location filename="../src/mainwindow.cpp" line="3847"/>
-        <location filename="../src/mainwindow.cpp" line="4018"/>
-        <location filename="../src/mainwindow.cpp" line="4069"/>
-        <location filename="../src/mainwindow.cpp" line="4242"/>
-        <location filename="../src/mainwindow.cpp" line="5174"/>
-        <location filename="../src/mainwindow.cpp" line="5228"/>
-        <location filename="../src/mainwindow.cpp" line="5329"/>
-        <location filename="../src/mainwindow.cpp" line="5364"/>
-        <location filename="../src/mainwindow.cpp" line="5463"/>
-        <location filename="../src/mainwindow.cpp" line="5503"/>
+        <location filename="../src/mainwindow.cpp" line="614"/>
+        <location filename="../src/mainwindow.cpp" line="1138"/>
+        <location filename="../src/mainwindow.cpp" line="2728"/>
+        <location filename="../src/mainwindow.cpp" line="2749"/>
+        <location filename="../src/mainwindow.cpp" line="2769"/>
+        <location filename="../src/mainwindow.cpp" line="2943"/>
+        <location filename="../src/mainwindow.cpp" line="3144"/>
+        <location filename="../src/mainwindow.cpp" line="3226"/>
+        <location filename="../src/mainwindow.cpp" line="3283"/>
+        <location filename="../src/mainwindow.cpp" line="3657"/>
+        <location filename="../src/mainwindow.cpp" line="3811"/>
+        <location filename="../src/mainwindow.cpp" line="4340"/>
+        <location filename="../src/mainwindow.cpp" line="4418"/>
+        <location filename="../src/mainwindow.cpp" line="4584"/>
+        <location filename="../src/mainwindow.cpp" line="4647"/>
+        <location filename="../src/mainwindow.cpp" line="4832"/>
+        <location filename="../src/mainwindow.cpp" line="4992"/>
+        <location filename="../src/mainwindow.cpp" line="5024"/>
+        <location filename="../src/mainwindow.cpp" line="5067"/>
+        <location filename="../src/mainwindow.cpp" line="5250"/>
+        <location filename="../src/mainwindow.cpp" line="6201"/>
+        <location filename="../src/mainwindow.cpp" line="6255"/>
+        <location filename="../src/mainwindow.cpp" line="6387"/>
+        <location filename="../src/mainwindow.cpp" line="6422"/>
+        <location filename="../src/mainwindow.cpp" line="6528"/>
+        <location filename="../src/mainwindow.cpp" line="6577"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="607"/>
+        <location filename="../src/mainwindow.cpp" line="1139"/>
         <source>There was a problem updating sources. Some sources may not have provided updates. For more info check: </source>
         <translation>更新软件源中出现错误。一些软件源或许不能提供更新。更多信息请查看：</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="719"/>
-        <location filename="../src/mainwindow.cpp" line="746"/>
+        <location filename="../src/mainwindow.cpp" line="1274"/>
+        <location filename="../src/mainwindow.cpp" line="1301"/>
         <source>Could not determine Debian version. Please select your version:</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="752"/>
+        <location filename="../src/mainwindow.cpp" line="1307"/>
         <source>Debian Version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1217"/>
+        <location filename="../src/mainwindow.cpp" line="1830"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1223"/>
+        <location filename="../src/mainwindow.cpp" line="1836"/>
         <source>Please wait...</source>
         <translation>请稍等……</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1765"/>
+        <location filename="../src/mainwindow.cpp" line="2468"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
         <translation>您将要使用 MX 测试软件仓库，其中软件包仅为测试目的提供。它们有可能破坏您的系统，故我们谨以您备份您的系统，并一次只安装或升级一个软件包。请在论坛中进行反馈，以便在这些软件包移至主仓库之前进行评估。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1774"/>
+        <location filename="../src/mainwindow.cpp" line="2477"/>
         <source>You are about to use Debian Backports, which contains packages taken from the next Debian release (called &apos;testing&apos;), adjusted and recompiled for usage on Debian stable. They cannot be tested as extensively as in the stable releases of Debian and MX Linux, and are provided on an as-is basis, with risk of incompatibilities with other components in Debian stable. Use with care!</source>
         <translation>您将要使用 Debian Backports 更新源，这其中包含了来自下一个 Debian 版本（即 “testing”）的软件包，他们被调整与重编译以便可以在 Debian stable 上使用。它们不能像 Debian 和 MX Linux 的稳定版那样进行充分的测试，且在软件包原样的基础上提供，它们可能与 Debian stable 的其他组件不兼容。小心使用！</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1782"/>
+        <location filename="../src/mainwindow.cpp" line="2485"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
         <translation>MX Linux 包含该 Flatpaks 仓库仅为方便用户使用，并不对单个 Flatpaks 本身的功能负责。更多信息，参见维基中的 flatpaks 页面。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1790"/>
-        <location filename="../src/mainwindow.cpp" line="5493"/>
+        <location filename="../src/mainwindow.cpp" line="2501"/>
+        <location filename="../src/mainwindow.cpp" line="6567"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1794"/>
+        <location filename="../src/mainwindow.cpp" line="2503"/>
         <source>Do not show this message again</source>
         <translation>不再显示这条信息</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1961"/>
+        <location filename="../src/mainwindow.cpp" line="2672"/>
         <source>Remove</source>
         <translation>移除</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="1977"/>
+        <location filename="../src/mainwindow.cpp" line="2568"/>
+        <location filename="../src/mainwindow.cpp" line="2688"/>
         <source>The following packages were selected. Click Show Details for list of changes.</source>
         <translation>已选择以下软件包。单击“显示细节”列出变更列表。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2017"/>
-        <location filename="../src/mainwindow.cpp" line="2164"/>
-        <location filename="../src/mainwindow.cpp" line="2442"/>
+        <location filename="../src/mainwindow.cpp" line="2729"/>
+        <location filename="../src/mainwindow.cpp" line="2944"/>
+        <location filename="../src/mainwindow.cpp" line="3227"/>
         <source>Internet is not available, won&apos;t be able to download the list of packages</source>
         <translation>网络不可用，无法下载以下软件包</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2020"/>
+        <location filename="../src/mainwindow.cpp" line="2732"/>
         <source>Installing packages...</source>
         <translation>安装软件包中……</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2083"/>
+        <location filename="../src/mainwindow.cpp" line="2863"/>
         <source>Post-processing...</source>
         <translation>安装后设置中……</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2115"/>
+        <location filename="../src/mainwindow.cpp" line="2895"/>
         <source>Pre-processing for </source>
         <translation>正在安装前设置</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2130"/>
+        <location filename="../src/mainwindow.cpp" line="2910"/>
         <source>Installing </source>
         <translation>正在安装</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2140"/>
+        <location filename="../src/mainwindow.cpp" line="2920"/>
         <source>Post-processing for </source>
         <translation>正在安装后设置</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2363"/>
+        <location filename="../src/mainwindow.cpp" line="3141"/>
         <source>There was an error downloading or writing the file: %1. Please check your internet connection and free space on your drive</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2449"/>
+        <location filename="../src/mainwindow.cpp" line="3234"/>
         <source>Downloading package info...</source>
         <translation>下载软件包信息中……</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2800"/>
-        <source>dpkg-query command returned an error. Please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="3052"/>
-        <source>dpkg-query command returned an error, please run &apos;dpkg-query -W&apos; in terminal and check the output.</source>
-        <translation type="unfinished"/>
-    </message>
-    <message>
-        <location filename="../src/mainwindow.cpp" line="3186"/>
-        <location filename="../src/mainwindow.cpp" line="3302"/>
-        <location filename="../src/mainwindow.cpp" line="3350"/>
+        <location filename="../src/mainwindow.cpp" line="3950"/>
+        <location filename="../src/mainwindow.cpp" line="4076"/>
+        <location filename="../src/mainwindow.cpp" line="4100"/>
+        <location filename="../src/mainwindow.cpp" line="4144"/>
         <source>Package info</source>
         <translation>软件包信息</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3218"/>
-        <location filename="../src/mainwindow.cpp" line="5400"/>
+        <location filename="../src/mainwindow.cpp" line="3986"/>
+        <location filename="../src/mainwindow.cpp" line="6462"/>
         <source>More &amp;info...</source>
         <translation>更多信息(&amp;i)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3243"/>
+        <location filename="../src/mainwindow.cpp" line="4010"/>
         <source>Packages to be installed: </source>
         <translation>将要安装的软件包：</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3541"/>
-        <location filename="../src/mainwindow.cpp" line="3598"/>
-        <location filename="../src/mainwindow.cpp" line="3620"/>
-        <location filename="../src/mainwindow.cpp" line="3780"/>
-        <location filename="../src/mainwindow.cpp" line="3826"/>
-        <location filename="../src/mainwindow.cpp" line="4688"/>
-        <location filename="../src/mainwindow.cpp" line="5225"/>
-        <location filename="../src/mainwindow.cpp" line="5325"/>
-        <location filename="../src/mainwindow.cpp" line="5358"/>
-        <location filename="../src/mainwindow.cpp" line="5459"/>
+        <location filename="../src/mainwindow.cpp" line="4336"/>
+        <location filename="../src/mainwindow.cpp" line="4393"/>
+        <location filename="../src/mainwindow.cpp" line="4415"/>
+        <location filename="../src/mainwindow.cpp" line="4580"/>
+        <location filename="../src/mainwindow.cpp" line="4626"/>
+        <location filename="../src/mainwindow.cpp" line="5702"/>
+        <location filename="../src/mainwindow.cpp" line="6252"/>
+        <location filename="../src/mainwindow.cpp" line="6383"/>
+        <location filename="../src/mainwindow.cpp" line="6416"/>
+        <location filename="../src/mainwindow.cpp" line="6524"/>
         <source>Done</source>
         <translation>完成</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3541"/>
-        <location filename="../src/mainwindow.cpp" line="3598"/>
-        <location filename="../src/mainwindow.cpp" line="3620"/>
-        <location filename="../src/mainwindow.cpp" line="3780"/>
-        <location filename="../src/mainwindow.cpp" line="3826"/>
-        <location filename="../src/mainwindow.cpp" line="3844"/>
-        <location filename="../src/mainwindow.cpp" line="4688"/>
-        <location filename="../src/mainwindow.cpp" line="5225"/>
-        <location filename="../src/mainwindow.cpp" line="5325"/>
-        <location filename="../src/mainwindow.cpp" line="5358"/>
-        <location filename="../src/mainwindow.cpp" line="5459"/>
-        <location filename="../src/mainwindow.cpp" line="5500"/>
+        <location filename="../src/mainwindow.cpp" line="4336"/>
+        <location filename="../src/mainwindow.cpp" line="4393"/>
+        <location filename="../src/mainwindow.cpp" line="4415"/>
+        <location filename="../src/mainwindow.cpp" line="4580"/>
+        <location filename="../src/mainwindow.cpp" line="4626"/>
+        <location filename="../src/mainwindow.cpp" line="4644"/>
+        <location filename="../src/mainwindow.cpp" line="5702"/>
+        <location filename="../src/mainwindow.cpp" line="6252"/>
+        <location filename="../src/mainwindow.cpp" line="6383"/>
+        <location filename="../src/mainwindow.cpp" line="6416"/>
+        <location filename="../src/mainwindow.cpp" line="6524"/>
+        <location filename="../src/mainwindow.cpp" line="6574"/>
         <source>Processing finished successfully.</source>
         <translation>配置成功完成。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3536"/>
-        <location filename="../src/mainwindow.cpp" line="3596"/>
-        <location filename="../src/mainwindow.cpp" line="5353"/>
+        <location filename="../src/mainwindow.cpp" line="4331"/>
+        <location filename="../src/mainwindow.cpp" line="4391"/>
+        <location filename="../src/mainwindow.cpp" line="6411"/>
         <source>Install complete.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="2362"/>
+        <location filename="../src/mainwindow.cpp" line="615"/>
+        <location filename="../src/mainwindow.cpp" line="3658"/>
+        <location filename="../src/mainwindow.cpp" line="3812"/>
+        <source>The installed-package query returned an error. Please check the log for details.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1771"/>
+        <source>Show/hide input</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="1776"/>
+        <source>Clear input</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="2492"/>
+        <source>You are about to use the AUR, which contains user-contributed packages. These packages are not vetted by the distribution, may be outdated, and could contain malicious or broken build scripts. Use with care.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="2750"/>
+        <source>paru is not installed.
+
+To install AUR packages, please install paru first:
+pacman -S paru
+
+Then try installing the AUR package again.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="2770"/>
+        <source>AUR packages cannot be built as root, and no regular user could be found to build as.
+
+Install the package as your normal user instead.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="3140"/>
         <source>The download timed out. Please check your internet connection and try again.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3546"/>
-        <location filename="../src/mainwindow.cpp" line="3624"/>
-        <location filename="../src/mainwindow.cpp" line="5229"/>
-        <location filename="../src/mainwindow.cpp" line="5330"/>
-        <location filename="../src/mainwindow.cpp" line="5365"/>
+        <location filename="../src/mainwindow.cpp" line="4101"/>
+        <location filename="../src/mainwindow.cpp" line="5002"/>
+        <source>No information available.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="4341"/>
+        <location filename="../src/mainwindow.cpp" line="4419"/>
+        <location filename="../src/mainwindow.cpp" line="6256"/>
+        <location filename="../src/mainwindow.cpp" line="6388"/>
+        <location filename="../src/mainwindow.cpp" line="6423"/>
         <source>Problem detected while installing, please inspect the console output.</source>
         <translation>安装过程中检测到问题，请查看控制台输出。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3565"/>
+        <location filename="../src/mainwindow.cpp" line="4360"/>
         <source>Install snaps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3566"/>
+        <location filename="../src/mainwindow.cpp" line="4361"/>
         <source>OK to install the following snap packages?
 
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3577"/>
+        <location filename="../src/mainwindow.cpp" line="4372"/>
         <source>Installing packages: %1...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3580"/>
+        <location filename="../src/mainwindow.cpp" line="4375"/>
         <source>Installing package: %1...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3601"/>
+        <location filename="../src/mainwindow.cpp" line="4396"/>
         <source>Problem detected while installing a snap. Click &quot;Show Details&quot; for more information.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3636"/>
+        <location filename="../src/mainwindow.cpp" line="4431"/>
         <source>About %1</source>
         <translation>关于 %1</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3637"/>
+        <location filename="../src/mainwindow.cpp" line="4432"/>
         <source>Version: </source>
         <translation>版本：</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3639"/>
+        <location filename="../src/mainwindow.cpp" line="4434"/>
         <source>Package Installer for MX Linux</source>
         <translation>MX Linux 的软件包安装器</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3641"/>
+        <location filename="../src/mainwindow.cpp" line="4436"/>
         <source>Copyright (c) MX Linux</source>
         <translation>Copyright (c) MX Linux</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3642"/>
+        <location filename="../src/mainwindow.cpp" line="4437"/>
         <source>%1 License</source>
         <translation>%1 许可证</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3648"/>
+        <location filename="../src/mainwindow.cpp" line="4445"/>
+        <location filename="../src/mainwindow.cpp" line="4447"/>
         <source>%1 Help</source>
         <translation>%1 帮助</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3761"/>
-        <location filename="../src/mainwindow.cpp" line="5452"/>
+        <location filename="../src/mainwindow.cpp" line="4561"/>
+        <location filename="../src/mainwindow.cpp" line="6517"/>
         <source>Uninstalling flatpaks...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3770"/>
-        <location filename="../src/mainwindow.cpp" line="3824"/>
-        <location filename="../src/mainwindow.cpp" line="5454"/>
+        <location filename="../src/mainwindow.cpp" line="4570"/>
+        <location filename="../src/mainwindow.cpp" line="4624"/>
+        <location filename="../src/mainwindow.cpp" line="6519"/>
         <source>Uninstall complete.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3771"/>
-        <location filename="../src/mainwindow.cpp" line="5455"/>
+        <location filename="../src/mainwindow.cpp" line="4571"/>
+        <location filename="../src/mainwindow.cpp" line="6520"/>
         <source>Refreshing flatpaks...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3784"/>
+        <location filename="../src/mainwindow.cpp" line="4584"/>
         <source>We encountered a problem uninstalling, please check output</source>
         <translation>在卸载软件包时遇到了错误，请检查输出</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3804"/>
+        <location filename="../src/mainwindow.cpp" line="4604"/>
         <source>Remove snaps</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3805"/>
+        <location filename="../src/mainwindow.cpp" line="4605"/>
         <source>OK to remove the following snap packages?
 
 %1</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3829"/>
+        <location filename="../src/mainwindow.cpp" line="4629"/>
         <source>We encountered a problem removing a snap. Click &quot;Show Details&quot; for more information.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3844"/>
-        <location filename="../src/mainwindow.cpp" line="5500"/>
+        <location filename="../src/mainwindow.cpp" line="4644"/>
+        <location filename="../src/mainwindow.cpp" line="6574"/>
         <source>Success</source>
         <translation>成功</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="3847"/>
-        <location filename="../src/mainwindow.cpp" line="5503"/>
+        <location filename="../src/mainwindow.cpp" line="4647"/>
+        <location filename="../src/mainwindow.cpp" line="6577"/>
         <source>We encountered a problem uninstalling the program</source>
         <translation>在卸载程序过程中遇到了问题</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4019"/>
-        <location filename="../src/mainwindow.cpp" line="4070"/>
+        <location filename="../src/mainwindow.cpp" line="3284"/>
+        <location filename="../src/mainwindow.cpp" line="4833"/>
+        <location filename="../src/mainwindow.cpp" line="5068"/>
         <source>Could not download the list of packages. Please check your APT sources.</source>
         <translation>无法下载软件包列表。请检查您的APT源。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4150"/>
-        <location filename="../src/mainwindow.cpp" line="4204"/>
+        <location filename="../src/mainwindow.cpp" line="4993"/>
+        <source>paru is not installed.
+
+Install it with: pacman -S paru</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="5025"/>
+        <source>Could not query AUR packages. Please check that paru is installed and you are online.</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="5150"/>
+        <location filename="../src/mainwindow.cpp" line="5208"/>
         <source>Flatpak not installed</source>
         <translation>Flatpak 未安装</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4151"/>
+        <location filename="../src/mainwindow.cpp" line="5151"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
         <translation>Flatpak 当前未安装
 是否要继续并安装？</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4204"/>
+        <location filename="../src/mainwindow.cpp" line="5208"/>
         <source>Flatpak was not installed</source>
         <translation>Flatpak 未被安装</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4227"/>
-        <location filename="../src/mainwindow.cpp" line="4616"/>
+        <location filename="../src/mainwindow.cpp" line="5235"/>
+        <location filename="../src/mainwindow.cpp" line="5630"/>
         <source>Needs re-login</source>
         <translation>需要重新登陆</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4228"/>
+        <location filename="../src/mainwindow.cpp" line="5236"/>
         <source>You might need to logout/login to see installed items in the menu</source>
         <translation>您也许需要 登出/登陆 以在菜单中看见所安装项目</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4471"/>
+        <location filename="../src/mainwindow.cpp" line="5478"/>
         <source>No results</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4471"/>
+        <location filename="../src/mainwindow.cpp" line="5478"/>
         <source>No snaps found matching &quot;%1&quot;.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4514"/>
+        <location filename="../src/mainwindow.cpp" line="5527"/>
         <source>snapd was not installed. Click &quot;Show Details&quot; for more information.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4538"/>
+        <location filename="../src/mainwindow.cpp" line="5551"/>
         <source>Installing the base &quot;core&quot; snap...</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4603"/>
+        <location filename="../src/mainwindow.cpp" line="5617"/>
         <source>No output was captured. Run &apos;sudo snap install core&apos; in a terminal to see the underlying error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4608"/>
+        <location filename="../src/mainwindow.cpp" line="5622"/>
         <source>snapd was installed but its service could not be started. You may need to reboot or log out and back in, then reopen the Snap tab. Click &quot;Show Details&quot; for more information.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4612"/>
+        <location filename="../src/mainwindow.cpp" line="5626"/>
         <source>Snap support was enabled, but the base &quot;core&quot; snap could not be installed, so most snaps will not work yet. Click &quot;Show Details&quot; for the underlying error.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4693"/>
+        <location filename="../src/mainwindow.cpp" line="5707"/>
         <source>Problem detected while updating snaps. Click &quot;Show Details&quot; for more information.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4900"/>
-        <location filename="../src/mainwindow.cpp" line="4911"/>
-        <location filename="../src/mainwindow.cpp" line="5022"/>
-        <location filename="../src/mainwindow.cpp" line="5086"/>
+        <location filename="../src/mainwindow.cpp" line="5914"/>
+        <location filename="../src/mainwindow.cpp" line="5925"/>
+        <location filename="../src/mainwindow.cpp" line="6041"/>
+        <location filename="../src/mainwindow.cpp" line="6105"/>
         <source>Mark keep</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4927"/>
+        <location filename="../src/mainwindow.cpp" line="5941"/>
         <source>Select/deselect all upgradable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4928"/>
+        <location filename="../src/mainwindow.cpp" line="5942"/>
         <source>Select/deselect all autoremovable</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5024"/>
-        <location filename="../src/mainwindow.cpp" line="5084"/>
+        <location filename="../src/mainwindow.cpp" line="6043"/>
+        <location filename="../src/mainwindow.cpp" line="6103"/>
         <source>Upgrade</source>
         <translation>升级</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5259"/>
-        <location filename="../src/mainwindow.cpp" line="5411"/>
+        <location filename="../src/mainwindow.cpp" line="6308"/>
+        <source>Show input</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="6308"/>
+        <source>Hide input</source>
+        <translation type="unfinished"/>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.cpp" line="6317"/>
+        <location filename="../src/mainwindow.cpp" line="6472"/>
         <source>Quit?</source>
         <translation>退出？</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5260"/>
-        <location filename="../src/mainwindow.cpp" line="5412"/>
+        <location filename="../src/mainwindow.cpp" line="6318"/>
+        <location filename="../src/mainwindow.cpp" line="6473"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
         <translation>进程仍在运行，退出可能会使系统处于不稳定状态。&lt;p&gt;&lt;b&gt;您确定要退出 MX 软件包安装器吗？&lt;/b&gt;</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5064"/>
+        <location filename="../src/mainwindow.cpp" line="6083"/>
         <source>Reinstall</source>
         <translation>重装</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4617"/>
+        <location filename="../src/mainwindow.cpp" line="5631"/>
         <source>Log out and back in to see installed items in the menu and use snap commands from /snap/bin. These changes do not apply to your current session.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="4685"/>
-        <location filename="../src/mainwindow.cpp" line="5322"/>
+        <location filename="../src/mainwindow.cpp" line="5699"/>
+        <location filename="../src/mainwindow.cpp" line="6380"/>
         <source>Update complete.</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5175"/>
-        <location filename="../src/mainwindow.cpp" line="5464"/>
+        <location filename="../src/mainwindow.cpp" line="6202"/>
+        <location filename="../src/mainwindow.cpp" line="6529"/>
         <source>Problem detected during last operation, please inspect the console output.</source>
         <translation>上次操作期间检测到问题，请检查控制台输出。</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.cpp" line="5494"/>
+        <location filename="../src/mainwindow.cpp" line="6568"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
         <translation>有潜在危险的操作。
@@ -1025,22 +1121,22 @@ Please make sure you check carefully the list of packages to be removed.</source
 <context>
     <name>PackageModel</name>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="143"/>
+        <location filename="../src/models/packagemodel.cpp" line="146"/>
         <source>Package</source>
         <translation>软件包名</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="145"/>
+        <location filename="../src/models/packagemodel.cpp" line="148"/>
         <source>Repo Version</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="147"/>
+        <location filename="../src/models/packagemodel.cpp" line="150"/>
         <source>Installed</source>
         <translation>已安装软件包</translation>
     </message>
     <message>
-        <location filename="../src/models/packagemodel.cpp" line="149"/>
+        <location filename="../src/models/packagemodel.cpp" line="152"/>
         <source>Description</source>
         <translation>具体描述</translation>
     </message>
@@ -1076,51 +1172,52 @@ Please make sure you check carefully the list of packages to be removed.</source
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="94"/>
+        <location filename="../src/about.cpp" line="101"/>
         <source>License</source>
         <translation>许可证</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="95"/>
-        <location filename="../src/about.cpp" line="105"/>
+        <location filename="../src/about.cpp" line="103"/>
+        <location filename="../src/about.cpp" line="113"/>
         <source>Changelog</source>
         <translation>更新日志</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="96"/>
+        <location filename="../src/about.cpp" line="104"/>
         <source>Cancel</source>
         <translation>取消</translation>
     </message>
     <message>
-        <location filename="../src/about.cpp" line="117"/>
+        <location filename="../src/about.cpp" line="123"/>
         <source>Could not load changelog.</source>
         <translation type="unfinished"/>
     </message>
     <message>
         <location filename="../src/about.cpp" line="51"/>
-        <location filename="../src/about.cpp" line="120"/>
+        <location filename="../src/about.cpp" line="126"/>
         <source>&amp;Close</source>
         <translation>关闭(&amp;C)</translation>
     </message>
     <message>
-        <location filename="../src/lockfile.cpp" line="52"/>
+        <location filename="../src/lockfile_apt.cpp" line="52"/>
+        <location filename="../src/lockfile_pacman.cpp" line="85"/>
         <source>Warning</source>
         <translation>警告</translation>
     </message>
     <message>
-        <location filename="../src/lockfile.cpp" line="53"/>
+        <location filename="../src/lockfile_apt.cpp" line="53"/>
         <source>Dpkg/apt database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
         <translation>Dpkg/apt 数据库被另一个程序锁定：%1
 关闭该程序，或等待其处理完毕后再试。</translation>
     </message>
     <message>
-        <location filename="../src/lockfile.cpp" line="87"/>
+        <location filename="../src/lockfile_apt.cpp" line="87"/>
         <source>another package manager</source>
         <translation type="unfinished"/>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="84"/>
+        <location filename="../src/main.cpp" line="86"/>
         <source>MX Package Installer is a tool used for managing packages on MX Linux
     - installs popular programs from different sources
     - installs programs from the MX Test repo
@@ -1133,25 +1230,31 @@ Close the program, or wait until it is done processing and try again.</source>
 - 安装 Flatpak 格式程序</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="92"/>
+        <location filename="../src/main.cpp" line="94"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
         <translation>如果在线检查误报无法上网，则跳过在线检查。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="102"/>
-        <location filename="../src/main.cpp" line="110"/>
+        <location filename="../src/main.cpp" line="104"/>
+        <location filename="../src/main.cpp" line="112"/>
         <source>Error</source>
         <translation>错误</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="103"/>
+        <location filename="../src/main.cpp" line="105"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
         <translation>您似乎是以 root 身份登录的，请注销并以普通用户身份登录以使用此程序。</translation>
     </message>
     <message>
-        <location filename="../src/main.cpp" line="111"/>
+        <location filename="../src/main.cpp" line="113"/>
         <source>You must run this program with admin access.</source>
         <translation>您必须以管理员权限运行此程序。</translation>
+    </message>
+    <message>
+        <location filename="../src/lockfile_pacman.cpp" line="86"/>
+        <source>Pacman database is locked by another program: %1
+Close the program, or wait until it is done processing and try again.</source>
+        <translation type="unfinished"/>
     </message>
 </context>
 <context>
