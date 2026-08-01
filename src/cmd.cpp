@@ -114,7 +114,7 @@ QString Cmd::elevationTool()
     if (QFile::exists("/usr/bin/pkexec")) return QStringLiteral("/usr/bin/pkexec");
     if (QFile::exists("/usr/bin/gksu")) return QStringLiteral("/usr/bin/gksu");
     if (QFile::exists("/usr/bin/sudo")) return QStringLiteral("/usr/bin/sudo");
-    return QStringLiteral("/usr/bin/sudo"); // fallback
+    return {};
 }
 
 QString Cmd::getOut(const QString &cmd, QuietMode quiet)
@@ -202,10 +202,14 @@ bool Cmd::procScriptAsRoot(const QString &path, const QStringList &args, QString
     if (getuid() == 0) {
         return proc(path, args, output, input, quiet);
     }
+    if (elevate.isEmpty()) {
+        qWarning() << "No elevation helper available";
+        return false;
+    }
 
     QStringList elevatedArgs {path};
     elevatedArgs += args;
-    return startAndWait(elevationTool(), elevatedArgs, output, input, quiet, true);
+    return startAndWait(elevate, elevatedArgs, output, input, quiet, true);
 }
 
 bool Cmd::run(const QString &cmd, QuietMode quiet)
