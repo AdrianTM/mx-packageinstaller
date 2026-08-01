@@ -22,6 +22,13 @@ build() {
     cmake --build build --parallel
 }
 
+check() {
+    cd "${startdir}"
+    cmake -B build -DBUILD_TESTS=ON
+    cmake --build build --parallel
+    ctest --test-dir build --output-on-failure
+}
+
 package() {
     cd "${startdir}"
     install -Dm755 build/mx-packageinstaller "${pkgdir}/usr/bin/mx-packageinstaller"
