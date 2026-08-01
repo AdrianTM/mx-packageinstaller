@@ -39,7 +39,7 @@ jobs:
       - name: Create build directory
         run:  mkdir ${{ env.SOURCE_DIR }}/build
 
-      - name: Build
+      - name: Build and test
         working-directory: ${{ env.SOURCE_DIR }}
         run:  |
-              ./build.sh --clean         
+              ./build.sh --clean --tests
