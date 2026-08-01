@@ -79,17 +79,6 @@ constexpr auto MxpiMaintenancePath = "/usr/lib/mx-packageinstaller/mxpi-maintena
 
 using OutputRender::sanitizeOutputForDisplay;
 
-QString debconfFrontend()
-{
-    if (QFile::exists("/usr/share/doc/debconf-kde-helper")) {
-        return QStringLiteral("kde");
-    }
-    if (QFile::exists("/usr/share/doc/debconf-gnome")) {
-        return QStringLiteral("gnome");
-    }
-    return QStringLiteral("noninteractive");
-}
-
 QStringList packageArgs(const QString &names)
 {
     return names.split(' ', Qt::SkipEmptyParts);
