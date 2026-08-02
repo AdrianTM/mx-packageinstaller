@@ -371,6 +371,7 @@ add_test(NAME SizeUtilsTest COMMAND test_sizeutils)
 set(MAINWINDOW_TEST_SOURCES
     test_mainwindow.cpp
     ../src/mainwindow.cpp
+    ../src/mainwindow_snap.cpp
     ../src/mainwindow.ui
     ../src/checkableheaderview.cpp
     ../src/versionnumber.cpp
@@ -390,6 +391,7 @@ if(PACKAGE_BACKEND STREQUAL "pacman")
     list(APPEND MAINWINDOW_TEST_SOURCES
         ../src/lockfile_pacman.cpp
         ../src/packagebackend_pacman.cpp
+        ../src/mainwindow_aur.cpp
     )
 else()
     list(APPEND MAINWINDOW_TEST_SOURCES
