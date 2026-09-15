@@ -11,7 +11,7 @@
 
 pkgname=mx-packageinstaller
 pkgver=26.07.5
-pkgrel=1
+pkgrel=2
 pkgdesc="MX Package Installer - a tool for managing packages and Flatpaks"
 arch=("x86_64")
 url="https://github.com/MX-Linux/mx-packageinstaller"
