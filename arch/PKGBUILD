@@ -62,7 +62,7 @@ package() {
 
   install -Dm644 ../mx-packageinstaller.desktop "${pkgdir}/usr/share/applications/mx-packageinstaller.desktop"
 
-  install -Dm644 ../icons/mx-packageinstaller.png "${pkgdir}/usr/share/icons/hicolor/48x48/apps/mx-packageinstaller.png"
+  install -Dm644 ../icons/mx-packageinstaller.png "${pkgdir}/usr/share/icons/hicolor/64x64/apps/mx-packageinstaller.png"
   install -Dm644 ../icons/mx-packageinstaller.png "${pkgdir}/usr/share/pixmaps/mx-packageinstaller.png"
   install -Dm644 ../icons/mx-packageinstaller.svg "${pkgdir}/usr/share/icons/hicolor/scalable/apps/mx-packageinstaller.svg"
 
