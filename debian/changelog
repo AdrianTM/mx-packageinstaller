@@ -1,3 +1,18 @@
+mx-packageinstaller (26.09) mx; urgency=medium
+
+  * Show a description, screenshot, developer, license and homepage for
+    Flatpak and Snap applications, using Flathub and Snap Store listings
+  * Add an Info icon to the Flatpak and Snap lists, and a right-click
+    "More info..." menu, as on the Popular Applications tab
+  * Press Ctrl+I to show information about the selected package on any
+    tab that has package details
+  * Show a clear message instead of crashing when the program is started
+    without a graphical display
+  * Stop with an error instead of trying a missing tool when no way to get
+    administrator rights is installed
+
+ -- Adrian <adrian@mxlinux.org>  Thu, 24 Sep 2026 09:08:18 -0400
+
 mx-packageinstaller (26.07.5) mx; urgency=medium
 
   * Various code improvements and fixes
