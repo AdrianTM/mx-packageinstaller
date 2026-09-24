@@ -2,10 +2,15 @@
 #include "mainwindow_helpers.h"
 #include "ui_mainwindow.h"
 
+#include <QApplication>
 #include <QFileInfo>
+#include <QJsonArray>
+#include <QJsonDocument>
+#include <QJsonObject>
 #include <QEventLoop>
 #include <QMessageBox>
 #include <QRegularExpression>
+#include <QScopeGuard>
 #include <QTextCursor>
 #include <QTimer>
 
@@ -496,4 +501,68 @@ void MainWindow::pushUpgradeSnap_clicked()
         ui->tabWidget->setCurrentWidget(ui->tabSnap);
     }
     enableTabs(true);
+}
+
+void MainWindow::displaySnapInfo(const QModelIndex &index)
+{
+    if (!index.isValid() || !snapProxy || !snapModel) {
+        return;
+    }
+    const SnapData *snap = snapModel->snapAt(snapProxy->mapToSource(index).row());
+    if (!snap || snap->name.isEmpty()) {
+        return;
+    }
+
+    QString text;
+    bool richText = false;
+    {
+        // The network/Cmd calls below spin nested event loops; disable the window
+        // meanwhile so they can't be reentered (see displayPackageInfo()).
+        setEnabled(false);
+        QApplication::setOverrideCursor(Qt::BusyCursor);
+        auto restore = qScopeGuard([this] {
+            QApplication::restoreOverrideCursor();
+            setEnabled(true);
+        });
+
+        // The store API refuses requests without a device series header.
+        const QUrl url(QStringLiteral("https://api.snapcraft.io/v2/snaps/info/%1"
+                                      "?fields=title,summary,description,media,publisher,license,website")
+                           .arg(QString::fromUtf8(QUrl::toPercentEncoding(snap->name))));
+        const QJsonObject json
+            = QJsonDocument::fromJson(fetchUrl(url, {{"Snap-Device-Series", "16"}})).object().value(QStringLiteral("snap")).toObject();
+        if (!json.isEmpty()) {
+            AppInfo app;
+            app.title = json.value(QStringLiteral("title")).toString();
+            if (app.title.isEmpty()) {
+                app.title = snap->name;
+            }
+            app.summary = json.value(QStringLiteral("summary")).toString();
+            // The store description is plain text with blank lines between paragraphs.
+            const QStringList paragraphs = json.value(QStringLiteral("description"))
+                                               .toString()
+                                               .split(QRegularExpression(QStringLiteral("\n\\s*\n")), Qt::SkipEmptyParts);
+            for (const QString &para : paragraphs) {
+                app.descriptionHtml += QStringLiteral("<p>")
+                                       + para.trimmed().toHtmlEscaped().replace('\n', QStringLiteral("<br>"));
+            }
+            app.developer = json.value(QStringLiteral("publisher")).toObject().value(QStringLiteral("display-name")).toString();
+            app.license = json.value(QStringLiteral("license")).toString();
+            app.homepage = json.value(QStringLiteral("website")).toString();
+            for (const auto &value : json.value(QStringLiteral("media")).toArray()) {
+                const QJsonObject media = value.toObject();
+                if (media.value(QStringLiteral("type")).toString() == QLatin1String("screenshot")) {
+                    app.screenshotHtml = imageHtml(QUrl(media.value(QStringLiteral("url")).toString()));
+                    break;
+                }
+            }
+            text = appInfoHtml(app);
+            richText = true;
+        } else {
+            // Offline or not in the store: fall back to snapd's own info.
+            Cmd shell;
+            text = shell.getOut("snap", {"info", snap->name}, Cmd::QuietMode::Yes).trimmed();
+        }
+    }
+    showInfoBox(text.isEmpty() ? tr("No information available.") : text, richText);
 }

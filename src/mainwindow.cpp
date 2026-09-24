@@ -914,6 +914,27 @@ void MainWindow::setup()
     auto *shortcutToggle = new QShortcut(Qt::Key_Space, this);
     connect(shortcutToggle, &QShortcut::activated, this, &MainWindow::checkUncheckItem);
 
+    // Ctrl+I shows info for the current row of whichever list tab is open
+    auto *shortcutInfo = new QShortcut(QKeySequence(Qt::CTRL | Qt::Key_I), this);
+    connect(shortcutInfo, &QShortcut::activated, this, [this] {
+        if (currentTree && currentTree->isVisible()) {
+            displayInfo(currentTree, currentTree->currentIndex());
+        }
+    });
+
+    // Clicking the Info icon opens the same dialog as "More info..." (Popular Apps
+    // is wired in setConnections())
+    connect(ui->treeFlatpak, &QTreeView::clicked, this, [this](const QModelIndex &index) {
+        if (index.column() == FlatCol::Info) {
+            displayFlatpakInfo(index);
+        }
+    });
+    connect(ui->treeSnap, &QTreeView::clicked, this, [this](const QModelIndex &index) {
+        if (index.column() == SnapCol::Info) {
+            displaySnapInfo(index);
+        }
+    });
+
     // Connect tree views for double-click toggle
     QList<QTreeView *> listTree {ui->treePopularApps, ui->treeEnabled, ui->treeMXtest, ui->treeBackports,
                                   ui->treeFlatpak, ui->treeSnap};
@@ -921,9 +942,7 @@ void MainWindow::setup()
     listTree.append(ui->treeAUR);
 #endif
     for (auto *tree : listTree) {
-        if (tree != ui->treeFlatpak && tree != ui->treeSnap) {
-            tree->setContextMenuPolicy(Qt::CustomContextMenu);
-        }
+        tree->setContextMenuPolicy(Qt::CustomContextMenu);
         connect(tree, &QTreeView::doubleClicked, this, &MainWindow::checkUncheckItem);
         // treePopularApps has its own context-menu handler wired in setConnections();
         // wiring the generic one too would pop up two menus.
@@ -1012,8 +1031,8 @@ void MainWindow::setupModels()
     enabledModel->setIcons(qiconInstalled, qiconUpgradable);
     mxtestModel->setIcons(qiconInstalled, qiconUpgradable);
     backportsModel->setIcons(qiconInstalled, qiconUpgradable);
-    flatpakModel->setIcons(qiconInstalled);
-    snapModel->setIcons(qiconInstalled);
+    flatpakModel->setIcons(qiconInstalled, QIcon::fromTheme("dialog-information"));
+    snapModel->setIcons(qiconInstalled, QIcon::fromTheme("dialog-information"));
     popularModel->setIcons(qiconInstalled, QIcon::fromTheme("folder"), QIcon::fromTheme("dialog-information"));
 #ifdef PACKAGE_BACKEND_PACMAN
     aurModel->setIcons(qiconInstalled, qiconUpgradable);
@@ -3779,35 +3798,10 @@ QHash<QString, VersionNumber> MainWindow::listInstalledVersions()
 
 QUrl MainWindow::getScreenshotUrl(const QString &name)
 {
-    QUrl url(QString("https://screenshots.debian.net/json/package/%1").arg(name));
-    QNetworkProxyQuery query(url);
-    QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
-    if (!proxies.isEmpty()) {
-        manager.setProxy(proxies.first());
-    }
-
-    QNetworkRequest request(url);
-    // Bounds the request (Qt aborts it and emits finished() with
-    // QNetworkReply::TimeoutError if it fires), so the error() check below
-    // correctly distinguishes a timeout from a genuine successful reply --
-    // unlike a bare QTimer::singleShot() that only quits the event loop
-    // without touching the still in-flight reply. Use the int-milliseconds
-    // overload: the std::chrono one needs Qt 6.7+, and this project doesn't
-    // pin a Qt minimum above 6.4.
-    request.setTransferTimeout(5000);
-    QNetworkReply *screenshotReply = manager.get(request);
-
-    QEventLoop loop;
-    connect(screenshotReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-    loop.exec();
-
-    if (screenshotReply->error() != QNetworkReply::NoError) {
-        screenshotReply->deleteLater();
+    const QByteArray response = fetchUrl(QUrl(QString("https://screenshots.debian.net/json/package/%1").arg(name)));
+    if (response.isEmpty()) {
         return {};
     }
-
-    QByteArray response = screenshotReply->readAll();
-    screenshotReply->deleteLater();
 
     QJsonDocument jsonDoc = QJsonDocument::fromJson(response);
     if (jsonDoc.isObject()) {
@@ -3941,20 +3935,207 @@ void MainWindow::displayPackageInfo(QTreeView *tree, QPoint pos)
     }
 
     // treePopularApps is handled by treePopularApps_customContextMenuRequested; this
-    // path only serves the APT trees (Enabled repos, MX Test, Backports).
+    // path serves the APT trees (Enabled repos, MX Test, Backports), Flatpak and Snap.
     QMenu menu(this);
     // Parented to &menu (not this) so it's destroyed along with the menu below --
     // QMenu::addAction(QAction*) doesn't take ownership, so parenting to the
     // long-lived MainWindow would leak one QAction per invocation.
     auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), &menu);
+    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_I)); // hint only; the QShortcut handles the key
     menu.addAction(action);
-    if (tree == ui->treeEnabled) {
-        connect(action, &QAction::triggered, this, [this, currentIdx] { displayPackageInfo(currentIdx); });
-    } else {
-        connect(action, &QAction::triggered, this,
-                [this, tree, currentIdx] { displayInfoTestOrBackport(tree, currentIdx); });
-    }
+    connect(action, &QAction::triggered, this, [this, tree, currentIdx] { displayInfo(tree, currentIdx); });
     menu.exec(tree->mapToGlobal(pos));
+}
+
+// Shows the info dialog that fits the tree the row belongs to.
+void MainWindow::displayInfo(QTreeView *tree, const QModelIndex &index)
+{
+    if (!tree || !index.isValid()) {
+        return;
+    }
+    if (tree == ui->treePopularApps) {
+        displayPopularInfo(index);
+    } else if (tree == ui->treeFlatpak) {
+        displayFlatpakInfo(index);
+    } else if (tree == ui->treeSnap) {
+        displaySnapInfo(index);
+    } else if (tree == ui->treeMXtest || tree == ui->treeBackports) {
+        displayInfoTestOrBackport(tree, index);
+    } else {
+        displayPackageInfo(index); // Enabled repos, and AUR on the pacman backend
+    }
+}
+
+QByteArray MainWindow::fetchUrl(const QUrl &url, const QList<QPair<QByteArray, QByteArray>> &headers)
+{
+    QNetworkProxyQuery query(url);
+    const QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
+    if (!proxies.isEmpty()) {
+        manager.setProxy(proxies.first());
+    }
+    QNetworkRequest request(url);
+    for (const auto &[name, value] : headers) {
+        request.setRawHeader(name, value);
+    }
+    // Bounds the request (Qt aborts it and emits finished() with
+    // QNetworkReply::TimeoutError if it fires), so the error() check below
+    // correctly distinguishes a timeout from a genuine successful reply --
+    // unlike a bare QTimer::singleShot() that only quits the event loop
+    // without touching the still in-flight reply. Use the int-milliseconds
+    // overload: the std::chrono one needs Qt 6.7+, and this project doesn't
+    // pin a Qt minimum above 6.4.
+    request.setTransferTimeout(5000);
+    QNetworkReply *reply = manager.get(request);
+    QEventLoop loop;
+    connect(reply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
+    loop.exec();
+
+    QByteArray data;
+    if (reply->error() == QNetworkReply::NoError) {
+        data = reply->readAll();
+    } else {
+        qDebug() << "Download of" << url.url() << "failed:" << qPrintable(reply->errorString());
+    }
+    reply->deleteLater();
+    return data;
+}
+
+// Downloads an image and returns it as an inline <img> tag (empty on failure).
+QString MainWindow::imageHtml(const QUrl &url, QSize size, Qt::AspectRatioMode mode)
+{
+    if (!url.isValid() || url.isEmpty()) {
+        return {};
+    }
+    QByteArray raw = fetchUrl(url);
+    if (raw.isEmpty()) {
+        return {};
+    }
+    QBuffer inBuffer(&raw);
+    QImageReader imageReader(&inBuffer);
+    QImage image = imageReader.read();
+    if (image.isNull()) {
+        qDebug() << "loading screenshot:" << imageReader.errorString();
+        return {};
+    }
+    image = image.scaled(size, mode, Qt::SmoothTransformation);
+    QByteArray png;
+    QBuffer outBuffer(&png);
+    image.save(&outBuffer, "PNG");
+    return QStringLiteral("<p><img src='data:image/png;base64, %1'>").arg(QString(png.toBase64()));
+}
+
+// Formats store/appstream metadata the same way for Flatpak and Snap.
+QString MainWindow::appInfoHtml(const AppInfo &app)
+{
+    QString msg = QStringLiteral("<b>") + app.title.toHtmlEscaped() + QStringLiteral("</b>");
+    if (!app.summary.isEmpty()) {
+        msg += QStringLiteral("<br><i>") + app.summary.toHtmlEscaped() + QStringLiteral("</i>");
+    }
+    msg += app.descriptionHtml;
+    QStringList meta;
+    if (!app.developer.isEmpty()) {
+        meta << tr("Developer: %1").arg(app.developer.toHtmlEscaped());
+    }
+    if (!app.license.isEmpty()) {
+        meta << tr("License: %1").arg(app.license.toHtmlEscaped());
+    }
+    if (!app.homepage.isEmpty()) {
+        const QString link = app.homepage.toHtmlEscaped();
+        meta << tr("Homepage: %1").arg(QStringLiteral("<a href='%1'>%1</a>").arg(link));
+    }
+    if (!meta.isEmpty()) {
+        msg += QStringLiteral("<p>") + meta.join(QStringLiteral("<br>"));
+    }
+    return msg + app.screenshotHtml;
+}
+
+void MainWindow::showInfoBox(const QString &text, bool richText)
+{
+    QMessageBox info(QMessageBox::NoIcon, tr("Package info"), text, QMessageBox::Close, this);
+    if (richText) {
+        info.setTextFormat(Qt::RichText);
+        info.setTextInteractionFlags(Qt::TextBrowserInteraction);
+    } else {
+        // Make it wider
+        auto *horizontalSpacer = new QSpacerItem(width(), 0, QSizePolicy::Minimum, QSizePolicy::Expanding);
+        if (auto *layout = qobject_cast<QGridLayout *>(info.layout())) {
+            layout->addItem(horizontalSpacer, 0, 1);
+        }
+    }
+    info.exec();
+}
+
+void MainWindow::displayFlatpakInfo(const QModelIndex &index)
+{
+    if (!index.isValid() || !flatpakProxy || !flatpakModel) {
+        return;
+    }
+    const FlatpakData *data = flatpakModel->flatpakAt(flatpakProxy->mapToSource(index).row());
+    if (!data || data->canonicalRef.isEmpty()) {
+        return;
+    }
+    const QString appId = data->longName;
+    const bool installed = data->status == Status::Installed;
+    const QString remote = ui->comboRemote->currentText();
+
+    QString text;
+    bool richText = false;
+    {
+        // The network/Cmd calls below spin nested event loops; disable the window
+        // meanwhile so they can't be reentered (see displayPackageInfo()).
+        setEnabled(false);
+        QApplication::setOverrideCursor(Qt::BusyCursor);
+        auto restore = qScopeGuard([this] {
+            QApplication::restoreOverrideCursor();
+            setEnabled(true);
+        });
+
+        // Flathub's appstream API has the user-facing description and screenshots.
+        // Runtimes and apps from other remotes aren't there, so those fall back to
+        // flatpak's own (technical) info.
+        const QJsonObject json
+            = QJsonDocument::fromJson(fetchUrl(QUrl(QStringLiteral("https://flathub.org/api/v2/appstream/") + appId)))
+                  .object();
+        if (!json.value(QStringLiteral("name")).toString().isEmpty()) {
+            AppInfo app;
+            app.title = json.value(QStringLiteral("name")).toString();
+            app.summary = json.value(QStringLiteral("summary")).toString();
+            app.descriptionHtml = json.value(QStringLiteral("description")).toString().trimmed();
+            app.developer = json.value(QStringLiteral("developer_name")).toString();
+            app.license = json.value(QStringLiteral("project_license")).toString();
+            app.homepage = json.value(QStringLiteral("urls")).toObject().value(QStringLiteral("homepage")).toString();
+
+            // Pick the default screenshot (else the first), at the largest size that
+            // still fits the dialog comfortably (else whatever is listed first).
+            const QJsonArray screenshots = json.value(QStringLiteral("screenshots")).toArray();
+            QJsonObject shot = screenshots.isEmpty() ? QJsonObject() : screenshots.first().toObject();
+            for (const auto &value : screenshots) {
+                if (value.toObject().value(QStringLiteral("default")).toBool()) {
+                    shot = value.toObject();
+                    break;
+                }
+            }
+            QString shotUrl;
+            int bestWidth = -1;
+            for (const auto &value : shot.value(QStringLiteral("sizes")).toArray()) {
+                const QJsonObject size = value.toObject();
+                const int w = size.value(QStringLiteral("width")).toVariant().toInt(); // sent as a string
+                if (shotUrl.isEmpty() || (w <= 800 && w > bestWidth)) {
+                    shotUrl = size.value(QStringLiteral("src")).toString();
+                    bestWidth = w <= 800 ? w : -1;
+                }
+            }
+            app.screenshotHtml = imageHtml(QUrl(shotUrl));
+            text = appInfoHtml(app);
+            richText = true;
+        } else {
+            QStringList args = installed ? QStringList {"info"} : QStringList {"remote-info", remote};
+            args << data->canonicalRef;
+            Cmd shell;
+            text = shell.getOut("flatpak", flatpakArgsWithScope(fpUser, args), Cmd::QuietMode::Yes).trimmed();
+        }
+    }
+    showInfoBox(text.isEmpty() ? tr("No information available.") : text, richText);
 }
 
 void MainWindow::displayPopularInfo(const QModelIndex &index)
@@ -3973,71 +4154,32 @@ void MainWindow::displayPopularInfo(const QModelIndex &index)
         msg += tr("Packages to be installed: ") + installNames;
     }
 
-    QUrl url = index.sibling(index.row(), PopCol::Description).data(Qt::UserRole).toString(); // screenshot url
-
-    if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none")) {
-        url = getScreenshotUrl(installNames.split(' ').first());
-    }
-
-    if (!url.isValid() || url.isEmpty() || url.url() == QLatin1String("none")) {
-        qDebug() << "no screenshot for: " << title;
-    } else {
-        QNetworkProxyQuery query {QUrl(url)};
-        QList<QNetworkProxy> proxies = QNetworkProxyFactory::systemProxyForQuery(query);
-        if (!proxies.isEmpty()) {
-            manager.setProxy(proxies.first());
+    // Block the tree's signals while the downloads spin their event loops, so a
+    // second click on the Info column can't reenter this.
+    QString screenshot;
+    {
+        const QSignalBlocker blocker(ui->treePopularApps);
+        const auto isUsable = [](const QUrl &url) {
+            return url.isValid() && !url.isEmpty() && url.url() != QLatin1String("none");
+        };
+        const QString firstPackage = installNames.split(' ').first();
+        // Prefer the screenshot URL from the popular-apps list, falling back to
+        // screenshots.debian.net if it is missing or fails to download.
+        const QUrl listUrl(index.sibling(index.row(), PopCol::Description).data(Qt::UserRole).toString());
+        if (isUsable(listUrl)) {
+            screenshot = imageHtml(listUrl, QSize(200, 300), Qt::KeepAspectRatioByExpanding);
         }
-        QNetworkRequest imgRequest(url);
-        // See getScreenshotUrl(): setTransferTimeout() makes Qt abort the
-        // reply itself and surface QNetworkReply::TimeoutError if the timer
-        // fires, so the error() check below (and thus the retry path)
-        // correctly treats a timeout the same as any other failed fetch,
-        // instead of reading/decoding a reply that may still be in flight.
-        imgRequest.setTransferTimeout(5000);
-        QNetworkReply *imgReply = manager.get(imgRequest);
-
-        QEventLoop loop;
-        connect(imgReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-        ui->treePopularApps->blockSignals(true);
-        loop.exec();
-        ui->treePopularApps->blockSignals(false);
-
-        if (imgReply->error() != QNetworkReply::NoError) {
-            qDebug() << "Download of " << url.url() << " failed: " << qPrintable(imgReply->errorString());
-            imgReply->deleteLater();
-            imgReply = nullptr;
-            url = getScreenshotUrl(installNames.split(' ').first());
-            if (url.isValid() && !url.isEmpty() && url.url() != QLatin1String("none")) {
-                QNetworkRequest retryRequest(url);
-                retryRequest.setTransferTimeout(5000);
-                imgReply = manager.get(retryRequest);
-                connect(imgReply, &QNetworkReply::finished, &loop, &QEventLoop::quit);
-                ui->treePopularApps->blockSignals(true);
-                loop.exec();
-                ui->treePopularApps->blockSignals(false);
+        if (screenshot.isEmpty()) {
+            const QUrl debianUrl = getScreenshotUrl(firstPackage);
+            if (isUsable(debianUrl) && debianUrl != listUrl) {
+                screenshot = imageHtml(debianUrl, QSize(200, 300), Qt::KeepAspectRatioByExpanding);
             }
         }
-
-        if (imgReply && imgReply->error() == QNetworkReply::NoError) {
-            QImage image;
-            QByteArray data;
-            QBuffer buffer(&data);
-            QImageReader imageReader(imgReply);
-            image = imageReader.read();
-            if (imageReader.error() != 0) {
-                qDebug() << "loading screenshot: " << imageReader.errorString();
-            } else {
-                image = image.scaled(QSize(200, 300), Qt::KeepAspectRatioByExpanding);
-                image.save(&buffer, "PNG");
-                msg += QString("<p><img src='data:image/png;base64, %0'>").arg(QString(data.toBase64()));
-            }
-        }
-        if (imgReply) {
-            imgReply->deleteLater();
+        if (screenshot.isEmpty()) {
+            qDebug() << "no screenshot for: " << title;
         }
     }
-    QMessageBox info(QMessageBox::NoIcon, tr("Package info"), msg, QMessageBox::Close);
-    info.exec();
+    showInfoBox(msg + screenshot, true);
 }
 
 void MainWindow::displayPackageInfo(const QModelIndex &index)
@@ -5764,6 +5906,7 @@ void MainWindow::treePopularApps_customContextMenuRequested(QPoint pos)
     // QMenu::addAction(QAction*) doesn't take ownership, so parenting to the
     // long-lived MainWindow would leak one QAction per invocation.
     auto *action = new QAction(QIcon::fromTheme("dialog-information"), tr("More &info..."), &menu);
+    action->setShortcut(QKeySequence(Qt::CTRL | Qt::Key_I)); // hint only; the QShortcut handles the key
     menu.addAction(action);
     connect(action, &QAction::triggered, this, [this, index] { displayPopularInfo(index); });
     menu.exec(ui->treePopularApps->mapToGlobal(pos));

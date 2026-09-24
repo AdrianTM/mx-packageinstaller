@@ -176,6 +176,9 @@ private slots:
     void displayInfoTestOrBackport(QTreeView *tree, const QModelIndex &index);
     void displayPackageInfo(QTreeView *tree, QPoint pos);
     void displayPackageInfo(const QModelIndex &index);
+    void displayInfo(QTreeView *tree, const QModelIndex &index);
+    void displayFlatpakInfo(const QModelIndex &index);
+    void displaySnapInfo(const QModelIndex &index);
     void displayPopularInfo(const QModelIndex &index);
     void enableOutput();
     void filterChanged(const QString &arg1);
@@ -405,6 +408,21 @@ private:
 #endif
 
     QNetworkAccessManager manager;
+    // Store/appstream metadata shown by the Flatpak and Snap "More info" dialogs.
+    struct AppInfo {
+        QString title;
+        QString summary;
+        QString descriptionHtml;
+        QString developer;
+        QString license;
+        QString homepage;
+        QString screenshotHtml;
+    };
+    [[nodiscard]] QByteArray fetchUrl(const QUrl &url, const QList<QPair<QByteArray, QByteArray>> &headers = {});
+    [[nodiscard]] QString imageHtml(const QUrl &url, QSize size = QSize(400, 300),
+                                    Qt::AspectRatioMode mode = Qt::KeepAspectRatio);
+    [[nodiscard]] QString appInfoHtml(const AppInfo &app);
+    void showInfoBox(const QString &text, bool richText);
     QNetworkReply *activeDownloadReply {nullptr};
 
     [[nodiscard]] QHash<QString, PackageInfo> listInstalled();
