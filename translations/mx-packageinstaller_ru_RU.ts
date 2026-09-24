@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/cmd.cpp" line="531"/>
         <source>This operation requires administrator privileges. Try the action again and enter your password when prompted.</source>
-        <translation type="unfinished"/>
+        <translation>Эта операция требует прав администратора. Попробуйте выполнить действие снова и введите пароль при появлении запроса.</translation>
     </message>
 </context>
 <context>
@@ -81,7 +81,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="159"/>
         <source>Enabled Repos</source>
-        <translation>Включенные репозитории</translation>
+        <translation>Включённые репозитории</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="229"/>
@@ -223,7 +223,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="784"/>
         <source>MX Test Repo</source>
-        <translation>MX Тестовый репозиторий</translation>
+        <translation>Тестовый репозиторий MX</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1100"/>
@@ -233,7 +233,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1458"/>
         <source>Flatpaks</source>
-        <translation>Флатпак</translation>
+        <translation>Flatpak</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1687"/>
@@ -325,17 +325,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="500"/>
         <source>AUR</source>
-        <translation type="unfinished"/>
+        <translation>AUR</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="656"/>
         <source>search AUR (type to find more)</source>
-        <translation type="unfinished"/>
+        <translation>поиск в AUR (введите для поиска)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="763"/>
         <source>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Совет: выполните поиск, чтобы найти другие пакеты AUR. Установленные пакеты AUR отображаются, когда поле поиска пусто.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="855"/>
@@ -346,7 +346,7 @@
     <message>
         <location filename="../src/mainwindow.ui" line="1798"/>
         <source>Snaps</source>
-        <translation type="unfinished"/>
+        <translation>Snap</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1819"/>
@@ -354,7 +354,7 @@
         <location filename="../src/mainwindow.cpp" line="5451"/>
         <location filename="../src/mainwindow.cpp" line="5681"/>
         <source>Installed snaps</source>
-        <translation type="unfinished"/>
+        <translation>Установленные пакеты Snap</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1828"/>
@@ -363,27 +363,27 @@
         <location filename="../src/mainwindow.cpp" line="5456"/>
         <location filename="../src/mainwindow.cpp" line="5751"/>
         <source>Search store</source>
-        <translation type="unfinished"/>
+        <translation>Поиск в магазине</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1861"/>
         <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Type a term and press Enter to search the snap store.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
-        <translation type="unfinished"/>
+        <translation>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;Введите запрос и нажмите Enter для поиска в магазине Snap.&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1893"/>
         <source>Snap support is not set up on this system. Click the button to install snapd and enable the Snap service.</source>
-        <translation type="unfinished"/>
+        <translation>Поддержка Snap не настроена в этой системе. Нажмите кнопку, чтобы установить snapd и включить службу Snap.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1903"/>
         <source>Set up Snap support</source>
-        <translation type="unfinished"/>
+        <translation>Настроить поддержку Snap</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1955"/>
         <source>Installed snaps:</source>
-        <translation type="unfinished"/>
+        <translation>Установленные пакеты Snap:</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="1982"/>
@@ -400,12 +400,12 @@
     <message>
         <location filename="../src/mainwindow.ui" line="2011"/>
         <source>Enter</source>
-        <translation>Enter</translation>
+        <translation>Ввод</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="2021"/>
         <source>Respond here, or just press Enter</source>
-        <translation>Ответьте здесь или просто нажмите Enter</translation>
+        <translation>Введите ответ здесь или просто нажмите Enter</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="2080"/>
@@ -493,12 +493,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1108"/>
         <source>Running post-uninstall operations...</source>
-        <translation>Запуск пост-деинсталляционных операций...</translation>
+        <translation>Запуск операций после удаления...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1125"/>
         <source>Refreshing sources...</source>
-        <translation>Обновляются источники...</translation>
+        <translation>Обновление источников...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="614"/>
@@ -554,12 +554,12 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="1836"/>
         <source>Please wait...</source>
-        <translation>Пожалуйста, ждите...</translation>
+        <translation>Пожалуйста, подождите...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2468"/>
         <source>You are about to use the MX Test repository, whose packages are provided for testing purposes only. It is possible that they might break your system, so it is suggested that you back up your system and install or update only one package at a time. Please provide feedback in the Forum so the package can be evaluated before moving up to Main.</source>
-        <translation>Вы собираетесь использовать репозиторий MX Test, пакеты которого предоставляются только для тестирования. Возможно, они могут повредить вашу систему, поэтому рекомендуется создать резервную копию системы и устанавливать или обновлять только один пакет за раз. Пожалуйста, оставьте отзыв на Форуме, чтобы пакет мог быть оценен перед переносом в основной репозиторий.</translation>
+        <translation>Вы собираетесь использовать тестовый репозиторий MX, пакеты которого предоставляются только для тестирования. Возможно, они могут повредить вашу систему, поэтому рекомендуется создать резервную копию системы и устанавливать или обновлять только один пакет за раз. Пожалуйста, оставьте отзыв на Форуме, чтобы пакет мог быть оценён перед переносом в основной репозиторий.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2477"/>
@@ -569,7 +569,7 @@
     <message>
         <location filename="../src/mainwindow.cpp" line="2485"/>
         <source>MX Linux includes this repository of flatpaks for the users&apos; convenience only, and is not responsible for the functionality of the individual flatpaks themselves. For more, consult flatpaks in the Wiki.</source>
-        <translation>MX Linux включает этот репозиторий флатпаков только для удобства пользователей и не несёт ответственности за их функционирование. Подробнее о флатпаках в Вики.</translation>
+        <translation>MX Linux включает этот репозиторий Flatpak только для удобства пользователей и не несёт ответственности за их функционирование. Подробнее о Flatpak в Вики.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2501"/>
@@ -696,22 +696,22 @@
         <location filename="../src/mainwindow.cpp" line="3658"/>
         <location filename="../src/mainwindow.cpp" line="3812"/>
         <source>The installed-package query returned an error. Please check the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>Запрос к установленным пакетам вернул ошибку. Пожалуйста, проверьте журнал для получения подробной информации.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1771"/>
         <source>Show/hide input</source>
-        <translation type="unfinished"/>
+        <translation>Показать/скрыть ввод</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1776"/>
         <source>Clear input</source>
-        <translation type="unfinished"/>
+        <translation>Очистить ввод</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2492"/>
         <source>You are about to use the AUR, which contains user-contributed packages. These packages are not vetted by the distribution, may be outdated, and could contain malicious or broken build scripts. Use with care.</source>
-        <translation type="unfinished"/>
+        <translation>Вы собираетесь использовать AUR, который содержит пакеты, созданные пользователями. Эти пакеты не проверяются дистрибутивом, могут быть устаревшими и могут содержать вредоносные или неработающие сценарии сборки. Используйте с осторожностью.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2750"/>
@@ -721,25 +721,32 @@ To install AUR packages, please install paru first:
 pacman -S paru
 
 Then try installing the AUR package again.</source>
-        <translation type="unfinished"/>
+        <translation>paru не установлен.
+
+Для установки пакетов AUR сначала установите paru:
+pacman -S paru
+
+Затем попробуйте установить пакет AUR снова.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2770"/>
         <source>AUR packages cannot be built as root, and no regular user could be found to build as.
 
 Install the package as your normal user instead.</source>
-        <translation type="unfinished"/>
+        <translation>Пакеты AUR не могут быть собраны от имени root, и не удалось найти обычного пользователя для сборки.
+
+Установите пакет от имени обычного пользователя.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3140"/>
         <source>The download timed out. Please check your internet connection and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Время загрузки истекло. Пожалуйста, проверьте подключение к Интернету и попробуйте снова.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4101"/>
         <location filename="../src/mainwindow.cpp" line="5002"/>
         <source>No information available.</source>
-        <translation type="unfinished"/>
+        <translation>Информация отсутствует.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4341"/>
@@ -748,19 +755,21 @@ Install the package as your normal user instead.</source>
         <location filename="../src/mainwindow.cpp" line="6388"/>
         <location filename="../src/mainwindow.cpp" line="6423"/>
         <source>Problem detected while installing, please inspect the console output.</source>
-        <translation>Обнаружена проблема при установке, пожалуйста, проверьте консольный вывод.</translation>
+        <translation>Обнаружена проблема при установке, пожалуйста, проверьте вывод консоли.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4360"/>
         <source>Install snaps</source>
-        <translation type="unfinished"/>
+        <translation>Установить пакеты Snap</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4361"/>
         <source>OK to install the following snap packages?
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Установить следующие пакеты Snap?
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4372"/>
@@ -775,7 +784,7 @@ Install the package as your normal user instead.</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="4396"/>
         <source>Problem detected while installing a snap. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Обнаружена проблема при установке пакета Snap. Нажмите «Показать подробности» для получения дополнительной информации.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4431"/>
@@ -795,18 +804,18 @@ Install the package as your normal user instead.</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="4436"/>
         <source>Copyright (c) MX Linux</source>
-        <translation>Copyright (c) MX Linux</translation>
+        <translation>Авторское право (c) MX Linux</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4437"/>
         <source>%1 License</source>
-        <translation>%1 Лицензия</translation>
+        <translation>Лицензия %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4445"/>
         <location filename="../src/mainwindow.cpp" line="4447"/>
         <source>%1 Help</source>
-        <translation>%1 Справка</translation>
+        <translation>Справка %1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4561"/>
@@ -825,29 +834,31 @@ Install the package as your normal user instead.</source>
         <location filename="../src/mainwindow.cpp" line="4571"/>
         <location filename="../src/mainwindow.cpp" line="6520"/>
         <source>Refreshing flatpaks...</source>
-        <translation>Актуализация пакетов Flatpak...</translation>
+        <translation>Обновление списка Flatpak...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4584"/>
         <source>We encountered a problem uninstalling, please check output</source>
-        <translation>При деинсталляции возникла ошибка, пожалуйста, проверьте вывод</translation>
+        <translation>При удалении возникла проблема, пожалуйста, проверьте вывод</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4604"/>
         <source>Remove snaps</source>
-        <translation type="unfinished"/>
+        <translation>Удалить пакеты Snap</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4605"/>
         <source>OK to remove the following snap packages?
 
 %1</source>
-        <translation type="unfinished"/>
+        <translation>Удалить следующие пакеты Snap?
+
+%1</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4629"/>
         <source>We encountered a problem removing a snap. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>При удалении пакета Snap возникла проблема. Нажмите «Показать подробности» для получения дополнительной информации.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4644"/>
@@ -859,7 +870,7 @@ Install the package as your normal user instead.</source>
         <location filename="../src/mainwindow.cpp" line="4647"/>
         <location filename="../src/mainwindow.cpp" line="6577"/>
         <source>We encountered a problem uninstalling the program</source>
-        <translation>Возникла проблема при удалении приложения</translation>
+        <translation>При удалении программы возникла проблема</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3284"/>
@@ -873,41 +884,43 @@ Install the package as your normal user instead.</source>
         <source>paru is not installed.
 
 Install it with: pacman -S paru</source>
-        <translation type="unfinished"/>
+        <translation>paru не установлен.
+
+Установите его с помощью: pacman -S paru</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5025"/>
         <source>Could not query AUR packages. Please check that paru is installed and you are online.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось выполнить запрос к пакетам AUR. Пожалуйста, проверьте, установлен ли paru и есть ли подключение к Интернету.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5150"/>
         <location filename="../src/mainwindow.cpp" line="5208"/>
         <source>Flatpak not installed</source>
-        <translation>Флатпак не установлен</translation>
+        <translation>Flatpak не установлен</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5151"/>
         <source>Flatpak is not currently installed.
 OK to go ahead and install it?</source>
-        <translation>В настоящий момент флатпак не установлен.
-Начать его установку?</translation>
+        <translation>В настоящий момент Flatpak не установлен.
+Установить его?</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5208"/>
         <source>Flatpak was not installed</source>
-        <translation>Флатпак не был установлен</translation>
+        <translation>Flatpak не был установлен</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5235"/>
         <location filename="../src/mainwindow.cpp" line="5630"/>
         <source>Needs re-login</source>
-        <translation>Требуется повторить логин</translation>
+        <translation>Требуется повторный вход</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5236"/>
         <source>You might need to logout/login to see installed items in the menu</source>
-        <translation>Вам может потребоваться выйти из системы и зайти снова, чтобы увидеть установленные элементы в меню.</translation>
+        <translation>Возможно, потребуется выйти и снова войти в систему, чтобы увидеть установленные элементы в меню</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5478"/>
@@ -917,37 +930,37 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="5478"/>
         <source>No snaps found matching &quot;%1&quot;.</source>
-        <translation type="unfinished"/>
+        <translation>Не найдено пакетов Snap, соответствующих &quot;%1&quot;.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5527"/>
         <source>snapd was not installed. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>snapd не был установлен. Нажмите «Показать подробности» для получения дополнительной информации.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5551"/>
         <source>Installing the base &quot;core&quot; snap...</source>
-        <translation type="unfinished"/>
+        <translation>Установка базового пакета Snap &quot;core&quot;...</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5617"/>
         <source>No output was captured. Run &apos;sudo snap install core&apos; in a terminal to see the underlying error.</source>
-        <translation type="unfinished"/>
+        <translation>Вывод не был захвачен. Выполните &apos;sudo snap install core&apos; в терминале, чтобы увидеть основную ошибку.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5622"/>
         <source>snapd was installed but its service could not be started. You may need to reboot or log out and back in, then reopen the Snap tab. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>snapd был установлен, но его служба не может быть запущена. Возможно, потребуется перезагрузить систему или выйти и снова войти в систему, затем снова открыть вкладку Snap. Нажмите «Показать подробности» для получения дополнительной информации.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5626"/>
         <source>Snap support was enabled, but the base &quot;core&quot; snap could not be installed, so most snaps will not work yet. Click &quot;Show Details&quot; for the underlying error.</source>
-        <translation type="unfinished"/>
+        <translation>Поддержка Snap была включена, но базовый пакет Snap &quot;core&quot; не может быть установлен, поэтому большинство пакетов Snap пока не будут работать. Нажмите «Показать подробности» для получения основной ошибки.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5707"/>
         <source>Problem detected while updating snaps. Click &quot;Show Details&quot; for more information.</source>
-        <translation type="unfinished"/>
+        <translation>Обнаружена проблема при обновлении пакетов Snap. Нажмите «Показать подробности» для получения дополнительной информации.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5914"/>
@@ -955,7 +968,7 @@ OK to go ahead and install it?</source>
         <location filename="../src/mainwindow.cpp" line="6041"/>
         <location filename="../src/mainwindow.cpp" line="6105"/>
         <source>Mark keep</source>
-        <translation>Отметка сохранена</translation>
+        <translation>Оставить</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5941"/>
@@ -971,17 +984,17 @@ OK to go ahead and install it?</source>
         <location filename="../src/mainwindow.cpp" line="6043"/>
         <location filename="../src/mainwindow.cpp" line="6103"/>
         <source>Upgrade</source>
-        <translation>Обновление</translation>
+        <translation>Обновить</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Show input</source>
-        <translation type="unfinished"/>
+        <translation>Показать ввод</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Hide input</source>
-        <translation type="unfinished"/>
+        <translation>Скрыть ввод</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6317"/>
@@ -993,7 +1006,7 @@ OK to go ahead and install it?</source>
         <location filename="../src/mainwindow.cpp" line="6318"/>
         <location filename="../src/mainwindow.cpp" line="6473"/>
         <source>Process still running, quitting might leave the system in an unstable state.&lt;p&gt;&lt;b&gt;Are you sure you want to exit MX Package Installer?&lt;/b&gt;</source>
-        <translation>Процесс еще выполняется, выход может оставить систему в нестабильном состоянии.&lt;p&gt;&lt;b&gt;Вы уверены, что хотите выйти из MX Установщика пакетов?&lt;/b&gt;</translation>
+        <translation>Процесс всё ещё выполняется, выход может оставить систему в нестабильном состоянии.&lt;p&gt;&lt;b&gt;Вы уверены, что хотите выйти из MX Установщика пакетов?&lt;/b&gt;</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6083"/>
@@ -1003,7 +1016,7 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="5631"/>
         <source>Log out and back in to see installed items in the menu and use snap commands from /snap/bin. These changes do not apply to your current session.</source>
-        <translation type="unfinished"/>
+        <translation>Выйдите и снова войдите в систему, чтобы увидеть установленные элементы в меню и использовать команды Snap из /snap/bin. Эти изменения не применяются к текущему сеансу.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5699"/>
@@ -1021,8 +1034,8 @@ OK to go ahead and install it?</source>
         <location filename="../src/mainwindow.cpp" line="6568"/>
         <source>Potentially dangerous operation.
 Please make sure you check carefully the list of packages to be removed.</source>
-        <translation>Опасная операция.
-Убедитесь, что вы внимательно проверили список удаляемых пакетов.</translation>
+        <translation>Потенциально опасная операция.
+Пожалуйста, внимательно проверьте список удаляемых пакетов.</translation>
     </message>
 </context>
 <context>
@@ -1045,7 +1058,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="35"/>
         <source>enter Flatpak remote URL</source>
-        <translation>введите URL внешнего репозитория Флатпак</translation>
+        <translation>введите URL внешнего репозитория Flatpak</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="38"/>
@@ -1055,17 +1068,17 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="40"/>
         <source>Add or remove flatpak remotes (repos), or install apps using flatpakref URL or path</source>
-        <translation>Добавить или удалить внешний репозиторий Флатпак, или установить приложения, используя адрес или путь к .flatpakref</translation>
+        <translation>Добавить или удалить внешние репозитории Flatpak, или установить приложения, используя URL или путь к .flatpakref</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="49"/>
         <source>Remove remote</source>
-        <translation>Удалить внешний репо</translation>
+        <translation>Удалить внешний репозиторий</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="54"/>
         <source>Add remote</source>
-        <translation>Добавить внешний репо</translation>
+        <translation>Добавить внешний репозиторий</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="59"/>
@@ -1080,22 +1093,22 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="85"/>
         <source>Not removable</source>
-        <translation>Не удаляемое</translation>
+        <translation>Неудаляемый</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="86"/>
         <source>Flathub is the main Flatpak remote and won&apos;t be removed</source>
-        <translation>Flathub является основным внешним репозиторием Флатпак и не может быть удален</translation>
+        <translation>Flathub является основным внешним репозиторием Flatpak и не может быть удалён</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="100"/>
         <source>Error removing remote</source>
-        <translation type="unfinished"/>
+        <translation>Ошибка при удалении внешнего репозитория</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="101"/>
         <source>Could not remove remote - command returned an error. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Не удалось удалить внешний репозиторий — команда вернула ошибку. Пожалуйста, попробуйте снова.</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="118"/>
@@ -1105,7 +1118,7 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="119"/>
         <source>Could not add remote - command returned an error. Please double-check the remote address and try again</source>
-        <translation>Не получилось добавить внешний репозиторий - команда вернула ошибку. Перепроверьте адрес и попробуйте заново</translation>
+        <translation>Не удалось добавить внешний репозиторий — команда вернула ошибку. Пожалуйста, проверьте адрес внешнего репозитория и попробуйте снова</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="124"/>
@@ -1214,7 +1227,7 @@ Close the program, or wait until it is done processing and try again.</source>
     <message>
         <location filename="../src/lockfile_apt.cpp" line="87"/>
         <source>another package manager</source>
-        <translation type="unfinished"/>
+        <translation>другой менеджер пакетов</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -1223,16 +1236,16 @@ Close the program, or wait until it is done processing and try again.</source>
     - installs programs from the MX Test repo
     - installs programs from Debian Backports repo
     - installs flatpaks</source>
-        <translation>MX Установщик пакетов — это средство управления пакетами в MX Linux
+        <translation>MX Установщик пакетов — это инструмент для управления пакетами в MX Linux
     - установка популярных программ из разных источников
     - установка программ из тестового репозитория MX
     - установка программ из репозитория Debian Backports
-    - установка Флатпаков</translation>
+    - установка Flatpak</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="94"/>
         <source>Skip online check if it falsely reports lack of internet access.</source>
-        <translation>Пропустить онлайн проверку, если она ложно сообщает об отсутствии доступа в Интернет.</translation>
+        <translation>Пропустить проверку подключения к Интернету, если она ложно сообщает об его отсутствии.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="104"/>
@@ -1243,7 +1256,7 @@ Close the program, or wait until it is done processing and try again.</source>
     <message>
         <location filename="../src/main.cpp" line="105"/>
         <source>You seem to be logged in as root, please log out and log in as normal user to use this program.</source>
-        <translation>Программа запущена суперпользователем. Для использования программы войдите в систему как обычный пользователь.</translation>
+        <translation>Похоже, вы вошли в систему как root. Пожалуйста, выйдите и войдите как обычный пользователь для использования этой программы.</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="113"/>
@@ -1254,7 +1267,8 @@ Close the program, or wait until it is done processing and try again.</source>
         <location filename="../src/lockfile_pacman.cpp" line="86"/>
         <source>Pacman database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"/>
+        <translation>База данных Pacman заблокирована другой программой: %1
+Закройте программу или подождите, пока она завершит обработку, и попробуйте снова.</translation>
     </message>
 </context>
 <context>

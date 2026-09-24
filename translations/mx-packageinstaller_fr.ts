@@ -325,17 +325,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="500"/>
         <source>AUR</source>
-        <translation type="unfinished"/>
+        <translation>AUR</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="656"/>
         <source>search AUR (type to find more)</source>
-        <translation type="unfinished"/>
+        <translation>rechercher dans l’AUR (tapez pour afficher plus)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="763"/>
         <source>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Astuce : utilisez la recherche pour trouver d’autres paquets AUR. Les paquets AUR installés s’affichent lorsque le champ de recherche est vide.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="855"/>
@@ -696,22 +696,22 @@
         <location filename="../src/mainwindow.cpp" line="3658"/>
         <location filename="../src/mainwindow.cpp" line="3812"/>
         <source>The installed-package query returned an error. Please check the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>La requête concernant les paquets installés a renvoyé une erreur. Veuillez consulter le journal pour plus de détails.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1771"/>
         <source>Show/hide input</source>
-        <translation type="unfinished"/>
+        <translation>Afficher/masquer la saisie</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1776"/>
         <source>Clear input</source>
-        <translation type="unfinished"/>
+        <translation>Effacer la saisie</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2492"/>
         <source>You are about to use the AUR, which contains user-contributed packages. These packages are not vetted by the distribution, may be outdated, and could contain malicious or broken build scripts. Use with care.</source>
-        <translation type="unfinished"/>
+        <translation>Vous êtes sur le point d’utiliser l’AUR, qui contient des paquets fournis par les utilisateurs. Ces paquets ne sont pas vérifiés par la distribution, peuvent être obsolètes et peuvent contenir des scripts de construction malveillants ou défectueux. À utiliser avec prudence.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2750"/>
@@ -721,14 +721,21 @@ To install AUR packages, please install paru first:
 pacman -S paru
 
 Then try installing the AUR package again.</source>
-        <translation type="unfinished"/>
+        <translation>paru n’est pas installé.
+
+Pour installer des paquets depuis l’AUR, veuillez d’abord installer paru :
+pacman -S paru
+
+Vous pourrez ensuite réessayer d’installer le paquet AUR.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2770"/>
         <source>AUR packages cannot be built as root, and no regular user could be found to build as.
 
 Install the package as your normal user instead.</source>
-        <translation type="unfinished"/>
+        <translation>Les paquets AUR ne peuvent pas être compilés en tant que root, et aucun utilisateur normal n’a été trouvé pour effectuer la compilation.
+
+Installez le paquet en utilisant votre nom d’utilisateur habituel.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3140"/>
@@ -739,7 +746,7 @@ Install the package as your normal user instead.</source>
         <location filename="../src/mainwindow.cpp" line="4101"/>
         <location filename="../src/mainwindow.cpp" line="5002"/>
         <source>No information available.</source>
-        <translation type="unfinished"/>
+        <translation>Aucune information disponible.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4341"/>
@@ -877,12 +884,14 @@ Install the package as your normal user instead.</source>
         <source>paru is not installed.
 
 Install it with: pacman -S paru</source>
-        <translation type="unfinished"/>
+        <translation>paru n’est pas installé.
+
+Installez‑le avec : pacman -S paru</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5025"/>
         <source>Could not query AUR packages. Please check that paru is installed and you are online.</source>
-        <translation type="unfinished"/>
+        <translation>Impossible d’interroger les paquets AUR. Veuillez vérifier que paru est installé et que vous êtes connecté à Internet.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5150"/>
@@ -980,12 +989,12 @@ Voulez-vous l’installer ?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Show input</source>
-        <translation type="unfinished"/>
+        <translation>Afficher la saisie</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Hide input</source>
-        <translation type="unfinished"/>
+        <translation>Masquer la saisie</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6317"/>
@@ -1218,7 +1227,7 @@ Fermez le programme ou attendez qu’il ait terminé son traitement et réessaye
     <message>
         <location filename="../src/lockfile_apt.cpp" line="87"/>
         <source>another package manager</source>
-        <translation type="unfinished"/>
+        <translation>un autre gestionnaire de paquets</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -1258,7 +1267,8 @@ Fermez le programme ou attendez qu’il ait terminé son traitement et réessaye
         <location filename="../src/lockfile_pacman.cpp" line="86"/>
         <source>Pacman database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"/>
+        <translation>La base de données de pacman est verrouillée par un autre programme : %1
+Fermez ce programme, ou attendez qu’il ait terminé son traitement puis réessayez.</translation>
     </message>
 </context>
 <context>

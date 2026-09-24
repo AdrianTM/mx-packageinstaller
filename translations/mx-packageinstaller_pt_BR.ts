@@ -325,17 +325,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="500"/>
         <source>AUR</source>
-        <translation type="unfinished"/>
+        <translation>AUR</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="656"/>
         <source>search AUR (type to find more)</source>
-        <translation type="unfinished"/>
+        <translation>Pesquisar por AUR (digite para achar mais)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="763"/>
         <source>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Dica: pesquise para achar outros pacotes AUR. Enquanto a barra de pesquisa estiver em branco, os pacotes AUR instalados serão exibidos.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="855"/>
@@ -697,22 +697,22 @@ Por favor, selecione a sua versão:</translation>
         <location filename="../src/mainwindow.cpp" line="3658"/>
         <location filename="../src/mainwindow.cpp" line="3812"/>
         <source>The installed-package query returned an error. Please check the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro durante a instalação. Por favor, leia o relatório para saber mais.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1771"/>
         <source>Show/hide input</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar/ocultar</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1776"/>
         <source>Clear input</source>
-        <translation type="unfinished"/>
+        <translation>Limpar</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2492"/>
         <source>You are about to use the AUR, which contains user-contributed packages. These packages are not vetted by the distribution, may be outdated, and could contain malicious or broken build scripts. Use with care.</source>
-        <translation type="unfinished"/>
+        <translation>Você está prestes a usar os pacotes AUR, um formato de arquivo executável usado em distribuições Linux como o Arch e suas derivações. São todos pacotes com contribuição da comunidade, e como não há vetos a sua distribuição, alguns pacotes podem ser obsoletos, quebrados ou até maliciosos. Seja cuidadoso.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2750"/>
@@ -722,25 +722,31 @@ To install AUR packages, please install paru first:
 pacman -S paru
 
 Then try installing the AUR package again.</source>
-        <translation type="unfinished"/>
+        <translation>O gerenciador de pacotes ‘paru’ não está instalado.
+
+Para instalar pacotes AUR, favor instalar o paru usando o comando ‘pacman -S paru’
+
+Assim você poderá tentar instalar pacotes AUR de novo.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2770"/>
         <source>AUR packages cannot be built as root, and no regular user could be found to build as.
 
 Install the package as your normal user instead.</source>
-        <translation type="unfinished"/>
+        <translation>Não é possível compilar os pacotes AUR como administrador, e nenhum usuário comum foi encontrado para terminar a tarefa.
+
+Por favor, instale o pacote como um usuário comum.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3140"/>
         <source>The download timed out. Please check your internet connection and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Como o tempo se esgotou, o download foi encerrado. Verifique a sua conexão à rede e tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4101"/>
         <location filename="../src/mainwindow.cpp" line="5002"/>
         <source>No information available.</source>
-        <translation type="unfinished"/>
+        <translation>Nenhuma informação disponível.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4341"/>
@@ -878,12 +884,14 @@ Install the package as your normal user instead.</source>
         <source>paru is not installed.
 
 Install it with: pacman -S paru</source>
-        <translation type="unfinished"/>
+        <translation>O gerenciador de pacotes ‘Paru’ não está instalado.
+
+Favor instalar usando o comando ‘pacman -S paru’</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5025"/>
         <source>Could not query AUR packages. Please check that paru is installed and you are online.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível coletar os pacotes AUR. Verifique se o gerenciador de pacotes ‘paru’ está instalado e se você está conectado à rede.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5150"/>
@@ -981,12 +989,12 @@ Você gostaria de instalá-lo agora?</translation>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Show input</source>
-        <translation type="unfinished"/>
+        <translation>Mostrar entrada</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Hide input</source>
-        <translation type="unfinished"/>
+        <translation>Ocultar entrada</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6317"/>
@@ -1095,12 +1103,12 @@ Por favor, verifique cuidadosamente a lista de pacotes a ser removida.</translat
     <message>
         <location filename="../src/remotes.cpp" line="100"/>
         <source>Error removing remote</source>
-        <translation type="unfinished"/>
+        <translation>Ocorreu um erro ao remover o repositório</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="101"/>
         <source>Could not remove remote - command returned an error. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Não foi possível remover o repositório - o comando retornou um erro. Por favor, tente novamente.</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="118"/>
@@ -1219,7 +1227,7 @@ Feche o outro programa gerenciador de pacotes ou espere até que o processamento
     <message>
         <location filename="../src/lockfile_apt.cpp" line="87"/>
         <source>another package manager</source>
-        <translation type="unfinished"/>
+        <translation>outro gerenciador de pacotes</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -1259,7 +1267,8 @@ Feche o outro programa gerenciador de pacotes ou espere até que o processamento
         <location filename="../src/lockfile_pacman.cpp" line="86"/>
         <source>Pacman database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"/>
+        <translation>A base de dados do Pacman está bloqueada pelo programa ‘%1’.
+Antes de tentar novamente, por favor, feche o programa ou aguarde até o final do seu processo.</translation>
     </message>
 </context>
 <context>

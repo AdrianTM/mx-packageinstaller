@@ -9,7 +9,7 @@
     <message>
         <location filename="../src/cmd.cpp" line="531"/>
         <source>This operation requires administrator privileges. Try the action again and enter your password when prompted.</source>
-        <translation type="unfinished"/>
+        <translation>Αυτή η λειτουργία απαιτεί δικαιώματα διαχειριστή. Επαναλάβετε την ενέργεια και πληκτρολογήστε τον κωδικό πρόσβασης όταν σας ζητηθεί.</translation>
     </message>
 </context>
 <context>
@@ -325,17 +325,17 @@
     <message>
         <location filename="../src/mainwindow.ui" line="500"/>
         <source>AUR</source>
-        <translation type="unfinished"/>
+        <translation>AUR</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="656"/>
         <source>search AUR (type to find more)</source>
-        <translation type="unfinished"/>
+        <translation>αναζήτηση στο AUR (πληκτρολογήστε για να βρείτε περισσότερα)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="763"/>
         <source>Tip: search to find other AUR packages. Installed AUR packages are shown when the search box is empty.</source>
-        <translation type="unfinished"/>
+        <translation>Συμβουλή: Κάνετε αναζήτηση για να βρείτε άλλα πακέτα στο AUR. Τα εγκατεστημένα πακέτα του AUR εμφανίζονται όταν το πεδίο αναζήτησης είναι κενό.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.ui" line="855"/>
@@ -696,22 +696,22 @@
         <location filename="../src/mainwindow.cpp" line="3658"/>
         <location filename="../src/mainwindow.cpp" line="3812"/>
         <source>The installed-package query returned an error. Please check the log for details.</source>
-        <translation type="unfinished"/>
+        <translation>Η αναζήτηση για τα εγκατεστημένα πακέτα επέστρεψε σφάλμα. Παρακαλώ ελέγξτε το αρχείο καταγραφής για λεπτομέρειες.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1771"/>
         <source>Show/hide input</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση/απόκρυψη πεδίου εισαγωγής</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="1776"/>
         <source>Clear input</source>
-        <translation type="unfinished"/>
+        <translation>Καθαρισμός πεδίου εισαγωγής</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2492"/>
         <source>You are about to use the AUR, which contains user-contributed packages. These packages are not vetted by the distribution, may be outdated, and could contain malicious or broken build scripts. Use with care.</source>
-        <translation type="unfinished"/>
+        <translation>Πρόκειται να χρησιμοποιήσετε το AUR, το περιεχόμενο του αποτελείται από πακέτα που έχουν συνεισφέρει οι χρήστες. Αυτά τα πακέτα δεν έχουν ελεγχθεί από τη διανομή, ενδέχεται να είναι παλιά και μπορεί να περιέχουν κακόβουλα ή ελαττωματικά σενάρια. Χρησιμοποιήστε τα με προσοχή.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2750"/>
@@ -721,25 +721,32 @@ To install AUR packages, please install paru first:
 pacman -S paru
 
 Then try installing the AUR package again.</source>
-        <translation type="unfinished"/>
+        <translation>Το paru δεν είναι εγκατεστημένο.
+
+Για να εγκαταστήσετε πακέτα από το AUR, παρακαλούμε εγκαταστήστε πρώτα το paru:
+pacman -S paru
+
+Στη συνέχεια, δοκιμάστε να εγκαταστήσετε ξανά το πακέτο από το AUR.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="2770"/>
         <source>AUR packages cannot be built as root, and no regular user could be found to build as.
 
 Install the package as your normal user instead.</source>
-        <translation type="unfinished"/>
+        <translation>Τα πακέτα AUR δεν μπορούν να δομηθούν ως διαχειριστής, και δεν εντοπίστηκε απλός χρήστης για τη δομή τους.
+
+Εγκαταστήστε το πακέτο ως απλός χρήστης.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="3140"/>
         <source>The download timed out. Please check your internet connection and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Η λήψη δεν ολοκληρώθηκε εντός του χρονικού ορίου. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4101"/>
         <location filename="../src/mainwindow.cpp" line="5002"/>
         <source>No information available.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν υπάρχουν διαθέσιμες πληροφορίες.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="4341"/>
@@ -877,12 +884,14 @@ Install the package as your normal user instead.</source>
         <source>paru is not installed.
 
 Install it with: pacman -S paru</source>
-        <translation type="unfinished"/>
+        <translation>Το paru δεν είναι εγκατεστημένο.
+
+Εγκαταστήστε το με: pacman -S paru</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5025"/>
         <source>Could not query AUR packages. Please check that paru is installed and you are online.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η αναζήτηση πακέτων στο AUR. Βεβαιωθείτε ότι το paru είναι εγκατεστημένο και ότι έχετε σύνδεση στο διαδίκτυο.</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="5150"/>
@@ -980,12 +989,12 @@ OK to go ahead and install it?</source>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Show input</source>
-        <translation type="unfinished"/>
+        <translation>Εμφάνιση πεδίου εισαγωγής</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6308"/>
         <source>Hide input</source>
-        <translation type="unfinished"/>
+        <translation>Απόκρυψη πεδίου εισαγωγής</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.cpp" line="6317"/>
@@ -1094,12 +1103,12 @@ Please make sure you check carefully the list of packages to be removed.</source
     <message>
         <location filename="../src/remotes.cpp" line="100"/>
         <source>Error removing remote</source>
-        <translation type="unfinished"/>
+        <translation>Σφάλμα κατά την αφαίρεση</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="101"/>
         <source>Could not remove remote - command returned an error. Please try again.</source>
-        <translation type="unfinished"/>
+        <translation>Δεν ήταν δυνατή η αφαίρεση - η εντολή επέστρεψε σφάλμα. Παρακαλώ δοκιμάστε ξανά.</translation>
     </message>
     <message>
         <location filename="../src/remotes.cpp" line="118"/>
@@ -1218,7 +1227,7 @@ Close the program, or wait until it is done processing and try again.</source>
     <message>
         <location filename="../src/lockfile_apt.cpp" line="87"/>
         <source>another package manager</source>
-        <translation type="unfinished"/>
+        <translation>ένας άλλος διαχειριστής πακέτων</translation>
     </message>
     <message>
         <location filename="../src/main.cpp" line="86"/>
@@ -1258,7 +1267,8 @@ Close the program, or wait until it is done processing and try again.</source>
         <location filename="../src/lockfile_pacman.cpp" line="86"/>
         <source>Pacman database is locked by another program: %1
 Close the program, or wait until it is done processing and try again.</source>
-        <translation type="unfinished"/>
+        <translation>Η βάση δεδομένων του pacman δεσμεύτηκε από άλλο πρόγραμμα: %1
+Κλείστε το πρόγραμμα ή περιμένετε μέχρι να ολοκληρωθεί η διαδικασία και δοκιμάστε ξανά.</translation>
     </message>
 </context>
 <context>

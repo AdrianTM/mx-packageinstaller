@@ -1169,7 +1169,7 @@ Zorg ervoor dat u de lijst met te verwijderen pakketten zorgvuldig controleert.<
     <message>
         <location filename="../src/about.cpp" line="71"/>
         <source>Could not load %1</source>
-        <translation type="unfinished"/>
+        <translation>%1 kon niet worden geladen</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="101"/>
@@ -1190,7 +1190,7 @@ Zorg ervoor dat u de lijst met te verwijderen pakketten zorgvuldig controleert.<
     <message>
         <location filename="../src/about.cpp" line="123"/>
         <source>Could not load changelog.</source>
-        <translation type="unfinished"/>
+        <translation>De changelog kon niet worden geladen.</translation>
     </message>
     <message>
         <location filename="../src/about.cpp" line="51"/>
